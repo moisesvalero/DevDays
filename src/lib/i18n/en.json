@@ -1,0 +1,630 @@
+{
+  "layout": {
+    "title": "My SvelteKit Starter",
+    "nav": {
+      "home": "Home",
+      "components": "Components",
+      "getStarted": "Get Started"
+    },
+    "footer": {
+      "documentation": "Documentation",
+      "builtWith": "Built with precision."
+    },
+    "aria": {
+      "toggleMenu": "Toggle menu",
+      "closeMenuOverlay": "Close menu overlay",
+      "theme": "Theme",
+      "language": "Language"
+    },
+    "lang": {
+      "toSpanish": "🇪🇸 ES",
+      "toEnglish": "🇬🇧 EN"
+    }
+  },
+  "componentsPage": {
+    "seo": {
+      "title": "Components | My SvelteKit Starter",
+      "description": "UI gallery (shadcn-svelte), page demos (about, pricing, FAQ, SSR, blog) and contact form."
+    },
+    "nav": {
+      "root": "Components",
+      "uiBase": "UI base",
+      "advanced": "Advanced",
+      "templateExamples": "Template examples",
+      "about": "About",
+      "pricing": "Pricing",
+      "faq": "FAQ",
+      "serverData": "Server data",
+      "blogList": "Blog (mdsvex)",
+      "sampleArticle": "Sample article",
+      "contactForm": "Contact form"
+    },
+    "badge": "UI COMPONENTS",
+    "title": "Components",
+    "kicker": "Svelte 5 + Tailwind CSS. Ready to copy and customise.",
+    "sections": {
+      "button": { "desc": "5 variants · 3 sizes · link · disabled · loading" },
+      "card": { "desc": "3 variants · composition", "content": "Card content" },
+      "input": { "desc": "Text, email and password" },
+      "textarea": { "desc": "Multi-line input", "placeholder": "Type your message here..." },
+      "label": { "desc": "Accessible label", "demo": "Name", "placeholder": "Your name" },
+      "spinner": { "desc": "SVG indicator" },
+      "skeleton": { "desc": "Pulsing placeholder" },
+      "copy": { "desc": "Copy to clipboard" },
+      "newsletter": { "desc": "Email subscription", "button": "Subscribe" },
+      "toast": { "desc": "success · error · info · warning", "done": "Done!", "err": "Error!", "warn": "Heads up", "info": "Info" },
+      "aiprompt": { "desc": "AI prompt area", "placeholder": "Ask anything…" },
+      "aboutDemo": {
+        "title": "About us",
+        "desc": "Corporate section example: short pitch, values and blocks you can reuse on any landing."
+      },
+      "pricingDemo": {
+        "title": "Plans & pricing",
+        "desc": "Pricing table with highlight and CTAs; a solid base for SaaS, services or memberships."
+      },
+      "faqDemo": {
+        "title": "FAQ",
+        "desc": "Accordion for common questions (product, billing, support) without making the page too long."
+      },
+      "ssrDemo": {
+        "title": "Server data (load)",
+        "desc": "Values computed on the server before HTML: time and sample data. Code lives in src/routes/components/+page.ts.",
+        "chip": "+page.ts + SsrDemoPanel"
+      },
+      "blogDemo": {
+        "title": "Blog — listing",
+        "desc": "Typical list card for articles; the full sample content is in the next section.",
+        "codeChip": "mdsvex + .svx (see AGENTS.md)"
+      },
+      "blogCard": {
+        "title": "My first post with SvelteKit",
+        "excerpt": "Preview; full text is in “Sample article” below."
+      },
+      "blogPostDemo": {
+        "title": "Sample article",
+        "desc": "Long-form post with headings, lists and code; swap for mdsvex routes or CMS-driven content."
+      },
+      "contactDemo": {
+        "title": "Contact form",
+        "desc": "Server-side validation with SvelteKit actions and error messages. In production you’d wire this to your API, email or CRM.",
+        "name": "Name",
+        "email": "Email",
+        "message": "Message",
+        "phName": "Your name",
+        "phEmail": "you@email.com",
+        "phMessage": "Test message…",
+        "submit": "Send (demo)"
+      }
+    },
+    "demos": {
+      "about": {
+        "eyebrow": "About us",
+        "title": "We build tools people love to use.",
+        "subtitle": "A small team with a big goal: ship software that makes a difference.",
+        "mission": "Mission",
+        "missionText": "Create digital tools that solve real problems in a simple, elegant way.",
+        "vision": "Vision",
+        "visionText": "Become the go-to platform for teams that want to ship fast and well.",
+        "values": "Values",
+        "valuesText": "Transparency, speed, quality and obsession with user experience.",
+        "teamTitle": "The people behind the project",
+        "teamSubtitle": "A distributed team working from anywhere in the world.",
+        "role": "Team role"
+      },
+      "pricing": {
+        "eyebrow": "Pricing",
+        "title": "Simple, clear plans",
+        "subtitle": "Pick the plan that fits you. No surprises.",
+        "perMonth": "/mo",
+        "names": {
+          "starter": "Starter",
+          "pro": "Pro",
+          "enterprise": "Enterprise"
+        },
+        "ctaFeatured": "Get started",
+        "ctaOther": "Choose plan",
+        "starter": {
+          "desc": "Getting started",
+          "f1": "5 projects",
+          "f2": "Basic support",
+          "f3": "Updates"
+        },
+        "pro": {
+          "desc": "For professionals",
+          "f1": "Unlimited projects",
+          "f2": "Priority support",
+          "f3": "API access"
+        },
+        "enterprise": {
+          "desc": "For teams",
+          "f1": "Everything in Pro",
+          "f2": "Guaranteed SLA",
+          "f3": "Dedicated onboarding"
+        }
+      },
+      "faq": {
+        "subtitle": "Quick answers about the template, deploy, languages and customisation.",
+        "items": {
+          "plantilla": {
+            "q": "What is this template?",
+            "a": "A ready-to-go base for modern sites with SvelteKit 2 and Svelte 5: UI components (shadcn-svelte), SEO, i18n, dark mode and deployment tuned for Vercel or Netlify."
+          },
+          "principiante": {
+            "q": "Do I need a lot of front-end experience?",
+            "a": "You don’t have to be an expert: tweak JSON copy, CSS colours and copy blocks from the component gallery. When you want to go further, the code is organised to scale without mess."
+          },
+          "comercial": {
+            "q": "Can I use it for commercial projects?",
+            "a": "Yes. The template is MIT: use it for clients, products or landings with no paid licence restrictions."
+          },
+          "deploy": {
+            "q": "How do I deploy to production?",
+            "a": "Push the repo to GitHub and connect the project to Vercel or Netlify. Build is npm run build; set PUBLIC_SITE_URL for SEO (sitemap and Open Graph)."
+          },
+          "i18n": {
+            "q": "How do languages work?",
+            "a": "Spanish and English with keys under src/lib/i18n. To add another language, add a JSON file, register translations and extend the locale type in the i18n module."
+          },
+          "cms": {
+            "q": "Can I connect a CMS?",
+            "a": "Yes. The repo includes optional Sanity pieces; you can also consume any API (Strapi, Contentful, local Markdown) from load or endpoints."
+          },
+          "seo": {
+            "q": "What about SEO?",
+            "a": "Centralised metadata (setSeo), JSON-LD, sitemap, robots and security headers in hooks.server.ts. Set titles and descriptions per route."
+          },
+          "rendimiento": {
+            "q": "Is it performance-minded?",
+            "a": "Svelte compiles to small JS; use optimised images, lazy loading where it matters and Vite’s bundle analyser as the app grows."
+          }
+        }
+      },
+      "ssr": {
+        "eyebrow": "Server Side Rendering",
+        "title": "Data loading demo",
+        "intro": "Data comes from src/routes/components/+page.ts with load(). Same route as the demo form (+page.server.ts).",
+        "serverTime": "Server time",
+        "serverFact": "Server fact",
+        "magic": "Magic number",
+        "howTitle": "How it works",
+        "howBody": "1. +page.ts exports load()\n2. It runs on the server\n3. Data reaches +page.svelte via props\n4. The component receives them with $props()",
+        "facts": {
+          "compiler": "SvelteKit compiles your code on the server"
+        }
+      },
+      "blogPost": {
+        "date": "2026-05-11",
+        "title": "My first post with SvelteKit",
+        "lead": "Sample blog with Markdown/mdsvex (previously its own route; now a gallery demo).",
+        "h1": "Welcome to the blog",
+        "p1": "Example of Markdown and mdsvex on the same page.",
+        "h2": "How to create a new post",
+        "ol1": "Create a folder in src/routes/blog/your-post/",
+        "ol2": "Add a +page.svx file inside that folder",
+        "ol3": "Write your content in Markdown",
+        "ol4": "Add frontmatter with title, date and description",
+        "h3": "Code sample",
+        "code": "function greet(name: string) {\n  return 'Hello ' + name + '!';\n}",
+        "h4": "Why SvelteKit for your blog",
+        "li1": "Speed: pages can be generated at build time",
+        "li2": "Markdown: write plain text, it becomes HTML",
+        "li3": "Components: embed Svelte components inside Markdown",
+        "li4": "SEO: each post can have its own title and description"
+      }
+    },
+    "toastDemoSent": "Message sent (demo)",
+    "formErrors": {
+      "allRequired": "All fields are required.",
+      "invalidEmail": "Invalid email address."
+    }
+  },
+  "home": {
+    "seo": {
+      "title": "My SvelteKit Starter — Svelte 5 + Kit 2 template ready to ship",
+      "description": "All in one repo: shadcn-style UI you own, Tailwind v4, TypeScript, ES/EN copy, dark mode, technical SEO and demo pages. For vibe coders who skip reinventing the stack."
+    },
+    "hero": {
+      "title": "The SvelteKit starter for people who just want to build",
+      "subtitle": "Runes, routes, forms, toasts, light/dark theme and a component gallery living in your repo—not an opaque package. Fork, tweak, deploy.",
+      "ctaPrimary": "Browse components",
+      "ctaSecondary": "Documentation"
+    },
+    "features": {
+      "eyebrow": "Included",
+      "title": "What’s included in this starter",
+      "performance": {
+        "title": "Lean JS in the browser",
+        "desc": "Svelte compiles components to small output — great for landings and apps where payload matters."
+      },
+      "types": {
+        "title": "TypeScript that survives CI",
+        "desc": "Structured for `npm run check`: typed routes and UI so failures happen in the pipeline, not on users."
+      },
+      "dx": {
+        "title": "shadcn-style UI in your repo",
+        "desc": "Buttons, cards, forms live under `src/lib/components/ui/` — edit the source, no black-box dependency."
+      },
+      "deploy": {
+        "title": "SEO & production baseline",
+        "desc": "Meta tags, JSON-LD, `/sitemap.xml`, `/robots.txt`, dynamic OG — wire the repo to Vercel or Netlify when your domain is ready."
+      },
+      "cms": {
+        "title": "Sanity CMS (optional)",
+        "desc": "Studio + schema under `sanity/`, server client + GROQ helpers under `src/lib/server/sanity/`. Enable with `SANITY_PROJECT_ID` and `SANITY_DATASET` in `.env`."
+      },
+      "product": {
+        "title": "Product-ready UX",
+        "desc": "ES/EN strings via `$t()`, light/dark theme (mode-watcher), cookie banner and JSON-LD — a usable landing, not an isolated mock."
+      }
+    },
+    "steps": {
+      "title": "Run this starter locally (4 steps)",
+      "step1": {
+        "title": "Get the code",
+        "desc": "Clone the repo (`git clone …`) or download the ZIP from GitHub. This template already includes SvelteKit, Tailwind v4, TypeScript and the UI setup."
+      },
+      "step2": {
+        "title": "Install dependencies",
+        "desc": "From the project folder run `npm install`. Requires Node.js 22+ (see `package.json`)."
+      },
+      "step3": {
+        "title": "Start the dev server",
+        "desc": "Run `npm run dev` and open the URL printed in the terminal (usually http://localhost:5173)."
+      },
+      "step4": {
+        "title": "Customize & deploy",
+        "desc": "Update name and links in project config, adjust copy and theme colors, run `npm run build`, then ship to Vercel, Netlify or your host."
+      }
+    },
+    "cta": {
+      "title": "What’s next?",
+      "subtitle": "Explore the gallery, steal UI patterns and swap in your brand—this template is the launchpad, not the ceiling.",
+      "button": "Browse components"
+    }
+  },
+  "hero": {
+    "pill": "Svelte Starter · Creative UI Toolkit",
+    "titleLine1": "Creative UI Toolkit",
+    "titleLine2": "for Modern Web Apps",
+    "subtitle": "Design and ship clean, fast, elegant interfaces with a premium visual system and a modern product experience.",
+    "ctaPrimary": "Get Svelte Starter",
+    "ctaSecondary": "Explore components",
+    "footnote": "No generic templates. Modern product sections ready to combine, animate, and ship to production."
+  },
+  "socialProof": {
+    "eyebrow": "Trusted by teams using",
+    "stats": {
+      "components": "Premium components",
+      "delivery": "Faster delivery",
+      "support": "Priority support"
+    }
+  },
+  "workflow": {
+    "eyebrow": "How Svelte Starter fits your flow",
+    "title": "From wireframe to <span class='gradient-text'>polished interface</span><br>in hours, not weeks.",
+    "subtitle": "Combine ready-made blocks, tweak tokens, and ship product-ready UI kits without drowning in Figma files.",
+    "step1_num": "01 — DESIGN",
+    "step1_title": "Define your UI blocks",
+    "step1_desc": "Pick spacing, style tokens and layout patterns from a curated design system.",
+    "step2_num": "02 — BUILD",
+    "step2_title": "Compose in Svelte",
+    "step2_desc": "Drop reusable components directly into your project. No config hell.",
+    "step3_num": "03 — SHIP",
+    "step3_title": "Launch polished screens",
+    "step3_desc": "Deploy pixel-perfect interfaces with ready-to-use motion and interactions."
+  },
+  "componentGallery": {
+    "eyebrow": "A KIT, NOT JUST A TEMPLATE",
+    "title": "Craft full product experiences with <span class='gradient-text'>ready-made UI blocks.</span>",
+    "subtitle": "Swap sections, tweak tokens, and keep everything on-brand without touching a design tool every single time.",
+    "ui1": {
+      "title": "Analytics Dashboard",
+      "live": "Live",
+      "users": "Users",
+      "revenue": "Revenue",
+      "uptime": "Uptime",
+      "dayMon": "Mon",
+      "dayTue": "Tue",
+      "dayWed": "Wed",
+      "dayThu": "Thu",
+      "dayFri": "Fri",
+      "daySat": "Sat",
+      "daySun": "Sun"
+    },
+    "ui2": {
+      "title": "Product Catalog",
+      "item1": "UI Kit Pro",
+      "item2": "Icon Set",
+      "item3": "Forms",
+      "new": "New",
+      "sale": "Sale",
+      "free": "Free",
+      "addToCart": "Add to cart"
+    },
+    "ui3": {
+      "title": "Choose your plan",
+      "monthly": "Monthly",
+      "annual": "Annual",
+      "starter": "Starter",
+      "pro": "Pro",
+      "team": "Team",
+      "starterBtn": "Get started",
+      "proBtn": "Get Pro",
+      "teamBtn": "Contact",
+      "perMonth": "/ month",
+      "starterFeat1": "5 components",
+      "starterFeat2": "Basic support",
+      "proFeat1": "All components",
+      "proFeat2": "Priority support",
+      "proFeat3": "Updates",
+      "teamFeat1": "Unlimited",
+      "teamFeat2": "Team access"
+    },
+    "ui4": {
+      "name": "Sarah Design",
+      "online": "Online",
+      "msg1": "Hey! The new components look amazing 🎉",
+      "msg2": "Thanks! Just pushed the update ✨",
+      "placeholder": "Type a message..."
+    },
+    "ui5": {
+      "month": "March 2026",
+      "day1": "S",
+      "day2": "M",
+      "day3": "T",
+      "day4": "W",
+      "day5": "T",
+      "day6": "F",
+      "day7": "S",
+      "event1": "Design Review",
+      "event2": "Team Standup"
+    },
+    "ui6": {
+      "name": "Jane Doe",
+      "role": "Product Designer · Pro",
+      "preferences": "Preferences",
+      "darkMode": "Dark Mode",
+      "notifications": "Notifications",
+      "storageUsed": "Storage used"
+    },
+    "cards": {
+      "dashboardTitle": "Dashboard Overview",
+      "dashboardTag": "Layout",
+      "productTitle": "Product Highlights",
+      "productTag": "Commerce",
+      "pricingTitle": "Pricing Module",
+      "pricingTag": "Commerce",
+      "messagingTitle": "Messaging UI",
+      "messagingTag": "Navigation",
+      "calendarTitle": "Calendar Block",
+      "calendarTag": "Data",
+      "workspaceTitle": "User Workspace",
+      "workspaceTag": "Navigation"
+    }
+  },
+  "useCases": {
+    "eyebrow": "Built for busy product teams",
+    "title": "Use Svelte Starter wherever clean, fast UI really matters.",
+    "case1Title": "SaaS dashboards",
+    "case1Desc": "Compose analytics views, settings areas, and billing pages that feel consistent across your product.",
+    "case2Title": "Internal tools",
+    "case2Desc": "Give your ops and support teams interfaces that feel as polished as the public-facing product.",
+    "case3Title": "Client projects",
+    "case3Desc": "Reuse a dependable SvelteKit foundation on every engagement, while each brand still feels unique.",
+    "case4Title": "Design handoffs",
+    "case4Desc": "Bridge the gap between Figma and code with sections that mirror modern product UI patterns."
+  },
+  "usecases": {
+    "eyebrow": "The UI toolkit that changes everything",
+    "line1": "Build interfaces",
+    "line2": "that feel",
+    "line2_accent": "alive.",
+    "line3": "Ship",
+    "word1": "faster.",
+    "word2": "smarter.",
+    "word3": "better.",
+    "word4": "today.",
+    "stat1": "UI Components",
+    "stat2": "Developers worldwide",
+    "stat3": "Average rating",
+    "cta": "Get Svelte Starter"
+  },
+  "superpowers": {
+    "eyebrow": "Explore Svelte Starter in a whole new way.",
+    "title": "Everyday superpowers for modern product interfaces.",
+    "card1Title": "Ready-to-use design tokens",
+    "card1Desc": "Typography, spacing, and radius scales that stay consistent from day one, without wrestling a massive design system.",
+    "card2Title": "Motion without the overhead",
+    "card2Desc": "Scroll reveal, hover states, and polished micro-interactions are already wired and easy to tune.",
+    "card3Title": "Composable components",
+    "card3Desc": "Sections designed like building blocks: hero, pricing, FAQ, and more, all fitting together without breaking layout rhythm.",
+    "card4Title": "Ready for Svelte 5",
+    "card4Desc": "Runes-based state, actions, and TypeScript typing so developer experience feels as modern as the UI.",
+    "card5Title": "Opinionated, never rigid",
+    "card5Desc": "Strong defaults for spacing and visual rhythm, with clean CSS you can adapt to your brand in minutes.",
+    "card6Title": "Production-ready patterns",
+    "card6Desc": "Built for real products, not just portfolios: loading states, empty states, and error messaging included."
+  },
+  "features": {
+    "title": "Designed for <span class='gradient-text'>Modern Interfaces</span>",
+    "subtitle": "Production-ready components with polished aesthetics, modern performance, and a consistent visual experience across your product.",
+    "cards": {
+      "cleanTitle": "Clean Components",
+      "cleanDesc": "Build clean, modern interfaces with simple, reusable components.",
+      "fastTitle": "Fast by Default",
+      "fastDesc": "Svelte compiles your code for speed, so your UI stays fast by default.",
+      "premiumTitle": "Premium Design",
+      "premiumDesc": "Minimal visual style, expressive typography, and refined micro-interactions.",
+      "customTitle": "Fully Customizable",
+      "customDesc": "Adapt color, typography, and spacing with design tokens in seconds."
+    },
+    "mockup": {
+      "storeTitle": "Svelte Starter Store",
+      "storeSub": "247 components available",
+      "searchPlaceholder": "Dashboard components...",
+      "segAll": "All",
+      "segLayout": "Layout",
+      "segForms": "Forms",
+      "segCharts": "Charts",
+      "new": "NEW",
+      "hot": "HOT",
+      "dashboardKit": "Dashboard Kit",
+      "analyticsUi": "Analytics UI",
+      "popular": "Popular Components",
+      "seeAll": "See All",
+      "recent": "Recently Added",
+      "grid": "Grid",
+      "list": "List",
+      "form": "Form",
+      "chart": "Chart",
+      "free": "Free",
+      "heroSection": "Hero Section",
+      "landingSvelte": "Landing · Svelte",
+      "pricingTable": "Pricing Table",
+      "commerceReact": "Commerce · React",
+      "home": "Home",
+      "browse": "Browse",
+      "library": "Library",
+      "profile": "Profile"
+    }
+  },
+  "pricing": {
+    "title": "Simple, Transparent Pricing",
+    "subtitle": "Choose the plan that fits your team and growth stage.",
+    "starterTitle": "Starter",
+    "proTitle": "Pro",
+    "teamsTitle": "Teams",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "starterDesc": "Perfect for side projects and early MVPs.",
+    "starterBtn": "Start with Starter",
+    "starterFeat1": "✓ 10 active projects",
+    "starterFeat2": "✓ Access to core layouts",
+    "starterFeat3": "✓ Monthly updates",
+    "proDesc": "The best plan for teams shipping production products.",
+    "proBtn": "Get Pro",
+    "proFeat1": "✓ Unlimited Projects",
+    "proFeat2": "✓ Premium Components",
+    "proFeat3": "✓ 24/7 Priority Support",
+    "teamsDesc": "For product teams moving fast across multiple products.",
+    "teamsBtn": "Talk to sales",
+    "teamsFeat1": "✓ Up to 10 seats",
+    "teamsFeat2": "✓ Shared design tokens",
+    "teamsFeat3": "✓ Dedicated priority support"
+  },
+  "testimonials": {
+    "eyebrow": "Loved by designers and builders",
+    "title": "Start bringing balance back to your interface work.",
+    "cta": "Download Svelte Starter preview",
+    "roles": {
+      "r1": "Product Designer at Brightlabs",
+      "r2": "Frontend freelancer",
+      "r3": "Head of Product at Flowstack",
+      "r4": "Growth Lead at Shiply",
+      "r5": "Design Engineer",
+      "r6": "Product Manager at LinearOps",
+      "r7": "Remote Lead Designer",
+      "r8": "Design Systems Partner",
+      "r9": "Freelance Product Designer",
+      "r10": "Design Lead at Pixelwave",
+      "r11": "CTO at RelayOS",
+      "r12": "Design Systems Lead",
+      "r13": "Frontend Engineer",
+      "r14": "UX Engineer",
+      "r15": "Full-stack Developer",
+      "r16": "Senior Frontend",
+      "r17": "Sales Engineer",
+      "r18": "Founder at Orbit Kit",
+      "r19": "Staff Engineer",
+      "r20": "Founder at Orbit Kit",
+      "r21": "Staff Frontend at Northwind",
+      "r22": "VP of Engineering",
+      "r23": "Founder at Launchly",
+      "r24": "Solutions Architect",
+      "r25": "Analytics Lead",
+      "r26": "Software Engineer"
+    },
+    "quotes": {
+      "q1": "We moved from static marketing pages to complete SvelteKit flows in days. Svelte Starter gave us a consistent visual language without fighting Figma in every iteration.",
+      "q2": "As a freelancer, I finally have a serious starting point. I reuse the same foundation across clients, while each project still feels unique through sections and tokens.",
+      "q3": "Our product team can prototype new ideas directly in SvelteKit without waiting for hand-coded HTML every time. The micro-interactions feel right out of the box.",
+      "q4": "Since migrating our marketing site to Svelte Starter, the team stopped saying 'we will build it tomorrow' and started saying 'we can ship it today 🚀'.",
+      "q5": "We use it as the foundation for three different products and almost nobody notices. We swap tokens, logos, and copy, and it just works. It feels like a living design system ✨.",
+      "q6": "Every sprint starts by cloning a Svelte Starter layout instead of reusing an old page. That alone saves hours of design debates 🙌.",
+      "q7": "Our remote team shares landing screenshots in Slack like they are new Dribbble shots. The best part is that everything is live in production 😍.",
+      "q8": "We built a lightweight design system on top of Svelte Starter and, for the first time, design and code move at the same speed. No more endless pixel-perfect loops 🧩.",
+      "q9": "The client thought we hired an expensive agency. In reality, it was Svelte Starter layouts with a few brand customizations 😏.",
+      "q10": "Svelte Starter lets us keep a coherent component library across product, marketing, and internal dashboards without duplicating work ⚙️.",
+      "q11": "It feels like opening a mature app from day one. We only had to plug in our data and start iterating.",
+      "q12": "We used to have four versions of the same button. Now everything comes from one kit, and support sends us hearts in Slack 💜.",
+      "q13": "I never thought I would enjoy building tables and settings screens this much. Svelte Starter makes even routine screens feel premium 😅.",
+      "q14": "We moved from 'do not touch that fragile view' to 'clone the Svelte Starter pattern and adapt it.' It is a completely different mindset 💡.",
+      "q15": "Backend handoff is now just sharing components. Fewer tickets, fewer screenshots, and many more happy pull requests 🤝.",
+      "q16": "Some motion details feel straight out of apps like Linear or Superlist. Best of all, the CSS stays clean and readable 👀.",
+      "q17": "We turned a Figma prototype into a navigable demo in one afternoon. The sales team sent us a very enthusiastic THANK YOU 🔥.",
+      "q18": "This landing let us validate our product messaging in days. We only changed copy and data, the design foundation was already there.",
+      "q19": "Navigating Svelte Starter feels like the best modern productivity apps, while remaining pure Svelte code we fully control.",
+      "q20": "This landing let us validate our product messaging in days. We only changed copy and data, while the design foundation was already done ✅.",
+      "q21": "We handed it to marketing and they now create new pages on their own. I just review the pull request and smile 😎.",
+      "q22": "Svelte Starter code is so clean that even our very detail-oriented CTO gave us an immediate green light 🧠.",
+      "q23": "In investor demos, we used a landing built with Svelte Starter directly. Nobody asked about design quality, only about the roadmap. That says it all 💬.",
+      "q24": "We connected Svelte Starter to our API and had a client mini-portal in one afternoon that looked polished for months ✨.",
+      "q25": "The data team asked for 'something quick' to present metrics. We gave them a Svelte Starter dashboard and now they do not want anything else 📊.",
+      "q26": "I love being able to open the landing repo, tweak a few props, and see real changes in minutes. Zero fear of breaking the design 💻."
+    }
+  },
+  "deepDetails": {
+    "eyebrow": "Details that matter for product UI.",
+    "title": "Move seamlessly from idea to shipped interface.",
+    "subtitle": "Svelte Starter handles the details that shape great product UI: states, spacing, visual rhythm, and accessibility.",
+    "items": {
+      "item1Text": "Real-time-ready layouts for collaborative dashboards.",
+      "item1Tag": "Dashboards ready for production",
+      "item2Text": "Repeatable sections for pricing, onboarding, and in-product announcements.",
+      "item2Tag": "Reuse patterns without losing brand personality",
+      "item3Text": "Offline-friendly patterns for apps that cannot fail in low-connectivity scenarios.",
+      "item3Tag": "Built for real-world conditions",
+      "item4Text": "Widget-style cards ready for metrics, activity feeds, and operational views.",
+      "item4Tag": "Blocks that feel like product UI",
+      "item5Text": "Nested layouts designed for complex views without sacrificing clarity.",
+      "item5Tag": "Complex under the hood, clear on the surface",
+      "item6Text": "TypeScript and Svelte 5 runes for a modern developer workflow.",
+      "item6Tag": "Developer experience and design in sync",
+      "item7Text": "Clean integrations with REST and GraphQL APIs.",
+      "item7Tag": "Connect your data in minutes",
+      "item8Text": "Consistent loading, error, and empty states across the entire app.",
+      "item8Tag": "No more broken-looking screens",
+      "item9Text": "Smooth motion that keeps performance in check.",
+      "item9Tag": "Motion designed for product interfaces",
+      "item10Text": "Accessibility-first defaults: visible focus states, contrast, and semantic roles.",
+      "item10Tag": "Beautiful and genuinely usable",
+      "item11Text": "Transactional email templates aligned with your product UI.",
+      "item11Tag": "A consistent end-to-end experience",
+      "item12Text": "Dark mode-ready components without rewriting your entire theme.",
+      "item12Tag": "One kit, two polished modes",
+      "item13Text": "Navigation patterns built for multi-team, multi-workspace products.",
+      "item13Tag": "Scale without losing orientation",
+      "item14Text": "Empty-state layouts that encourage action instead of dead ends.",
+      "item14Tag": "Empty states that move users forward",
+      "item15Text": "Suggested microcopy for CTAs, states, and product tooltips.",
+      "item15Tag": "Copy and design working together"
+    }
+  },
+  "faqCta": {
+    "eyebrow": "Ready to build",
+    "titleLine1": "Your next interface",
+    "titleLine2": "starts here.",
+    "subtitle": "Stop building from scratch. Svelte Starter gives you everything you need to ship beautiful products in hours, not weeks.",
+    "primary": "Get Svelte Starter",
+    "secondary": "Explore components",
+    "proof": "<strong>2,400+</strong> developers trust Svelte Starter",
+    "rating": "<strong>4.9</strong> / 5 rating"
+  },
+  "footer": {
+    "tagline": "The last UI toolkit you will ever need.",
+    "statusFallback": "ALC / ESP",
+    "backToTopAria": "Back to top",
+    "rights": "All rights reserved.",
+    "designedBy": "Designed by"
+  }
+}

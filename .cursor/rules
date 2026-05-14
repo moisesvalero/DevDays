@@ -1,0 +1,92 @@
+# Cursor rules — My SvelteKit Starter
+
+Detailed source of truth: **AGENTS.md** at the repo root.
+
+## Trigger: external design → code (read before editing files)
+
+If the user (or context) mentions **Stitch**, **Lovable**, **visual parity**, **pixel perfect**, **match the design**, **exported HTML/CSS**, **Figma / prototype** as the main reference, or **DESIGN_TO_CURSOR**:
+
+1. **Open and follow** **`DESIGN_TO_CURSOR.md`** at the repo root (read it fully with the read tool if it is not in context).
+2. Then apply **AGENTS.md** (component catalog, i18n, `npm run check`).
+3. Map the design to **Button, Card, Section**, etc.; tune tokens in **`src/app.css`** and **`src/lib/styles/stitch-m3.css`**; do not leave only raw HTML without migrating to components.
+
+If none of that applies, follow **AGENTS.md** as usual.
+
+---
+
+Short **Stitch / Lovable → visual parity** flow: checklist and prompt in **DESIGN_TO_CURSOR.md**.
+
+If the user asks to clone an external design: map to catalog components, adjust tokens in `app.css` / `stitch-m3.css`, avoid layout-only loose HTML.
+
+## Golden rule
+
+**Do not write raw HTML** (`<button>`, `<h1>`, hand-built cards) if a component already exists under `src/lib/components/ui/` or `src/lib/components/`.
+
+## Quick catalog (current imports)
+
+| Use | Import |
+|-----|--------|
+| Button (shadcn variants) | `$lib/components/ui/button` |
+| Card / CardHeader / CardTitle… | `$lib/components/ui/card` |
+| Dialog | `$lib/components/ui/dialog` |
+| Input, Textarea, Label | `$lib/components/ui/input`, `textarea`, `label` |
+| Skeleton, Spinner | `$lib/components/ui/skeleton`, `spinner` |
+| Sonner toasts | `$lib/components/ui/sonner` → `<Toaster />` in layout |
+| Marketing layout | `Container`, `Section`, `Heading`, `Text`, `Grid` in `$lib/components/ui/*.svelte` |
+| Blocks | `HeroSection`, `FeaturesSection` in `$lib/components/ui/` |
+| Project | `Footer`, `CopyButton`, `Newsletter`, `AiPrompt`, `JsonLd`, `CookieConsent`, `BlogLayout`, `LoadingBlock`, `LiveChat`, `Analytics` in `$lib/components/` |
+
+**Not** present as legacy paths: `ThemeToggle.svelte`, `Modal.svelte`, loose `Button.svelte` at the root of `ui/`.
+
+## Utilities
+
+```ts
+import { toast } from '$lib/stores/toast';
+// Layout: <Toaster /> (Sonner) + <ToastContainer /> for the store
+
+import { mode, toggleMode } from 'mode-watcher';
+
+import { t, locale, setLocale } from '$lib/i18n/index';
+
+import { setSeo } from '$lib/seo';
+
+import { reveal } from '$lib/reveal';
+
+import { cn } from '$lib/utils';
+
+import { clickOutside } from '$lib/actions/clickOutside';
+```
+
+## Stack
+
+- **Svelte 5** — runes: `$state`, `$props`, `$derived`, `$effect`
+- **SvelteKit 2** — routes, `load`, form actions
+- **TypeScript**
+- **Tailwind CSS v4** — utilities in components; tokens in `src/app.css` and `src/lib/styles/stitch-m3.css`
+- **shadcn-svelte + bits-ui** — patterns under `src/lib/components/ui/`
+
+## Props (Svelte 5)
+
+Type like this (no generic on `$props()`):
+
+```ts
+let { title }: { title: string } = $props();
+```
+
+Use snippets instead of slots: `{@render children?.()}`
+
+## Customization
+
+- `src/lib/site-config.ts` — name, URL, social
+- `src/lib/i18n/es.json` and `en.json` — layout (`layout.*`) and home (`home.*`) copy
+- `src/lib/seo.ts` — `setSeo`, `$seo` store
+
+## New page / component
+
+See **AGENTS.md**: `+page.svelte`, `setSeo`, optional `+page.ts` / `+page.server.ts`; no `async` in the `.svelte` file.
+
+## shadcn-svelte CLI
+
+```bash
+npx shadcn-svelte@latest add <component>
+```

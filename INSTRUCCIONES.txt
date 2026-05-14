@@ -1,0 +1,321 @@
+INSTRUCCIONES PASO A PASO PARA USAR ESTA PLANTILLA
+==================================================
+
+(English version: INSTRUCTIONS.txt en la raíz del repo.)
+
+Este archivo esta pensado para personas que:
+- NUNCA han usado Svelte ni SvelteKit.
+- Usan IA (Cursor, ChatGPT, Claude) para generar codigo.
+- Quieren crear webs modernas sin ser expertos.
+
+Lee todo con calma y sigue los pasos en orden.
+
+--------------------------------------------------
+1. QUE ES ESTA PLANTILLA
+--------------------------------------------------
+
+Esta carpeta contiene una plantilla lista para crear webs usando:
+- SvelteKit 2 + Svelte 5 + TypeScript
+
+La plantilla trae:
+- Una pagina de inicio (home) ya funcionando.
+- Una landing completa de ejemplo para inspirarte.
+- Una galeria con TODOS los componentes disponibles.
+- Componentes reutilizables para construir tu propia web.
+- Traducciones ES/EN listas para usar.
+- SEO automatico (sitemap, robots.txt, meta tags).
+- Tests, formateo automatico y CI/CD en GitHub.
+- Despliegue preconfigurado para Vercel y Netlify.
+- Archivos de contexto para que las IAs te entiendan mejor.
+
+Tu objetivo al usar esta plantilla:
+- Hacer una copia.
+- Cambiar UN solo archivo de configuracion.
+- Cambiar textos y colores.
+- Desplegar.
+
+--------------------------------------------------
+2. INSTALAR HERRAMIENTAS NECESARIAS
+--------------------------------------------------
+
+2.1. Instalar Node.js
+---------------------
+
+1. Ve a https://nodejs.org
+2. Descarga la version LTS recomendada.
+3. Ejecuta el instalador (doble clic).
+4. Acepta todo con opciones por defecto.
+5. Para comprobar, abre una terminal (tecla Windows + "cmd") y escribe:
+
+   node -v
+   npm -v
+
+   Si ves numeros de version, esta instalado.
+
+2.2. (Opcional) Instalar Git
+----------------------------
+
+1. Ve a https://git-scm.com
+2. Descarga e instala con opciones por defecto.
+
+--------------------------------------------------
+3. CREAR UN NUEVO PROYECTO
+--------------------------------------------------
+
+3.1. Opcion A - Usar Git
+-------------------------
+
+1. Abre una terminal.
+2. Ve a donde quieras guardar el proyecto:
+
+   cd C:\Users\TU_USUARIO\Desktop
+
+3. Clona el repositorio:
+
+   git clone URL_DE_ESTE_REPO mi-nueva-web
+   cd mi-nueva-web
+
+3.2. Opcion B - Descargar ZIP
+------------------------------
+
+1. Descarga el ZIP del repo desde GitHub (boton "Code" -> "Download ZIP").
+2. Descomprime en una carpeta (por ejemplo en el Escritorio).
+3. Abre una terminal en esa carpeta.
+
+--------------------------------------------------
+4. INSTALAR DEPENDENCIAS
+--------------------------------------------------
+
+1. En la terminal, dentro de la carpeta del proyecto:
+
+   npm install
+
+2. Espera a que termine (puede tardar unos minutos).
+3. Cuando vuelva a aparecer el cursor, esta listo.
+
+--------------------------------------------------
+5. ARRANCAR EN MODO DESARROLLO
+--------------------------------------------------
+
+1. En la misma terminal:
+
+   npm run dev
+
+2. Abre tu navegador en:
+
+   http://localhost:5173
+
+3. Deberias ver la pagina de inicio.
+4. No cierres la terminal mientras trabajas.
+
+--------------------------------------------------
+6. ENTENDER LA ESTRUCTURA (LO MINIMO)
+--------------------------------------------------
+
+Archivos que SI necesitas tocar:
+
+- src/routes/+page.svelte
+  → Tu pagina principal (home).
+
+- src/lib/site-config.ts
+  → Marca y enlaces globales (nombre del sitio, URL, redes, autor).
+    Los textos del menu superior estan en src/lib/i18n/es.json y en.json (claves layout.nav.*).
+
+- src/app.css
+  → Colores globales. Busca --accent y cambialo por tu color.
+
+Archivos que NO necesitas tocar (al principio):
+- src/lib/components/ → componentes reutilizables
+- src/lib/i18n/ → traducciones (editalas cuando quieras ES/EN)
+- src/lib/seo.ts → Store SEO y setSeo()
+
+Paginas de ejemplo incluidas:
+- / → landing con hero, caracteristicas, pasos y CTA (textos en i18n)
+- /components → galeria de componentes UI + demos de blog y formulario de contacto
+
+
+--------------------------------------------------
+7. TU PRIMER CAMBIO: PERSONALIZAR LA WEB
+--------------------------------------------------
+
+1. Abre src/lib/site-config.ts
+2. Cambia:
+   - name: 'Mi Proyecto' → 'Tu Nombre'
+   - url: 'https://tu-dominio.com' → tu dominio real
+   - social.github → tu GitHub
+   - social.linkedin → tu LinkedIn
+   - author.name → tu nombre
+   - author.url → tu web
+3. Guarda el archivo (Ctrl+S).
+4. El navegador se recarga solo y ves los cambios.
+
+--------------------------------------------------
+8. CAMBIAR COLORES
+--------------------------------------------------
+
+1. Abre src/app.css
+2. Busca estas variables y cambialas:
+
+   --accent: #6366f1;       → tu color principal
+   --accent-hover: #4f46e5; → version mas oscura
+   --text-main: #111827;    → color del texto principal
+   --text-secondary: #6b7280; → color del texto secundario
+   --bg-main: #ffffff;      → fondo principal
+   --bg-soft: #f9fafb;      → fondo secundario
+
+4. Guarda y mira el navegador.
+
+--------------------------------------------------
+9. USAR LA IA PARA AYUDARTE
+--------------------------------------------------
+
+Esta plantilla esta diseñada para que las IAs te entiendan:
+
+- Si usas Cursor AI: el archivo .cursor/rules resume convenciones del proyecto (alineado con AGENTS.md).
+
+- Si usas ChatGPT, Claude o Copilot: el archivo AGENTS.md describe el proyecto y los componentes.
+- Si vienes de Stitch, Lovable u otro prototipo: lee DESIGN_TO_CURSOR.md (flujo y prompt listo).
+
+Para instalar aun mas ayuda de IA:
+```bash
+npx autoskills
+```
+Esto detecta tu proyecto y añade skills extra para Cursor,
+Claude Code y otros asistentes.
+
+Cuando pidas ayuda a la IA, dile que usas:
+"Svelte 5 con runes, SvelteKit 2, TypeScript, Tailwind CSS v4"
+
+--------------------------------------------------
+10. COMPONENTES DISPONIBLES
+--------------------------------------------------
+
+Todos los componentes base estan en src/lib/components/ui/:
+
+Button    → Botones con variantes (primary, secondary, ghost...)
+Card      → Tarjetas con bordes y sombras
+Container → Contenedor centrado
+Section   → Seccion con variantes de fondo
+Heading   → Titulos (H1, H2, H3, H4)
+Text      → Parrafos con variantes
+Grid      → Cuadricula responsive
+Spinner   → Indicador de carga animado
+
+Componentes avanzados:
+
+HeroSection    → Hero completo (titulo + botones)
+FeaturesSection → Grid de caracteristicas
+LoadingBlock   → Pantalla de carga
+CopyButton     → Boton para copiar texto
+Analytics      → Placeholder para Google Analytics
+AiPrompt       → Caja de texto lista para conectar a IA
+
+Para verlos todos en accion: http://localhost:5173/components
+
+--------------------------------------------------
+11. TRADUCCIONES (i18n)
+--------------------------------------------------
+
+La plantilla soporta español e ingles.
+
+Para usarlo en tus componentes:
+- Importa: import { t } from '$lib/i18n/index';
+- En el HTML: {$t('home.hero.title')} (u otra clave definida en los JSON)
+- Las claves estan en src/lib/i18n/es.json y en.json
+
+El boton de cambio de idioma ya esta en el menu superior.
+El idioma se guarda en localStorage del navegador.
+
+--------------------------------------------------
+12. SEO (POSICIONAMIENTO EN GOOGLE)
+--------------------------------------------------
+
+Cada pagina puede tener su propio SEO.
+
+Ejemplo de uso en una pagina:
+```svelte
+<script lang="ts">
+  import { setSeo } from '$lib/seo';
+  setSeo({ title: 'Mi Pagina', description: 'Descripcion...' });
+</script>
+```
+
+Archivos SEO incluidos:
+- /sitemap.xml → genera sitemap automatico
+- /robots.txt → permite indexacion (tambien hay static/robots.txt si sirves estaticos)
+- src/lib/seo.ts → store reutilizable y setSeo()
+
+IMPORTANTE: en produccion define la variable de entorno:
+PUBLIC_SITE_URL=https://tu-dominio.com
+En Vercel se configura en Settings → Environment Variables.
+
+--------------------------------------------------
+13. DESPLEGAR A PRODUCCION
+--------------------------------------------------
+
+La plantilla esta preconfigurada para Vercel y Netlify.
+
+### Opcion A: Vercel (recomendada)
+1. Sube tu proyecto a GitHub.
+2. Ve a vercel.com, inicia sesion con GitHub.
+3. Click en "New Project" → selecciona tu repo.
+4. Vercel lo detecta todo automaticamente.
+5. Tu web estara viva en https://tu-proyecto.vercel.app
+
+### Opcion B: Netlify
+1. Ve a netlify.com
+2. Conecta tu repo de GitHub
+3. Netlify detecta la configuracion sola
+
+### Opcion C: Otro hosting
+En svelte.config.js usa `@sveltejs/adapter-auto` o cambia al adapter oficial de tu plataforma (ver documentacion de SvelteKit).
+
+--------------------------------------------------
+14. TESTS Y CALIDAD DE CODIGO
+--------------------------------------------------
+
+La plantilla incluye herramientas para mantener el codigo limpio:
+
+npm run lint   → Revisa que el codigo siga las buenas practicas
+npm run format → Formatea el codigo automaticamente
+npm run test   → Ejecuta los tests
+npm run check  → Revisa errores de TypeScript y Svelte
+
+En VS Code, el formateo ocurre automaticamente al guardar
+(si tienes las extensiones recomendadas instaladas).
+
+--------------------------------------------------
+15. SI ALGO FALLA
+--------------------------------------------------
+
+Problema: "npm run dev" no funciona
+→ Asegurate de haber hecho "npm install" primero.
+→ Comprueba que estas en la carpeta correcta.
+
+Problema: la pagina da error
+→ Mira la terminal para ver el mensaje de error.
+→ Si no entiendes el error, copialo y pegaselo a tu IA.
+
+Problema: los cambios no se ven
+→ Guarda el archivo (Ctrl+S).
+→ Recarga el navegador (F5).
+
+Problema: quiero volver atras un cambio
+→ Si usas Git: git checkout -- nombre-del-archivo
+→ Si no usas Git: Ctrl+Z en el editor.
+
+--------------------------------------------------
+16. SIGUIENTES PASOS
+--------------------------------------------------
+
+Cuando ya estes comodo con la plantilla:
+
+1. Explora /components para ver todos los componentes y demos.
+2. Personaliza la landing en / (src/routes/+page.svelte + i18n).
+3. Crea tus propias paginas en src/routes/.
+4. Añade tus propios componentes en src/lib/components/.
+5. Conecta un CMS (Sanity, Decap CMS) si necesitas que
+   clientes editen contenido sin tocar codigo.
+
+No tengas prisa. Empieza por cambiar textos y colores.
+El resto lo iras aprendiendo poco a poco.
