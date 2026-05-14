@@ -35,12 +35,15 @@ Marcar las tres environments (Production, Preview, Development) en cada una:
 
 | Variable | Valor | Tipo |
 |---|---|---|
-| `PUBLIC_SITE_URL` | `https://TU-DOMINIO.vercel.app` (sin barra final) | public |
 | `PUBLIC_SUPABASE_URL` | `https://xxxx.supabase.co` | public |
 | `PUBLIC_SUPABASE_ANON_KEY` | `sb_publishable_...` | public |
 | `GEMINI_API_KEY` | `AIzaSy...` | secret |
 | `ALLOWED_EMAILS` | `tu@email.com` (separados por coma si son varios) | secret |
 
+> No necesitas `PUBLIC_SITE_URL`: el Magic Link usa el host del propio request
+> (`url.origin`), así que funciona en `localhost`, en preview deploys de Vercel
+> y en producción sin tocar nada.
+>
 > Si `ALLOWED_EMAILS` queda vacío, **nadie** podrá entrar (modo paranoia activado).
 
 ## 5. Configurar Supabase para producción
@@ -69,7 +72,7 @@ En Vercel, pulsar **Deploy**. Esperar ~1-2 min.
 
 | Síntoma | Causa probable |
 |---|---|
-| El Magic Link redirige a localhost | Faltó actualizar `PUBLIC_SITE_URL` o el Redirect URL en Supabase. |
+| El Magic Link redirige a localhost | Faltó añadir la URL de Vercel en Supabase Redirect URLs (paso 5). |
 | "Este email no tiene acceso" con tu propio email | `ALLOWED_EMAILS` mal escrito en Vercel (espacios, mayúsculas raras). El guard normaliza, pero revisa. |
 | 500 al pulsar Corregir | `GEMINI_API_KEY` ausente en Vercel o cuota free agotada. Espera 1 min o revisa la key. |
 | El usuario logueado tras deploy entra al panel pero no carga progreso | Tabla `progreso` o las policies RLS no se ejecutaron. Volver a pegar el SQL del `plan.md`. |

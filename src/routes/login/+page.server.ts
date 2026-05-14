@@ -1,5 +1,4 @@
 import { fail, redirect } from '@sveltejs/kit';
-import { PUBLIC_SITE_URL } from '$env/static/public';
 import { isEmailAllowed } from '$lib/server/allowlist';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -9,7 +8,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions: Actions = {
-  magic: async ({ request, locals }) => {
+  magic: async ({ request, url, locals }) => {
     const data = await request.formData();
     const email = String(data.get('email') || '')
       .trim()
@@ -26,9 +25,11 @@ export const actions: Actions = {
       });
     }
 
+    // url.origin viene del request → en local es http://localhost:5173 y en Vercel
+    // es https://tu-app.vercel.app. Sin necesidad de PUBLIC_SITE_URL.
     const { error } = await locals.supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: `${PUBLIC_SITE_URL}/auth/callback` }
+      options: { emailRedirectTo: `${url.origin}/auth/callback` }
     });
 
     if (error) {
