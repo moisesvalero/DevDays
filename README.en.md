@@ -1,4 +1,4 @@
-# DevDays — My internal bootcamp to stop copy-pasting and start understanding
+# DevDays - My internal bootcamp to stop copy-pasting and start understanding
 
 [🇪🇸 Español](./README.md) · **🇬🇧 English**
 
