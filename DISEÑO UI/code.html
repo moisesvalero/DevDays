@@ -1,0 +1,325 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary": "#002e6a",
+                      "error-container": "#93000a",
+                      "on-primary-fixed": "#001a42",
+                      "error": "#ffb4ab",
+                      "tertiary-container": "#df7412",
+                      "secondary": "#c8c6c5",
+                      "surface-container-highest": "#353534",
+                      "surface-container": "#201f1f",
+                      "secondary-fixed-dim": "#c8c6c5",
+                      "inverse-surface": "#e5e2e1",
+                      "on-secondary-container": "#b7b5b4",
+                      "primary": "#adc6ff",
+                      "outline": "#8c909f",
+                      "outline-variant": "#424754",
+                      "background": "#131313",
+                      "on-primary-container": "#00285d",
+                      "secondary-container": "#474746",
+                      "surface-tint": "#adc6ff",
+                      "on-secondary-fixed-variant": "#474746",
+                      "inverse-primary": "#005ac2",
+                      "primary-fixed": "#d8e2ff",
+                      "on-tertiary-container": "#461f00",
+                      "surface-dim": "#131313",
+                      "on-tertiary-fixed-variant": "#723600",
+                      "surface-variant": "#353534",
+                      "on-tertiary-fixed": "#311400",
+                      "on-error-container": "#ffdad6",
+                      "on-primary-fixed-variant": "#004395",
+                      "tertiary-fixed-dim": "#ffb786",
+                      "primary-container": "#4d8eff",
+                      "surface-container-lowest": "#0e0e0e",
+                      "surface-container-high": "#2a2a2a",
+                      "surface-container-low": "#1c1b1b",
+                      "primary-fixed-dim": "#adc6ff",
+                      "inverse-on-surface": "#313030",
+                      "tertiary-fixed": "#ffdcc6",
+                      "on-error": "#690005",
+                      "surface-bright": "#3a3939",
+                      "on-secondary-fixed": "#1c1b1b",
+                      "on-surface": "#e5e2e1",
+                      "tertiary": "#ffb786",
+                      "secondary-fixed": "#e5e2e1",
+                      "on-background": "#e5e2e1",
+                      "on-secondary": "#313030",
+                      "on-tertiary": "#502400",
+                      "surface": "#131313",
+                      "on-surface-variant": "#c2c6d6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "md": "24px",
+                      "max-content-width": "1200px",
+                      "lg": "40px",
+                      "xl": "64px",
+                      "base": "8px",
+                      "sidebar-width": "280px",
+                      "sm": "12px"
+              },
+              "fontFamily": {
+                      "label-md": ["Inter"],
+                      "body-md": ["Inter"],
+                      "code-md": ["JetBrains Mono"],
+                      "body-sm": ["Inter"],
+                      "code-sm": ["JetBrains Mono"],
+                      "body-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "display-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "label-md": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "code-md": ["14px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "code-sm": ["12px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #131313; }
+        ::-webkit-scrollbar-thumb { background: #2D2D2D; border-radius: 2px; }
+    </style>
+<style data-stitch-cursor=""></style><style data-stitch-scroll-lock=""></style></head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden flex flex-col h-screen">
+<!-- TopNavBar Shell -->
+<header class="flex justify-between items-center w-full px-md h-16 bg-surface-container border-b border-outline-variant z-50">
+<div class="flex items-center gap-xl">
+<span class="font-headline-lg text-headline-lg font-bold text-primary">DevDays</span>
+<nav class="hidden md:flex items-center gap-md">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors duration-150" href="#">Dashboard</a>
+<a class="font-body-sm text-body-sm text-primary font-bold border-b-2 border-primary py-xs" href="#">Courses</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors duration-150" href="#">Community</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors duration-150" href="#">Resources</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<button class="bg-primary text-on-primary px-md py-xs rounded text-label-md transition-all active:scale-95 duration-150">Upgrade Pro</button>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">settings</span>
+<img alt="User Profile Avatar" class="w-8 h-8 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOPCcYXo6AqkEpQfik7BWY12_4VFhWs1XaziQpLk6EOD0Yj1QsxNvz-sn1OEDWQtQ0wf6F0BHfdgRuckwUKorofvwjcPcWIFt6RRSORiRA43IJXXc5mem5DgCZk5TL7TgdDEBZU5QjAIxdcArO3bule4A0UT-5-FvAqTgAPHUekFnBzhz62c-WV7ZBereaiD24wFzP-95-v57p8DzFNVoIYkaLwsLAoMScKMVLmGYoUvawxovHPycI5vCMbYFwdITFHTTuPpzLJI7d">
+</div>
+</div>
+</header>
+<main class="flex flex-1 overflow-hidden">
+<!-- Left Column: Course Index (Sidebar-like structure) -->
+<aside class="bg-surface-container-low border-r border-outline-variant flex flex-col overflow-hidden w-[200px]">
+<div class="p-md border-b border-outline-variant">
+<div class="flex items-center gap-sm mb-xs">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">school</span>
+<span class="font-headline-md text-headline-md text-on-surface">30 Days of Code</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-label-md font-label-md text-on-surface-variant">Current: Day 12</span>
+<span class="text-label-md font-label-md text-primary">65% Done</span>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto py-sm">
+<!-- Day 1 -->
+<div class="flex items-center px-md py-xs gap-sm hover:bg-surface-container-high transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[#10B981] text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-label-md font-label-md text-on-surface-variant group-hover:text-on-surface">Day 1: Variables &amp; Types</span>
+</div>
+<!-- Day 2 -->
+<div class="flex items-center px-md py-xs gap-sm hover:bg-surface-container-high transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[#10B981] text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-label-md font-label-md text-on-surface-variant group-hover:text-on-surface">Day 2: Control Flow</span>
+</div>
+<!-- Iterated Placeholder Days 3-11 -->
+<div class="flex items-center px-md py-xs gap-sm opacity-60">
+<span class="material-symbols-outlined text-[#10B981] text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-label-md font-label-md">Days 3-11 (Completed)</span>
+</div>
+<!-- Active Day 12 -->
+<div class="flex items-center px-md py-xs gap-sm bg-secondary-container/10 border-l-4 border-primary group cursor-pointer">
+<span class="material-symbols-outlined text-primary text-lg">play_circle</span>
+<span class="text-label-md font-label-md text-primary">Day 12: Functions &amp; Scope</span>
+</div>
+<!-- Remaining Days 13-35 -->
+<div class="flex items-center px-md py-xs gap-sm hover:bg-surface-container-high transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-outline text-lg">circle</span>
+<span class="text-label-md font-label-md text-on-surface-variant group-hover:text-on-surface">Day 13: Array Methods</span>
+</div>
+<div class="flex items-center px-md py-xs gap-sm hover:bg-surface-container-high transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-outline text-lg">circle</span>
+<span class="text-label-md font-label-md text-on-surface-variant group-hover:text-on-surface">Day 14: Object Destructuring</span>
+</div>
+<!-- Mock list for remaining -->
+<div class="px-md py-sm text-outline text-[10px] uppercase tracking-widest font-bold">Upcoming Labs</div>
+<div class="flex items-center px-md py-xs gap-sm hover:bg-surface-container-high transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-outline text-lg">lock</span>
+<span class="text-label-md font-label-md text-on-surface-variant group-hover:text-on-surface">Day 15: Async/Await</span>
+</div>
+<div class="flex items-center px-md py-xs gap-sm hover:bg-surface-container-high transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-outline text-lg">lock</span>
+<span class="text-label-md font-label-md text-on-surface-variant group-hover:text-on-surface">Day 16: Error Handling</span>
+</div>
+<!-- Filling the list visually -->
+<div class="px-md py-xs text-label-md font-label-md text-outline-variant italic">... through Day 35</div>
+</div>
+<div class="p-md border-t border-outline-variant bg-surface-container-lowest">
+<button class="w-full bg-[#2D2D2D] border border-outline-variant text-on-surface py-xs rounded font-label-md hover:bg-surface-container-high transition-all">View Progress</button>
+</div>
+</aside>
+<!-- Center Column: Lesson & Editor -->
+<section class="flex-1 flex flex-col bg-background overflow-y-auto">
+<div class="p-lg max-w-[900px] mx-auto w-full space-y-md">
+<!-- Header -->
+<header class="space-y-sm">
+<h1 class="font-display-lg text-display-lg text-on-surface">Functions and Scope</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                        Functions are the building blocks of any application. In this lesson, we explore how scope determines the accessibility of variables. Understanding local vs global scope is critical for preventing memory leaks and name collisions in your code.
+                    </p>
+</header>
+<!-- Exercises -->
+<div class="space-y-sm">
+<h2 class="text-label-md font-label-md text-primary uppercase tracking-widest">Active Exercises</h2>
+<div class="grid gap-sm">
+<div class="bg-surface-container border border-outline-variant p-md flex items-center justify-between hover:border-primary transition-all cursor-pointer">
+<div class="flex items-center gap-md">
+<span class="bg-primary/10 text-primary w-8 h-8 flex items-center justify-center font-bold rounded">1</span>
+<span class="font-body-md text-on-surface">Declare a local constant within a block scope.</span>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</div>
+<div class="bg-surface-container border border-primary p-md flex items-center justify-between">
+<div class="flex items-center gap-md">
+<span class="bg-primary text-on-primary w-8 h-8 flex items-center justify-center font-bold rounded">2</span>
+<span class="font-body-md text-on-surface font-semibold">Write a function that uses a closure.</span>
+</div>
+<span class="material-symbols-outlined text-primary">keyboard_arrow_down</span>
+</div>
+<div class="bg-surface-container border border-outline-variant p-md flex items-center justify-between opacity-50">
+<div class="flex items-center gap-md">
+<span class="bg-outline-variant text-on-surface w-8 h-8 flex items-center justify-center font-bold rounded">3</span>
+<span class="font-body-md text-on-surface">Global variable pollution prevention.</span>
+</div>
+<span class="material-symbols-outlined text-outline">lock</span>
+</div>
+</div>
+</div>
+<!-- Editor -->
+<div class="border border-outline-variant rounded-lg overflow-hidden bg-surface-container-lowest">
+<div class="flex items-center justify-between bg-surface-container px-md py-sm border-b border-outline-variant">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">terminal</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">exercise_02.js</span>
+</div>
+<div class="flex items-center gap-md">
+<span class="font-code-sm text-code-sm text-on-surface-variant">JavaScript</span>
+<span class="material-symbols-outlined text-on-surface-variant text-lg cursor-pointer hover:text-on-surface">content_copy</span>
+</div>
+</div>
+<div class="flex font-code-md text-code-md p-md bg-surface-container-lowest min-h-[300px]">
+<div class="w-8 text-outline-variant text-right pr-md select-none border-r border-outline-variant mr-md leading-6">
+                            1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9
+                        </div>
+<div class="flex-1 leading-6 whitespace-pre">
+<span class="text-[#adc6ff]">function</span> <span class="text-[#ffb786]">createCounter</span>() {
+  <span class="text-[#adc6ff]">let</span> <span class="text-[#c8c6c5]">count</span> = 0;
+  <span class="text-[#adc6ff]">return</span> <span class="text-[#adc6ff]">function</span>() {
+    <span class="text-[#c8c6c5]">count</span>++;
+    <span class="text-[#adc6ff]">console</span>.<span class="text-[#ffb4ab]">log</span>(<span class="text-[#c8c6c5]">count</span>);
+  };
+}
+
+<span class="text-[#adc6ff]">const</span> <span class="text-[#ffb786]">myCounter</span> = <span class="text-[#ffb786]">createCounter</span>();<span class="animate-pulse border-r-2 border-primary ml-1"></span></div>
+</div>
+</div>
+<div class="flex justify-end">
+<button class="bg-primary text-on-primary px-xl py-md rounded font-label-md hover:brightness-110 active:scale-95 transition-all">
+                        Corregir
+                    </button>
+</div>
+</div>
+</section>
+<!-- Right Column: AI Tutor -->
+<aside class="w-[25%] min-w-[320px] bg-surface-container border-l border-outline-variant flex flex-col p-md">
+<div class="flex items-center gap-sm mb-lg">
+<div class="w-10 h-10 bg-tertiary-container/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary">smart_toy</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">AI Tutor</h3>
+<span class="text-label-md font-label-md text-[#10B981]">Online</span>
+</div>
+</div>
+<div class="flex-1 space-y-md">
+<!-- Feedback Message -->
+<div class="bg-tertiary-container/10 border-l-4 border-tertiary p-md rounded shadow-lg">
+<div class="flex items-center gap-xs mb-sm">
+<span class="material-symbols-outlined text-tertiary text-sm">lightbulb</span>
+<span class="text-label-md font-label-md text-tertiary uppercase tracking-tighter">Code Review</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface leading-relaxed">
+                        "Your syntax is correct, but try using a more descriptive name for the local variable."
+                    </p>
+<div class="mt-md pt-sm border-t border-tertiary/20 flex gap-sm">
+<button class="text-label-md font-label-md text-tertiary hover:underline">Apply suggestion</button>
+<button class="text-label-md font-label-md text-on-surface-variant hover:text-on-surface">Dismiss</button>
+</div>
+</div>
+<!-- Resource Preview -->
+<div class="bg-surface-container-high p-md border border-outline-variant rounded">
+<h4 class="text-label-md font-label-md text-on-surface-variant mb-sm uppercase">Quick Links</h4>
+<ul class="space-y-sm">
+<li class="flex items-center gap-sm text-body-sm text-primary hover:underline cursor-pointer">
+<span class="material-symbols-outlined text-sm">link</span>
+                            MDN: Closures in JS
+                        </li>
+<li class="flex items-center gap-sm text-body-sm text-primary hover:underline cursor-pointer">
+<span class="material-symbols-outlined text-sm">link</span>
+                            V8 Engine Scoping
+                        </li>
+</ul>
+</div>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant">
+<div class="mb-md">
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="bg-[#10B981] h-full w-2/3"></div>
+</div>
+<div class="flex justify-between mt-xs">
+<span class="text-label-md font-label-md text-on-surface-variant">Daily Progress</span>
+<span class="text-label-md font-label-md text-on-surface">66%</span>
+</div>
+</div>
+<button class="w-full bg-secondary-container text-on-secondary-container py-md rounded font-label-md cursor-not-allowed opacity-60" disabled="">
+                    Día completado
+                </button>
+</div>
+</aside>
+</main>
+
+
+</body></html>
