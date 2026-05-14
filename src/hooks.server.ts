@@ -1,6 +1,8 @@
 import type { Handle } from '@sveltejs/kit';
+import { sequence } from '@sveltejs/kit/hooks';
 import { dev, building } from '$app/environment';
 import { PORTFOLIO_LOCALE_COOKIE, parseSiteLocaleCookie } from '$lib/i18n/site-locale';
+import { createSupabaseServerClient } from '$lib/server/supabase/server-client';
 
 const ONE_YEAR_IN_SECONDS = 31536000;
 const TWO_YEARS_IN_SECONDS = 63072000;
@@ -22,7 +24,20 @@ function resolveLang(event: Parameters<Handle>[0]['event']): 'es' | 'en' {
   return 'es';
 }
 
-export const handle: Handle = async ({ event, resolve }) => {
+/**
+ * Crea el cliente Supabase para esta request y resuelve `locals.user`.
+ * Usamos `getUser()` (no `getSession()`) en server porque valida el JWT.
+ */
+const handleSupabase: Handle = async ({ event, resolve }) => {
+  event.locals.supabase = createSupabaseServerClient(event);
+  const {
+    data: { user }
+  } = await event.locals.supabase.auth.getUser();
+  event.locals.user = user;
+  return resolve(event);
+};
+
+const handleSecurity: Handle = async ({ event, resolve }) => {
   const theme = event.cookies.get('theme') || 'light';
   const lang = resolveLang(event);
 
@@ -103,3 +118,5 @@ export const handle: Handle = async ({ event, resolve }) => {
 
   return response;
 };
+
+export const handle = sequence(handleSupabase, handleSecurity);
