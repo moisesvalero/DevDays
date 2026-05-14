@@ -1,4 +1,4 @@
-# DevDays — Mi bootcamp interno para dejar de copiar y empezar a entender
+# DevDays - Mi bootcamp interno para dejar de copiar y empezar a entender
 
 **🇪🇸 Español** · [🇬🇧 English](./README.en.md)
 
