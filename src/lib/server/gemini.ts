@@ -1,4 +1,4 @@
-import { GEMINI_API_KEY } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 
 const MODEL = 'gemini-2.5-flash';
 const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
@@ -24,6 +24,11 @@ export async function callGemini(
   body: unknown,
   opts: { maxAttempts?: number; signal?: AbortSignal } = {}
 ): Promise<GeminiResult> {
+  const apiKey = env.GEMINI_API_KEY;
+  if (!apiKey) {
+    return { ok: false, status: 0, reason: 'http' };
+  }
+
   const maxAttempts = opts.maxAttempts ?? 4;
   let lastStatus = 0;
 
@@ -35,7 +40,7 @@ export async function callGemini(
     }
 
     try {
-      const res = await fetch(`${ENDPOINT}?key=${GEMINI_API_KEY}`, {
+      const res = await fetch(`${ENDPOINT}?key=${apiKey}`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify(body),

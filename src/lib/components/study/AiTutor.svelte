@@ -39,7 +39,7 @@
     </div>
     <div>
       <h3 class="text-lg font-semibold text-on-surface">AI Tutor</h3>
-      <span class="text-xs font-semibold text-success">Online · Gemini</span>
+      <span class="text-xs font-semibold text-success">Online</span>
     </div>
   </header>
 

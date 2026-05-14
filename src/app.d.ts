@@ -34,16 +34,18 @@ declare module '$env/dynamic/public' {
 }
 
 declare module '$env/dynamic/private' {
-  export const SANITY_PROJECT_ID: string;
-  export const SANITY_DATASET: string;
-  export const SANITY_API_VERSION: string;
-  export const SANITY_READ_TOKEN: string;
-  export const SUPABASE_URL: string;
-  export const SUPABASE_ANON_KEY: string;
-  export const RESEND_API_KEY: string;
-  export const GEMINI_API_KEY: string;
-  export const OPENAI_API_KEY: string;
-  export const ALLOWED_EMAILS: string;
+  export const env: {
+    SANITY_PROJECT_ID?: string;
+    SANITY_DATASET?: string;
+    SANITY_API_VERSION?: string;
+    SANITY_READ_TOKEN?: string;
+    SUPABASE_URL?: string;
+    SUPABASE_ANON_KEY?: string;
+    RESEND_API_KEY?: string;
+    GEMINI_API_KEY?: string;
+    OPENAI_API_KEY?: string;
+    ALLOWED_EMAILS?: string;
+  };
 }
 
 export {};

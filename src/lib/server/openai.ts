@@ -1,4 +1,4 @@
-import { OPENAI_API_KEY } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 
 const ENDPOINT = 'https://api.openai.com/v1/chat/completions';
 
@@ -34,7 +34,8 @@ export type OpenAICallOptions = {
  * Devuelve directamente el texto del mensaje (que será JSON si se pasó jsonSchema).
  */
 export async function callOpenAI(opts: OpenAICallOptions): Promise<OpenAIResult> {
-  if (!OPENAI_API_KEY) {
+  const apiKey = env.OPENAI_API_KEY;
+  if (!apiKey) {
     return { ok: false, status: 0, reason: 'http' };
   }
 
@@ -70,7 +71,7 @@ export async function callOpenAI(opts: OpenAICallOptions): Promise<OpenAIResult>
         method: 'POST',
         headers: {
           'content-type': 'application/json',
-          authorization: `Bearer ${OPENAI_API_KEY}`
+          authorization: `Bearer ${apiKey}`
         },
         body: JSON.stringify(body),
         signal: opts.signal
