@@ -1,17 +1,47 @@
+export type Callout = {
+  tipo: 'tip' | 'warning' | 'info';
+  texto: string;
+};
+
+export type Seccion = {
+  titulo: string;
+  texto: string;
+  ejemplo?: string;
+  nota?: Callout;
+};
+
+export type ContenidoLeccion = {
+  intro: string;
+  secciones: Seccion[];
+  resumen: string[];
+};
+
 export type Ejercicio = {
-  numero: 1 | 2 | 3;
+  numero: number;
   enunciado: string;
   plantilla: string;
 };
 
-export type Leccion = {
+type Base = {
   dia: number;
   semana: 1 | 2 | 3 | 4 | 5;
   titulo: string;
   objetivo: string;
-  explicacion: string;
+};
+
+export type LeccionNormal = Base & {
+  tipo: 'leccion';
+  contenido: ContenidoLeccion;
   ejercicios: [Ejercicio, Ejercicio, Ejercicio];
 };
+
+export type LeccionExamen = Base & {
+  tipo: 'examen';
+  instrucciones: string;
+  ejercicios: [Ejercicio, Ejercicio, Ejercicio, Ejercicio, Ejercicio];
+};
+
+export type Leccion = LeccionNormal | LeccionExamen;
 
 export type EstadoDia = 'pendiente' | 'completado';
 

@@ -10,6 +10,8 @@
     dailyProgressPct,
     canComplete,
     yaCompletado,
+    completarLabel = 'Marcar día completado',
+    esExamen = false,
     onComplete,
     onMasAyuda,
     onPreguntar
@@ -22,6 +24,8 @@
     dailyProgressPct: number;
     canComplete: boolean;
     yaCompletado: boolean;
+    completarLabel?: string;
+    esExamen?: boolean;
     onComplete: () => void;
     onMasAyuda: () => void;
     onPreguntar: () => void;
@@ -138,12 +142,20 @@
     {#if yaCompletado}
       <Button class="w-full" variant="secondary" disabled>
         <span class="material-symbols-outlined mr-2 text-base">check_circle</span>
-        Día completado
+        {esExamen ? 'Examen aprobado' : 'Día completado'}
       </Button>
     {:else}
       <Button class="w-full" onclick={onComplete} disabled={!canComplete}>
-        Marcar día completado
+        {#if esExamen}
+          <span class="material-symbols-outlined mr-2 text-base">verified</span>
+        {/if}
+        {completarLabel}
       </Button>
+      {#if esExamen && !canComplete}
+        <p class="mt-2 text-center text-[11px] text-on-surface-variant">
+          Necesitas 4 de 5 ejercicios correctos para aprobar.
+        </p>
+      {/if}
     {/if}
   </footer>
 </aside>

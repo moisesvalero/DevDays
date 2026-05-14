@@ -12,7 +12,7 @@
   let { data } = $props();
 
   let currentDay = $state(1);
-  let ejercicioActivo = $state<1 | 2 | 3>(1);
+  let ejercicioActivo = $state<number>(1);
   let correctosPorDia = $state<Map<number, Set<number>>>(new Map());
   let codigosPorEjercicio = $state<Map<string, string>>(new Map());
   let feedback = $state<string | null>(null);
@@ -23,7 +23,6 @@
   let editorRef = $state<{ getValue: () => string } | null>(null);
   let dialogOpen = $state(false);
 
-  // En SSR mode.current es undefined; sólo en cliente sabemos si está en dark.
   const isDark = $derived(browser && mode.current === 'dark');
 
   const completados = $derived(
@@ -31,15 +30,28 @@
   );
 
   const lesson = $derived(data.lessons.find((l) => l.dia === currentDay) ?? data.lessons[0]);
+  const totalEjercicios = $derived(lesson.ejercicios.length);
   const correctosDia = $derived(correctosPorDia.get(currentDay) ?? new Set<number>());
   const ejercicio = $derived(
     lesson.ejercicios.find((e) => e.numero === ejercicioActivo) ?? lesson.ejercicios[0]
   );
   const claveActual = $derived(`${currentDay}-${ejercicioActivo}`);
   const codigoActual = $derived(codigosPorEjercicio.get(claveActual) ?? ejercicio.plantilla);
-  const canComplete = $derived(correctosDia.size === 3);
-  const dailyProgressPct = $derived(Math.round((correctosDia.size / 3) * 100));
+
+  const esExamen = $derived(lesson.tipo === 'examen');
+  // Para aprobar: lección = 3/3 correctos; examen = al menos 4/5 correctos.
+  const minimoParaCompletar = $derived(esExamen ? 4 : totalEjercicios);
+  const canComplete = $derived(correctosDia.size >= minimoParaCompletar);
+  const dailyProgressPct = $derived(
+    Math.round((correctosDia.size / totalEjercicios) * 100)
+  );
   const yaCompletado = $derived(completados.has(currentDay));
+
+  const completarLabel = $derived(
+    esExamen
+      ? `Aprobar examen (${correctosDia.size}/${totalEjercicios})`
+      : 'Marcar día completado'
+  );
 
   function resetFeedback() {
     feedback = null;
@@ -54,7 +66,7 @@
     resetFeedback();
   }
 
-  function seleccionarEjercicio(n: 1 | 2 | 3) {
+  function seleccionarEjercicio(n: number) {
     ejercicioActivo = n;
     resetFeedback();
   }
@@ -68,7 +80,6 @@
   async function corregir(nivelAyuda: 'normal' | 'extra' = 'normal') {
     if (loading) return;
     loading = true;
-    // Conservamos pistas/snippet anteriores si es 'extra' para que el usuario no las pierda al pedir más ayuda; si es 'normal' las reseteamos.
     if (nivelAyuda === 'normal') {
       feedback = null;
       correctoUltimo = null;
@@ -96,7 +107,6 @@
       pistas = Array.isArray(json.pistas) ? json.pistas : [];
       snippetGuia = json.snippetGuia ? String(json.snippetGuia) : null;
 
-      // ÚNICA VÍA de marcar un ejercicio como hecho: que el tutor lo apruebe.
       if (json.correcto) {
         const nextMap = new Map(correctosPorDia);
         const set = new Set(correctosDia);
@@ -202,6 +212,8 @@
       {dailyProgressPct}
       {canComplete}
       {yaCompletado}
+      {completarLabel}
+      {esExamen}
       onComplete={marcarCompletado}
       onMasAyuda={pedirMasAyuda}
       onPreguntar={abrirDialog}

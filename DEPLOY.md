@@ -37,8 +37,12 @@ Marcar las tres environments (Production, Preview, Development) en cada una:
 |---|---|---|
 | `PUBLIC_SUPABASE_URL` | `https://xxxx.supabase.co` | public |
 | `PUBLIC_SUPABASE_ANON_KEY` | `sb_publishable_...` | public |
-| `GEMINI_API_KEY` | `AIzaSy...` | secret |
+| `OPENAI_API_KEY` | `sk-proj-...` | secret (primario) |
+| `GEMINI_API_KEY` | `AIzaSy...` | secret (fallback) |
 | `ALLOWED_EMAILS` | `tu@email.com` (separados por coma si son varios) | secret |
+
+> El tutor IA usa **OpenAI como primario y Gemini como fallback automático**.
+> Con solo una de las dos la app sigue funcionando, pero pierdes la red de seguridad.
 
 > No necesitas `PUBLIC_SITE_URL`: el Magic Link usa el host del propio request
 > (`url.origin`), así que funciona en `localhost`, en preview deploys de Vercel
@@ -74,7 +78,8 @@ En Vercel, pulsar **Deploy**. Esperar ~1-2 min.
 |---|---|
 | El Magic Link redirige a localhost | Faltó añadir la URL de Vercel en Supabase Redirect URLs (paso 5). |
 | "Este email no tiene acceso" con tu propio email | `ALLOWED_EMAILS` mal escrito en Vercel (espacios, mayúsculas raras). El guard normaliza, pero revisa. |
-| 500 al pulsar Corregir | `GEMINI_API_KEY` ausente en Vercel o cuota free agotada. Espera 1 min o revisa la key. |
+| 500 al pulsar Corregir | Faltan **ambas** keys (`OPENAI_API_KEY` y `GEMINI_API_KEY`) en Vercel. Con una basta para que funcione. |
+| "La IA está saturada" pese a tener key | OpenAI tiró 5xx **y** Gemini también. Pasa rara vez; reintenta en 10-20 s. |
 | El usuario logueado tras deploy entra al panel pero no carga progreso | Tabla `progreso` o las policies RLS no se ejecutaron. Volver a pegar el SQL del `plan.md`. |
 
 ## 9. Después del primer deploy
