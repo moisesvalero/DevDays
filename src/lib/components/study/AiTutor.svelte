@@ -3,28 +3,34 @@
 
   let {
     feedback,
+    pistas = [],
+    snippetGuia = null,
     loading,
     correctoUltimo,
     dailyProgressPct,
     canComplete,
     yaCompletado,
-    onComplete
+    onComplete,
+    onMasAyuda,
+    onPreguntar
   }: {
     feedback: string | null;
+    pistas?: string[];
+    snippetGuia?: string | null;
     loading: boolean;
     correctoUltimo: boolean | null;
     dailyProgressPct: number;
     canComplete: boolean;
     yaCompletado: boolean;
     onComplete: () => void;
+    onMasAyuda: () => void;
+    onPreguntar: () => void;
   } = $props();
 </script>
 
 <aside class="flex h-full flex-col">
   <header class="mb-6 flex items-center gap-3">
-    <div
-      class="flex h-10 w-10 items-center justify-center rounded-full bg-tertiary-container/20"
-    >
+    <div class="flex h-10 w-10 items-center justify-center rounded-full bg-tertiary-container/20">
       <span class="material-symbols-outlined text-tertiary">smart_toy</span>
     </div>
     <div>
@@ -35,36 +41,85 @@
 
   <div class="flex-1 space-y-4 overflow-y-auto">
     {#if loading}
-      <div class="flex items-center gap-3 rounded border border-outline-variant bg-surface-container-high p-4">
+      <div
+        class="flex items-center gap-3 rounded border border-outline-variant bg-surface-container-high p-4"
+      >
         <span class="material-symbols-outlined animate-spin text-primary">progress_activity</span>
-        <span class="text-sm text-on-surface-variant">Corrigiendo tu código...</span>
+        <span class="text-sm text-on-surface-variant">Revisando tu código...</span>
       </div>
     {:else if feedback}
       {#if correctoUltimo}
         <div class="rounded border-l-4 border-success bg-success/10 p-4">
           <div class="mb-2 flex items-center gap-2">
             <span class="material-symbols-outlined text-sm text-success">check_circle</span>
-            <span class="text-xs font-bold uppercase tracking-wider text-success">Correcto</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-success"
+              >¡Bien hecho!</span
+            >
           </div>
           <p class="text-sm leading-relaxed text-on-surface">{feedback}</p>
+          {#if pistas.length > 0}
+            <ul class="mt-3 list-disc space-y-1 pl-5 text-xs text-on-surface-variant">
+              {#each pistas as p, i (i)}
+                <li>{p}</li>
+              {/each}
+            </ul>
+          {/if}
         </div>
       {:else}
         <div class="rounded border-l-4 border-tertiary bg-tertiary-container/10 p-4">
           <div class="mb-2 flex items-center gap-2">
             <span class="material-symbols-outlined text-sm text-tertiary">lightbulb</span>
             <span class="text-xs font-bold uppercase tracking-wider text-tertiary"
-              >Revisa esto</span
+              >Casi lo tienes</span
             >
           </div>
           <p class="text-sm leading-relaxed text-on-surface">{feedback}</p>
+
+          {#if pistas.length > 0}
+            <ul class="mt-3 list-disc space-y-1 pl-5 text-sm text-on-surface">
+              {#each pistas as p, i (i)}
+                <li>{p}</li>
+              {/each}
+            </ul>
+          {/if}
+
+          {#if snippetGuia}
+            <div class="mt-4">
+              <div class="mb-1 text-[10px] font-bold uppercase tracking-widest text-tertiary">
+                Pista en código (ejemplo de la técnica)
+              </div>
+              <pre
+                class="overflow-x-auto rounded border border-outline-variant bg-surface-container-lowest p-3 font-mono text-xs leading-relaxed text-on-surface"><code
+                  >{snippetGuia}</code
+                ></pre>
+            </div>
+          {:else}
+            <div class="mt-4">
+              <Button variant="outline" class="w-full" onclick={onMasAyuda}>
+                <span class="material-symbols-outlined mr-2 text-base">help</span>
+                Más ayuda (mostrar pista en código)
+              </Button>
+            </div>
+          {/if}
         </div>
       {/if}
+
+      <Button variant="ghost" class="w-full justify-start" onclick={onPreguntar}>
+        <span class="material-symbols-outlined mr-2 text-base">forum</span>
+        Preguntar duda al tutor
+      </Button>
     {:else}
-      <div class="rounded border border-outline-variant bg-surface-container-high p-4">
-        <p class="text-sm text-on-surface-variant">
-          Escribe tu código y pulsa <span class="font-semibold text-primary">Corregir</span> para
-          que la IA lo revise.
-        </p>
+      <div class="space-y-3">
+        <div class="rounded border border-outline-variant bg-surface-container-high p-4">
+          <p class="text-sm text-on-surface-variant">
+            Escribe tu código y pulsa <span class="font-semibold text-primary">Corregir</span> para
+            que el tutor lo revise. Solo avanzas cuando él lo dé por bueno.
+          </p>
+        </div>
+        <Button variant="ghost" class="w-full justify-start" onclick={onPreguntar}>
+          <span class="material-symbols-outlined mr-2 text-base">forum</span>
+          Preguntar duda al tutor
+        </Button>
       </div>
     {/if}
   </div>

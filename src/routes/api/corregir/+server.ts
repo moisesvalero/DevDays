@@ -2,10 +2,6 @@ import { json, error } from '@sveltejs/kit';
 import { GEMINI_API_KEY } from '$env/static/private';
 import type { RequestHandler } from './$types';
 
-/**
- * Modelo gratis de Gemini con JSON mode (responseSchema garantiza el formato).
- * Si Google cambia el nombre del modelo en el futuro, basta con ajustar este string.
- */
 const MODEL = 'gemini-2.5-flash';
 const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
 
@@ -14,6 +10,7 @@ type Body = {
   ejercicio: number;
   enunciado: string;
   codigo: string;
+  nivelAyuda?: 'normal' | 'extra';
 };
 
 export const POST: RequestHandler = async ({ request, locals }) => {
@@ -21,10 +18,13 @@ export const POST: RequestHandler = async ({ request, locals }) => {
   if (!GEMINI_API_KEY) throw error(500, 'GEMINI_API_KEY no configurada');
 
   const body = (await request.json()) as Body;
-  const { dia, ejercicio, enunciado, codigo } = body;
+  const { dia, ejercicio, enunciado, codigo, nivelAyuda = 'normal' } = body;
 
-  const prompt = `Eres un profesor estricto pero amable de JavaScript y SvelteKit.
-Día ${dia}, Ejercicio ${ejercicio}.
+  // El criterio sigue siendo estricto (el código DEBE cumplir el enunciado),
+  // pero el tono y la ayuda son progresivos: pistas siempre; snippet de
+  // técnica solo cuando el alumno pide "más ayuda".
+  const prompt = `Eres un tutor de programación amable, paciente y motivador.
+Día ${dia} · Ejercicio ${ejercicio}.
 Enunciado: ${enunciado}
 
 Código del alumno:
@@ -32,12 +32,19 @@ Código del alumno:
 ${codigo}
 \`\`\`
 
-Tarea:
-- Decide si el código cumple el enunciado.
-- Si tiene errores menores de estilo pero la lógica es correcta, considéralo correcto.
-- Si está vacío, sin lógica o trivialmente incorrecto, marca correcto=false.
-- Responde con JSON estricto siguiendo el schema.
-- Sé breve (máximo 4 líneas en feedback). Habla en español, segunda persona (tú).`;
+Reglas de evaluación:
+- "correcto" SOLO si el código resuelve realmente lo que pide el enunciado (lógica + requisitos).
+- Sé flexible con estilos menores (nombres, console.log no pedidos, ordenamientos opcionales), pero NUNCA marques correcto=true si la lógica falla o falta la parte central del ejercicio.
+- Si está vacío, sin lógica o trivial: correcto=false.
+
+Cómo responder (JSON estricto según el schema):
+- "feedback": 1-2 líneas amables, alentadoras, en español, segunda persona (tú). Nada de regaños.
+- "pistas": array con 2-4 pistas concretas en TEXTO (sin código) que orienten qué falta o qué revisar. Si correcto=true, puedes devolver array vacío o una pista de mejora.
+- "snippetGuia": ${
+    nivelAyuda === 'extra'
+      ? 'OBLIGATORIO si correcto=false. 2-4 líneas de JavaScript que ilustren la TÉCNICA o el patrón necesario, NO la solución literal del ejercicio. Si correcto=true, déjalo vacío.'
+      : 'Déjalo SIEMPRE vacío en esta respuesta. El alumno no ha pedido aún ayuda extra.'
+  }`;
 
   let res: Response;
   try {
@@ -54,16 +61,22 @@ Tarea:
             properties: {
               correcto: { type: 'boolean' },
               feedback: { type: 'string' },
-              sugerencia: { type: 'string' }
+              pistas: { type: 'array', items: { type: 'string' } },
+              snippetGuia: { type: 'string' }
             },
-            required: ['correcto', 'feedback']
+            required: ['correcto', 'feedback', 'pistas']
           }
         }
       })
     });
   } catch {
     return json(
-      { correcto: false, feedback: 'No pude conectar con la IA. Reintenta en unos segundos.' },
+      {
+        correcto: false,
+        feedback: 'No pude conectar con la IA. Reintenta en unos segundos.',
+        pistas: [],
+        snippetGuia: ''
+      },
       { status: 200 }
     );
   }
@@ -72,7 +85,9 @@ Tarea:
     return json(
       {
         correcto: false,
-        feedback: `La IA respondió con error (${res.status}). Reintenta en unos segundos.`
+        feedback: `La IA respondió con error (${res.status}). Reintenta en unos segundos.`,
+        pistas: [],
+        snippetGuia: ''
       },
       { status: 200 }
     );
@@ -86,12 +101,17 @@ Tarea:
     return json({
       correcto: Boolean(parsed.correcto),
       feedback: String(parsed.feedback ?? '').trim() || 'Sin feedback.',
-      sugerencia: parsed.sugerencia ?? null
+      pistas: Array.isArray(parsed.pistas)
+        ? parsed.pistas.map((p: unknown) => String(p)).filter((p: string) => p.length > 0)
+        : [],
+      snippetGuia: String(parsed.snippetGuia ?? '').trim()
     });
   } catch {
     return json({
       correcto: false,
-      feedback: 'Respuesta de la IA no válida. Reintenta en unos segundos.'
+      feedback: 'Respuesta de la IA no válida. Reintenta en unos segundos.',
+      pistas: [],
+      snippetGuia: ''
     });
   }
 };

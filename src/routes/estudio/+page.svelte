@@ -5,6 +5,7 @@
   import LessonContent from '$lib/components/study/LessonContent.svelte';
   import CodeEditor from '$lib/components/study/CodeEditor.svelte';
   import AiTutor from '$lib/components/study/AiTutor.svelte';
+  import AskTutorDialog from '$lib/components/study/AskTutorDialog.svelte';
 
   let { data } = $props();
 
@@ -14,8 +15,11 @@
   let codigosPorEjercicio = $state<Map<string, string>>(new Map());
   let feedback = $state<string | null>(null);
   let correctoUltimo = $state<boolean | null>(null);
+  let pistas = $state<string[]>([]);
+  let snippetGuia = $state<string | null>(null);
   let loading = $state(false);
   let editorRef = $state<{ getValue: () => string } | null>(null);
+  let dialogOpen = $state(false);
 
   const completados = $derived(
     new Set(data.progreso.filter((p) => p.estado === 'completado').map((p) => p.dia))
@@ -32,17 +36,22 @@
   const dailyProgressPct = $derived(Math.round((correctosDia.size / 3) * 100));
   const yaCompletado = $derived(completados.has(currentDay));
 
+  function resetFeedback() {
+    feedback = null;
+    correctoUltimo = null;
+    pistas = [];
+    snippetGuia = null;
+  }
+
   function seleccionarDia(d: number) {
     currentDay = d;
     ejercicioActivo = 1;
-    feedback = null;
-    correctoUltimo = null;
+    resetFeedback();
   }
 
   function seleccionarEjercicio(n: 1 | 2 | 3) {
     ejercicioActivo = n;
-    feedback = null;
-    correctoUltimo = null;
+    resetFeedback();
   }
 
   function onChangeCode(v: string) {
@@ -51,11 +60,16 @@
     codigosPorEjercicio = next;
   }
 
-  async function corregir() {
+  async function corregir(nivelAyuda: 'normal' | 'extra' = 'normal') {
     if (loading) return;
     loading = true;
-    feedback = null;
-    correctoUltimo = null;
+    // Conservamos pistas/snippet anteriores si es 'extra' para que el usuario no las pierda al pedir más ayuda; si es 'normal' las reseteamos.
+    if (nivelAyuda === 'normal') {
+      feedback = null;
+      correctoUltimo = null;
+      pistas = [];
+      snippetGuia = null;
+    }
 
     const codigo = editorRef?.getValue() ?? codigoActual;
 
@@ -67,13 +81,17 @@
           dia: currentDay,
           ejercicio: ejercicioActivo,
           enunciado: ejercicio.enunciado,
-          codigo
+          codigo,
+          nivelAyuda
         })
       });
       const json = await res.json();
       feedback = json.feedback ?? 'Sin respuesta de la IA.';
       correctoUltimo = Boolean(json.correcto);
+      pistas = Array.isArray(json.pistas) ? json.pistas : [];
+      snippetGuia = json.snippetGuia ? String(json.snippetGuia) : null;
 
+      // ÚNICA VÍA de marcar un ejercicio como hecho: que el tutor lo apruebe.
       if (json.correcto) {
         const nextMap = new Map(correctosPorDia);
         const set = new Set(correctosDia);
@@ -84,9 +102,19 @@
     } catch {
       feedback = 'Error de red. Reintenta en unos segundos.';
       correctoUltimo = false;
+      pistas = [];
+      snippetGuia = null;
     } finally {
       loading = false;
     }
+  }
+
+  function pedirMasAyuda() {
+    corregir('extra');
+  }
+
+  function abrirDialog() {
+    dialogOpen = true;
   }
 
   async function marcarCompletado() {
@@ -111,9 +139,7 @@
 </header>
 
 <main class="flex flex-1 overflow-hidden">
-  <aside
-    class="w-[280px] shrink-0 border-r border-outline-variant bg-surface-container-low"
-  >
+  <aside class="w-[280px] shrink-0 border-r border-outline-variant bg-surface-container-low">
     <DayList
       lessons={data.lessons}
       progreso={data.progreso}
@@ -142,24 +168,34 @@
         <Button variant="outline" onclick={() => onChangeCode(ejercicio.plantilla)}>
           Reset
         </Button>
-        <Button onclick={corregir} disabled={loading}>
+        <Button onclick={() => corregir('normal')} disabled={loading}>
           {loading ? 'Corrigiendo...' : 'Corregir'}
         </Button>
       </div>
     </div>
   </section>
 
-  <aside
-    class="w-[360px] shrink-0 border-l border-outline-variant bg-surface-container p-6"
-  >
+  <aside class="w-[360px] shrink-0 border-l border-outline-variant bg-surface-container p-6">
     <AiTutor
       {feedback}
+      {pistas}
+      {snippetGuia}
       {loading}
       {correctoUltimo}
       {dailyProgressPct}
       {canComplete}
       {yaCompletado}
       onComplete={marcarCompletado}
+      onMasAyuda={pedirMasAyuda}
+      onPreguntar={abrirDialog}
     />
   </aside>
 </main>
+
+<AskTutorDialog
+  bind:open={dialogOpen}
+  dia={currentDay}
+  ejercicio={ejercicioActivo}
+  enunciado={ejercicio.enunciado}
+  {codigoActual}
+/>
