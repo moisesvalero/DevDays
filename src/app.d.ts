@@ -1,7 +1,12 @@
+import type { SupabaseClient, User } from '@supabase/supabase-js';
+
 declare global {
   namespace App {
     // interface Error {}
-    // interface Locals {}
+    interface Locals {
+      supabase: SupabaseClient;
+      user: User | null;
+    }
     // interface PageData {}
     // interface PageState {}
     // interface Platform {}
@@ -32,6 +37,7 @@ declare module '$env/dynamic/private' {
   export const SUPABASE_URL: string;
   export const SUPABASE_ANON_KEY: string;
   export const RESEND_API_KEY: string;
+  export const GEMINI_API_KEY: string;
 }
 
 export {};
