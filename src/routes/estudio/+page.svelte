@@ -1,5 +1,7 @@
 <script lang="ts">
   import { invalidateAll } from '$app/navigation';
+  import { browser } from '$app/environment';
+  import { mode, toggleMode } from 'mode-watcher';
   import { Button } from '$lib/components/ui/button';
   import DayList from '$lib/components/study/DayList.svelte';
   import LessonContent from '$lib/components/study/LessonContent.svelte';
@@ -20,6 +22,9 @@
   let loading = $state(false);
   let editorRef = $state<{ getValue: () => string } | null>(null);
   let dialogOpen = $state(false);
+
+  // En SSR mode.current es undefined; sólo en cliente sabemos si está en dark.
+  const isDark = $derived(browser && mode.current === 'dark');
 
   const completados = $derived(
     new Set(data.progreso.filter((p) => p.estado === 'completado').map((p) => p.dia))
@@ -135,7 +140,19 @@
     >
     <span class="text-xl font-bold text-primary">DevDays</span>
   </div>
-  <span class="text-xs text-on-surface-variant">{data.user.email}</span>
+  <div class="flex items-center gap-4">
+    <button
+      type="button"
+      onclick={toggleMode}
+      aria-label={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+      class="flex h-9 w-9 items-center justify-center rounded-full text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-on-surface"
+    >
+      <span class="material-symbols-outlined text-xl">
+        {isDark ? 'light_mode' : 'dark_mode'}
+      </span>
+    </button>
+    <span class="text-xs text-on-surface-variant">{data.user.email}</span>
+  </div>
 </header>
 
 <main class="flex flex-1 overflow-hidden">

@@ -12,7 +12,7 @@
 </svelte:head>
 
 <div
-  class="dark fixed inset-0 flex flex-col overflow-hidden bg-background text-on-surface antialiased"
+  class="fixed inset-0 flex flex-col overflow-hidden bg-background text-on-surface antialiased"
 >
   {@render children()}
 </div>

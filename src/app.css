@@ -38,6 +38,21 @@
   --on-primary-container: #dad7ff;
   --outline-variant: #c7c4d8;
 
+  /* Material tokens — paleta clara para el portal /estudio en modo light. */
+  --surface-container: #ece6f0;
+  --surface-container-low: #f3edf7;
+  --surface-container-lowest: #ffffff;
+  --surface-container-high: #e2dce7;
+  --on-surface: #1d1b20;
+  --on-surface-variant: #49454f;
+  --outline: #79747e;
+  --tertiary: #b75d29;
+  --tertiary-container: #ffdcc6;
+  --secondary-container: #e8def8;
+  --on-secondary-container: #1d192b;
+  --on-primary: #ffffff;
+  --success: #059669;
+
   /* Legacy = tema shadcn (un solo origen; mismos valores que antes) */
   --text-main: var(--foreground);
   --text-secondary: var(--muted-foreground);
@@ -82,7 +97,22 @@
   --inverse-on-surface: #313032;
   --primary-container: #8083ff;
   --on-primary-container: #0d0096;
-  --outline-variant: #464554;
+  --outline-variant: #424754;
+
+  /* Material tokens — paleta oscura del diseño original. */
+  --surface-container: #201f1f;
+  --surface-container-low: #1c1b1b;
+  --surface-container-lowest: #0e0e0e;
+  --surface-container-high: #2a2a2a;
+  --on-surface: #e5e2e1;
+  --on-surface-variant: #c2c6d6;
+  --outline: #8c909f;
+  --tertiary: #ffb786;
+  --tertiary-container: #df7412;
+  --secondary-container: #474746;
+  --on-secondary-container: #b7b5b4;
+  --on-primary: #002e6a;
+  --success: #10b981;
 
   --text-main: var(--foreground);
   --text-secondary: var(--muted-foreground);
@@ -130,21 +160,21 @@
   --color-inverse-surface: var(--inverse-surface);
   --color-inverse-on-surface: var(--inverse-on-surface);
 
-  /* Material tokens del portal /estudio (dark fijo). */
-  --color-surface-container: #201f1f;
-  --color-surface-container-low: #1c1b1b;
-  --color-surface-container-lowest: #0e0e0e;
-  --color-surface-container-high: #2a2a2a;
-  --color-on-surface: #e5e2e1;
-  --color-on-surface-variant: #c2c6d6;
-  --color-outline: #8c909f;
-  --color-outline-variant: #424754;
-  --color-tertiary: #ffb786;
-  --color-tertiary-container: #df7412;
-  --color-secondary-container: #474746;
-  --color-on-secondary-container: #b7b5b4;
-  --color-on-primary: #002e6a;
-  --color-success: #10b981;
+  /* Material tokens del portal /estudio (varían con light/dark via :root y .dark). */
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-on-surface: var(--on-surface);
+  --color-on-surface-variant: var(--on-surface-variant);
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+  --color-tertiary: var(--tertiary);
+  --color-tertiary-container: var(--tertiary-container);
+  --color-secondary-container: var(--secondary-container);
+  --color-on-secondary-container: var(--on-secondary-container);
+  --color-on-primary: var(--on-primary);
+  --color-success: var(--success);
 }
 
 @layer base {
