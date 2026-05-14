@@ -42,6 +42,7 @@ declare module '$env/dynamic/private' {
   export const SUPABASE_ANON_KEY: string;
   export const RESEND_API_KEY: string;
   export const GEMINI_API_KEY: string;
+  export const ALLOWED_EMAILS: string;
 }
 
 export {};

@@ -3,6 +3,7 @@ import { sequence } from '@sveltejs/kit/hooks';
 import { dev, building } from '$app/environment';
 import { PORTFOLIO_LOCALE_COOKIE, parseSiteLocaleCookie } from '$lib/i18n/site-locale';
 import { createSupabaseServerClient } from '$lib/server/supabase/server-client';
+import { isEmailAllowed } from '$lib/server/allowlist';
 
 const ONE_YEAR_IN_SECONDS = 31536000;
 const TWO_YEARS_IN_SECONDS = 63072000;
@@ -33,7 +34,17 @@ const handleSupabase: Handle = async ({ event, resolve }) => {
   const {
     data: { user }
   } = await event.locals.supabase.auth.getUser();
-  event.locals.user = user;
+
+  // Allowlist: si hay user pero su email no está autorizado, lo cerramos y
+  // dejamos `locals.user = null`. Esto bloquea el acceso al guard de /estudio
+  // y a los endpoints (que comprueban `locals.user`). El usuario verá /login.
+  if (user && !isEmailAllowed(user.email)) {
+    await event.locals.supabase.auth.signOut();
+    event.locals.user = null;
+  } else {
+    event.locals.user = user;
+  }
+
   return resolve(event);
 };
 

@@ -1,5 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { PUBLIC_SITE_URL } from '$env/static/public';
+import { isEmailAllowed } from '$lib/server/allowlist';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
@@ -16,6 +17,13 @@ export const actions: Actions = {
 
     if (!email || !email.includes('@')) {
       return fail(400, { error: 'Introduce un email válido.' });
+    }
+
+    if (!isEmailAllowed(email)) {
+      // No revelamos si el email existe o no en nuestra whitelist; mensaje genérico.
+      return fail(403, {
+        error: 'Este email no tiene acceso a la app. Pide permiso al administrador.'
+      });
     }
 
     const { error } = await locals.supabase.auth.signInWithOtp({
