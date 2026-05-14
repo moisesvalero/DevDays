@@ -1,18 +1,9 @@
 import adapter from '@sveltejs/adapter-vercel';
-
-const preprocessors = [];
-
-try {
-  const { mdsvex } = await import('mdsvex');
-  preprocessors.push(mdsvex({ extensions: ['.svx', '.md'] }));
-} catch {
-  // mdsvex opcional — sin el, el blog no funciona
-}
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  extensions: ['.svelte', '.svx', '.md'],
-  preprocess: preprocessors,
+  preprocess: vitePreprocess(),
   kit: {
     adapter: adapter(),
     alias: {

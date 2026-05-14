@@ -1,221 +1,195 @@
-# My SvelteKit Starter
+# DevDays — Mi bootcamp interno para dejar de copiar y empezar a entender
 
-**[Español](INICIO_RAPIDO.md)** · Quick start: [QUICK_START.md](QUICK_START.md)
+**🇪🇸 Español** · [🇬🇧 English](./README.en.md)
 
-[![Svelte 5](https://img.shields.io/badge/Svelte-5-FF3E00?logo=svelte)](https://svelte.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS v4](https://img.shields.io/badge/Tailwind-4-38bdf8?logo=tailwind)](https://tailwindcss.com/)
-[![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](https://github.com/moisesvalero/my-sveltekit-starter/pulls)
+> Llevo años haciendo webs con WordPress. Ahora estoy haciendo el salto al desarrollo moderno (SvelteKit, TypeScript, Supabase) y aprendiendo a sacar partido a la IA en mi día a día.
+> Pero hay una cosa que tengo clara: **no quiero depender de la IA. Quiero entender lo que hago.**
 
-Starter template for modern **websites** with **SvelteKit 2 + Svelte 5 + TypeScript + Tailwind CSS v4** and **[shadcn-svelte](https://www.shadcn-svelte.com/)**-style UI (code lives in your repo, not an opaque package).
-The **home** uses Material/Stitch tokens (`src/lib/styles/stitch-m3.css`), **ES/EN i18n** on the landing, and centralized **SEO** via `$seo`.
+Así que me he montado mi propio bootcamp interno: una plataforma de **35 días** que combina lecciones, ejercicios prácticos y un tutor IA que me corrige el código. Cada día estudio un tema, lo programo, el tutor lo revisa, y solo avanzo cuando demuestro que lo he entendido. Al final de cada semana hay un **examen con bloqueo**: si no apruebo, no paso al siguiente bloque.
 
-[![Live demo on Vercel](https://img.shields.io/badge/Live_demo-on_Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://my-sveltekit-starter.vercel.app/)
+El stack es el mismo que estoy aprendiendo:
+
+- **SvelteKit 5** con runes (`$state`, `$derived`, `$effect`, `$props`)
+- **TypeScript** estricto en todo el código
+- **Supabase** para auth (Magic Link) y base de datos
+- **Tailwind CSS v4** + tokens Material 3
+- **CodeMirror 6** como editor real con resaltado de sintaxis
+- **OpenAI + Gemini** con failover automático cuando uno falla
+
+Cuando termine los 35 días, el plan es volver a leer el código línea a línea y refactorizar lo que toque, ya entendiendo qué hace cada parte. Y empezar a buscar curro de frontend.
+
+📫 **Si quieres hablar de proyectos o vacantes:** [info@moisesvalero.es](mailto:info@moisesvalero.es) · 🌐 [moisesvalero.es](https://moisesvalero.es)
 
 ---
 
-## Quick start (2 minutes)
+## Captura
+
+![DevDays — Día 15: ¿Qué es Svelte/SvelteKit?](./docs/screenshot.png)
+
+Las tres columnas en acción: lista de días con soft-lock semanal a la izquierda, lección con bloques de código resaltados en el centro, y el tutor IA esperando código a la derecha.
+
+---
+
+## Qué hace la app
+
+Un portal interactivo de **3 columnas**:
+
+| Columna | Contenido |
+|---------|-----------|
+| **Izquierda** | Los 35 días en círculos (gris = pendiente, verde = completado). Soft-lock por semana si no apruebas el examen anterior. |
+| **Centro** | Explicación estructurada del día (intro, secciones, ejemplos, callouts, resumen) + ejercicios numerados + editor CodeMirror con tema oscuro. |
+| **Derecha** | Respuesta del tutor IA tras pulsar **Corregir**. Da pistas, snippets de código y solo desbloquea el botón "Marcar día completado" cuando el código está correcto. |
+
+### El meta-loop divertido
+
+La plataforma la construí yo, y ahora la **uso para aprender lo que usé para construirla**.
+
+### Reglas de progresión
+
+- **Lecciones (días 1–6, 8–13, …):** 3 ejercicios por día. Hay que aprobar **los 3** para avanzar.
+- **Exámenes (días 7, 14, 21, 28, 35):** 5 ejercicios. Hay que aprobar **al menos 4 de 5** para "Aprobar examen".
+- El alumno **nunca** decide si está correcto. Solo el endpoint `/api/corregir` puede marcar un ejercicio como aprobado.
+
+---
+
+## Arquitectura en una imagen mental
+
+```
+Browser
+   │
+   ├─ /estudio  (3 columnas, CodeMirror, AskTutorDialog)
+   │     │
+   │     │  POST /api/corregir       ┌────────────┐
+   │     ├──────────────────────────▶│ AI Orquesta│──▶ OpenAI ─┐
+   │     │  POST /api/preguntar      │  (ai.ts)   │           │ fallback
+   │     ├──────────────────────────▶│            │──▶ Gemini ◀┘
+   │     │                           └────────────┘
+   │     │
+   │     └─ Supabase  (auth Magic Link + tabla `progreso`)
+   │
+   └─ hooks.server.ts  → guard de auth + cabeceras de seguridad (CSP, HSTS, etc.)
+```
+
+### Decisiones de diseño que merecen ser destacadas
+
+1. **El alumno no puede saltarse temas.** El `correcto: true` solo viene del servidor. Si manipulas el cliente, no avanzas.
+2. **Email allowlist.** El portal es personal. `ALLOWED_EMAILS` separa amigos vs. internet.
+3. **Failover de IA.** Si OpenAI falla, el orquestador `src/lib/server/ai.ts` cae a Gemini con backoff exponencial. Si las dos fallan, el front muestra un error claro y dejas reintentar.
+4. **Cabeceras de seguridad.** `hooks.server.ts` añade CSP, HSTS, Permissions-Policy, X-Frame-Options, etc. No es la app más segura del mundo, pero no es el típico starter con todo abierto.
+5. **Forzar dark mode en el editor y login.** Es una app de estudio: cero distracciones.
+6. **Tipos discriminados.** `Leccion = LeccionNormal | LeccionExamen`. El editor sabe en cada momento si renderiza 3 o 5 ejercicios y qué texto pinta. Sin `any`, sin `as`.
+
+---
+
+## Stack completo
+
+| Capa | Tecnología |
+|------|------------|
+| Framework | SvelteKit 2 + Svelte 5 (runes) |
+| Lenguaje | TypeScript estricto |
+| Estilos | Tailwind CSS v4 + variables Material Design 3 |
+| UI | shadcn-svelte (button, card, dialog, input, label, textarea, sonner, spinner) |
+| Editor | CodeMirror 6 con tema One Dark y `@codemirror/lang-javascript` |
+| Auth + DB | Supabase (`@supabase/ssr` + Magic Link) |
+| IA | OpenAI (`gpt-5.4-mini`) + Gemini (`gemini-2.5-flash`) con failover |
+| Resaltado código | highlight.js para los bloques de las lecciones |
+| Despliegue | Vercel (`@sveltejs/adapter-vercel`) |
+| Calidad | ESLint, Prettier, svelte-check, Vitest |
+
+---
+
+## Cómo correrlo en local
+
+Requisitos: **Node 22+**.
 
 ```bash
-npm install       # first time only
-npm run dev       # dev server
+git clone <este-repo>
+cd DevDays
+npm install
+cp .env.example .env
+# Edita .env con tus claves de Supabase y al menos una clave de IA
+npm run dev
 ```
 
-Open `http://localhost:5173`. You do not need a `.env` file to get started.
+Abre `http://localhost:5173`. Te redirige a `/estudio`, te pide login con Magic Link, y a estudiar.
 
-Requirements: **Node.js 22+** (see `package.json` → `engines`).
+### Tabla `progreso` en Supabase
+
+```sql
+create table progreso (
+  user_id uuid references auth.users on delete cascade,
+  dia int not null,
+  estado text not null default 'completado',
+  fecha timestamptz not null default now(),
+  primary key (user_id, dia)
+);
+
+alter table progreso enable row level security;
+
+create policy "own progress read" on progreso
+  for select using (auth.uid() = user_id);
+
+create policy "own progress insert" on progreso
+  for insert with check (auth.uid() = user_id);
+```
+
+### Despliegue
+
+Mira `DEPLOY.md` para el checklist completo (variables de entorno, redirect URLs de Supabase, etc.).
 
 ---
 
-## What’s included
-
-### Pre-built pages
-- `/` — Landing (hero, sample terminal, features, steps, CTAs; copy in `src/lib/i18n/*.json` under `home.*`)
-- `/components` — UI gallery **and** template demos (about, pricing, faq, SSR with `load()`, blog, form). Content in `src/lib/components/demos/*.svelte`; SSR data in `src/routes/components/+page.ts`.
-- **Shortcuts (307 redirects to anchors on `/components`)** — legacy links or bookmarks: `/about`, `/pricing`, `/faq`, `/blog`, `/blog/primer-post`, `/ssr-demo`, `/contacto` (form action in `src/routes/components/+page.server.ts`).
-
-### UI components (shadcn-svelte + project)
-
-**Base UI** (`src/lib/components/ui/`, shadcn-svelte pattern + **bits-ui**): Button, Card, Dialog, Input, Textarea, Label, Skeleton, Spinner, Sonner (toast).
-
-**Project** (`src/lib/components/`): Footer, Heading, Container, Section, Grid, CopyButton, Newsletter, AiPrompt, JsonLd, CookieConsent, BlogLayout, LoadingBlock, demos under `demos/`, etc. (optional marketing blocks like Hero are not all wired on the current home).
-
-### Infrastructure
-- **SEO + GEO (automated)**: dynamic `/sitemap.xml` (with hreflang ES/EN), `/robots.txt` (AI crawlers: GPTBot, Claude, Perplexity, Google-Extended, CCBot…), `/llms.txt` + `/llms-full.txt` ([llmstxt.org](https://llmstxt.org) standard), complete Open Graph + Twitter Cards, canonical URL auto-derived, dynamic `<html lang>` via SSR cookie, and JSON-LD that ships **Organization + WebSite (SearchAction) + BreadcrumbList + FAQPage + HowTo + SoftwareApplication** out of the box. Just call `setSeo({...})` in your `+page.svelte`.
-- **i18n**: ES/EN translations with store + localStorage + server cookie (SSR-aware)
-- **Dark mode**: Toggle with mode-watcher, respects system preference
-- **Toasts**: Sonner (`<Toaster />` in layout) + `toast()` from `$lib/stores/toast` (also `<ToastContainer />` in layout)
-- **Motion**: Scroll reveal via IntersectionObserver
-- **Tests**: Vitest preconfigured
-- **CI/CD**: GitHub Actions (lint + check + build + test)
-- **Pre-commit**: Husky + lint-staged
-- **Dynamic OG image**: `/api/og?title=Text`
-- **Security headers**: CSP + X-Frame-Options in `hooks.server.ts`
-
-### Optional integrations (ready when you add keys)
-- **Sanity CMS** — see [Sanity (optional)](#sanity-cms-optional)
-- **Supabase** — auth + database
-- **Sentry** — error tracking
-- **Newsletter** — component ready for Mailchimp/Resend
-- **Live Chat** — placeholder for Crisp/Intercom/Tawk
-
-### Sanity CMS (optional)
-
-**In this repo:** `sanity/` folder (schemas, seeds), `sanity.config.ts` / `sanity.cli.ts`, and server code under `src/lib/server/sanity/` (client with `@sanity/client`, sample GROQ queries, types). The **`sanity`** package is in **devDependencies** so you can run Studio; **`@sanity/client`** and **`@sanity/image-url`** are in dependencies for SSR on the app.
-
-**What the template does not do by default:** no route uses GROQ out of the box. Without Sanity env vars the site still runs; when you want CMS data, call `getSanityServerClient()` from a `load` or `+page.server.ts`.
-
-**Typical env vars** (`.env`, never commit secrets): `SANITY_PROJECT_ID`, `SANITY_DATASET`; optional `SANITY_READ_TOKEN` for drafts or private datasets. `sanity.config.ts` can also use `SANITY_STUDIO_PROJECT_ID` / `SANITY_STUDIO_DATASET` if you want Studio separate from runtime.
-
-**Run Studio:** `npm run studio` (Sanity CLI; different port from Vite). Create or link a project at [sanity.io](https://www.sanity.io) and align `projectId` and dataset with your environment.
-
-### For AI assistants
-- **`AGENTS.md`** — How ChatGPT, Claude, Copilot should work in this repo
-- **`PROMPTS.md`** — Copy-paste snippets for AI prompts
-- **`DESIGN_TO_CURSOR.md`** — Stitch / Lovable → this template (tokens, checklist, base prompt)
-
-**Optional (recommended):** install extra skills detected for your stack (Cursor, Claude Code, etc.):
-
-```bash
-npx autoskills
-```
-
-See `INSTRUCTIONS.txt` (section “Using AI to help you”). Spanish step-by-step: `INSTRUCCIONES.txt`.
-
----
-
-## Scripts
-
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Development server |
-| `npm run build` | Production build |
-| `npm run preview` | Preview production build |
-| `npm run check` | Type-check + svelte-check (0 errors, 0 warnings) |
-| `npm run lint` | ESLint + Prettier |
-| `npm run format` | Format everything |
-| `npm run test` | Tests |
-| `npm run new:page name` | Scaffold a page |
-| `npm run studio` | Sanity Studio (optional CMS in dev) |
-
----
-
-## Project structure
+## Estructura del repo
 
 ```
-sanity/                     → Schemas, seeds, Studio (optional; see Sanity section)
-sanity.config.ts
-sanity.cli.ts
 src/
-  routes/
-    +page.svelte              → Home
-    +layout.svelte            → Global layout (header, nav, footer, toasts, cookies, dark mode)
-    +error.svelte             → 404/500
-    blog/                     → +page.ts redirects to gallery; primer-post/ → demo post anchor
-    contacto/                 → Redirect to form anchor on /components
-    about/ pricing/ faq/ ssr-demo/  → +page.ts only (307 → /components#…)
-    components/               → UI gallery + demos (SSR load, contact form action)
-    api/
-      og/+server.ts          → Dynamic OG image
-  lib/
-    styles/stitch-m3.css      → M3/Stitch tokens + utilities (text-h1, font-code…)
-    site-config.ts            → Site name, URL, social links
-    components/
-      ui/                     → shadcn-svelte + base components (Button, Card, Input…)
-      *.svelte                → Project components
-    stores/
-      toast.ts                → Toast notifications
-    actions/
-      clickOutside.ts        → Svelte action
-    i18n/                     → ES/EN translations
-    seo.ts                    → SEO store
-    reveal.ts                 → Scroll animations
-    utils.ts                  → cn(), types
-    server/
-      supabase/              → Supabase client (optional)
-      sanity/                → GROQ client + types (optional)
-  app.css                     → Global CSS + Tailwind v4 + theme variables
-  hooks.server.ts             → Security headers + CSP
-static/
-  logos/                      → Brand SVGs (reference)
-  manifest.json              → Web app manifest
-  favicon.svg
-```
-
-> SEO/GEO routes (`robots.txt`, `sitemap.xml`, `llms.txt`, `llms-full.txt`) are **dynamic SvelteKit endpoints** under `src/routes/`, fed from `src/lib/site-pages.ts` + i18n. To add a page to all of them at once, just append an entry to the `sitePages` array.
-
----
-
-## SEO + GEO at a glance
-
-The template is wired so that **calling `setSeo({...})` in a page is enough** — every other tag, schema and crawler file is auto-generated.
-
-```ts
-// src/routes/mi-pagina/+page.svelte
-import { setSeo } from '$lib/seo';
-
-setSeo({
-  title: 'Mi página',
-  description: 'Resumen en una frase.',
-  schemaType: 'FAQPage',
-  dateModified: new Date().toISOString(),
-  faq: [{ question: '¿Qué es X?', answer: 'X es...' }],
-  howto: [{ name: 'Paso 1', text: 'Haz Y' }]
-});
-```
-
-That single call updates:
-
-| Output | What it does |
-|--------|--------------|
-| `<title>`, `description`, `keywords`, `author`, `canonical` | Standard SEO tags |
-| Open Graph + Twitter Cards | Social previews |
-| `hreflang` ES/EN/`x-default` | International SEO |
-| JSON-LD `WebPage` / `Article` / `FAQPage` / `HowTo` / `SoftwareApplication` | Rich results in Google + citations in ChatGPT / Perplexity / Gemini |
-| `BreadcrumbList` | Auto-derived from URL |
-| `Organization` + `WebSite` with `SearchAction` | Sitewide schema |
-
-And from `src/lib/site-pages.ts` the template auto-generates:
-
-- `/sitemap.xml` with hreflang
-- `/llms.txt` (Markdown index, [llmstxt.org](https://llmstxt.org))
-- `/llms-full.txt` (full content for LLM ingestion)
-- `/robots.txt` (allow-list for OpenAI, Anthropic, Google, Perplexity, CCBot, Meta, Cohere)
-
-To add a new page to all of them, append one entry to `sitePages` in `src/lib/site-pages.ts`.
-
----
-
-## Customization
-
-### `src/lib/site-config.ts`
-Site name, URL, social links, author defaults used by `src/lib/seo.ts`.
-
-### `src/lib/i18n/es.json` and `en.json`
-Landing copy (`home.*`), navigation (`layout.nav.*`), footer, and other keys. The document title comes from the **`seo`** store (`<title>{$seo.title}</title>` in the layout); each route can call `setSeo({ title, description, ... })`.
-
-### `src/app.css` and `src/lib/styles/stitch-m3.css`
-Theme tokens (`--primary`, `--background`, …) and Stitch typography utilities. Legacy variables (`--text-main`, `--bg-soft`) are aligned with `--foreground` / `--muted`.
-
-### Dark mode (preconfigured)
-```svelte
-import { mode, toggleMode } from 'mode-watcher';
-import { Moon, Sun } from 'lucide-svelte';
-
-<Button variant="ghost" size="icon" onclick={toggleMode}>
-  {#if mode.current === 'dark'} <Moon /> {:else} <Sun /> {/if}
-</Button>
+├─ app.css                     Tailwind v4 + tokens Material 3
+├─ app.html
+├─ hooks.server.ts             Auth + cabeceras de seguridad
+├─ lib/
+│  ├─ components/
+│  │  ├─ study/                DayList, LessonContent, CodeEditor, AiTutor, AskTutorDialog, CodeBlock, Callout
+│  │  ├─ ui/                   shadcn-svelte (button, card, dialog, input, ...)
+│  │  └─ ToastContainer.svelte
+│  ├─ data/lessons.ts          Las 35 lecciones hardcodeadas
+│  ├─ types/lesson.ts          LeccionNormal | LeccionExamen
+│  ├─ server/
+│  │  ├─ ai.ts                 Orquestador OpenAI → Gemini
+│  │  ├─ openai.ts             OpenAI con JSON schema
+│  │  ├─ gemini.ts             Gemini con reintentos exponenciales
+│  │  ├─ allowlist.ts          Whitelist de emails
+│  │  └─ supabase/             Cliente SSR de Supabase
+│  ├─ i18n/                    Base mínima para idioma de la cookie
+│  └─ stores/toast.ts
+└─ routes/
+   ├─ +layout.svelte           ModeWatcher + Toaster
+   ├─ +page.ts                 Redirect a /estudio
+   ├─ login/                   Login con Magic Link
+   ├─ auth/callback/           Intercambio code → sesión
+   ├─ estudio/                 Portal con guard de auth
+   └─ api/
+      ├─ corregir/             Corrección IA
+      ├─ preguntar/            Chat libre con el tutor
+      └─ locale/               Cookie de idioma
 ```
 
 ---
 
-## Deploy
+## Roadmap
 
-Vercel and Netlify. Push to GitHub, connect the repo, done.
+- [x] 35 días de curriculum con 5 exámenes
+- [x] Corrección IA con failover OpenAI/Gemini
+- [x] Allowlist por email
+- [x] Magic Link + RLS en Supabase
+- [x] Dark/Light mode (editor y login siempre oscuros)
+- [ ] Terminar los 35 días en primera persona
+- [ ] Refactor línea a línea entendiendo qué hace cada parte
+- [ ] Empezar a buscar curro de frontend
 
 ---
 
-## License
+## Por qué este proyecto vale más que un curso de Udemy
 
-Free for personal and commercial use.
+Porque cuando termine, **el código de la plataforma seré yo quien lo refactorice y lo explique**. No es un tutorial que copié. Es un sistema en producción que mezcla auth, base de datos, dos proveedores de IA, soft-lock por semana, y tipos discriminados en TypeScript. Y ahora mismo lo estoy usando, todos los días, para aprender lo que aún no domino.
+
+Si te interesa hablar de proyectos o vacantes de frontend, escríbeme a [info@moisesvalero.es](mailto:info@moisesvalero.es) o pásate por [moisesvalero.es](https://moisesvalero.es).

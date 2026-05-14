@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-  <title>Error {page.status} | Mi Proyecto</title>
+  <title>Error {page.status} | DevDays</title>
 </svelte:head>
 
 <div class="error-page">
