@@ -19,7 +19,8 @@
   <title>Login — DevDays</title>
 </svelte:head>
 
-<div class="flex min-h-screen items-center justify-center bg-background px-4">
+<!-- .dark forzado: el login siempre en oscuro, independiente de la preferencia del usuario -->
+<div class="dark flex min-h-screen items-center justify-center bg-background px-4 text-foreground">
   <Card class="w-full max-w-md">
     <CardHeader>
       <CardTitle class="text-2xl">DevDays</CardTitle>

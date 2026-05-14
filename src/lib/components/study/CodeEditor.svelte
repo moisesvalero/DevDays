@@ -76,7 +76,8 @@
   });
 </script>
 
-<div class="overflow-hidden rounded border border-outline-variant bg-surface-container-lowest">
+<!-- .dark forzado: el editor siempre se ve oscuro aunque la UI esté en modo claro -->
+<div class="dark overflow-hidden rounded border border-outline-variant bg-surface-container-lowest">
   <div
     class="flex items-center justify-between border-b border-outline-variant bg-surface-container px-4 py-3"
   >
