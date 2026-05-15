@@ -9,6 +9,11 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    # $env/static/public exige estas vars en build (aunque CI no use Supabase de verdad).
+    env:
+      PUBLIC_SITE_URL: http://localhost:5173
+      PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+      PUBLIC_SUPABASE_ANON_KEY: sb_publishable_placeholder_for_ci_build_only
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
