@@ -8,6 +8,8 @@ type Body = {
   ejercicio: number;
   enunciado: string;
   codigo: string;
+  queDebePasar?: string[];
+  criteriosLogica?: string[];
   nivelAyuda?: 'normal' | 'extra';
 };
 
@@ -23,6 +25,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     ejercicio: body.ejercicio,
     enunciado: body.enunciado,
     codigo: body.codigo,
+    queDebePasar: body.queDebePasar,
+    criteriosLogica: body.criteriosLogica,
     nivelAyuda: body.nivelAyuda ?? 'normal'
   });
 

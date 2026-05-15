@@ -5,6 +5,8 @@ export type Callout = {
 
 export type Seccion = {
   titulo: string;
+  analogia: string;
+  paraQueSirve: string;
   texto: string;
   ejemplo?: string;
   nota?: Callout;
@@ -18,7 +20,10 @@ export type ContenidoLeccion = {
 
 export type Ejercicio = {
   numero: number;
+  historia: string;
   enunciado: string;
+  queDebePasar: string[];
+  criteriosLogica: string[];
   plantilla: string;
 };
 

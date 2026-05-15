@@ -17,12 +17,14 @@
     dia,
     ejercicio,
     enunciado,
+    queDebePasar = [],
     codigoActual = ''
   }: {
     open: boolean;
     dia: number;
     ejercicio: number;
     enunciado: string;
+    queDebePasar?: string[];
     codigoActual?: string;
   } = $props();
 
@@ -59,6 +61,7 @@
           dia,
           ejercicio,
           enunciado,
+          queDebePasar,
           codigoActual,
           mensaje: texto,
           historial: mensajes.slice(-12)

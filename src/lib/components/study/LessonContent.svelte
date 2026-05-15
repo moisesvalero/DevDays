@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Leccion } from '$lib/types/lesson';
+  import type { Leccion, Ejercicio } from '$lib/types/lesson';
   import CodeBlock from './CodeBlock.svelte';
   import Callout from './Callout.svelte';
 
@@ -16,6 +16,13 @@
   } = $props();
 
   const totalEjercicios = $derived(lesson.ejercicios.length);
+  const ejercicioSel = $derived(
+    lesson.ejercicios.find((e) => e.numero === ejercicioActivo) ?? lesson.ejercicios[0]
+  );
+
+  function tituloEjercicio(ej: Ejercicio): string {
+    return ej.historia || ej.enunciado;
+  }
 </script>
 
 {#if lesson.tipo === 'leccion'}
@@ -25,17 +32,32 @@
     </span>
     <h1 class="text-4xl font-bold tracking-tight text-on-surface">{lesson.titulo}</h1>
     <p class="text-base font-medium text-on-surface-variant">{lesson.objetivo}</p>
-    <p class="text-base leading-relaxed text-on-surface-variant whitespace-pre-line">
+    <p class="text-base leading-relaxed whitespace-pre-line text-on-surface-variant">
       {lesson.contenido.intro}
     </p>
+    <Callout
+      tipo="info"
+      texto="Aquí importa entender la lógica. La sintaxis la completas con Tab (autocompletado), el tutor o búsquedas. No memorices puntos y comas."
+    />
   </header>
 
   <article class="mt-8 space-y-8">
     {#each lesson.contenido.secciones as s, i (i)}
-      <section class="space-y-3">
+      <section class="space-y-3 rounded-lg border border-outline-variant/60 p-5">
         <h3 class="text-lg font-semibold text-on-surface">{s.titulo}</h3>
-        <p class="leading-relaxed text-on-surface-variant whitespace-pre-line">{s.texto}</p>
+        <div class="rounded-md border-l-4 border-primary bg-primary/5 p-4">
+          <p class="text-xs font-bold uppercase tracking-wider text-primary">Imagínalo así</p>
+          <p class="mt-2 leading-relaxed whitespace-pre-line text-on-surface">{s.analogia}</p>
+        </div>
+        <div class="rounded-md border-l-4 border-tertiary bg-tertiary-container/10 p-4">
+          <p class="text-xs font-bold uppercase tracking-wider text-tertiary">Para qué sirve</p>
+          <p class="mt-2 leading-relaxed whitespace-pre-line text-on-surface-variant">
+            {s.paraQueSirve}
+          </p>
+        </div>
+        <p class="leading-relaxed whitespace-pre-line text-on-surface-variant">{s.texto}</p>
         {#if s.ejemplo}
+          <p class="text-xs text-on-surface-variant">Referencia (no hace falta memorizarla):</p>
           <CodeBlock code={s.ejemplo} />
         {/if}
         {#if s.nota}
@@ -60,23 +82,23 @@
     <div class="flex items-center gap-2">
       <span class="material-symbols-outlined text-tertiary">quiz</span>
       <span class="text-xs font-bold uppercase tracking-widest text-tertiary">
-        Examen Semana {lesson.semana} · Día {lesson.dia}
+        Repaso Semana {lesson.semana} · Día {lesson.dia}
       </span>
     </div>
     <h1 class="text-4xl font-bold tracking-tight text-on-surface">{lesson.titulo}</h1>
     <p class="text-base font-medium text-on-surface">{lesson.objetivo}</p>
-    <p class="text-sm leading-relaxed text-on-surface-variant whitespace-pre-line">
+    <p class="text-sm leading-relaxed whitespace-pre-line text-on-surface-variant">
       {lesson.instrucciones}
     </p>
-    <p class="text-xs font-semibold text-tertiary">
-      Aprobado: 4 de 5 ejercicios correctos.
+    <p class="text-xs text-on-surface-variant">
+      No es un examen de sintaxis: demuestra que entiendes el flujo. Puedes ir a cualquier día cuando quieras.
     </p>
   </header>
 {/if}
 
 <section class="mt-8 space-y-3">
   <h2 class="text-xs font-semibold uppercase tracking-widest text-primary">
-    {lesson.tipo === 'examen' ? `Ejercicios del examen (${totalEjercicios})` : 'Ejercicios'}
+    {lesson.tipo === 'examen' ? `Retos (${totalEjercicios})` : 'Práctica'}
   </h2>
   <div class="grid gap-3">
     {#each lesson.ejercicios as ej (ej.numero)}
@@ -86,13 +108,11 @@
         type="button"
         onclick={() => onSelectEjercicio(ej.numero)}
         class="flex items-center justify-between border bg-surface-container p-5 text-left transition-all
-          {activo
-          ? 'border-primary'
-          : 'border-outline-variant hover:border-on-surface-variant'}"
+          {activo ? 'border-primary' : 'border-outline-variant hover:border-on-surface-variant'}"
       >
         <div class="flex items-center gap-4">
           <span
-            class="flex h-8 w-8 items-center justify-center rounded text-sm font-bold
+            class="flex h-8 w-8 shrink-0 items-center justify-center rounded text-sm font-bold
               {completo
               ? 'bg-success/15 text-success'
               : activo
@@ -105,11 +125,8 @@
               {ej.numero}
             {/if}
           </span>
-          <span
-            class="text-sm
-              {activo ? 'font-semibold text-on-surface' : 'text-on-surface'}"
-          >
-            {ej.enunciado}
+          <span class="text-sm {activo ? 'font-semibold text-on-surface' : 'text-on-surface'}">
+            {tituloEjercicio(ej)}
           </span>
         </div>
         {#if activo}
@@ -121,3 +138,15 @@
     {/each}
   </div>
 </section>
+
+{#if ejercicioSel}
+  <section class="mt-6 space-y-4 rounded-lg border border-primary/30 bg-surface-container-low p-5">
+    <h3 class="text-sm font-semibold text-primary">Tu código debe lograr…</h3>
+    <ul class="list-disc space-y-1 pl-5 text-sm text-on-surface-variant">
+      {#each ejercicioSel.queDebePasar as q, i (i)}
+        <li>{q}</li>
+      {/each}
+    </ul>
+    <p class="text-sm text-on-surface-variant">{ejercicioSel.enunciado}</p>
+  </section>
+{/if}

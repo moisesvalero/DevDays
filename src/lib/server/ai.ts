@@ -6,7 +6,6 @@ export type CorreccionResult = {
   feedback: string;
   pistas: string[];
   snippetGuia: string;
-  /** Para depurar: qué proveedor acabó respondiendo (o 'none' si fallaron todos). */
   provider: 'openai' | 'gemini' | 'none';
 };
 
@@ -15,6 +14,8 @@ export type CorreccionInput = {
   ejercicio: number;
   enunciado: string;
   codigo: string;
+  queDebePasar?: string[];
+  criteriosLogica?: string[];
   nivelAyuda?: 'normal' | 'extra';
 };
 
@@ -23,6 +24,7 @@ export type ChatInput = {
   ejercicio: number;
   enunciado: string;
   codigoActual?: string;
+  queDebePasar?: string[];
   mensaje: string;
   historial: Array<{ role: 'user' | 'model'; text: string }>;
 };
@@ -30,43 +32,49 @@ export type ChatInput = {
 export type ChatResult = {
   respuesta: string;
   provider: 'openai' | 'gemini' | 'none';
-  /** Mensaje legible si todos los proveedores fallaron. */
   errorMsg?: string;
 };
 
-/* ------------------------------------------------------------------ */
-/* Prompts compartidos                                                */
-/* ------------------------------------------------------------------ */
+const PEDAGOGIA = `Pedagogía DevDays (obligatoria):
+- El alumno aprende QUÉ HACE cada cosa y PARA QUÉ SIRVE, no memoriza sintaxis.
+- Usa analogías de taller, almacén, oficios manuales o vida cotidiana.
+- NO regañes por typos, punto y coma, nombres de variables distintos, let vs const intercambiables, ni por no usar la API exacta del enunciado si el resultado es el mismo.
+- SÍ rechaza si la lógica no cumple lo esencial o el código está vacío/sin intención.`;
 
 function buildSystemCorreccion(nivelAyuda: 'normal' | 'extra') {
   return `Eres un tutor de programación amable, paciente y motivador. Hablas en español, segunda persona (tú).
 
-Contexto de datos (importante):
-- En cada petición recibes el enunciado OFICIAL y el código del alumno en ESTE momento. No hay otra "versión" en el servidor: evalúa solo lo que viene en el mensaje.
-- No digas que el alumno escribió cosas que no aparecen literalmente en su código (por ejemplo ** de Markdown, ni comillas raras), salvo que estén en el código pegado.
+${PEDAGOGIA}
 
-Formato de texto y código en tu respuesta JSON:
-- En "feedback" y "pistas" usa español claro. Evita sintaxis Markdown tipo **negrita** (puede confundirse con operadores). Si necesitas destacar, usa comillas simples o MAYÚSCULAS suaves.
-- En "snippetGuia" (si lo rellenas) escribe JavaScript legible. Para mostrar ejemplos de strings usa comillas simples o dobles normales. NO uses barras invertidas para "escapar" backticks (\`texto\`); si hace falta un template literal, escríbelo en una sola línea con backticks reales o evita template literals en el snippet.
+Contexto de datos:
+- Evalúa solo el código y criterios de ESTA petición.
+- No inventes errores que no estén en el código pegado.
 
 Reglas de evaluación:
-- "correcto" SOLO si el código resuelve realmente lo que pide el enunciado (lógica + requisitos).
-- Sé flexible con estilos menores (nombres, console.log no pedidos, ordenamientos opcionales), pero NUNCA marques correcto=true si la lógica falla o falta la parte central del ejercicio.
-- Si está vacío, sin lógica o trivial: correcto=false.
+- "correcto" = true si el código cumple la INTENCIÓN y los criterios de lógica (efecto observable), aunque la sintaxis sea imperfecta.
+- Acepta métodos equivalentes (for vs map, comillas simples vs template string si el texto final es correcto).
+- "correcto" = false solo si falla la parte central, está vacío, o no demuestra comprensión.
 
-Cómo responder (JSON estricto según el schema):
-- "feedback": 1-2 líneas amables, alentadoras, en español. Nada de regaños.
-- "pistas": array con 2-4 pistas concretas en TEXTO (sin código) que orienten qué falta o qué revisar. Si correcto=true, puedes devolver array vacío o una pista de mejora.
+Formato JSON:
+- "feedback": 1-2 frases con analogía, alentadoras.
+- "pistas": 2-4 pistas sobre la LÓGICA o la historia del ejercicio (sin código). Si correcto=true, array vacío o una mejora opcional.
 - "snippetGuia": ${
     nivelAyuda === 'extra'
-      ? 'OBLIGATORIO si correcto=false. 2-4 líneas de JavaScript que ilustren la TÉCNICA o el patrón necesario, NO la solución literal del ejercicio. Si correcto=true, déjalo vacío.'
-      : 'Déjalo SIEMPRE vacío en esta respuesta. El alumno no ha pedido aún ayuda extra.'
+      ? 'Si correcto=false: pseudocódigo o frase narrativa (NO solución literal para pegar). Si correcto=true: vacío.'
+      : 'SIEMPRE vacío salvo nivelAyuda extra.'
   }`;
 }
 
 function buildUserCorreccion(input: CorreccionInput) {
+  const criterios = input.criteriosLogica?.length
+    ? `\nCriterios de lógica (lo esencial):\n${input.criteriosLogica.map((c) => `- ${c}`).join('\n')}`
+    : '';
+  const debe = input.queDebePasar?.length
+    ? `\nQué debe pasar:\n${input.queDebePasar.map((q) => `- ${q}`).join('\n')}`
+    : '';
+
   return `Día ${input.dia} · Ejercicio ${input.ejercicio}.
-Enunciado: ${input.enunciado}
+Enunciado: ${input.enunciado}${debe}${criterios}
 
 Código del alumno:
 \`\`\`js
@@ -75,29 +83,23 @@ ${input.codigo}
 }
 
 function buildSystemChat(input: ChatInput) {
+  const debe = input.queDebePasar?.length
+    ? `\nQué debe lograr el ejercicio:\n${input.queDebePasar.map((q) => `- ${q}`).join('\n')}`
+    : '';
+
   return `Eres un tutor de programación amable y conciso. Hablas en español, segunda persona (tú).
 
-Reglas estrictas:
-- NO confirmes que un ejercicio está aprobado ni digas frases como "ya puedes pasar" o "está perfecto, marca como hecho". La evaluación oficial la hace el botón "Corregir".
-- NO escribas la solución completa y lista para pegar del ejercicio actual. Como mucho, pseudocódigo o fragmentos cortos que ilustren conceptos.
-- Si el alumno pide "dame la solución", recuérdale que tu objetivo es que aprenda; explícale el concepto y dale pistas.
-- Respuestas breves (máx ~6 líneas) y prácticas.
-- Si la duda es ajena al ejercicio (otra cosa de JS o SvelteKit), respóndela igualmente, manteniendo las reglas anteriores.
+${PEDAGOGIA}
 
-Veracidad y formato (evita confusiones):
-- El "Enunciado" y el bloque de código de abajo son la fuente de verdad de ESTA petición. Si el historial del chat contradice algo, prioriza SIEMPRE el enunciado y el código actual.
-- No digas que el alumno escribió ** (Markdown), comillas raras, ni caracteres que no aparecen en su último mensaje o en el código pegado.
-- Para enseñar sintaxis de template literals o backticks, usa un bloque de código Markdown bien formado: una línea con solo tres acentos graves, líneas de código, otra línea con tres acentos graves. Ejemplo correcto:
-\`\`\`js
-const x = \`hola \${nombre}\`;
-\`\`\`
-- NO uses barras invertidas delante de acentos graves (\`) ni secuencias tipo /\\ para simular comillas: el alumno las copiaría mal. Dentro de un bloque \`\`\`js el código lleva backticks y \${} como en un editor real.
-- Evita **negrita** Markdown en medio de explicaciones de código; usa comillas simples para nombres ('nombre') o bloques \`\`\`js.
+Reglas:
+- NO confirmes aprobación oficial (eso es el botón Corregir).
+- NO des la solución completa lista para pegar.
+- Explica: analogía → qué hace → para qué sirve. Máx ~8 líneas.
+- Si piden sintaxis: recuérdale que puede escribir la idea y usar autocompletado (Tab).
 
-Contexto del ejercicio en curso:
-- Día ${input.dia}, Ejercicio ${input.ejercicio}.
-- Enunciado: ${input.enunciado}
-${input.codigoActual ? `\nÚltimo código del alumno (puede estar incompleto):\n\`\`\`js\n${input.codigoActual}\n\`\`\`` : ''}`;
+Contexto: Día ${input.dia}, Ejercicio ${input.ejercicio}.
+Enunciado: ${input.enunciado}${debe}
+${input.codigoActual ? `\nCódigo actual del alumno:\n\`\`\`js\n${input.codigoActual}\n\`\`\`` : ''}`;
 }
 
 const CORRECCION_SCHEMA = {
@@ -112,16 +114,11 @@ const CORRECCION_SCHEMA = {
   required: ['correcto', 'feedback', 'pistas', 'snippetGuia']
 } as const;
 
-/* ------------------------------------------------------------------ */
-/* correctCode: OpenAI primero, fallback a Gemini                     */
-/* ------------------------------------------------------------------ */
-
 export async function correctCode(input: CorreccionInput): Promise<CorreccionResult> {
   const nivelAyuda = input.nivelAyuda ?? 'normal';
   const systemMsg = buildSystemCorreccion(nivelAyuda);
   const userMsg = buildUserCorreccion(input);
 
-  // 1) OpenAI
   const openai = await callOpenAI({
     messages: [
       { role: 'system', content: systemMsg },
@@ -140,7 +137,6 @@ export async function correctCode(input: CorreccionInput): Promise<CorreccionRes
     if (parsed) return { ...parsed, provider: 'openai' };
   }
 
-  // 2) Fallback Gemini
   const geminiPrompt = `${systemMsg}\n\n${userMsg}`;
   const gemini = await callGemini({
     contents: [{ role: 'user', parts: [{ text: geminiPrompt }] }],
@@ -169,7 +165,6 @@ export async function correctCode(input: CorreccionInput): Promise<CorreccionRes
     if (parsed) return { ...parsed, provider: 'gemini' };
   }
 
-  // 3) Todos fallaron → mensaje amistoso
   const msg = buildAiErrorMessage(openai, gemini);
   return {
     correcto: false,
@@ -197,10 +192,6 @@ function parseCorreccion(text: string): Omit<CorreccionResult, 'provider'> | nul
   }
 }
 
-/* ------------------------------------------------------------------ */
-/* chatTutor: OpenAI primero, fallback a Gemini                       */
-/* ------------------------------------------------------------------ */
-
 export async function chatTutor(input: ChatInput): Promise<ChatResult> {
   if (!input.mensaje?.trim()) {
     return { respuesta: 'Escríbeme la duda y te ayudo.', provider: 'none' };
@@ -209,7 +200,6 @@ export async function chatTutor(input: ChatInput): Promise<ChatResult> {
   const systemMsg = buildSystemChat(input);
   const historial = input.historial.slice(-12);
 
-  // 1) OpenAI
   const openaiMessages: OpenAIMessage[] = [
     { role: 'system', content: systemMsg },
     ...historial.map<OpenAIMessage>((m) => ({
@@ -228,7 +218,6 @@ export async function chatTutor(input: ChatInput): Promise<ChatResult> {
     return { respuesta: openai.text.trim(), provider: 'openai' };
   }
 
-  // 2) Fallback Gemini
   const geminiHistorial = historial.map((m) => ({
     role: m.role,
     parts: [{ text: String(m.text ?? '') }]
@@ -248,14 +237,9 @@ export async function chatTutor(input: ChatInput): Promise<ChatResult> {
     if (text) return { respuesta: text, provider: 'gemini' };
   }
 
-  // 3) Todos fallaron
   const msg = buildAiErrorMessage(openai, gemini);
   return { respuesta: msg, provider: 'none', errorMsg: msg };
 }
-
-/* ------------------------------------------------------------------ */
-/* Helpers                                                            */
-/* ------------------------------------------------------------------ */
 
 function buildAiErrorMessage(
   openai: Awaited<ReturnType<typeof callOpenAI>>,

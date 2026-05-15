@@ -30,7 +30,7 @@ Si necesitas un componente nuevo:
 | `src/routes/api/corregir/+server.ts` | Endpoint que corrige el código con la IA |
 | `src/routes/api/preguntar/+server.ts` | Endpoint para chat libre con el tutor |
 | `src/routes/api/locale/+server.ts` | Cookie de idioma (solo `es` por ahora) |
-| `src/lib/data/lessons.ts` | **Las 35 lecciones hardcodeadas** (no las modifique la IA) |
+| `src/lib/data/lessons/` | **35 lecciones conceptuales** (`week1.ts`…`week5.ts`, ver `docs/pedagogia-devdays.md`) |
 | `src/lib/types/lesson.ts` | Tipos `LeccionNormal` y `LeccionExamen` |
 | `src/lib/components/study/` | `DayList`, `LessonContent`, `CodeEditor`, `AiTutor`, `AskTutorDialog`, `CodeBlock`, `Callout` |
 | `src/lib/server/ai.ts` | Orquestador: intenta OpenAI primero, falla → Gemini |
@@ -69,10 +69,11 @@ Todos en `$lib/components/ui/<name>`.
 
 ## Tutor IA — Reglas
 
-- **El alumno solo avanza si la IA marca `correcto: true`.** Esto solo lo decide `/api/corregir`.
-- En lecciones normales (3 ejercicios) hay que aprobar **los 3** para marcar el día completado.
-- En exámenes (días 7, 14, 21, 28, 35) hay que aprobar **al menos 4 de 5** para "Aprobar examen".
-- Si el alumno empieza una semana sin haber aprobado el examen anterior, se muestra un aviso (soft-lock).
+- **Corrección por lógica**, no por sintaxis perfecta (`criteriosLogica` + `queDebePasar` en cada ejercicio).
+- La IA marca `correcto: true` en `/api/corregir` si el efecto del código cumple la intención.
+- **Todos los días están abiertos**; no hay soft-lock por exámenes.
+- Marcar día completado en Supabase es **opcional** (botón "Marcar día (opcional)").
+- Pedagogía: analogías, qué hace / para qué sirve — ver `docs/pedagogia-devdays.md`.
 
 ---
 

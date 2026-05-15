@@ -10,6 +10,7 @@
     syntaxHighlighting,
     defaultHighlightStyle
   } from '@codemirror/language';
+  import { autocompletion, completionKeymap } from '@codemirror/autocomplete';
   import { oneDark } from '@codemirror/theme-one-dark';
 
   let {
@@ -25,10 +26,6 @@
   let host: HTMLDivElement;
   let view: EditorView | undefined;
 
-  /**
-   * Expone el contenido actual del editor.
-   * Lo llamamos desde el padre con `bind:this` antes de mandar el código a la API.
-   */
   export function getValue(): string {
     return view ? view.state.doc.toString() : value;
   }
@@ -45,14 +42,14 @@
           indentOnInput(),
           bracketMatching(),
           syntaxHighlighting(defaultHighlightStyle, { fallback: true }),
-          keymap.of([...defaultKeymap, ...historyKeymap, indentWithTab]),
+          autocompletion(),
+          keymap.of([...completionKeymap, ...defaultKeymap, ...historyKeymap, indentWithTab]),
           javascript(),
           oneDark,
           EditorView.lineWrapping,
           EditorView.updateListener.of((u) => {
             if (u.docChanged) {
-              const v = u.state.doc.toString();
-              onChange?.(v);
+              onChange?.(u.state.doc.toString());
             }
           })
         ]
@@ -62,10 +59,6 @@
 
   onDestroy(() => view?.destroy());
 
-  /**
-   * Si el padre cambia `value` (por ejemplo al cambiar de día/ejercicio),
-   * sincronizamos el documento del editor con el nuevo valor.
-   */
   $effect(() => {
     const v = value;
     if (view && v !== view.state.doc.toString()) {
@@ -76,7 +69,6 @@
   });
 </script>
 
-<!-- .dark forzado: el editor siempre se ve oscuro aunque la UI esté en modo claro -->
 <div class="dark overflow-hidden rounded border border-outline-variant bg-surface-container-lowest">
   <div
     class="flex items-center justify-between border-b border-outline-variant bg-surface-container px-4 py-3"
@@ -85,7 +77,7 @@
       <span class="material-symbols-outlined text-sm text-on-surface-variant">terminal</span>
       <span class="font-mono text-xs text-on-surface-variant">{filename}</span>
     </div>
-    <span class="font-mono text-xs text-on-surface-variant">JavaScript</span>
+    <span class="font-mono text-xs text-on-surface-variant">Tab o Ctrl+Espacio · autocompletar</span>
   </div>
   <div bind:this={host} class="cm-host min-h-[320px] text-sm"></div>
 </div>

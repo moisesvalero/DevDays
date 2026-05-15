@@ -38,20 +38,10 @@
   const claveActual = $derived(`${currentDay}-${ejercicioActivo}`);
   const codigoActual = $derived(codigosPorEjercicio.get(claveActual) ?? ejercicio.plantilla);
 
-  const esExamen = $derived(lesson.tipo === 'examen');
-  // Para aprobar: lección = 3/3 correctos; examen = al menos 4/5 correctos.
-  const minimoParaCompletar = $derived(esExamen ? 4 : totalEjercicios);
-  const canComplete = $derived(correctosDia.size >= minimoParaCompletar);
   const dailyProgressPct = $derived(
     Math.round((correctosDia.size / totalEjercicios) * 100)
   );
   const yaCompletado = $derived(completados.has(currentDay));
-
-  const completarLabel = $derived(
-    esExamen
-      ? `Aprobar examen (${correctosDia.size}/${totalEjercicios})`
-      : 'Marcar día completado'
-  );
 
   function resetFeedback() {
     feedback = null;
@@ -97,6 +87,8 @@
           dia: currentDay,
           ejercicio: ejercicioActivo,
           enunciado: ejercicio.enunciado,
+          queDebePasar: ejercicio.queDebePasar,
+          criteriosLogica: ejercicio.criteriosLogica,
           codigo,
           nivelAyuda
         })
@@ -167,12 +159,7 @@
 
 <main class="flex flex-1 overflow-hidden">
   <aside class="w-[280px] shrink-0 border-r border-outline-variant bg-surface-container-low">
-    <DayList
-      lessons={data.lessons}
-      progreso={data.progreso}
-      {currentDay}
-      onSelect={seleccionarDia}
-    />
+    <DayList lessons={data.lessons} {currentDay} onSelect={seleccionarDia} />
   </aside>
 
   <section class="flex flex-1 flex-col overflow-y-auto bg-background">
@@ -210,10 +197,7 @@
       {loading}
       {correctoUltimo}
       {dailyProgressPct}
-      {canComplete}
       {yaCompletado}
-      {completarLabel}
-      {esExamen}
       onComplete={marcarCompletado}
       onMasAyuda={pedirMasAyuda}
       onPreguntar={abrirDialog}
@@ -226,5 +210,6 @@
   dia={currentDay}
   ejercicio={ejercicioActivo}
   enunciado={ejercicio.enunciado}
+  queDebePasar={ejercicio.queDebePasar}
   {codigoActual}
 />

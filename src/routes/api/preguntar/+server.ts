@@ -10,6 +10,7 @@ type Body = {
   ejercicio: number;
   enunciado: string;
   codigoActual?: string;
+  queDebePasar?: string[];
   mensaje: string;
   historial: ChatMsg[];
 };
@@ -31,6 +32,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
     ejercicio: body.ejercicio,
     enunciado: body.enunciado,
     codigoActual: body.codigoActual ?? '',
+    queDebePasar: body.queDebePasar,
     mensaje: body.mensaje,
     historial: body.historial ?? []
   });
