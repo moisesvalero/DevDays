@@ -52,32 +52,57 @@ export const week1: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'El almacén recibe a un nuevo trabajador.',
-        'Guarda tu nombre y tu edad en dos variables. Crea un saludo con backticks que use ${nombre} y ${edad} (lee la sección «Meter variables dentro de un texto»). Muéstralo con console.log.',
-        ['Hay un mensaje con nombre y edad', 'Se muestra con console.log o equivalente'],
+        'Saludo con nombre y edad',
+        {
+          planteamiento:
+            'Se desea elaborar un mensaje de presentación que incorpore el nombre y la edad del operador mediante variables, sin repetir esos datos de forma literal en la cadena final. El resultado debe comprobarse en consola antes de continuar.',
+          requisitos: [
+            'Declare las variables `nombre` y `edad` con `const`, asignando valores propios de texto y número.',
+            'Construya el saludo con template literals (backticks), interpolando `${nombre}` y `${edad}`.',
+            'Escriba en consola el mensaje resultante con `console.log`.'
+          ],
+          salidaEsperada: 'Hola, soy Tu nombre y tengo 25 años',
+          notas: 'Consulte la sección «Meter variables dentro de un texto».'
+        },
         [
           'Existe variable con nombre',
           'Existe variable con edad',
           'El saludo usa los valores de las variables (backticks con ${...} o concatenación con +), no el texto fijo escrito a mano',
           'La salida menciona ambos datos'
         ],
-        `// Día 1 — Trabajador nuevo\nconst nombre = 'Tu nombre';\nconst edad = 25;\n// saludo con backticks: \`Hola, soy \${nombre} y tengo \${edad} años\`\n\n`
+        `// Día 1 — Saludo\nconst nombre = 'Tu nombre';\nconst edad = 25;\n// saludo con backticks: \`Hola, soy \${nombre} y tengo \${edad} años\`\n\n`
       ),
       ej(
         2,
-        'Cuentas cajas en la estantería del día.',
-        'Empieza en 0, suma 5, muestra el total.',
-        ['El total mostrado es 5'],
+        'Contador desde cero',
+        {
+          planteamiento:
+            'Se desea representar un contador que comienza en cero y recibe un incremento fijo de cinco unidades en el mismo proceso, mostrando después el resultado al operador.',
+          requisitos: [
+            'Declare la variable `cajas` con `let`, inicializada en 0.',
+            'Incremente `cajas` en 5 unidades.',
+            'Escriba en consola el valor final de `cajas` con `console.log`.'
+          ],
+          salidaEsperada: '5'
+        },
         ['Hay contador que empieza en 0', 'Se suma 5', 'Se imprime 5'],
-        `// Día 1 — Contador de cajas\nlet cajas = 0;\n\n`
+        `// Día 1 — Contador desde cero\nlet cajas = 0;\n\n`
       ),
       ej(
         3,
-        'Etiqueta de producto en la tienda.',
-        'Precio 19.99 y producto "camiseta". Muestra frase tipo "La camiseta cuesta 19.99 euros".',
-        ['La frase incluye producto y precio', 'Se muestra el texto final'],
+        'Frase con producto y precio',
+        {
+          planteamiento:
+            'Se dispone del nombre de un producto y de su precio unitario en variables separadas. Se solicita generar una frase descriptiva que combine ambos datos y mostrarla en consola.',
+          requisitos: [
+            'Utilice las variables `producto` y `precio` ya declaradas en la plantilla.',
+            'Construya la frase con template literals o concatenación, incluyendo producto y precio.',
+            'Escriba en consola el texto final con `console.log`.'
+          ],
+          salidaEsperada: 'La camiseta cuesta 19.99 euros'
+        },
         ['Hay precio y nombre de producto', 'El mensaje final los menciona'],
-        `// Día 1 — Etiqueta\nconst precio = 19.99;\nconst producto = 'camiseta';\n\n`
+        `// Día 1 — Producto y precio\nconst precio = 19.99;\nconst producto = 'camiseta';\n\n`
       )
     ]
   },
@@ -122,27 +147,51 @@ export const week1: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Comparas dos precios de proveedor.',
-        'Dos precios: quedarte con el mayor y mostrarlo.',
-        ['Se muestra el precio mayor'],
+        'El precio más alto',
+        {
+          planteamiento:
+            'Se comparan dos importes numéricos representando precios alternativos. El programa debe determinar cuál es el mayor y comunicar ese valor al operador por consola.',
+          requisitos: [
+            'Utilice las variables `a` y `b` ya definidas en la plantilla.',
+            'Calcule o seleccione el precio mayor mediante operadores o condicionales.',
+            'Escriba en consola el valor numérico resultante con `console.log`.'
+          ],
+          salidaEsperada: '12'
+        },
         ['Hay dos precios', 'Se elige el mayor', 'Se imprime un número'],
-        `const a = 12;\nconst b = 9;\n\n`
+        `// Día 2 — Precio más alto\nconst a = 12;\nconst b = 9;\n\n`
       ),
       ej(
         2,
-        '¿Puedo enviar el pedido?',
-        'Cliente pagó (true) y hay stock (número > 0). Muestra si puede enviarse.',
-        ['Se muestra true o false según lógica'],
+        '¿Se puede enviar el pedido?',
+        {
+          planteamiento:
+            'Un pedido solo puede enviarse si el cliente ha pagado y existe stock disponible (cantidad estrictamente mayor que cero). Se deben evaluar ambas condiciones y exponer el resultado booleano en consola.',
+          requisitos: [
+            'Utilice las variables `pagado` y `stock` de la plantilla.',
+            'Combine ambas condiciones con operadores lógicos (`&&` u equivalente).',
+            'Escriba en consola el valor booleano que indique si el envío es posible.'
+          ],
+          salidaEsperada: 'true'
+        },
         ['Combina pago y stock', 'Resultado booleano visible'],
-        `const pagado = true;\nconst stock = 3;\n\n`
+        `// Día 2 — Envío del pedido\nconst pagado = true;\nconst stock = 3;\n\n`
       ),
       ej(
         3,
-        'Caja vacía o llena.',
-        'Variable texto vacía. Muestra si “hay contenido” (true si no está vacía).',
-        ['true si hay texto, false si vacío'],
+        '¿Hay texto en la nota?',
+        {
+          planteamiento:
+            'Se dispone de una cadena que representa una nota interna, posiblemente vacía. Se requiere comprobar si contiene texto útil y mostrar un booleano que indique si hay contenido.',
+          requisitos: [
+            'Utilice la variable `nota` de la plantilla.',
+            'Evalúe si la cadena tiene contenido (no está vacía) y obtenga un booleano.',
+            'Escriba en consola ese resultado con `console.log`.'
+          ],
+          salidaEsperada: 'false'
+        },
         ['Comprueba si hay contenido', 'Imprime booleano'],
-        `const nota = '';\n\n`
+        `// Día 2 — Nota vacía\nconst nota = '';\n\n`
       )
     ]
   },
@@ -187,27 +236,51 @@ export const week1: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Tarifa según edad.',
-        'Si edad >= 18 muestra "adulto", si no "menor".',
-        ['Muestra uno de los dos textos correcto'],
+        'Adulto o menor',
+        {
+          planteamiento:
+            'Se dispone de la edad de una persona en años. El programa debe clasificarla como «adulto» o «menor» según el umbral legal de dieciocho años e imprimir la etiqueta correspondiente.',
+          requisitos: [
+            'Utilice la variable `edad` de la plantilla (valor 20).',
+            'Implemente una rama condicional: si `edad >= 18`, asigne el texto «adulto»; en caso contrario, «menor».',
+            'Escriba en consola la etiqueta resultante con `console.log`.'
+          ],
+          salidaEsperada: 'adulto'
+        },
         ['Usa condición con edad', 'Salida coherente con 18+'],
-        `const edad = 20;\n\n`
+        `// Día 3 — Adulto o menor\nconst edad = 20;\n\n`
       ),
       ej(
         2,
-        'Descuento VIP.',
-        'Variable esVip. Mensaje "descuento" o "precio normal" (ternario o if).',
-        ['Mensaje según VIP'],
+        'Precio VIP o normal',
+        {
+          planteamiento:
+            'Un cliente puede tener estatus VIP, lo que afecta el mensaje de tarifa mostrado. Se debe elegir entre dos mensajes exclusivos según el valor de `esVip` y mostrarlo en consola.',
+          requisitos: [
+            'Utilice la variable `esVip` de la plantilla.',
+            'Asigne el texto «descuento» si es VIP, o «precio normal» en caso contrario (ternario o `if`).',
+            'Escriba en consola el mensaje elegido con `console.log`.'
+          ],
+          salidaEsperada: 'descuento'
+        },
         ['Depende de esVip', 'Dos resultados posibles'],
-        `const esVip = true;\n\n`
+        `// Día 3 — Tarifa VIP\nconst esVip = true;\n\n`
       ),
       ej(
         3,
-        'Día de la semana.',
-        'Variable dia con "lunes" o "martes". switch o if que imprima rutina distinta.',
-        ['Salida distinta según dia'],
+        'Rutina según el día',
+        {
+          planteamiento:
+            'Se conoce el día de la semana en forma de cadena. El programa debe seleccionar e imprimir una rutina distinta según ese valor, empleando `switch` o una cadena de `if`.',
+          requisitos: [
+            'Utilice la variable `dia` de la plantilla (`\'lunes\'`).',
+            'Defina al menos dos ramas con mensajes de rutina diferentes según el día.',
+            'Escriba en consola la rutina correspondiente al valor de `dia`.'
+          ],
+          salidaEsperada: 'Rutina de lunes (texto distinto según el día elegido en código)'
+        },
         ['Ramifica por dia', 'Imprime texto'],
-        `const dia = 'lunes';\n\n`
+        `// Día 3 — Rutina semanal\nconst dia = 'lunes';\n\n`
       )
     ]
   },
@@ -252,27 +325,51 @@ export const week1: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Máquina que duplica.',
-        'Función que recibe número y devuelve el doble. Pruébala con 4 y muestra resultado.',
-        ['Se muestra 8'],
+        'Función duplicar',
+        {
+          planteamiento:
+            'Se requiere encapsular el cálculo del doble de un número en una función reutilizable. Tras completar su implementación, debe invocarse con un argumento concreto y mostrarse el resultado en consola.',
+          requisitos: [
+            'Complete la función `duplicar(n)` para que devuelva el doble de `n` con `return`.',
+            'Invoque `duplicar` pasando el argumento `4`.',
+            'Escriba en consola el valor devuelto con `console.log`.'
+          ],
+          salidaEsperada: '8'
+        },
         ['Hay función que duplica', 'Se usa y se imprime resultado'],
-        `function duplicar(n) {\n  // return ...\n}\n\n`
+        `// Día 4 — Función duplicar\nfunction duplicar(n) {\n  // return ...\n}\n\n`
       ),
       ej(
         2,
-        'Sumar dos medidas.',
-        'Función sumar(a,b) flecha o clásica. Muestra sumar(3,7).',
-        ['Muestra 10'],
+        'Función sumar',
+        {
+          planteamiento:
+            'Se desea una función flecha que sume dos operandos numéricos. Una vez definida, debe evaluarse con parámetros concretos y mostrarse la suma en consola.',
+          requisitos: [
+            'Complete la arrow function `sumar(a, b)` para que devuelva `a + b`.',
+            'Invoque `sumar(3, 7)` y capture o use directamente su resultado.',
+            'Escriba en consola el valor obtenido con `console.log`.'
+          ],
+          salidaEsperada: '10'
+        },
         ['Función suma dos valores', 'Salida 10'],
-        `const sumar = (a, b) => {\n};\n\n`
+        `// Día 4 — Función sumar\nconst sumar = (a, b) => {\n};\n\n`
       ),
       ej(
         3,
-        'Saludo con nombre por defecto.',
-        'Función saludar(nombre) si no pasan nombre usa "invitado".',
-        ['Saludo con invitado si falta nombre'],
+        'Saludo con valor por defecto',
+        {
+          planteamiento:
+            'Se define una función de saludo que acepta un nombre opcional. Si el llamador omite el argumento, debe emplearse el valor por defecto «invitado» y mostrarse el saludo resultante.',
+          requisitos: [
+            'Complete `saludar(nombre = \'invitado\')` para devolver o imprimir un saludo que incluya `nombre`.',
+            'Invoque `saludar()` sin argumentos.',
+            'Escriba en consola el saludo generado (debe mencionar «invitado»).'
+          ],
+          salidaEsperada: 'Hola, invitado'
+        },
         ['Valor por defecto', 'Devuelve o imprime saludo'],
-        `function saludar(nombre = 'invitado') {\n}\n\n`
+        `// Día 4 — Saludo por defecto\nfunction saludar(nombre = 'invitado') {\n}\n\n`
       )
     ]
   },
@@ -317,27 +414,51 @@ export const week1: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Minutos a segundos.',
-        'Lista de minutos por capítulo → lista en segundos (×60). Muestra resultado.',
-        ['Array de segundos correcto'],
+        'Minutos a segundos',
+        {
+          planteamiento:
+            'Se dispone de una lista de duraciones en minutos correspondientes a varios capítulos. Se solicita transformar cada elemento a segundos (multiplicación por 60) sin modificar el array original y mostrar el nuevo array.',
+          requisitos: [
+            'Utilice el array `minutos` de la plantilla.',
+            'Aplique `map` para obtener un array de segundos (cada valor × 60).',
+            'Escriba en consola el array resultante con `console.log`.'
+          ],
+          salidaEsperada: '[1500, 2400, 900]'
+        },
         ['Usa map', 'Multiplica por 60', 'Muestra array'],
-        `const minutos = [25, 40, 15];\n\n`
+        `// Día 5 — Minutos a segundos\nconst minutos = [25, 40, 15];\n\n`
       ),
       ej(
         2,
-        'Nombres largos.',
-        'Lista de nombres de mascotas: quedarte solo con más de 4 letras.',
-        ['Solo nombres largos'],
+        'Nombres de más de 4 letras',
+        {
+          planteamiento:
+            'Se dispone de un array de nombres de mascotas con longitudes variadas. El programa debe conservar únicamente aquellos cuyo nombre supera cuatro caracteres y mostrar el subarray filtrado.',
+          requisitos: [
+            'Utilice el array `mascotas` de la plantilla.',
+            'Aplique `filter` con la condición `nombre.length > 4`.',
+            'Escriba en consola el array filtrado con `console.log`.'
+          ],
+          salidaEsperada: "['perro', 'elefante']"
+        },
         ['Usa filter', 'Condición longitud > 4'],
-        `const mascotas = ['gato', 'perro', 'elefante', 'pez'];\n\n`
+        `// Día 5 — Filtrar nombres largos\nconst mascotas = ['gato', 'perro', 'elefante', 'pez'];\n\n`
       ),
       ej(
         3,
-        'Buscar usuario.',
-        'Array de {id,nombre}: find id 2 y muestra solo el nombre.',
-        ['Muestra nombre del id 2'],
+        'Buscar usuario por id',
+        {
+          planteamiento:
+            'Se dispone de una colección de objetos usuario con identificador y nombre. Se debe localizar el registro cuyo `id` es 2 y mostrar únicamente el nombre asociado en consola.',
+          requisitos: [
+            'Utilice el array `usuarios` de la plantilla.',
+            'Aplique `find` para obtener el objeto con `id === 2`.',
+            'Escriba en consola solo la propiedad `nombre` del resultado.'
+          ],
+          salidaEsperada: 'Luis'
+        },
         ['find por id', 'Imprime nombre'],
-        `const usuarios = [{ id: 1, nombre: 'Ana' }, { id: 2, nombre: 'Luis' }];\n\n`
+        `// Día 5 — Buscar por id\nconst usuarios = [{ id: 1, nombre: 'Ana' }, { id: 2, nombre: 'Luis' }];\n\n`
       )
     ]
   },
@@ -382,27 +503,51 @@ export const week1: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Total del albarán.',
-        'Precios [10,20,30] → suma total con reduce y muéstrala.',
-        ['Muestra 60'],
+        'Suma de precios',
+        {
+          planteamiento:
+            'Se dispone de una lista de precios unitarios. El programa debe agregar todos los importes en un único total mediante `reduce` y comunicar ese total al operador por consola.',
+          requisitos: [
+            'Utilice el array `precios` de la plantilla.',
+            'Aplique `reduce` con valor inicial `0` para acumular la suma.',
+            'Escriba en consola el total obtenido con `console.log`.'
+          ],
+          salidaEsperada: '60'
+        },
         ['reduce suma', 'Resultado 60'],
-        `const precios = [10, 20, 30];\n\n`
+        `// Día 6 — Suma de precios\nconst precios = [10, 20, 30];\n\n`
       ),
       ej(
         2,
-        '¿Hay menores?',
-        'Edades: ¿alguna menor de 18? Muestra true/false.',
-        ['true si hay menor'],
+        '¿Hay algún menor de edad?',
+        {
+          planteamiento:
+            'Se dispone de un array de edades. Se debe determinar si al menos una persona es menor de dieciocho años y mostrar un booleano que resuma esa comprobación.',
+          requisitos: [
+            'Utilice el array `edades` de la plantilla.',
+            'Aplique `some` con la condición `edad < 18`.',
+            'Escriba en consola el booleano resultante con `console.log`.'
+          ],
+          salidaEsperada: 'true'
+        },
         ['some con condición < 18'],
-        `const edades = [22, 17, 31];\n\n`
+        `// Día 6 — Menor de edad\nconst edades = [22, 17, 31];\n\n`
       ),
       ej(
         3,
-        'Ordenar números.',
-        'Ordena [10,1,21,2] de menor a mayor y muéstralo.',
-        ['[1,2,10,21] u orden equivalente'],
+        'Ordenar de menor a mayor',
+        {
+          planteamiento:
+            'Se dispone de un array de enteros desordenados. El programa debe reordenarlos de menor a mayor empleando un comparador numérico en `sort` y mostrar la lista resultante.',
+          requisitos: [
+            'Utilice el array `nums` de la plantilla.',
+            'Ordene con `sort((a, b) => a - b)` o lógica equivalente.',
+            'Escriba en consola el array ordenado con `console.log`.'
+          ],
+          salidaEsperada: '[1, 2, 10, 21]'
+        },
         ['sort numérico o lógica que ordene'],
-        `const nums = [10, 1, 21, 2];\n\n`
+        `// Día 6 — Orden ascendente\nconst nums = [10, 1, 21, 2];\n\n`
       )
     ]
   },
@@ -414,11 +559,86 @@ export const week1: Leccion[] = [
     objetivo: 'Demostrar variables, condicionales, funciones y métodos de array.',
     instrucciones: `Cinco retos sobre la semana 1. La IA evalúa el efecto del código, no la sintaxis perfecta. Puedes usar el podcast de repaso (NotebookLM) con los días 1–6.`,
     ejercicios: [
-      ej(1, 'Etiqueta de envío.', 'Nombre y ciudad en mensaje de envío.', ['Mensaje con nombre y ciudad'], ['Dos datos', 'Texto final los incluye'], `const nombre = 'Moisés';\nconst ciudad = 'Alcoy';\n\n`),
-      ej(2, 'Stock mínimo.', 'Si stock < 5 muestra "reponer", si no "ok".', ['Texto según stock'], ['Condición con stock', 'Dos salidas'], `const stock = 3;\n\n`),
-      ej(3, 'Doble lista.', 'map para duplicar [1,2,3].', ['[2,4,6]'], ['map duplica'], `const nums = [1, 2, 3];\n\n`),
-      ej(4, 'Suma total.', 'reduce para sumar [5,10,15].', ['30'], ['reduce suma'], `const v = [5, 10, 15];\n\n`),
-      ej(5, 'Herramienta área.', 'Función areaRect(base,altura) devuelve base*altura; prueba 4 y 5.', ['20'], ['Función área', 'Resultado 20'], `function areaRect(b, h) {\n}\n\n`)
+      ej(
+        1,
+        'Mensaje de envío',
+        {
+          planteamiento:
+            'Se dispone del nombre del destinatario y de su ciudad de destino. Se solicita construir un mensaje de envío que incorpore ambos datos mediante variables y mostrarlo en consola.',
+          requisitos: [
+            'Utilice las variables `nombre` y `ciudad` de la plantilla (Moisés, Alcoy).',
+            'Construya el mensaje con template literals o concatenación, incluyendo nombre y ciudad.',
+            'Escriba en consola el texto final con `console.log`.'
+          ],
+          salidaEsperada: 'Envío para Moisés hacia Alcoy'
+        },
+        ['Dos datos', 'Texto final los incluye'],
+        `// Día 7 — Mensaje de envío\nconst nombre = 'Moisés';\nconst ciudad = 'Alcoy';\n\n`
+      ),
+      ej(
+        2,
+        'Alerta de stock',
+        {
+          planteamiento:
+            'El nivel de stock de un producto determina la acción logística a comunicar. Si las unidades disponibles son inferiores a cinco, debe indicarse reposición; en caso contrario, estado correcto.',
+          requisitos: [
+            'Utilice la variable `stock` de la plantilla (valor 3).',
+            'Implemente una rama: si `stock < 5`, imprima «reponer»; si no, «ok».',
+            'Escriba en consola la etiqueta resultante con `console.log`.'
+          ],
+          salidaEsperada: 'reponer'
+        },
+        ['Condición con stock', 'Dos salidas'],
+        `// Día 7 — Alerta de stock\nconst stock = 3;\n\n`
+      ),
+      ej(
+        3,
+        'Duplicar con map',
+        {
+          planteamiento:
+            'Se dispone de un array de enteros. Cada elemento debe transformarse al doble de su valor mediante `map`, generando un nuevo array que se mostrará en consola.',
+          requisitos: [
+            'Utilice el array `nums` de la plantilla `[1, 2, 3]`.',
+            'Aplique `map` para devolver cada elemento multiplicado por 2.',
+            'Escriba en consola el array resultante con `console.log`.'
+          ],
+          salidaEsperada: '[2, 4, 6]'
+        },
+        ['map duplica'],
+        `// Día 7 — Duplicar con map\nconst nums = [1, 2, 3];\n\n`
+      ),
+      ej(
+        4,
+        'Suma con reduce',
+        {
+          planteamiento:
+            'Se dispone de una lista de valores numéricos. El programa debe calcular su suma total empleando `reduce` y exponer el resultado en consola.',
+          requisitos: [
+            'Utilice el array `v` de la plantilla `[5, 10, 15]`.',
+            'Aplique `reduce` con valor inicial `0` para acumular la suma.',
+            'Escriba en consola el total con `console.log`.'
+          ],
+          salidaEsperada: '30'
+        },
+        ['reduce suma'],
+        `// Día 7 — Suma con reduce\nconst v = [5, 10, 15];\n\n`
+      ),
+      ej(
+        5,
+        'Área del rectángulo',
+        {
+          planteamiento:
+            'Se requiere una función que calcule el área de un rectángulo a partir de base y altura. Tras implementarla, debe invocarse con dimensiones concretas y mostrarse el área en consola.',
+          requisitos: [
+            'Complete `areaRect(b, h)` para que devuelva `b * h` con `return`.',
+            'Invoque `areaRect(4, 5)` y utilice su valor de retorno.',
+            'Escriba en consola el área obtenida con `console.log`.'
+          ],
+          salidaEsperada: '20'
+        },
+        ['Función área', 'Resultado 20'],
+        `// Día 7 — Área del rectángulo\nfunction areaRect(b, h) {\n}\n\n`
+      )
     ]
   }
 ];

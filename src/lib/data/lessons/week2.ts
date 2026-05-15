@@ -42,27 +42,54 @@ export const week2: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Registro de producto.',
-        'Objeto producto con nombre y precio; muestra nombre.',
-        ['Muestra nombre'],
+        'Objeto producto',
+        {
+          planteamiento:
+            'Se dispone de un registro de producto representado mediante un objeto literal con las propiedades `nombre` y `precio`. Se requiere acceder a uno de sus campos y mostrarlo en consola.',
+          requisitos: [
+            'Utilice el objeto `producto` ya declarado en la plantilla.',
+            'Acceda a la propiedad `nombre` mediante notación de punto o corchetes.',
+            'Escriba en consola el valor obtenido.'
+          ],
+          salidaEsperada: 'mesa',
+          notas: 'Consulte la sección «Objeto literal».'
+        },
         ['Objeto con campos', 'Accede a nombre'],
-        `const producto = { nombre: 'mesa', precio: 99 };\n\n`
+        `const producto = { nombre: 'mesa', precio: 99 };\n// Muestre producto.nombre\n\n`
       ),
       ej(
         2,
-        'Desestructurar usuario.',
-        'Destructuring de usuario con nombre y rol; muestra ambos.',
-        ['Muestra nombre y rol'],
+        'Destructuring de usuario',
+        {
+          planteamiento:
+            'Un objeto `usuario` agrupa el nombre y el rol de una cuenta. Mediante destructuring de objetos se pueden extraer ambas propiedades en variables independientes.',
+          requisitos: [
+            'Aplique destructuring sobre `usuario` para obtener `nombre` y `rol`.',
+            'Escriba en consola el valor de `nombre`.',
+            'Escriba en consola el valor de `rol`.'
+          ],
+          salidaEsperada: 'Luis y admin (dos líneas o valores visibles)',
+          notas: 'Consulte la sección «Destructuring».'
+        },
         ['Destructuring', 'Dos valores visibles'],
-        `const usuario = { nombre: 'Luis', rol: 'admin' };\n\n`
+        `const usuario = { nombre: 'Luis', rol: 'admin' };\n// const { nombre, rol } = usuario;\n\n`
       ),
       ej(
         3,
-        'Copia inmutable.',
-        'Copia cliente y cambia solo ciudad; muestra ciudad nueva.',
-        ['Ciudad actualizada'],
+        'Copia con spread',
+        {
+          planteamiento:
+            'Se desea actualizar únicamente la ciudad de un cliente sin modificar el objeto original. El operador spread permite crear una copia superficial y sobrescribir propiedades concretas.',
+          requisitos: [
+            'Cree un nuevo objeto `actualizado` a partir de `cliente` mediante spread (`...`).',
+            'Asigne la propiedad `ciudad` con el valor `"Madrid"` en el objeto resultante.',
+            'Escriba en consola `actualizado.ciudad`.'
+          ],
+          salidaEsperada: 'Madrid',
+          notas: 'Consulte la sección «Spread operator».'
+        },
         ['Spread', 'Ciudad distinta en copia'],
-        `const cliente = { nombre: 'Ana', ciudad: 'Valencia' };\n\n`
+        `const cliente = { nombre: 'Ana', ciudad: 'Valencia' };\n// const actualizado = { ...cliente, ciudad: 'Madrid' };\n\n`
       )
     ]
   },
@@ -114,27 +141,54 @@ export const week2: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Iterar frutas.',
-        'Imprime cada fruta de un array con for...of.',
-        ['Cada fruta impresa'],
+        'Iterar con for...of',
+        {
+          planteamiento:
+            'Se dispone de un array de cadenas que representa una lista de elementos. Se requiere recorrer cada elemento e imprimirlo en consola sin utilizar un índice numérico explícito.',
+          requisitos: [
+            'Utilice el array `frutas` proporcionado en la plantilla.',
+            'Recorra el array con un bucle `for...of`.',
+            'Escriba en consola cada elemento del array.'
+          ],
+          salidaEsperada: 'manzana y pera (una línea por elemento)',
+          notas: 'Consulte la sección «for...of».'
+        },
         ['Recorre array', 'Imprime elementos'],
-        `const frutas = ['manzana', 'pera'];\n\n`
+        `const frutas = ['manzana', 'pera'];\n// for (const fruta of frutas) { ... }\n\n`
       ),
       ej(
         2,
-        'map para duplicar.',
-        'Duplica números [1,2,3] con map.',
-        ['[2,4,6]'],
+        'map para duplicar',
+        {
+          planteamiento:
+            'Dado un array de números enteros, se desea obtener un nuevo array donde cada valor sea el doble del original. El método `map` transforma cada elemento y devuelve un array del mismo tamaño.',
+          requisitos: [
+            'Utilice el array `n` declarado en la plantilla.',
+            'Aplique `map` para multiplicar cada elemento por 2.',
+            'Escriba en consola el array resultante.'
+          ],
+          salidaEsperada: '[2, 4, 6]',
+          notas: 'Consulte la sección «¿Cuándo cada uno?».'
+        },
         ['map x2'],
-        `const n = [1, 2, 3];\n\n`
+        `const n = [1, 2, 3];\n// const duplicados = n.map(x => x * 2);\n\n`
       ),
       ej(
         3,
-        'Acumular con bucle.',
-        'Suma [1,2,3] con for o reduce.',
-        ['6'],
+        'Acumular con bucle',
+        {
+          planteamiento:
+            'Se plantea calcular la suma total de los elementos de un array numérico. Puede resolverse con un bucle acumulador (`for`, `for...of` o `while`) o con el método `reduce`.',
+          requisitos: [
+            'Utilice el array `vals` de la plantilla.',
+            'Calcule la suma de todos sus elementos.',
+            'Escriba en consola el total obtenido.'
+          ],
+          salidaEsperada: '6',
+          notas: 'Se aceptan `for`, `for...of`, `while` o `reduce` con el mismo resultado.'
+        },
         ['Suma total 6'],
-        `const vals = [1, 2, 3];\n\n`
+        `const vals = [1, 2, 3];\n// Acumule la suma e imprímala\n\n`
       )
     ]
   },
@@ -178,27 +232,54 @@ export const week2: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Factory contador.',
-        'Función que devuelve otra que suma 1 cada vez; llama 3 veces.',
-        ['1,2,3 o acumulado visible'],
+        'Factory contador',
+        {
+          planteamiento:
+            'Se desea implementar un patrón factory que devuelve una función interna capaz de incrementar un contador privado. Cada invocación de la función devuelta debe aumentar el valor encapsulado en la closure.',
+          requisitos: [
+            'Complete `crearContador` para que devuelva una función que incremente un contador interno.',
+            'Asigne la función devuelta a una variable (por ejemplo `siguiente`).',
+            'Invoque esa función al menos tres veces y escriba en consola el resultado de la última llamada.'
+          ],
+          salidaEsperada: '3 (o secuencia 1, 2, 3 visible en consola)',
+          notas: 'Consulte la sección «Closure».'
+        },
         ['Closure contador'],
-        `function crearContador() {\n}\n\n`
+        `function crearContador() {\n  // let n = 0; return () => ++n;\n}\n\n`
       ),
       ej(
         2,
-        'Factory multiplicador.',
-        'crearMultiplicador(5) devuelve función que multiplica por 5.',
-        ['10 si pasas 2'],
+        'Factory multiplicador',
+        {
+          planteamiento:
+            'Una función de orden superior puede recibir un factor numérico y devolver otra función que multiplique cualquier argumento por dicho factor. El factor queda capturado en la closure de la función interna.',
+          requisitos: [
+            'Complete `crearMultiplicador` para que reciba `factor` y devuelva una función multiplicadora.',
+            'Cree una instancia con factor `5` (por ejemplo `porCinco`).',
+            'Invoque la función resultante con el argumento `2` y escriba en consola el producto.'
+          ],
+          salidaEsperada: '10',
+          notas: 'Consulte la sección «Closure».'
+        },
         ['Closure con factor'],
-        `function crearMultiplicador(factor) {\n}\n\n`
+        `function crearMultiplicador(factor) {\n  // return (n) => n * factor;\n}\n\n`
       ),
       ej(
         3,
-        'Definición en texto.',
-        'Variable respuesta: en 2 frases qué es una closure.',
-        ['Menciona recuerda/entorno'],
+        'Definición en texto',
+        {
+          planteamiento:
+            'Además de implementar closures en código, se solicita expresar con sus propias palabras el concepto de closure en JavaScript. La respuesta debe redactarse en prosa breve.',
+          requisitos: [
+            'Declare la constante `respuesta` con un template string de dos frases.',
+            'Explique qué es una closure y qué relación tiene con el entorno léxico.',
+            'Escriba en consola el contenido de `respuesta`.'
+          ],
+          salidaEsperada: 'Texto que mencione entorno, recuerda o variables capturadas',
+          notas: 'No se evalúa sintaxis de código ejecutable; basta la explicación en `respuesta`.'
+        },
         ['Texto con idea de closure'],
-        `const respuesta = \`...\`;\nconsole.log(respuesta);`
+        `const respuesta = \`...\`; // Dos frases sobre closure\nconsole.log(respuesta);`
       )
     ]
   },
@@ -242,27 +323,54 @@ export const week2: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Resolver manualmente.',
-        'Crea Promise que resuelve con "hola" y muestra en then.',
-        ['Muestra hola'],
+        'Resolver manualmente',
+        {
+          planteamiento:
+            'Se requiere construir una promesa que se resuelva de forma síncrona dentro del ejecutor y consumir su valor mediante el método `then`. Este patrón ilustra el estado fulfilled de una Promise.',
+          requisitos: [
+            'Complete el constructor de `p` invocando `resolve` con la cadena `"hola"`.',
+            'Encadene `.then` para recibir el valor resuelto.',
+            'Escriba en consola el valor recibido en el callback de `then`.'
+          ],
+          salidaEsperada: 'hola',
+          notas: 'Consulte la sección «then / catch».'
+        },
         ['Promise resolve', 'then imprime'],
-        `const p = new Promise((resolve) => {\n});\n\n`
+        `const p = new Promise((resolve) => {\n  // resolve('hola');\n});\n// p.then(valor => console.log(valor));\n\n`
       ),
       ej(
         2,
-        'Rechazar y catch.',
-        'Promesa que rechaza y catch muestra mensaje.',
-        ['Muestra error'],
+        'Rechazar y catch',
+        {
+          planteamiento:
+            'Cuando una operación asíncrona falla, la promesa pasa al estado rejected. El método `catch` permite capturar el error y reaccionar sin interrumpir el hilo principal.',
+          requisitos: [
+            'Complete el constructor de `p` invocando `reject` con un mensaje de error.',
+            'Encadene `.catch` para manejar el rechazo.',
+            'Escriba en consola el mensaje de error capturado.'
+          ],
+          salidaEsperada: 'error (o el mensaje que haya pasado a reject)',
+          notas: 'Consulte la sección «then / catch».'
+        },
         ['reject y catch'],
-        `const p = new Promise((_, reject) => {\n});\n\n`
+        `const p = new Promise((_, reject) => {\n  // reject('error');\n});\n// p.catch(err => console.log(err));\n\n`
       ),
       ej(
         3,
-        'Encadenar transformación.',
-        'then que transforma "hola" a "HOLA".',
-        ['HOLA'],
+        'Encadenar transformación',
+        {
+          planteamiento:
+            'El encadenamiento de `then` permite transformar el valor resuelto antes de consumirlo. Se parte de una promesa ya resuelta con una cadena en minúsculas.',
+          requisitos: [
+            'Parta de `Promise.resolve("hola")`.',
+            'Encadene un `then` que convierta el valor a mayúsculas (`toUpperCase`).',
+            'Escriba en consola el resultado final del encadenamiento.'
+          ],
+          salidaEsperada: 'HOLA',
+          notas: 'Consulte la sección «then / catch».'
+        },
         ['then transforma'],
-        `Promise.resolve('hola').then(...);\n\n`
+        `Promise.resolve('hola')\n  // .then(s => s.toUpperCase())\n  // .then(s => console.log(s));\n\n`
       )
     ]
   },
@@ -306,27 +414,56 @@ export const week2: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Await básico.',
-        'async que await Promise.resolve(42) y muestra 42.',
-        ['42'],
+        'Await básico',
+        {
+          planteamiento:
+            'La sintaxis `async/await` permite escribir código asíncrono con apariencia secuencial. Una función marcada como `async` puede usar `await` para obtener el valor de una promesa resuelta.',
+          requisitos: [
+            'Complete la función `main` declarada como `async`.',
+            'Utilice `await` sobre `Promise.resolve(42)`.',
+            'Escriba en consola el valor obtenido e invoque `main()`.'
+          ],
+          salidaEsperada: '42',
+          notas: 'Consulte la sección «async / await».'
+        },
         ['async await', '42 visible'],
-        `async function main() {\n}\nmain();`
+        `async function main() {\n  // const n = await Promise.resolve(42);\n  // console.log(n);\n}\nmain();`
       ),
       ej(
         2,
-        'try catch.',
-        'try divide 10/0 o acceso fallido; catch muestra "error".',
-        ['Muestra error'],
+        'try catch',
+        {
+          planteamiento:
+            'Las excepciones y los rechazos de promesas pueden capturarse con `try/catch` dentro de funciones `async`. Se plantea un escenario donde la ejecución puede fallar y debe manejarse el error.',
+          requisitos: [
+            'Complete `probar` como función `async`.',
+            'Envuelva en `try` una operación que lance o rechace (por ejemplo división inválida o acceso a propiedad inexistente).',
+            'En `catch`, escriba en consola la cadena `"error"`.',
+            'Invoque `probar()` al final del script.'
+          ],
+          salidaEsperada: 'error',
+          notas: 'Consulte la sección «try / catch».'
+        },
         ['try y catch'],
-        `async function probar() {\n}\nprobar();`
+        `async function probar() {\n  // try { ... } catch { console.log('error'); }\n}\nprobar();`
       ),
       ej(
         3,
-        'fetch público.',
-        'fetch a jsonplaceholder post 1 y muestra title (o explica en comentario si no hay red).',
-        ['title o manejo error'],
+        'fetch público',
+        {
+          planteamiento:
+            'Se desea consumir un recurso HTTP público mediante `fetch`, parsear la respuesta JSON y mostrar un campo del objeto resultante. Si no hay conectividad, puede documentarse el manejo en un comentario.',
+          requisitos: [
+            'Complete `cargar` como función `async`.',
+            'Realice `fetch` a `https://jsonplaceholder.typicode.com/posts/1`.',
+            'Parsee el cuerpo con `.json()` y escriba en consola la propiedad `title`.',
+            'Si no hay red, indique en un comentario cómo capturaría el fallo con `try/catch`.'
+          ],
+          salidaEsperada: 'title del post (cadena no vacía) o manejo de error documentado',
+          notas: 'Consulte la sección «fetch + JSON».'
+        },
         ['fetch o try', 'datos o error'],
-        `async function cargar() {\n}\ncargar();`
+        `async function cargar() {\n  // const res = await fetch('https://jsonplaceholder.typicode.com/posts/1');\n  // const data = await res.json();\n  // console.log(data.title);\n}\ncargar();`
       )
     ]
   },
@@ -370,27 +507,54 @@ export const week2: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'querySelector en comentario.',
-        'Escribe en comentario qué haría querySelector para cambiar un h1.',
-        ['Comentario explica'],
+        'querySelector en comentario',
+        {
+          planteamiento:
+            'En aplicaciones Svelte el DOM suele gestionarse de forma declarativa; no obstante, conviene conocer la API imperativa del navegador. Se solicita describir por escrito cómo seleccionar y modificar un encabezado.',
+          requisitos: [
+            'Escriba un comentario de una o dos líneas en el archivo.',
+            'Indique qué selector CSS utilizaría con `document.querySelector`.',
+            'Explique qué propiedad modificaría para cambiar el texto de un `<h1>`.'
+          ],
+          salidaEsperada: 'Comentario que mencione querySelector y textContent (o equivalente)',
+          notas: 'Consulte la sección «Seleccionar y mutar nodos».'
+        },
         ['Menciona querySelector o selección'],
-        `// Si tuviera un h1 en la página...\n\n`
+        `// Describa: document.querySelector('h1') y .textContent = '...'\n\n`
       ),
       ej(
         2,
-        'Persistir tema.',
-        'Guarda clave "tema" valor "oscuro" y léela.',
-        ['Muestra oscuro'],
+        'Persistir tema',
+        {
+          planteamiento:
+            'La API `localStorage` permite almacenar pares clave-valor en el navegador de forma persistente entre sesiones. Se plantea guardar una preferencia de tema y recuperarla inmediatamente.',
+          requisitos: [
+            'Utilice `localStorage.setItem` con la clave `"tema"` y el valor `"oscuro"`.',
+            'Lea el valor almacenado con `localStorage.getItem("tema")`.',
+            'Escriba en consola el valor leído.'
+          ],
+          salidaEsperada: 'oscuro',
+          notas: 'Consulte la sección «localStorage».'
+        },
         ['setItem y getItem'],
         `localStorage.setItem('tema', 'oscuro');\nconsole.log(localStorage.getItem('tema'));`
       ),
       ej(
         3,
-        'addEventListener en texto.',
-        'respuesta: una frase qué hace addEventListener.',
-        ['Explica escuchar evento'],
+        'addEventListener en texto',
+        {
+          planteamiento:
+            'Los eventos del navegador permiten ejecutar código cuando el usuario interactúa con la página. Se solicita definir con precisión el propósito del método `addEventListener`.',
+          requisitos: [
+            'Declare la constante `respuesta` con una frase en template string.',
+            'Describa qué hace `addEventListener` (tipo de evento y función callback).',
+            'Escriba en consola el contenido de `respuesta`.'
+          ],
+          salidaEsperada: 'Texto que explique registrar un listener para un evento',
+          notas: 'Consulte la sección «Eventos del navegador».'
+        },
         ['Texto sobre evento'],
-        `const respuesta = \`...\`;\nconsole.log(respuesta);`
+        `const respuesta = \`...\`; // Una frase sobre addEventListener\nconsole.log(respuesta);`
       )
     ]
   },
@@ -404,43 +568,83 @@ export const week2: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Objeto pedido.',
-        'Objeto pedido id y total; muestra total.',
-        ['total visible'],
+        'Objeto con total',
+        {
+          planteamiento:
+            'Se dispone de un registro con identificador y importe total. Debe accederse a la propiedad numérica y mostrarse en consola como parte del repaso de objetos literales.',
+          requisitos: [
+            'Utilice el objeto `pedido` de la plantilla.',
+            'Acceda a la propiedad `total`.',
+            'Escriba en consola el valor de `total`.'
+          ],
+          salidaEsperada: '50'
+        },
         ['objeto pedido'],
-        `const pedido = { id: 1, total: 50 };\n\n`
+        `const pedido = { id: 1, total: 50 };\n// console.log(pedido.total);\n\n`
       ),
       ej(
         2,
-        'async con await.',
-        'async muestra 100 tras await Promise.resolve(100).',
-        ['100'],
+        'async con await',
+        {
+          planteamiento:
+            'Como parte del repaso de asincronía, se requiere obtener un valor numérico mediante `await` dentro de una función `async` y mostrarlo en consola.',
+          requisitos: [
+            'Complete la función `f` como `async`.',
+            'Utilice `await` sobre `Promise.resolve(100)`.',
+            'Escriba en consola el valor obtenido e invoque `f()`.'
+          ],
+          salidaEsperada: '100'
+        },
         ['async await'],
-        `async function f() {}\nf();`
+        `async function f() {\n  // const n = await Promise.resolve(100);\n  // console.log(n);\n}\nf();`
       ),
       ej(
         3,
-        'map en precios.',
-        'Duplica precios [5,10] con map.',
-        ['[10,20]'],
+        'map en precios',
+        {
+          planteamiento:
+            'Dado un array de precios unitarios, debe obtenerse un nuevo array con cada valor duplicado mediante el método `map`.',
+          requisitos: [
+            'Utilice el array `p` de la plantilla.',
+            'Aplique `map` para multiplicar cada elemento por 2.',
+            'Escriba en consola el array resultante.'
+          ],
+          salidaEsperada: '[10, 20]'
+        },
         ['map'],
-        `const p = [5, 10];\n\n`
+        `const p = [5, 10];\n// const doble = p.map(x => x * 2);\n\n`
       ),
       ej(
         4,
-        'Closure de saludo.',
-        'Función que recuerda saludo y lo devuelve.',
-        ['saludo'],
+        'Closure de saludo',
+        {
+          planteamiento:
+            'Se plantea una función factory que recibe una cadena de saludo y devuelve otra función capaz de recordar dicho valor gracias a una closure.',
+          requisitos: [
+            'Complete `crear` para que reciba `s` y devuelva una función sin argumentos.',
+            'La función devuelta debe retornar el saludo capturado.',
+            'Cree una instancia, invóquela y escriba en consola el resultado.'
+          ],
+          salidaEsperada: 'El saludo pasado al factory (cadena no vacía)'
+        },
         ['closure'],
-        `function crear(s) {}\n\n`
+        `function crear(s) {\n  // return () => s;\n}\n\n`
       ),
       ej(
         5,
-        'localStorage usuario.',
-        'Guarda y lee nombre usuario.',
-        ['nombre leído'],
+        'localStorage usuario',
+        {
+          planteamiento:
+            'Como cierre del repaso semanal, debe persistirse un nombre de usuario en `localStorage` y recuperarse para verificar la lectura correcta.',
+          requisitos: [
+            'Guarde en `localStorage` la clave `"user"` con un nombre de su elección.',
+            'Lea el valor con `getItem("user")`.',
+            'Escriba en consola el nombre recuperado.'
+          ],
+          salidaEsperada: 'El nombre guardado (cadena no vacía)'
+        },
         ['localStorage'],
-        `localStorage.setItem('user', 'Moi');\n\n`
+        `localStorage.setItem('user', 'Moi');\n// console.log(localStorage.getItem('user'));\n\n`
       )
     ]
   }

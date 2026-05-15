@@ -3,6 +3,7 @@
   import CodeBlock from './CodeBlock.svelte';
   import Callout from './Callout.svelte';
   import NotebookLmExport from './NotebookLmExport.svelte';
+  import ExerciseEnunciado from './ExerciseEnunciado.svelte';
 
   let {
     lesson,
@@ -23,9 +24,6 @@
     lesson.ejercicios.find((e) => e.numero === ejercicioActivo) ?? lesson.ejercicios[0]
   );
 
-  function tituloEjercicio(ej: Ejercicio): string {
-    return ej.historia || ej.enunciado;
-  }
 </script>
 
 {#if lesson.tipo === 'leccion'}
@@ -133,7 +131,7 @@
             {/if}
           </span>
           <span class="text-sm {activo ? 'font-semibold text-on-surface' : 'text-on-surface'}">
-            {tituloEjercicio(ej)}
+            {ej.titulo}
           </span>
         </div>
         {#if activo}
@@ -147,13 +145,14 @@
 </section>
 
 {#if ejercicioSel}
-  <section class="mt-6 space-y-4 rounded-lg border border-primary/30 bg-surface-container-low p-5">
-    <h3 class="text-sm font-semibold text-primary">Tu código debe lograr…</h3>
-    <ul class="list-disc space-y-1 pl-5 text-sm text-on-surface-variant">
-      {#each ejercicioSel.queDebePasar as q, i (i)}
-        <li>{q}</li>
-      {/each}
-    </ul>
-    <p class="text-sm text-on-surface-variant">{ejercicioSel.enunciado}</p>
+  <section class="mt-6 space-y-3 rounded-lg border border-primary/30 bg-surface-container-low p-5">
+    <h3 class="text-base font-semibold text-on-surface">
+      Ejercicio {ejercicioSel.numero}: {ejercicioSel.titulo}
+    </h3>
+    <ExerciseEnunciado enunciado={ejercicioSel.enunciado} />
+    <p class="text-xs text-on-surface-variant">
+      La corrección automática comprueba que la salida coincida con lo indicado; la sintaxis puede
+      variar.
+    </p>
   </section>
 {/if}

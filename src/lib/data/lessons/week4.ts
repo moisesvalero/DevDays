@@ -50,25 +50,48 @@ export const week4: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Plano del sitio pequeño.',
-        'Array rutas con tres strings: /, /contacto y /proyectos. Muéstralo con console.log.',
-        ['Array de 3 URLs', 'Incluye raíz y dos rutas'],
+        'Plano del sitio pequeño',
+        {
+          planteamiento:
+            'En SvelteKit, la estructura de carpetas bajo `src/routes` define el mapa de URLs de la aplicación. Se solicita representar en memoria el plano de un sitio pequeño.',
+          requisitos: [
+            'Declare el array `rutas` con tres strings: `/`, `/contacto` y `/proyectos`.',
+            'Escriba en consola el array con `console.log`.'
+          ],
+          salidaEsperada: 'Un array de 3 URLs que incluye la raíz y dos rutas adicionales.',
+          notas: 'Consulte la sección «Estructura típica de carpetas».'
+        },
         ['rutas es array', 'length 3 o tres strings correctos'],
         `// Día 22 — Plano del sitio\nconst rutas = [];\nconsole.log(rutas);\n`
       ),
       ej(
         2,
         '¿Dónde vive la página de precios?',
-        'Guarda en path la ruta del archivo +page.svelte para la URL /precios (desde src/routes).',
-        ['path menciona precios y +page.svelte'],
+        {
+          planteamiento:
+            'Cada URL pública corresponde a un archivo `+page.svelte` dentro de `src/routes`. Se pide identificar la ubicación del archivo que atiende una ruta concreta.',
+          requisitos: [
+            'Asigne a la variable `path` la ruta del archivo `+page.svelte` que responde a la URL `/precios` (desde `src/routes`).',
+            'Escriba en consola el valor de `path`.'
+          ],
+          salidaEsperada: 'Un string que menciona `precios` y `+page.svelte`.'
+        },
         ['String con routes/precios y +page'],
         `// Archivo que responde a /precios\nconst path = '';\nconsole.log(path);\n`
       ),
       ej(
         3,
-        'Menú de navegación.',
-        'Array enlaces con al menos 3 objetos { href, label }. Construye un string html con tres <a> (puede ser plantilla) y muéstralo.',
-        ['3 enlaces con href y label', 'Markup con <a href='],
+        'Menú de navegación',
+        {
+          planteamiento:
+            'Los menús de navegación enlazan rutas internas mediante etiquetas `<a href="...">`. Se solicita modelar un menú mínimo y generar su marcado HTML.',
+          requisitos: [
+            'Declare el array `enlaces` con al menos tres objetos `{ href, label }`.',
+            'Construya un string `html` con tres etiquetas `<a>` (puede usar plantilla literal).',
+            'Escriba en consola el string resultante.'
+          ],
+          salidaEsperada: 'Tres enlaces con `href` y `label`; el markup incluye `<a href=`.'
+        },
         ['Array 3 elementos', 'String con etiquetas a'],
         `const enlaces = [\n  { href: '/', label: 'Inicio' }\n];\nconst html = \`...\`;\nconsole.log(html);\n`
       )
@@ -122,25 +145,47 @@ export const week4: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Bosquejo de layout.',
-        'String codigo que incluya la palabra header, un nav y la línea de render de children. console.log si incluye "children".',
-        ['String con header y children'],
+        'Bosquejo de layout',
+        {
+          planteamiento:
+            'El archivo `+layout.svelte` define el marco compartido de un conjunto de rutas. Se solicita bosquejar su estructura mínima en un string.',
+          requisitos: [
+            'Asigne a `codigo` un string que incluya la palabra `header`, un `nav` y la línea de renderizado de children.',
+            'Escriba en consola si `codigo` incluye la cadena `"children"`.'
+          ],
+          salidaEsperada: 'Un string con `header` y `children`; la comprobación devuelve `true`.'
+        },
         ['codigo incluye header', 'codigo incluye render o children'],
         `const codigo = \`...\`;\nconsole.log(codigo.includes('children'));\n`
       ),
       ej(
         2,
-        'Layout solo para administración.',
-        'ubicacion = ruta del archivo +layout.svelte que envuelve solo /admin (carpeta admin).',
-        ['Menciona admin y +layout'],
+        'Layout solo para administración',
+        {
+          planteamiento:
+            'Los layouts pueden anidarse por carpeta: un `+layout.svelte` dentro de `admin/` solo envuelve las rutas bajo `/admin`.',
+          requisitos: [
+            'Asigne a `ubicacion` la ruta del archivo `+layout.svelte` que envuelve únicamente `/admin`.',
+            'Escriba en consola el valor.'
+          ],
+          salidaEsperada: 'Un string que menciona `admin` y `+layout`.'
+        },
         ['String routes/admin o src/routes/admin con layout'],
         `const ubicacion = '';\nconsole.log(ubicacion);\n`
       ),
       ej(
         3,
-        'La línea clave.',
-        'Guarda en linea el texto exacto {@render children?.()} y muéstralo.',
-        ['Muestra {@render children?.()}'],
+        'La línea clave',
+        {
+          planteamiento:
+            'En Svelte 5, el contenido de la página hija se inserta en el layout mediante el snippet `children`. Se pide registrar la sintaxis exacta.',
+          requisitos: [
+            'Asigne a `linea` el texto exacto `{@render children?.()}`.',
+            'Escriba en consola el valor de `linea`.'
+          ],
+          salidaEsperada: '`{@render children?.()}` impreso en consola.',
+          notas: 'Consulte la sección «Snippet children en Svelte 5».'
+        },
         ['linea coincide con render children'],
         `const linea = '{@render children?.()}';\nconsole.log(linea);\n`
       )
@@ -194,25 +239,46 @@ export const week4: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Título del post.',
-        'slug = "mi-post". Muestra mensaje Post: mi-post (template string o concatenación).',
-        ['Salida incluye mi-post'],
+        'Título del post',
+        {
+          planteamiento:
+            'En una ruta dinámica `[slug]`, el parámetro de URL identifica el recurso (por ejemplo, un post del blog). Se solicita simular ese valor y formatear un título.',
+          requisitos: [
+            'Declare `slug` con el valor `"mi-post"`.',
+            'Escriba en consola un mensaje `Post: mi-post` usando plantilla literal o concatenación.'
+          ],
+          salidaEsperada: 'Salida que incluye `mi-post`.'
+        },
         ['Usa slug en el mensaje', 'Texto Post: mi-post o equivalente'],
         `const slug = 'mi-post';\nconsole.log(\`Post: \${slug}\`);\n`
       ),
       ej(
         2,
-        'Ruta del archivo plantilla.',
-        'path = ruta del +page.svelte dinámico para blog con slug (incluye corchetes).',
-        ['path con [slug] y +page.svelte'],
+        'Ruta del archivo plantilla',
+        {
+          planteamiento:
+            'Una sola plantilla `+page.svelte` dentro de `[slug]` atiende infinitas URLs del tipo `/blog/<slug>`. Se pide ubicar ese archivo en el árbol del proyecto.',
+          requisitos: [
+            'Asigne a `path` la ruta del `+page.svelte` dinámico para blog con parámetro `slug` (incluya corchetes).',
+            'Escriba en consola `path`.'
+          ],
+          salidaEsperada: 'Un string que contiene `[slug]` y `+page.svelte`.'
+        },
         ['String blog/[slug]/+page o src/routes/blog/[slug]/+page.svelte'],
         `const path = 'src/routes/blog/[slug]/+page.svelte';\nconsole.log(path);\n`
       ),
       ej(
         3,
-        'Dos URLs, mismo patrón.',
-        'Array urls con dos strings /blog/a y /blog/b. Muestra length 2.',
-        ['Dos URLs bajo /blog/', 'length 2'],
+        'Dos URLs, mismo patrón',
+        {
+          planteamiento:
+            'Dos URLs que comparten el prefijo `/blog/` siguen el mismo patrón de ruta dinámica con distinto valor de `slug`.',
+          requisitos: [
+            'Declare el array `urls` con los strings `/blog/a` y `/blog/b`.',
+            'Escriba en consola la propiedad `length` del array.'
+          ],
+          salidaEsperada: 'El número `2` en consola.'
+        },
         ['Array dos elementos', 'Mismo prefijo /blog/'],
         `const urls = ['/blog/a', '/blog/b'];\nconsole.log(urls.length);\n`
       )
@@ -266,25 +332,47 @@ export const week4: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Load simulado.',
-        'Función load que devuelve { titulo: "Hola" }. Muestra load().titulo.',
-        ['Muestra Hola'],
+        'Load simulado',
+        {
+          planteamiento:
+            'La función `load` en SvelteKit prepara datos antes de renderizar la página. Se solicita una implementación síncrona mínima.',
+          requisitos: [
+            'Defina la función `load` que devuelva `{ titulo: "Hola" }`.',
+            'Escriba en consola `load().titulo`.'
+          ],
+          salidaEsperada: '`Hola` en consola.'
+        },
         ['load devuelve objeto con titulo', 'Salida Hola'],
         `function load() {\n  return { titulo: 'Hola' };\n}\nconsole.log(load().titulo);\n`
       ),
       ej(
         2,
-        'Load async.',
-        'async function load que hace await Promise.resolve([1, 2]) y devuelve { n: resultado }. Muestra length del array en n.',
-        ['n es array de 2 elementos', 'length 2'],
+        'Load async',
+        {
+          planteamiento:
+            'Muchas cargas reales son asíncronas (fetch, base de datos). Se pide simular un `load` que resuelve una promesa.',
+          requisitos: [
+            'Defina `async function load` que haga `await Promise.resolve([1, 2])` y devuelva `{ n: resultado }`.',
+            'Escriba en consola la longitud del array en `n` tras ejecutar `load()`.'
+          ],
+          salidaEsperada: '`2` (array de dos elementos).'
+        },
         ['async/await', 'n con dos elementos'],
         `async function load() {\n  return { n: await Promise.resolve([1, 2]) };\n}\nload().then((d) => console.log(d.n.length));\n`
       ),
       ej(
         3,
         '¿Dónde van los secretos?',
-        'respuesta en una frase: diferencia entre +page.ts y +page.server.ts (cuál para API keys).',
-        ['Menciona servidor o secretos en server'],
+        {
+          planteamiento:
+            'SvelteKit distingue entre `+page.ts` y `+page.server.ts` según dónde puede ejecutarse el código y qué datos puede ver el cliente.',
+          requisitos: [
+            'Asigne a `respuesta` una frase que explique la diferencia y cuál usar para API keys.',
+            'Escriba en consola `respuesta`.'
+          ],
+          salidaEsperada: 'Texto que menciona servidor o secretos en `+page.server.ts`.',
+          notas: 'Consulte la sección «+page.ts vs +page.server.ts».'
+        },
         ['Texto que ubica secretos en server'],
         `const respuesta = \`...\`;\nconsole.log(respuesta);\n`
       )
@@ -338,25 +426,46 @@ export const week4: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Para qué sirve una action.',
-        'Comentario de una línea: qué hace una action de formulario en SvelteKit.',
-        ['Comentario menciona servidor o procesar form'],
+        'Para qué sirve una action',
+        {
+          planteamiento:
+            'Las form actions de SvelteKit procesan envíos POST en el servidor sin exponer la lógica al cliente.',
+          requisitos: [
+            'Escriba un comentario de una línea que explique qué hace una action de formulario en SvelteKit.'
+          ],
+          salidaEsperada: 'Comentario que menciona servidor o procesar el formulario.'
+        },
         ['Comentario con idea de POST/servidor'],
         `// Una action en +page.server.ts...\n\n`
       ),
       ej(
         2,
-        'Validar email.',
-        'Función validar(email): si vacío devuelve "fail", si no "ok". Prueba con "" y muestra fail.',
-        ['Con "" devuelve fail'],
+        'Validar email',
+        {
+          planteamiento:
+            'Antes de persistir datos, las actions suelen validar los campos recibidos. Se solicita una función de validación mínima.',
+          requisitos: [
+            'Defina `validar(email)`: si está vacío devuelve `"fail"`, si no `"ok"`.',
+            'Pruebe con `""` y escriba en consola el resultado.'
+          ],
+          salidaEsperada: '`fail` al validar cadena vacía.'
+        },
         ['Condicional email vacío', 'Salida fail'],
         `function validar(email) {\n  return email ? 'ok' : 'fail';\n}\nconsole.log(validar(''));\n`
       ),
       ej(
         3,
         '¿Qué mejora enhance?',
-        'respuesta: una frase sobre use:enhance (sin recarga brusca o similar).',
-        ['Menciona recarga o experiencia'],
+        {
+          planteamiento:
+            'La directiva `use:enhance` de `$app/forms` mejora la experiencia de envío de formularios.',
+          requisitos: [
+            'Asigne a `respuesta` una frase sobre qué mejora `use:enhance` (por ejemplo, evitar recarga brusca).',
+            'Escriba en consola `respuesta`.'
+          ],
+          salidaEsperada: 'Menciona recarga, UX o experiencia de usuario.',
+          notas: 'Consulte la sección «use:enhance».'
+        },
         ['Texto sobre enhance/UX'],
         `const respuesta = \`...\`;\nconsole.log(respuesta);\n`
       )
@@ -410,25 +519,47 @@ export const week4: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Qué hace .select().',
-        'Comentario: qué devuelve supabase.from("tabla").select().',
-        ['Comentario menciona filas o leer datos'],
+        'Qué hace .select()',
+        {
+          planteamiento:
+            'El cliente de Supabase encadena métodos para consultar tablas de Postgres.',
+          requisitos: [
+            'Escriba un comentario que explique qué devuelve `supabase.from("tabla").select()`.'
+          ],
+          salidaEsperada: 'Comentario que menciona filas o lectura de datos.',
+          notas: 'Consulte la sección «Consultas .from().select()».'
+        },
         ['Idea de lectura de tabla'],
         `// supabase.from('progreso').select()\n// → ...\n\n`
       ),
       ej(
         2,
-        'Magic link en una frase.',
-        'respuesta explicando magic link (email con enlace para entrar).',
-        ['Menciona email o enlace'],
+        'Magic link en una frase',
+        {
+          planteamiento:
+            'DevDays usa autenticación por magic link (OTP por email) en lugar de contraseña.',
+          requisitos: [
+            'Asigne a `respuesta` una frase que explique el magic link (email con enlace para entrar).',
+            'Escriba en consola `respuesta`.'
+          ],
+          salidaEsperada: 'Menciona email o enlace.'
+        },
         ['Texto coherente con OTP/magic link'],
         `const respuesta = \`...\`;\nconsole.log(respuesta);\n`
       ),
       ej(
         3,
         '¿Por qué RLS?',
-        'respuesta: por qué hace falta Row Level Security con anon key en el cliente.',
-        ['Menciona seguridad, permisos o solo tus filas'],
+        {
+          planteamiento:
+            'La anon key de Supabase está visible en el cliente; Row Level Security limita qué filas puede leer o escribir cada usuario.',
+          requisitos: [
+            'Asigne a `respuesta` una frase sobre por qué hace falta RLS con la anon key en el navegador.',
+            'Escriba en consola `respuesta`.'
+          ],
+          salidaEsperada: 'Menciona seguridad, permisos o que solo ve sus propias filas.',
+          notas: 'Consulte la sección «RLS (Row Level Security)».'
+        },
         ['Texto sobre restricción por usuario'],
         `const respuesta = \`...\`;\nconsole.log(respuesta);\n`
       )
@@ -444,41 +575,71 @@ export const week4: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Plano rápido.',
-        'Array rutas con /, /about y una tercera ruta que inventes. Muéstralo.',
-        ['Al menos 3 strings', 'Empiezan con /'],
+        'Plano rápido',
+        {
+          planteamiento:
+            'Repaso de la semana: represente en memoria un mapa de rutas de una aplicación SvelteKit.',
+          requisitos: [
+            'Declare el array `rutas` con `/`, `/about` y una tercera ruta que usted invente.',
+            'Escriba en consola el array.'
+          ],
+          salidaEsperada: 'Al menos 3 strings que empiezan por `/`.'
+        },
         ['Array 3 urls'],
         `const rutas = ['/', '/about'];\nconsole.log(rutas);\n`
       ),
       ej(
         2,
-        'Hueco del layout.',
-        'Muestra en consola la línea {@render children?.()}.',
-        ['Salida con render children'],
+        'Hueco del layout',
+        {
+          planteamiento:
+            'Repaso: en un layout de Svelte 5, una línea concreta inyecta el contenido de la página hija.',
+          requisitos: ['Escriba en consola la línea exacta `{@render children?.()}`.'],
+          salidaEsperada: 'Salida que contiene `render` y `children`.'
+        },
         ['String o log con render children'],
         `console.log('{@render children?.()}');\n`
       ),
       ej(
         3,
-        'Post dinámico.',
-        'Variable s = "intro-kit". Mensaje Artículo: intro-kit (o similar con el slug).',
-        ['Salida incluye intro-kit'],
+        'Post dinámico',
+        {
+          planteamiento:
+            'Repaso: formatee un mensaje de artículo usando un valor de slug dinámico.',
+          requisitos: [
+            'Declare `s` con valor `"intro-kit"`.',
+            'Escriba en consola un mensaje tipo `Artículo: intro-kit`.'
+          ],
+          salidaEsperada: 'Salida que incluye `intro-kit`.'
+        },
         ['Template o texto con s'],
         `const s = 'intro-kit';\nconsole.log(\`Artículo: \${s}\`);\n`
       ),
       ej(
         4,
-        'Data de load.',
-        'Objeto { ok: true } y muéstralo (simula return de load).',
-        ['Muestra ok: true'],
+        'Data de load',
+        {
+          planteamiento:
+            'Repaso: el valor devuelto por `load` se expone como `data` en el componente de página.',
+          requisitos: [
+            'Cree un objeto `{ ok: true }` y escríbalo en consola (simula el return de `load`).'
+          ],
+          salidaEsperada: 'Objeto con `ok: true` visible en consola.'
+        },
         ['Objeto con ok true'],
         `console.log({ ok: true });\n`
       ),
       ej(
         5,
-        'Auth en una frase.',
-        'Variable r: frase que diga magic link por email (o equivalente). Muéstrala.',
-        ['Menciona email o enlace mágico'],
+        'Auth en una frase',
+        {
+          planteamiento: 'Repaso: describa en una frase el mecanismo de login por magic link.',
+          requisitos: [
+            'Asigne a `r` una frase sobre magic link por email (o equivalente).',
+            'Escriba en consola `r`.'
+          ],
+          salidaEsperada: 'Menciona email o enlace mágico.'
+        },
         ['Texto sobre magic link'],
         `const r = \`magic link por email\`;\nconsole.log(r);\n`
       )

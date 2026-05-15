@@ -8,6 +8,7 @@
   import CodeEditor from '$lib/components/study/CodeEditor.svelte';
   import AiTutor from '$lib/components/study/AiTutor.svelte';
   import AskTutorDialog from '$lib/components/study/AskTutorDialog.svelte';
+  import { enunciadoParaIA } from '$lib/data/lessons/_helpers';
 
   let { data } = $props();
 
@@ -86,7 +87,7 @@
         body: JSON.stringify({
           dia: currentDay,
           ejercicio: ejercicioActivo,
-          enunciado: ejercicio.enunciado,
+          enunciado: enunciadoParaIA(ejercicio.enunciado),
           queDebePasar: ejercicio.queDebePasar,
           criteriosLogica: ejercicio.criteriosLogica,
           codigo,
@@ -210,7 +211,7 @@
   bind:open={dialogOpen}
   dia={currentDay}
   ejercicio={ejercicioActivo}
-  enunciado={ejercicio.enunciado}
+  enunciado={enunciadoParaIA(ejercicio.enunciado)}
   queDebePasar={ejercicio.queDebePasar}
   {codigoActual}
 />

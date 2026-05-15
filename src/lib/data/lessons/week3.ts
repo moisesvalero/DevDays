@@ -43,25 +43,46 @@ export const week3: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Ficha de arquitectura.',
-        'Variable `respuesta`: una frase técnica qué es un componente Svelte.',
-        ['Menciona pieza reutilizable o .svelte'],
+        'Ficha de arquitectura',
+        {
+          planteamiento:
+            'Se solicita documentar en consola qué es un componente Svelte dentro del stack UI del bootcamp.',
+          requisitos: [
+            'Defina la variable `respuesta` con una frase técnica que describa qué es un componente Svelte.',
+            'Escriba en consola el valor de `respuesta`.'
+          ],
+          salidaEsperada: 'Menciona pieza reutilizable o .svelte'
+        },
         ['Texto define componente'],
         `const respuesta = \`...\`;\nconsole.log(respuesta);`
       ),
       ej(
         2,
-        'Ruta raíz.',
-        'String `path` con la ruta de archivo para servir URL `/` en SvelteKit.',
-        ['src/routes/+page.svelte'],
+        'Ruta raíz',
+        {
+          planteamiento:
+            'Se solicita identificar el archivo de ruta que SvelteKit asocia a la URL raíz del sitio.',
+          requisitos: [
+            'Asigne a `path` la ruta de archivo que sirve la URL `/` en SvelteKit.',
+            'Escriba en consola `path`.'
+          ],
+          salidaEsperada: 'src/routes/+page.svelte'
+        },
         ['Convención +page.svelte en routes'],
         `const path = '';\nconsole.log(path);`
       ),
       ej(
         3,
-        'Menos JS en cliente.',
-        'Variable `respuesta`: por qué Svelte suele enviar menos JS que frameworks con runtime grande.',
-        ['Menciona compilar / build / ligero'],
+        'Menos JS en cliente',
+        {
+          planteamiento:
+            'Se solicita explicar por qué Svelte suele enviar menos JavaScript al navegador que frameworks con runtime grande.',
+          requisitos: [
+            'Defina la variable `respuesta` con una frase que justifique el menor peso del bundle en cliente.',
+            'Escriba en consola `respuesta`.'
+          ],
+          salidaEsperada: 'Menciona compilar / build / ligero'
+        },
         ['Texto sobre compilación o bundle'],
         `const respuesta = \`...\`;\nconsole.log(respuesta);`
       )
@@ -108,25 +129,46 @@ export const week3: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Template en string.',
-        'Variable `markup` con un `h1` que incluya la variable `titulo` al estilo Svelte (`{titulo}` dentro del string).',
-        ['h1 con placeholder de titulo'],
+        'Template en string',
+        {
+          planteamiento:
+            'Se solicita simular en un string el markup de un componente Svelte con interpolación de variable.',
+          requisitos: [
+            'Defina `markup` como string con un `h1` que incluya `{titulo}` al estilo Svelte (placeholder dentro del string).',
+            'Escriba en consola `markup`.'
+          ],
+          salidaEsperada: 'h1 con placeholder de titulo'
+        },
         ['String contiene h1 y titulo'],
         `const titulo = 'DevDays';\nconst markup = \`...\`;\nconsole.log(markup);`
       ),
       ej(
         2,
-        'Partes del archivo.',
-        'Array `partes` con tres strings: script, html, style (nombres de sección).',
-        ['length 3'],
+        'Partes del archivo',
+        {
+          planteamiento:
+            'Se solicita representar las tres secciones canónicas de un archivo `.svelte`.',
+          requisitos: [
+            'Construya el array `partes` con tres strings: `script`, `html` y `style` (nombres de sección).',
+            'Escriba en consola `partes.length`.'
+          ],
+          salidaEsperada: '3'
+        },
         ['Array de tres elementos'],
         `const partes = [];\nconsole.log(partes.length);`
       ),
       ej(
         3,
-        'Ruta de import.',
-        'String `importPath` válido para importar un `Button.svelte` desde `$lib`.',
-        ['Ruta con $lib o relativa a components'],
+        'Ruta de import',
+        {
+          planteamiento:
+            'Se solicita indicar una ruta de importación válida para un componente en `$lib`.',
+          requisitos: [
+            'Asigne a `importPath` un string válido para importar `Button.svelte` desde `$lib`.',
+            'Escriba en consola `importPath`.'
+          ],
+          salidaEsperada: 'Ruta con $lib o relativa a components'
+        },
         ['String de import ES'],
         `const importPath = '';\nconsole.log(importPath);`
       )
@@ -173,25 +215,44 @@ export const week3: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Simular contador.',
-        'Objeto `ui` con `count: 0`; incrementa `count` y muestra `1`.',
-        ['count es 1'],
+        'Simular contador',
+        {
+          planteamiento:
+            'Se solicita simular en JavaScript la mutación de estado que `$state` gestiona en un componente.',
+          requisitos: [
+            'Utilice el objeto `ui` con `count: 0`, incremente `count` en una unidad y escriba en consola su valor.'
+          ],
+          salidaEsperada: '1'
+        },
         ['Incremento y log 1'],
         `const ui = { count: 0 };\nui.count++;\nconsole.log(ui.count);`
       ),
       ej(
         2,
-        'Array mutable.',
-        'Array vacío, `push("a")`, `length` debe ser 1.',
-        ['length 1'],
+        'Array mutable',
+        {
+          planteamiento:
+            'Se solicita practicar la mutación reactiva típica de arrays bajo `$state`.',
+          requisitos: [
+            'Parta de un array vacío, añada el elemento `"a"` con `push` y escriba en consola `length`.'
+          ],
+          salidaEsperada: '1'
+        },
         ['push y length'],
         `const lista = [];\nlista.push('a');\nconsole.log(lista.length);`
       ),
       ej(
         3,
-        'Definición en texto.',
-        'Variable `respuesta`: una frase qué hace `$state` en Svelte 5.',
-        ['Menciona reactivo o actualiza UI'],
+        'Definición en texto',
+        {
+          planteamiento:
+            'Se solicita definir con sus palabras el comportamiento de la rune `$state` en Svelte 5.',
+          requisitos: [
+            'Defina la variable `respuesta` con una frase que explique qué hace `$state`.',
+            'Escriba en consola `respuesta`.'
+          ],
+          salidaEsperada: 'Menciona reactivo o actualiza UI'
+        },
         ['Texto explica $state'],
         `const respuesta = \`...\`;\nconsole.log(respuesta);`
       )
@@ -238,25 +299,43 @@ export const week3: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Total con IVA.',
-        '`precio` 10, `iva` 0.21; muestra total con IVA (≈12.1).',
-        ['12.1 aproximado'],
+        'Total con IVA',
+        {
+          planteamiento:
+            'Se solicita calcular un total con IVA a partir de precio base y tipo impositivo (equivalente manual a `$derived`).',
+          requisitos: [
+            'Con `precio` 10 e `iva` 0.21, calcule el total con IVA incluido y escriba el resultado en consola.'
+          ],
+          salidaEsperada: '12.1'
+        },
         ['Multiplica precio por 1+iva o suma iva'],
         `const precio = 10;\nconst iva = 0.21;\n\n`
       ),
       ej(
         2,
-        'Cuándo $effect.',
-        'Comentario: en qué caso usarías `$effect` en un componente real.',
-        ['Menciona cambio, sync o side effect'],
+        'Cuándo $effect',
+        {
+          planteamiento:
+            'Se solicita reflexionar sobre el uso adecuado de `$effect` frente a lógica en el template.',
+          requisitos: [
+            'Escriba un comentario indicando en qué caso usaría `$effect` en un componente real.'
+          ],
+          salidaEsperada: 'Menciona cambio, sync o side effect'
+        },
         ['Comentario con idea de efecto'],
         `// Usaría $effect cuando...\n\n`
       ),
       ej(
         3,
-        'Doble numérico.',
-        '`n` 5; muestra `n * 2` (= 10).',
-        ['10'],
+        'Doble numérico',
+        {
+          planteamiento:
+            'Se solicita obtener un valor derivado por multiplicación (análogo a `$derived` con una expresión simple).',
+          requisitos: [
+            'Con `n` igual a 5, escriba en consola el doble (`n * 2`).'
+          ],
+          salidaEsperada: '10'
+        },
         ['Multiplicación por 2'],
         `const n = 5;\nconsole.log(n * 2);`
       )
@@ -303,25 +382,45 @@ export const week3: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Objeto props.',
-        'Simula `props = { label: "OK" }` y muestra `props.label`.',
-        ['OK'],
+        'Objeto props',
+        {
+          planteamiento:
+            'Se solicita simular la lectura de props que un componente hijo recibe del padre.',
+          requisitos: [
+            'Simule `props = { label: "OK" }` y escriba en consola `props.label`.'
+          ],
+          salidaEsperada: 'OK'
+        },
         ['Acceso a label'],
         `const props = { label: 'OK' };\nconsole.log(props.label);`
       ),
       ej(
         2,
-        'Default con ??.',
-        'Objeto `props` vacío; `color` debe resolver a `"gris"`.',
-        ['gris'],
+        'Default con ??',
+        {
+          planteamiento:
+            'Se solicita aplicar un valor por defecto cuando una prop opcional no está definida.',
+          requisitos: [
+            'Parta de un objeto `props` vacío y resuelva `color` con el operador `??` para que valga `"gris"`.',
+            'Escriba en consola `color`.'
+          ],
+          salidaEsperada: 'gris'
+        },
         ['Nullish coalescing o default'],
         `const props = {};\nconst color = props.color ?? 'gris';\nconsole.log(color);`
       ),
       ej(
         3,
-        'Sintaxis snippet.',
-        'String `linea` con el texto exacto `{@render children?.()}`.',
-        ['Contiene render children'],
+        'Sintaxis snippet',
+        {
+          planteamiento:
+            'Se solicita identificar la sintaxis Svelte 5 para renderizar contenido hijo con snippets.',
+          requisitos: [
+            'Asigne a `linea` el texto exacto `{@render children?.()}`.',
+            'Escriba en consola `linea`.'
+          ],
+          salidaEsperada: 'Contiene render children'
+        },
         ['String con sintaxis Svelte 5'],
         `const linea = '{@render children?.()}';\nconsole.log(linea);`
       )
@@ -368,25 +467,43 @@ export const week3: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Handler incremento.',
-        '`c` empieza en 0; función `click` suma 1; llámala y muestra `c`.',
-        ['c es 1'],
+        'Handler incremento',
+        {
+          planteamiento:
+            'Se solicita simular un manejador de evento `onclick` que muta estado local.',
+          requisitos: [
+            'Con `c` inicializado en 0, defina la función `click` que incrementa `c`, invóquela y escriba `c` en consola.'
+          ],
+          salidaEsperada: '1'
+        },
         ['Función muta contador'],
         `let c = 0;\nfunction click() { c++; }\nclick();\nconsole.log(c);`
       ),
       ej(
         2,
-        'Mensaje con nombre.',
-        '`nombre` "Ana"; `msg` template con saludo; muestra mensaje con nombre.',
-        ['Hola Ana o equivalente'],
+        'Mensaje con nombre',
+        {
+          planteamiento:
+            'Se solicita construir un mensaje enlazado a una variable de nombre (análogo a `bind:value`).',
+          requisitos: [
+            'Con `nombre` igual a `"Ana"`, defina `msg` como template de saludo e imprímalo en consola.'
+          ],
+          salidaEsperada: 'Hola Ana o equivalente'
+        },
         ['Template incluye nombre'],
         `let nombre = 'Ana';\nconst msg = \`Hola \${nombre}\`;\nconsole.log(msg);`
       ),
       ej(
         3,
-        'Condicional checked.',
-        '`ok` true; muestra "aceptado" si no, "pendiente".',
-        ['aceptado'],
+        'Condicional checked',
+        {
+          planteamiento:
+            'Se solicita ramificar la salida según un booleano (análogo a `bind:checked`).',
+          requisitos: [
+            'Con `ok` en `true`, escriba en consola `"aceptado"`; en caso contrario, `"pendiente"`.'
+          ],
+          salidaEsperada: 'aceptado'
+        },
         ['Ternario o if con ok'],
         `const ok = true;\nconsole.log(ok ? 'aceptado' : 'pendiente');`
       )
@@ -402,41 +519,71 @@ export const week3: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        '$state en texto.',
-        'Variable `respuesta` explicando `$state` en una o dos frases.',
-        ['Menciona reactivo o actualización UI'],
+        '$state en texto',
+        {
+          planteamiento:
+            'Repaso de semana: defina en prosa el rol de la rune `$state` en Svelte 5.',
+          requisitos: [
+            'Defina la variable `respuesta` explicando `$state` en una o dos frases.',
+            'Escriba en consola `respuesta`.'
+          ],
+          salidaEsperada: 'Menciona reactivo o actualización UI'
+        },
         ['Texto con idea de $state'],
         `const respuesta = \`...\`;\nconsole.log(respuesta);`
       ),
       ej(
         2,
-        '$derived manual.',
-        '`precio` 5 y `cant` 3; muestra total (15).',
-        ['15'],
+        '$derived manual',
+        {
+          planteamiento:
+            'Repaso de semana: calcule un total derivado de precio y cantidad sin usar runes en el entorno de práctica.',
+          requisitos: [
+            'Con `precio` 5 y `cant` 3, escriba en consola el producto (total).'
+          ],
+          salidaEsperada: '15'
+        },
         ['Multiplica precio por cantidad'],
         `const precio = 5, cant = 3;\nconsole.log(precio * cant);`
       ),
       ej(
         3,
-        '$props simulado.',
-        'Objeto `props` con `titulo: "Hola"`; muestra en consola.',
-        ['Hola'],
+        '$props simulado',
+        {
+          planteamiento: 'Repaso de semana: lea una prop simulada desde un objeto.',
+          requisitos: [
+            'Utilice `props` con `titulo: "Hola"` y escriba en consola `props.titulo`.'
+          ],
+          salidaEsperada: 'Hola'
+        },
         ['Lee props.titulo'],
         `const props = { titulo: 'Hola' };\nconsole.log(props.titulo);`
       ),
       ej(
         4,
-        'Toggle evento.',
-        '`on` false; función `toggle` invierte boolean; llama y muestra `true`.',
-        ['true'],
+        'Toggle evento',
+        {
+          planteamiento:
+            'Repaso de semana: invierta un booleano con una función tipo manejador de evento.',
+          requisitos: [
+            'Con `on` en `false`, defina `toggle` que invierte el booleano, invóquela y escriba `on` en consola.'
+          ],
+          salidaEsperada: 'true'
+        },
         ['toggle cambia on'],
         `let on = false;\nfunction toggle() { on = !on; }\ntoggle();\nconsole.log(on);`
       ),
       ej(
         5,
-        'Anatomía .svelte.',
-        'Log de longitud de array con tres partes: script, html, style.',
-        ['3'],
+        'Anatomía .svelte',
+        {
+          planteamiento:
+            'Repaso de semana: enumere las tres secciones de un archivo `.svelte` y compruebe su cantidad.',
+          requisitos: [
+            'Utilice un array con `script`, `html` y `style` y escriba en consola su longitud.'
+          ],
+          salidaEsperada: '3'
+        },
         ['Array tres elementos'],
         `console.log(['script', 'html', 'style'].length);`
       )

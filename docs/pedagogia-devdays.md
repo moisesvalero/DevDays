@@ -15,10 +15,16 @@ En los datos (`sec()` en `week*.ts`), el orden de parámetros sigue siendo `anal
 
 ## Ejercicios
 
-- `historia` — contexto narrativo.
-- `queDebePasar` — checklist visible.
-- `criteriosLogica` — lo que evalúa la IA (efecto, no sintaxis).
-- `plantilla` — comentarios-guía; puede ir casi vacía.
+- `titulo` — nombre corto en la pestaña (técnico, sin metáforas largas).
+- `enunciado` — objeto `EnunciadoEjercicio` mostrado como manual universitario:
+  - **Planteamiento** — prosa formal (2–4 frases).
+  - **Tareas** — requisitos (a), (b), (c) con verbos: «Declare», «Escriba», «Calcule»…
+  - **Salida esperada** — valor concreto de consola (bloque monospace).
+  - **Notas** — opcional (enlace a sección del día).
+- `criteriosLogica` — solo para la IA en `/api/corregir`; el alumno no lo ve.
+- `plantilla` — código de partida en el editor.
+
+La UI usa [`ExerciseEnunciado.svelte`](../src/lib/components/study/ExerciseEnunciado.svelte). Para la API se serializa con `enunciadoParaIA()`.
 
 ## Corrección IA
 

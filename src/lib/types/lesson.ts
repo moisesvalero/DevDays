@@ -18,11 +18,25 @@ export type ContenidoLeccion = {
   resumen: string[];
 };
 
+/** Enunciado visible al alumno (formato manual universitario). */
+export type EnunciadoEjercicio = {
+  /** Contexto del problema en prosa formal */
+  planteamiento: string;
+  /** Tareas (a), (b), (c) — qué debe hacer el programa */
+  requisitos: string[];
+  /** Salida exacta o ejemplo de consola */
+  salidaEsperada: string;
+  /** Aclaraciones opcionales (sección del día, sintaxis permitida) */
+  notas?: string;
+};
+
 export type Ejercicio = {
   numero: number;
-  historia: string;
-  enunciado: string;
-  queDebePasar: string[];
+  /** Título corto en la pestaña del ejercicio */
+  titulo: string;
+  enunciado: EnunciadoEjercicio;
+  /** Solo para la IA en /api/corregir; no se muestra al alumno */
+  queDebePasar?: string[];
   criteriosLogica: string[];
   plantilla: string;
 };
