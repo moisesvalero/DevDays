@@ -2,7 +2,7 @@
   import type { Leccion } from '$lib/types/lesson';
   import { Button } from '$lib/components/ui/button';
   import {
-    copyNotebookMarkdown,
+    copyNotebookEpisodeFocus,
     downloadNotebookMarkdown,
     NOTEBOOKLM_URL
   } from '$lib/lesson-notebook-export';
@@ -18,8 +18,8 @@
   const esRepaso = $derived(lesson.tipo === 'examen');
   let copiado = $state(false);
 
-  async function copiar() {
-    const ok = await copyNotebookMarkdown(lesson, lessons);
+  async function copiarInstrucciones() {
+    const ok = await copyNotebookEpisodeFocus();
     copiado = ok;
     if (ok) {
       setTimeout(() => {
@@ -50,18 +50,22 @@
     {/if}
   </p>
   <ol class="mb-4 list-decimal space-y-1 pl-5 text-xs text-on-surface-variant">
-    <li>Descargar o copiar el archivo .md</li>
-    <li>Abrir NotebookLM → nuevo cuaderno → añadir fuente (subir archivo o pegar)</li>
-    <li>Audio Overview → {esRepaso ? 'Default o Deep Dive' : 'The Brief o Short'}</li>
+    <li>Descargar el .md</li>
+    <li>Abrir NotebookLM → nuevo cuaderno → añadir fuente (subir el archivo)</li>
+    <li>Audio Overview → duración corta (lección) o más larga (repaso semanal)</li>
+    <li>
+      Copiar instrucciones y pegarlas en «¿En qué deben centrarse los presentadores de IA en este
+      episodio?»
+    </li>
   </ol>
   <div class="flex flex-wrap gap-2">
     <Button type="button" variant="default" onclick={descargar}>
       <span class="material-symbols-outlined mr-1 text-base">download</span>
       Descargar .md
     </Button>
-    <Button type="button" variant="outline" onclick={copiar}>
+    <Button type="button" variant="outline" onclick={copiarInstrucciones}>
       <span class="material-symbols-outlined mr-1 text-base">content_copy</span>
-      {copiado ? 'Copiado' : 'Copiar texto'}
+      {copiado ? 'Copiado' : 'Copiar instrucciones'}
     </Button>
     <Button
       href={NOTEBOOKLM_URL}

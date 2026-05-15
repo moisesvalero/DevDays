@@ -64,7 +64,6 @@
           {s.analogia}
         </p>
         {#if s.ejemplo}
-          <p class="text-xs text-on-surface-variant">Referencia (no hace falta memorizarla):</p>
           <CodeBlock code={s.ejemplo} />
         {/if}
         {#if s.nota}
