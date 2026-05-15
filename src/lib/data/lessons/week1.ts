@@ -26,18 +26,18 @@ export const week1: Leccion[] = [
           `const cliente = 'Luis';\nconst piezas = 12;\nconst entregado = false;`
         ),
         sec(
-          'console.log',
-          'La ventanilla del desarrollador para ver qué hay dentro.',
-          'Depurar y validar valores antes de pintarlos en la interfaz.',
-          '\`console.log(valor)\` imprime en la consola del navegador o del entorno Node. Sirve para comprobar variables, resultados de operaciones y mensajes intermedios. En DevDays la corrección IA lee tu código; la consola sigue siendo la herramienta clásica de depuración.',
-          `console.log('Hola');\nconsole.log(2 + 2);`
+          'Meter variables dentro de un texto',
+          'Una frase con huecos: donde pone ${nombre} se rellena solo con el valor guardado.',
+          'Para el ejercicio del saludo (y casi todos los mensajes en apps) necesitas esto: no escribir "Ana" otra vez a mano en la frase si ya está en una variable.',
+          'Pasos: (1) Guardas los datos en variables, por ejemplo \`const nombre = "Ana"\` y \`const edad = 30\`. (2) Creas el mensaje con **backticks** (tecla al lado del 1, no uses comillas simples ni dobles): \`const saludo = `Hola, soy ${nombre} y tengo ${edad} años`\`. (3) Dentro de los backticks, cada variable va entre \`${ }\` — escribe el nombre de la variable tal cual: \`${nombre}\`, \`${edad}\`. JavaScript sustituye el hueco por el valor. También vale unir con \`+\` (\`"Hola " + nombre\`), pero en este curso usaremos sobre todo backticks.',
+          `const nombre = 'Ana';\nconst edad = 30;\nconst saludo = \`Hola, soy \${nombre} y tengo \${edad} años\`;\nconsole.log(saludo);`
         ),
         sec(
-          'Template strings',
-          'Una frase con huecos que se rellenan solos.',
-          'Construir mensajes dinámicos sin concatenar muchas veces con \`+\`.',
-          'Los **template strings** usan backticks (\`) y \`\${expresion}\` para insertar variables o expresiones dentro del texto. Equivalente a concatenar, pero más legible: \`Hola \${nombre}\`.',
-          'const n = "Ana";\nconst msg = `Hola ${n}`;'
+          'console.log',
+          'La ventanilla donde ves el resultado al probar el código.',
+          'Comprobar que el saludo (u otro mensaje) sale bien antes de seguir.',
+          'Cuando ya tienes el texto en una variable (por ejemplo \`saludo\`), lo muestras con \`console.log(saludo)\`. También puedes hacer \`console.log(`Hola ${nombre}`)\` en una sola línea. En DevDays la IA lee tu código; \`console.log\` es la forma clásica de ver qué está pasando.',
+          `console.log('Hola');\nconsole.log(2 + 2);`
         )
       ],
       resumen: [
@@ -45,17 +45,23 @@ export const week1: Leccion[] = [
         'const = no reasignar; let = valor modificable.',
         'string, number, boolean = tipos básicos.',
         'console.log = ver salida al desarrollar.',
-        'Template string = texto con ${...} interpolado.'
+        'Backticks + ${variable} = meter variables en un texto.',
+        'console.log = mostrar el resultado.'
       ]
     },
     ejercicios: [
       ej(
         1,
         'El almacén recibe a un nuevo trabajador.',
-        'Guarda tu nombre y tu edad. Muestra un saludo que incluya ambos.',
+        'Guarda tu nombre y tu edad en dos variables. Crea un saludo con backticks que use ${nombre} y ${edad} (lee la sección «Meter variables dentro de un texto»). Muéstralo con console.log.',
         ['Hay un mensaje con nombre y edad', 'Se muestra con console.log o equivalente'],
-        ['Existe variable con nombre', 'Existe variable con edad', 'La salida menciona ambos datos'],
-        `// Día 1 — Trabajador nuevo\n// Guarda nombre y edad, luego muestra saludo\n\n`
+        [
+          'Existe variable con nombre',
+          'Existe variable con edad',
+          'El saludo usa los valores de las variables (backticks con ${...} o concatenación con +), no el texto fijo escrito a mano',
+          'La salida menciona ambos datos'
+        ],
+        `// Día 1 — Trabajador nuevo\nconst nombre = 'Tu nombre';\nconst edad = 25;\n// saludo con backticks: \`Hola, soy \${nombre} y tengo \${edad} años\`\n\n`
       ),
       ej(
         2,
