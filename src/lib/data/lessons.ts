@@ -11,7 +11,7 @@ export const lessons: Leccion[] = [
     titulo: 'Variables, tipos y template strings',
     objetivo: 'Aprender a guardar y formatear datos en JavaScript.',
     contenido: {
-      intro: `Todo programa empieza guardando datos: un nombre, una edad, un precio. En JavaScript usas variables para eso. Saber cuándo usar const vs let y cómo formatear textos es el primer ladrillo de absolutamente todo lo que sigue.`,
+      intro: `Todo programa empieza guardando datos: un nombre, una edad, un precio. En JavaScript usas variables para eso. Saber cuándo usar const vs let y cómo formatear textos es el primer ladrillo de absolutamente todo lo que sigue. También verás cómo imprimir resultados en la consola del navegador con console.log.`,
       secciones: [
         {
           titulo: 'const y let',
@@ -30,6 +30,23 @@ const edad = 28;                // number
 const esAdmin = false;          // boolean
 const lista = [1, 2, 3];        // array
 const usuario = { nombre, edad }; // object`
+        },
+        {
+          titulo: 'Ver el resultado: la consola y console.log',
+          texto: `Cuando ejecutas JavaScript en el navegador, el resultado no se pinta solo en la página. Para practicar, abre las herramientas de desarrollo: pulsa F12, o clic derecho → Inspeccionar → pestaña Consola. Ahí aparecen los mensajes que imprime tu código.
+
+En este portal el tutor IA revisa lo que escribes; aun así, console.log es la forma estándar de mostrar un texto o un valor: lo que pongas entre paréntesis se imprime en la consola (o deja claro qué quieres mostrar al corregir).
+
+Puedes pasar un literal, una variable o una expresión.`,
+          ejemplo: `console.log('Hola');
+console.log(2 + 2);
+
+const saludo = 'DevDays';
+console.log(saludo);`,
+          nota: {
+            tipo: 'tip',
+            texto: 'Abre la consola una vez y prueba un console.log sencillo. Verás la salida al instante y comprobarás que el código hace lo que crees.'
+          }
         },
         {
           titulo: 'Template strings',
@@ -52,6 +69,7 @@ const b = \`Hola \${nombre}, tienes \${edad} años.\`;`,
         'const fija el valor; let permite reasignarlo.',
         'Los tipos básicos: string, number, boolean, array, object.',
         'JavaScript detecta el tipo automáticamente.',
+        'Para practicar, console.log(...) imprime en la consola del navegador (F12 → Consola).',
         'Para meter variables en un texto, usa template strings con backticks y ${...}.'
       ]
     },
@@ -59,20 +77,20 @@ const b = \`Hola \${nombre}, tienes \${edad} años.\`;`,
       {
         numero: 1,
         enunciado:
-          'Declara una constante `nombre` con tu nombre. Crea otra `edad` con tu edad. Muestra el texto "Hola, [nombre], tienes [edad] años." usando un template string.',
-        plantilla: `// Día 1 - Ejercicio 1\n// Usa const para nombre y edad, y un template string para mostrarlo.\n\n`
+          'Declara una constante `nombre` con tu nombre. Crea otra `edad` con tu edad. Construye el texto "Hola, [nombre], tienes [edad] años." usando un template string e imprime el resultado con console.log(...).',
+        plantilla: `// Día 1 - Ejercicio 1\n// Usa const para nombre y edad, un template string para el mensaje y console.log(...) para mostrarlo en la consola.\n\n`
       },
       {
         numero: 2,
         enunciado:
-          'Declara una variable `contador` con let y valor 0. Súmale 5. Muestra el valor final con console.log.',
+          'Declara una variable `contador` con let y valor 0. Súmale 5. Imprime el valor final con console.log(...).',
         plantilla: `// Día 1 - Ejercicio 2\n\n`
       },
       {
         numero: 3,
         enunciado:
-          'Crea una constante `precio = 19.99` y otra `producto = "camiseta"`. Muestra: "La camiseta cuesta 19.99 euros." usando template string.',
-        plantilla: `// Día 1 - Ejercicio 3\n\n`
+          'Crea una constante `precio = 19.99` y otra `producto = "camiseta"`. Construye el texto "La camiseta cuesta 19.99 euros." con template string e imprímelo con console.log(...).',
+        plantilla: `// Día 1 - Ejercicio 3\n// Usa template string y console.log(...) para la salida en consola.\n\n`
       }
     ]
   },
@@ -84,7 +102,7 @@ const b = \`Hola \${nombre}, tienes \${edad} años.\`;`,
     titulo: 'Operadores, comparaciones y truthy/falsy',
     objetivo: 'Comparar valores y combinar condiciones lógicas.',
     contenido: {
-      intro: `Programar es decidir constantemente: ¿este valor es mayor que aquel? ¿está vacío? ¿es válido? Aquí aprendes los operadores que usarás todos los días.`,
+      intro: `Programar es decidir constantemente: ¿este valor es mayor que aquel? ¿está vacío? ¿es válido? Aquí aprendes los operadores que usarás todos los días. Cuando un ejercicio pida "imprimir" o "mostrar" en consola, usa siempre console.log(...) (F12 → Consola), igual que en el día 1.`,
       secciones: [
         {
           titulo: 'Aritméticos básicos',
@@ -127,27 +145,28 @@ const nombre = tieneNombre || 'Anónimo';`
         'Usa siempre === y !== para comparar.',
         '% (módulo) devuelve el resto: clave para par/impar.',
         '&& exige ambas verdaderas; || basta con una; ! invierte.',
-        'Valores falsy: false, 0, "", null, undefined, NaN.'
+        'Valores falsy: false, 0, "", null, undefined, NaN.',
+        'Para ver el resultado en la práctica: console.log(...) en la consola del navegador.'
       ]
     },
     ejercicios: [
       {
         numero: 1,
         enunciado:
-          'Crea dos variables `a = 10` y `b = 3`. Muestra el resultado de a + b, a - b, a * b, a / b y a % b en cinco console.log.',
-        plantilla: `// Día 2 - Ejercicio 1\n\n`
+          'Imagina que llevas `horasEstudio = 10` y tu compañera `horasCompi = 3`. Con esas dos variables, imprime en cinco console.log distintos: suma, resta, multiplicación, división y módulo (horasEstudio % horasCompi). Así practicas operadores con un contexto, no con "a y b" sueltos.',
+        plantilla: `// Día 2 - Ejercicio 1\nconst horasEstudio = 10;\nconst horasCompi = 3;\n// Cinco console.log: +, -, *, /, %\n\n`
       },
       {
         numero: 2,
         enunciado:
-          'Crea `edad = 17`. Muestra true o false según si es mayor o igual de 18, usando una comparación.',
-        plantilla: `// Día 2 - Ejercicio 2\n\n`
+          'Crea `const edad = 17`. Imprime con console.log(...) el resultado booleano (true o false) de la expresión "¿es mayor o igual de 18?".',
+        plantilla: `// Día 2 - Ejercicio 2\n// console.log(edad >= 18) o similar\n\n`
       },
       {
         numero: 3,
         enunciado:
-          'Crea `nombre = ""` (string vacío). Usa el operador || para guardar en `final` el valor de nombre o "Invitado" si está vacío. Muéstralo.',
-        plantilla: `// Día 2 - Ejercicio 3\n\n`
+          'Crea `const nombre = ""` (string vacío). Usa el operador || para guardar en `final` el valor de nombre o "Invitado" si está vacío. Imprime `final` con console.log(...).',
+        plantilla: `// Día 2 - Ejercicio 3\n// const final = ...\n// console.log(final);\n\n`
       }
     ]
   },
@@ -159,7 +178,7 @@ const nombre = tieneNombre || 'Anónimo';`
     titulo: 'Condicionales: if, else, switch, ternario',
     objetivo: 'Tomar decisiones en función del valor de las variables.',
     contenido: {
-      intro: `Las condicionales son cómo un programa elige qué hacer. Sin ellas tu código sería una receta fija sin opciones. Vas a verlas mil veces, así que vale la pena dominarlas.`,
+      intro: `Las condicionales son cómo un programa elige qué hacer. Sin ellas tu código sería una receta fija sin opciones. Vas a verlas mil veces, así que vale la pena dominarlas. Los ejercicios piden funciones con return: para probar lo que devuelven, llama a la función y envuelve la llamada en console.log(...), por ejemplo console.log(parOImpar(4)).`,
       secciones: [
         {
           titulo: 'if / else if / else',
@@ -218,27 +237,28 @@ switch (dia) {
         'if/else if/else: la forma principal de decidir.',
         'Ternario: para asignar un valor según una condición simple.',
         'switch: cuando comparas una variable contra varios valores fijos.',
-        'No olvides break en cada case del switch.'
+        'No olvides break en cada case del switch.',
+        'Para ver el return de una función: console.log(miFuncion(argumentos)).'
       ]
     },
     ejercicios: [
       {
         numero: 1,
         enunciado:
-          'Escribe una función `parOImpar(n)` que reciba un número y devuelva "par" o "impar" usando el operador %.',
-        plantilla: `// Día 3 - Ejercicio 1\nfunction parOImpar(n) {\n  // ...\n}\n`
+          'Escribe una función `parOImpar(n)` que reciba un número y devuelva "par" o "impar" usando el operador %. Al final imprime con console.log el resultado de al menos dos pruebas (por ejemplo 4 y 7).',
+        plantilla: `// Día 3 - Ejercicio 1\nfunction parOImpar(n) {\n  // ...\n}\n// console.log(parOImpar(4));\n// console.log(parOImpar(7));\n`
       },
       {
         numero: 2,
         enunciado:
-          'Escribe una función `precioConIVA(precio)` que devuelva el precio multiplicado por 1.21 si precio > 0, o el string "Precio inválido" si no.',
-        plantilla: `// Día 3 - Ejercicio 2\n\n`
+          'Escribe una función `entradaMuseo(precioBase)` que devuelva el precio con IVA (multiplicado por 1.21) si precioBase > 0, o el string "Precio inválido" si no. Imprime con console.log el resultado de una entrada válida y de una inválida.',
+        plantilla: `// Día 3 - Ejercicio 2\n// Ejemplo: console.log(entradaMuseo(10));\n// console.log(entradaMuseo(-1));\n\n`
       },
       {
         numero: 3,
         enunciado:
-          'Escribe una función `traducirDia(dia)` que reciba "monday", "tuesday" o "wednesday" y devuelva "lunes", "martes" o "miércoles". Usa switch. Si no coincide, devuelve "desconocido".',
-        plantilla: `// Día 3 - Ejercicio 3\n\n`
+          'Escribe una función `traducirDia(dia)` que reciba "monday", "tuesday" o "wednesday" y devuelva "lunes", "martes" o "miércoles". Usa switch. Si no coincide, devuelve "desconocido". Imprime con console.log una traducción correcta y un caso desconocido.',
+        plantilla: `// Día 3 - Ejercicio 3\n// console.log(traducirDia('monday'));\n// console.log(traducirDia('holiday'));\n\n`
       }
     ]
   },
@@ -292,27 +312,28 @@ console.log(saludar('Lucas')); // 'Hola, Lucas!'`
         'Declaración clásica: function nombre(params) { ... return ... }.',
         'Arrow: const nombre = (params) => expresión.',
         'Si una función no hace return, devuelve undefined.',
-        'Los parámetros pueden tener valor por defecto: (n = 0) => ...'
+        'Los parámetros pueden tener valor por defecto: (n = 0) => ...',
+        'Prueba funciones con console.log(nombreFuncion(...)).'
       ]
     },
     ejercicios: [
       {
         numero: 1,
         enunciado:
-          'Escribe una función clásica `multiplicar(a, b)` que devuelva el producto de a y b. Llámala con (4, 5) y muestra el resultado.',
-        plantilla: `// Día 4 - Ejercicio 1\n\n`
+          'Escribe una función clásica `precioEntradas(cantidad, precioUnitario)` que devuelva el total a pagar (cantidad * precioUnitario). Llámala con (4, 5) e imprime el resultado con console.log(...).',
+        plantilla: `// Día 4 - Ejercicio 1\n// Ejemplo: 4 entradas a 5 euros\n\n`
       },
       {
         numero: 2,
         enunciado:
-          'Convierte la función anterior en una arrow function `multiplicar`. Debe seguir devolviendo a * b en una sola línea.',
+          'Convierte la función anterior en una arrow function `precioEntradas` en una sola línea (misma lógica: cantidad * precioUnitario). Imprime una prueba con console.log.',
         plantilla: `// Día 4 - Ejercicio 2\n\n`
       },
       {
         numero: 3,
         enunciado:
-          'Escribe una función `descuento(precio, porcentaje = 10)` que devuelva el precio con el descuento aplicado. Llama descuento(100) y descuento(100, 25) y muestra ambos.',
-        plantilla: `// Día 4 - Ejercicio 3\n\n`
+          'Escribe una función `precioConCupón(importe, porcentajeDescuento = 10)` que devuelva el importe final tras aplicar el descuento (el porcentaje se resta del importe: 10% de 100 → 90; 25% de 100 → 75). Llama con un solo argumento (usa el 10% por defecto) y con dos (por ejemplo 25%) e imprime ambos resultados con console.log.',
+        plantilla: `// Día 4 - Ejercicio 3\n// console.log(precioConCupón(100));\n// console.log(precioConCupón(100, 25));\n\n`
       }
     ]
   },
@@ -370,26 +391,27 @@ console.log(goma); // { id: 2, nombre: 'Goma' }`,
         'map devuelve un array nuevo con cada elemento transformado.',
         'filter devuelve un array nuevo con los que cumplen una condición.',
         'find devuelve el primer elemento que cumple la condición (o undefined).',
-        'Ninguno modifica el array original.'
+        'Ninguno modifica el array original.',
+        'Para ver arrays u objetos: console.log(resultado).'
       ]
     },
     ejercicios: [
       {
         numero: 1,
         enunciado:
-          'Dado `const nums = [1, 2, 3, 4, 5]`, usa map para crear un array `cuadrados` con cada número al cuadrado y muéstralo.',
-        plantilla: `// Día 5 - Ejercicio 1\nconst nums = [1, 2, 3, 4, 5];\n\n`
+          'Tienes `const minutosPorCapitulo = [25, 40, 15, 60, 10]` (duración de capítulos de un curso en vídeo). Usa map para crear un array `segundos` donde cada valor sea minutos * 60. Imprime `segundos` con console.log.',
+        plantilla: `// Día 5 - Ejercicio 1\nconst minutosPorCapitulo = [25, 40, 15, 60, 10];\n\n`
       },
       {
         numero: 2,
         enunciado:
-          'Dado `const edades = [10, 17, 22, 4, 30]`, usa filter para obtener solo los mayores de edad (>= 18) y muéstralos.',
-        plantilla: `// Día 5 - Ejercicio 2\nconst edades = [10, 17, 22, 4, 30];\n\n`
+          'Dado `const mascotas = ["gato", "perro", "elefante", "pez", "rata"]`, usa filter para quedarte solo con los nombres de más de 4 letras. Imprime el array resultante con console.log.',
+        plantilla: `// Día 5 - Ejercicio 2\nconst mascotas = ['gato', 'perro', 'elefante', 'pez', 'rata'];\n\n`
       },
       {
         numero: 3,
         enunciado:
-          'Dado un array de usuarios `[{id:1,nombre:"Ana"},{id:2,nombre:"Luis"}]`, usa find para obtener el usuario con id 2 y muestra su nombre.',
+          'Dado un array de usuarios `[{id:1,nombre:"Ana"},{id:2,nombre:"Luis"}]`, usa find para obtener el usuario con id 2 e imprime solo su `nombre` con console.log(...).',
         plantilla: `// Día 5 - Ejercicio 3\nconst usuarios = [\n  { id: 1, nombre: 'Ana' },\n  { id: 2, nombre: 'Luis' }\n];\n\n`
       }
     ]
@@ -457,27 +479,28 @@ users.sort((a, b) => a.edad - b.edad);`,
         'reduce: acumula y devuelve un único valor (suma, conteo, agrupación).',
         'some: ¿al menos uno cumple? Devuelve boolean.',
         'every: ¿todos cumplen? Devuelve boolean.',
-        'sort modifica el array. Para números, pasa (a, b) => a - b.'
+        'sort modifica el array. Para números, pasa (a, b) => a - b.',
+        'Imprime resultados con console.log (incluidos booleanos y arrays).'
       ]
     },
     ejercicios: [
       {
         numero: 1,
         enunciado:
-          'Dado `const nums = [5, 10, 15, 20]`, usa reduce para calcular la suma total y muéstrala.',
-        plantilla: `// Día 6 - Ejercicio 1\nconst nums = [5, 10, 15, 20];\n\n`
+          'Tienes `const minutosPodcast = [5, 12, 8, 15]` (duración de cada segmento en minutos). Usa reduce para sumar el tiempo total de escucha e imprímelo con console.log.',
+        plantilla: `// Día 6 - Ejercicio 1\nconst minutosPodcast = [5, 12, 8, 15];\n\n`
       },
       {
         numero: 2,
         enunciado:
-          'Dado `const edades = [12, 18, 25, 7]`, usa every y some para decir si TODOS son mayores de edad y si ALGUNO es menor de 10. Muestra ambos.',
+          'Dado `const edades = [12, 18, 25, 7]`, usa every y some: (1) ¿TODOS son mayores de edad (>= 18)? (2) ¿ALGUNO tiene menos de 10 años? Imprime los dos booleanos con dos console.log distintos.',
         plantilla: `// Día 6 - Ejercicio 2\nconst edades = [12, 18, 25, 7];\n\n`
       },
       {
         numero: 3,
         enunciado:
-          'Dado `const precios = [29, 5, 17, 99, 8]`, crea una COPIA ordenada de menor a mayor sin modificar el original. Muestra ambos arrays.',
-        plantilla: `// Día 6 - Ejercicio 3\nconst precios = [29, 5, 17, 99, 8];\n\n`
+          'Tienes `const ordenLlegada = [29, 5, 17, 99, 8]` (posiciones en una carrera ficticia). Crea una copia ordenada de menor a mayor sin modificar el original (usa spread o slice antes de sort). Imprime ambos arrays con console.log.',
+        plantilla: `// Día 6 - Ejercicio 3\nconst ordenLlegada = [29, 5, 17, 99, 8];\n\n`
       }
     ]
   },
@@ -489,36 +512,36 @@ users.sort((a, b) => a.edad - b.edad);`,
     tipo: 'examen',
     titulo: 'Examen Semana 1: JavaScript moderno',
     objetivo: 'Demostrar dominio de variables, condicionales, funciones y arrays.',
-    instrucciones: `Cinco ejercicios mezclados de toda la semana. Trabájalos en orden, corrige cada uno hasta que el tutor lo apruebe. Con 4 de 5 correctos el examen queda aprobado y desbloqueas la semana 2.`,
+    instrucciones: `Cinco ejercicios mezclados de toda la semana. Trabájalos en orden, corrige cada uno hasta que el tutor lo apruebe. Con 4 de 5 correctos el examen queda aprobado y desbloqueas la semana 2. Salvo que diga lo contrario, imprime resultados con console.log para que quede claro qué devuelve tu código.`,
     ejercicios: [
       {
         numero: 1,
         enunciado:
-          'Crea una función `saludo(nombre, edad)` que devuelva el string "Hola NOMBRE, tienes EDAD años" usando template strings. Llámala con tus datos.',
-        plantilla: `// Examen Semana 1 - Ejercicio 1\n\n`
+          'Crea una función `saludo(nombre, edad)` que devuelva el string "Hola NOMBRE, tienes EDAD años" usando template strings. Llámala con tus datos (o ficticios) e imprime el string con console.log(...).',
+        plantilla: `// Examen Semana 1 - Ejercicio 1\n// console.log(saludo('Marta', 28));\n\n`
       },
       {
         numero: 2,
         enunciado:
-          'Escribe una función `mayorDeTres(a, b, c)` que devuelva el mayor de los tres números usando solo if/else.',
+          'Escribe una función `mayorDeTres(a, b, c)` que devuelva el mayor de los tres números usando solo if/else. Prueba con console.log(mayorDeTres(1, 9, 3)) y otra llamada que tú elijas.',
         plantilla: `// Examen Semana 1 - Ejercicio 2\nfunction mayorDeTres(a, b, c) {\n  // ...\n}\n`
       },
       {
         numero: 3,
         enunciado:
-          'Dado `const nums = [1, 2, 3, 4, 5, 6]`, devuelve con filter y map un nuevo array con los pares MULTIPLICADOS por 10. Resultado esperado: [20, 40, 60].',
+          'Dado `const nums = [1, 2, 3, 4, 5, 6]`, obtén con filter y map un nuevo array con los pares multiplicados por 10. Resultado esperado: [20, 40, 60]. Imprime el array con console.log.',
         plantilla: `// Examen Semana 1 - Ejercicio 3\nconst nums = [1, 2, 3, 4, 5, 6];\n\n`
       },
       {
         numero: 4,
         enunciado:
-          'Dado `const productos = [{nombre:"A", precio:10},{nombre:"B", precio:20},{nombre:"C", precio:5}]`, calcula con reduce la suma total de precios.',
-        plantilla: `// Examen Semana 1 - Ejercicio 4\nconst productos = [\n  { nombre: 'A', precio: 10 },\n  { nombre: 'B', precio: 20 },\n  { nombre: 'C', precio: 5 }\n];\n\n`
+          'En una tienda ficticia: `const cesta = [{nombre:"Libreta", precio:10},{nombre:"Rotulador", precio:20},{nombre:"Chuche", precio:5}]`. Calcula con reduce la suma total a pagar e imprímela con console.log.',
+        plantilla: `// Examen Semana 1 - Ejercicio 4\nconst cesta = [\n  { nombre: 'Libreta', precio: 10 },\n  { nombre: 'Rotulador', precio: 20 },\n  { nombre: 'Chuche', precio: 5 }\n];\n\n`
       },
       {
         numero: 5,
         enunciado:
-          'Dado `const users = [{nombre:"Ana", edad:25},{nombre:"Luis", edad:17}]`, encuentra con find al usuario "Luis" y muestra true/false según si es mayor de edad.',
+          'Dado `const users = [{nombre:"Ana", edad:25},{nombre:"Luis", edad:17}]`, encuentra con find al usuario "Luis" e imprime con console.log un booleano: true si es mayor de edad (>= 18), false si no.',
         plantilla: `// Examen Semana 1 - Ejercicio 5\nconst users = [\n  { nombre: 'Ana', edad: 25 },\n  { nombre: 'Luis', edad: 17 }\n];\n\n`
       }
     ]
@@ -534,7 +557,7 @@ users.sort((a, b) => a.edad - b.edad);`,
     titulo: 'Objetos, destructuring y spread/rest',
     objetivo: 'Manejar datos estructurados con sintaxis moderna.',
     contenido: {
-      intro: `Si los arrays son listas, los objetos son fichas: agrupan datos con nombre (clave-valor). Más el destructuring y el spread, te ahorras toneladas de líneas y queda mucho más legible.`,
+      intro: `Si los arrays son listas, los objetos son fichas: agrupan datos con nombre (clave-valor). Más el destructuring y el spread, te ahorras toneladas de líneas y queda mucho más legible. Para comprobar resultados en la consola, usa console.log como en los primeros días.`,
       secciones: [
         {
           titulo: 'Objetos básicos',
@@ -598,19 +621,19 @@ console.log(sumar(1, 2, 3, 4)); // 10`,
       {
         numero: 1,
         enunciado:
-          'Crea un objeto `coche` con marca, modelo y año. Usa destructuring para extraer marca y año en variables y muéstralas.',
+          'Crea un objeto `playlist` con titulo (string), artista (string) y año (número). Usa destructuring para extraer titulo y año en variables e imprímelos con console.log.',
         plantilla: `// Día 8 - Ejercicio 1\n\n`
       },
       {
         numero: 2,
         enunciado:
-          'Dado `const persona = { nombre: "Ana", edad: 30 }`, crea con spread una copia llamada `personaConPais` que tenga además pais: "España".',
+          'Dado `const persona = { nombre: "Ana", edad: 30 }`, crea con spread una copia llamada `personaConPais` que tenga además pais: "España". Imprime personaConPais con console.log.',
         plantilla: `// Día 8 - Ejercicio 2\nconst persona = { nombre: 'Ana', edad: 30 };\n\n`
       },
       {
         numero: 3,
         enunciado:
-          'Escribe una función `maxDe(...nums)` que reciba cualquier cantidad de números con rest y devuelva el mayor. Pruébala con maxDe(3, 8, 1, 5).',
+          'Escribe una función `maxDe(...nums)` que reciba cualquier cantidad de números con rest y devuelva el mayor. Imprime el resultado de maxDe(3, 8, 1, 5) con console.log.',
         plantilla: `// Día 8 - Ejercicio 3\n\n`
       }
     ]
@@ -623,7 +646,7 @@ console.log(sumar(1, 2, 3, 4)); // 10`,
     titulo: 'Bucles vs métodos de array',
     objetivo: 'Saber cuándo usar for clásico y cuándo map/filter.',
     contenido: {
-      intro: `Antes de map/filter solo existían los bucles. Hoy conviven y conviene saber cuándo usar cada uno. Spoiler: en JS moderno usas métodos de array casi siempre, pero los for siguen siendo útiles para ciertos casos.`,
+      intro: `Antes de map/filter solo existían los bucles. Hoy conviven y conviene saber cuándo usar cada uno. Spoiler: en JS moderno usas métodos de array casi siempre, pero los for siguen siendo útiles para ciertos casos. Cada vez que el enunciado diga "imprime" o "muestra", usa console.log en la consola.`,
       secciones: [
         {
           titulo: 'for clásico',
@@ -679,20 +702,20 @@ while (intentos < 3) {
       {
         numero: 1,
         enunciado:
-          'Usando un for clásico, muestra del 1 al 10 SOLO los números impares.',
+          'Usando un for clásico, imprime con console.log del 1 al 10 SOLO los números impares (uno por línea).',
         plantilla: `// Día 9 - Ejercicio 1\n\n`
       },
       {
         numero: 2,
         enunciado:
-          'Usa for...of para recorrer `["rojo","verde","azul"]` y mostrar cada color en mayúsculas. Pista: usa color.toUpperCase().',
+          'Usa for...of para recorrer `["rojo","verde","azul"]` e imprime cada color en mayúsculas con console.log (pista: color.toUpperCase()).',
         plantilla: `// Día 9 - Ejercicio 2\n\n`
       },
       {
         numero: 3,
         enunciado:
-          'Recibe `const nums = [4, 9, 16, 25]`. Usa un for clásico con break para encontrar el primer número mayor que 10 y muéstralo.',
-        plantilla: `// Día 9 - Ejercicio 3\nconst nums = [4, 9, 16, 25];\n\n`
+          'Tienes `const niveles = [4, 9, 16, 25]` (puntuaciones de un juego). Con un for clásico y break, encuentra el primer número mayor que 10 e imprímelo con console.log.',
+        plantilla: `// Día 9 - Ejercicio 3\nconst niveles = [4, 9, 16, 25];\n\n`
       }
     ]
   },
@@ -773,7 +796,7 @@ obj.saludarFlecha();`
       {
         numero: 1,
         enunciado:
-          'Crea una función `crearSaludo(nombre)` que devuelva una nueva función SIN parámetros que al llamarla muestre "Hola NOMBRE". Crea saludaAna = crearSaludo("Ana") y llámala dos veces.',
+          'Crea una función `crearSaludo(nombre)` que devuelva una nueva función SIN parámetros que, al llamarla, ejecute console.log("Hola NOMBRE"). Crea saludaAna = crearSaludo("Ana") y llámala dos veces (debes ver dos mensajes en consola).',
         plantilla: `// Día 10 - Ejercicio 1\n\n`
       },
       {
@@ -864,7 +887,7 @@ buscarUsuario(-1)
       {
         numero: 3,
         enunciado:
-          'Llama a la función dividir del ejercicio anterior con (10, 2) y (10, 0), encadenando .then y .catch para mostrar el resultado o el error en cada caso.',
+          'Llama a la función dividir del ejercicio anterior con (10, 2) y (10, 0), encadenando .then y .catch. En cada rama usa console.log para mostrar el resultado numérico o el mensaje de error.',
         plantilla: `// Día 11 - Ejercicio 3\n// Asume que ya tienes la función dividir definida arriba.\n\n`
       }
     ]
@@ -933,7 +956,7 @@ obtenerNombre().then((n) => console.log('Recibido:', n));`
       {
         numero: 1,
         enunciado:
-          'Escribe una función async `esperarYSaludar(nombre, ms)` que espere ms milisegundos y luego devuelva "Hola NOMBRE". Pista: reutiliza la idea de esperar() del Día 11.',
+          'Escribe una función async `esperarYSaludar(nombre, ms)` que espere ms milisegundos y luego devuelva "Hola NOMBRE". Pista: reutiliza la idea de esperar() del Día 11. Al final imprime el resultado con console.log usando await o .then.',
         plantilla: `// Día 12 - Ejercicio 1\nfunction esperar(ms) {\n  return new Promise((r) => setTimeout(r, ms));\n}\n\nasync function esperarYSaludar(nombre, ms) {\n  // ...\n}\n`
       },
       {
@@ -945,7 +968,7 @@ obtenerNombre().then((n) => console.log('Recibido:', n));`
       {
         numero: 3,
         enunciado:
-          'Llama a obtenerUsuario(1) y muestra solo el campo "name" del JSON resultante con console.log.',
+          'Llama a obtenerUsuario(1) y muestra solo el campo "name" del JSON resultante con console.log (si usas await, envuelve en una función async o usa .then).',
         plantilla: `// Día 12 - Ejercicio 3\n// Usa la función obtenerUsuario del ejercicio anterior.\n\n`
       }
     ]
@@ -1027,7 +1050,7 @@ localStorage.clear();`,
       {
         numero: 3,
         enunciado:
-          'Guarda en localStorage un objeto `const config = { tema: "dark", idioma: "es" }` bajo la clave "config". Luego léelo y muestra solo el tema.',
+          'Guarda en localStorage un objeto `const config = { tema: "dark", idioma: "es" }` bajo la clave "config". Luego léelo, parsea el JSON e imprime solo el campo tema con console.log.',
         plantilla: `// Día 13 - Ejercicio 3\nconst config = { tema: 'dark', idioma: 'es' };\n\n`
       }
     ]
@@ -1040,30 +1063,30 @@ localStorage.clear();`,
     tipo: 'examen',
     titulo: 'Examen Semana 2: JS avanzado + tooling',
     objetivo: 'Demostrar dominio de objetos, async/await, fetch y DOM.',
-    instrucciones: `Cinco ejercicios sobre destructuring, closures, promesas, async/await, fetch y localStorage. Necesitas 4 de 5 correctos para aprobar y abrir la semana de Svelte.`,
+    instrucciones: `Cinco ejercicios sobre destructuring, closures, promesas, async/await, fetch y localStorage. Necesitas 4 de 5 correctos para aprobar y abrir la semana de Svelte. Salvo que diga lo contrario, imprime resultados con console.log.`,
     ejercicios: [
       {
         numero: 1,
         enunciado:
-          'Dado `const user = { nombre: "Ana", edad: 30, email: "a@x.com" }`, usa destructuring para crear variables nombre y email en una sola línea y muéstralas.',
+          'Dado `const user = { nombre: "Ana", edad: 30, email: "a@x.com" }`, usa destructuring para crear variables nombre y email en una sola línea e imprímelas con console.log.',
         plantilla: `// Examen Semana 2 - Ejercicio 1\nconst user = { nombre: 'Ana', edad: 30, email: 'a@x.com' };\n\n`
       },
       {
         numero: 2,
         enunciado:
-          'Implementa `crearMultiplicador(factor)` que devuelva una función que reciba un número y lo multiplique por factor. Crea por5 y úsalo con 7 (debe dar 35).',
+          'Implementa `crearMultiplicador(factor)` que devuelva una función que reciba un número y lo multiplique por factor (útil para convertir unidades: "km a metros", etc.). Crea por5 = crearMultiplicador(5) e imprime con console.log el resultado de por5(7) (debe ser 35).',
         plantilla: `// Examen Semana 2 - Ejercicio 2\n\n`
       },
       {
         numero: 3,
         enunciado:
-          'Escribe una función async `dobleAsincrono(n)` que use una Promesa con setTimeout 500ms y resuelva con n * 2. Llámala con await y muestra el resultado.',
+          'Escribe una función async `dobleAsincrono(n)` que use una Promesa con setTimeout 500ms y resuelva con n * 2 (simula "el doble llega tarde"). Llámala con await desde una función async e imprime el resultado con console.log.',
         plantilla: `// Examen Semana 2 - Ejercicio 3\n\n`
       },
       {
         numero: 4,
         enunciado:
-          'Crea async `getTodo(id)` que haga fetch a `https://jsonplaceholder.typicode.com/todos/${id}` y devuelva el JSON. Maneja errores con try/catch. Llámala con id 1.',
+          'Crea async `getTodo(id)` que haga fetch a `https://jsonplaceholder.typicode.com/todos/${id}` y devuelva el JSON. Maneja errores con try/catch. Llámala con id 1 e imprime el título (campo title) con console.log.',
         plantilla: `// Examen Semana 2 - Ejercicio 4\n\n`
       },
       {
@@ -1085,7 +1108,9 @@ localStorage.clear();`,
     titulo: '¿Qué es Svelte/SvelteKit?',
     objetivo: 'Entender por qué Svelte y cómo encaja SvelteKit.',
     contenido: {
-      intro: `Svelte no es como React o Vue: es un COMPILADOR. Cuando construyes tu app, Svelte convierte tus componentes en JS plano súper optimizado. Resultado: bundles más pequeños, menos overhead y, sobre todo, sintaxis muchísimo más simple.`,
+      intro: `Svelte no es como React o Vue: es un COMPILADOR. Cuando construyes tu app, Svelte convierte tus componentes en JS plano súper optimizado. Resultado: bundles más pequeños, menos overhead y, sobre todo, sintaxis muchísimo más simple.
+
+En esta semana muchos ejercicios te pedirán escribir **fragmentos de Svelte o HTML dentro de strings de JavaScript** (porque el editor del portal ejecuta JS). Usa template literals con backticks para poder meter saltos de línea; si necesitas comillas dentro del string, escápalas o alterna comillas simples/dobles.`,
       secciones: [
         {
           titulo: 'Svelte vs React/Vue (express)',
@@ -1233,7 +1258,7 @@ function Contador() {
       {
         numero: 3,
         enunciado:
-          'Calcula y muestra el resultado: dado `const items = ["leche", "pan", "uva"]`, ¿qué pondría Svelte en pantalla si el markup es `<p>Tienes {items.length} cosas.</p>`? Asigna el texto resultante a `const renderizado`.',
+          'Imagina la lista `const items = ["leche", "pan", "uva"]`. Si en un .svelte tuvieras el markup `<p>Tienes {items.length} cosas.</p>`, ¿qué texto vería el usuario en pantalla? Asigna ese texto exacto a `const renderizado` (por ejemplo empieza por "Tienes "). Opcional: comprueba con console.log(renderizado).',
         plantilla: `// Día 16 - Ejercicio 3\nconst items = ['leche', 'pan', 'uva'];\nconst renderizado = ''; // p. ej. 'Tienes 3 cosas.'\n`
       }
     ]
@@ -1246,7 +1271,7 @@ function Contador() {
     titulo: 'Reactividad con $state',
     objetivo: 'Hacer que cambios en datos actualicen el DOM solos.',
     contenido: {
-      intro: `Reactividad significa: cambias una variable y el DOM se actualiza solo, sin tocar nada. En Svelte 5 lo consigues marcando la variable como $state. Es la rune central de la 5.`,
+      intro: `Reactividad significa: cambias una variable y el DOM se actualiza solo, sin tocar nada. En Svelte 5 lo consigues marcando la variable como $state. Es la rune central de la 5. Recuerda: si el ejercicio pide un string con código Svelte, va entre backticks en JavaScript.`,
       secciones: [
         {
           titulo: '$state básico',
@@ -1323,7 +1348,7 @@ let lista = $state<{ id: number; titulo: string }[]>([]);`
     titulo: '$derived y $effect',
     objetivo: 'Calcular valores derivados y reaccionar a cambios.',
     contenido: {
-      intro: `Después de $state, las dos runes que más usarás son $derived (para valores calculados a partir de otros) y $effect (para ejecutar código cuando algo cambia). Con estas tres ya manejas el 90% de Svelte 5.`,
+      intro: `Después de $state, las dos runes que más usarás son $derived (para valores calculados a partir de otros) y $effect (para ejecutar código cuando algo cambia). Con estas tres ya manejas el 90% de Svelte 5. El ejemplo de total con precio y cantidad es solo una analogía de carrito: el patrón sirve para cualquier dato derivado.`,
       secciones: [
         {
           titulo: '$derived: valores calculados',
@@ -1585,12 +1610,12 @@ let lista = $state<{ id: number; titulo: string }[]>([]);`
     tipo: 'examen',
     titulo: 'Examen Semana 3: Svelte 5 con runes',
     objetivo: 'Demostrar dominio de componentes, runes, props y eventos.',
-    instrucciones: `Cinco ejercicios sobre Svelte 5. Necesitas 4 de 5 correctos para aprobar y abrir SvelteKit. Los ejercicios piden snippets de Svelte como strings dentro de variables JS, porque el editor evalúa JavaScript.`,
+    instrucciones: `Cinco ejercicios sobre Svelte 5. Necesitas 4 de 5 correctos para aprobar y abrir SvelteKit. Los ejercicios piden snippets de Svelte como strings dentro de variables JS (formato del portal). Revisa que cada string incluya las etiquetas o scripts que pide el enunciado.`,
     ejercicios: [
       {
         numero: 1,
         enunciado:
-          'En `const codigo`, escribe el <script lang="ts"> de un componente que declare `precio = $state(0)` y `cantidad = $state(1)` y un $derived `total` que multiplique ambos.',
+          'En `const codigo` (string), escribe el <script lang="ts"> de un componente que declare `entradas = $state(2)` y `precioEntrada = $state(9)` y un $derived `total` que multiplique ambos (total a pagar).',
         plantilla: `// Examen Semana 3 - Ejercicio 1\nconst codigo = \`...\`;\n`
       },
       {
@@ -1630,7 +1655,7 @@ let lista = $state<{ id: number; titulo: string }[]>([]);`
     titulo: 'Estructura, routing y +page.svelte',
     objetivo: 'Crear páginas con el sistema de rutas por carpetas.',
     contenido: {
-      intro: `En SvelteKit el routing es por archivos: la estructura de src/routes ES la estructura de URLs de tu app. No hay configuración de rutas, no hay router separado. Si quieres /about, creas src/routes/about/+page.svelte.`,
+      intro: `En SvelteKit el routing es por archivos: la estructura de src/routes ES la estructura de URLs de tu app. No hay configuración de rutas, no hay router separado. Si quieres /about, creas src/routes/about/+page.svelte. Como en la semana de Svelte, muchos ejercicios piden rutas o snippets como strings en JavaScript.`,
       secciones: [
         {
           titulo: 'Archivos especiales',
@@ -1848,7 +1873,7 @@ export const load: PageLoad = async ({ params }) => {
       {
         numero: 3,
         enunciado:
-          'En `const codigo`, escribe el <script> del +page.svelte que reciba `data` por $props() y muestre data.id en un <h1>.',
+          'En `const codigo`, escribe el <script> del +page.svelte que reciba `data` por $props() e incluya en el markup un <h1> que muestre el valor de data.id (texto visible en pantalla).',
         plantilla: `// Día 24 - Ejercicio 3\nconst codigo = \`...\`;\n`
       }
     ]
@@ -1928,7 +1953,7 @@ export const load = async () => {
       {
         numero: 2,
         enunciado:
-          'En `const codigo`, escribe el <script lang="ts"> del componente +page.svelte que reciba `data` por $props() y muestre data.ahora en un <p>.',
+          'En `const codigo`, escribe el <script lang="ts"> del componente +page.svelte que reciba `data` por $props() e incluya un <p> en el markup con data.ahora dentro de llaves Svelte.',
         plantilla: `// Día 25 - Ejercicio 2\nconst codigo = \`...\`;\n`
       },
       {
@@ -2149,7 +2174,7 @@ await supabase.auth.exchangeCodeForSession(code);`,
       {
         numero: 5,
         enunciado:
-          'En `const codigo`, escribe el +page.svelte que muestre data.notas en un <ul> con {#each} y un <form method="POST" action="?/crear" use:enhance> con input name="titulo" y botón.',
+          'En `const codigo`, escribe el +page.svelte (script + markup) que liste data.notas en un <ul> con {#each} y que incluya un <form method="POST" action="?/crear" use:enhance> con input name="titulo" y botón.',
         plantilla: `// Examen Semana 4 - Ejercicio 5\nconst codigo = \`...\`;\n`
       }
     ]
@@ -2165,7 +2190,7 @@ await supabase.auth.exchangeCodeForSession(code);`,
     titulo: 'TypeScript exprés',
     objetivo: 'Leer y escribir tipos sin asustarse.',
     contenido: {
-      intro: `TypeScript es JavaScript con tipos. No vas a aprenderlo entero en un día, pero sí lo justo para defender el código de tu proyecto y entender entrevistas.`,
+      intro: `TypeScript es JavaScript con tipos. No vas a aprenderlo entero en un día, pero sí lo justo para defender el código de tu proyecto y entender entrevistas. Cuando un ejercicio pida "imprimir" o "mostrar" un valor en la consola, usa console.log igual que en JavaScript puro.`,
       secciones: [
         {
           titulo: 'Tipos básicos',
@@ -2227,19 +2252,19 @@ const s = primero(['a', 'b']);     // string`,
       {
         numero: 1,
         enunciado:
-          'Tipa la función: declara `function area(base: number, altura: number): number` que devuelva base*altura. Llámala con (5, 3) y muestra el resultado.',
+          'Tipa la función: declara `function areaRectangulo(baseCm: number, alturaCm: number): number` que devuelva la superficie en cm² (base * altura). Llámala con (5, 3) e imprime el resultado con console.log(...).',
         plantilla: `// Día 29 - Ejercicio 1\n// Recuerda usar tipos.\n\n`
       },
       {
         numero: 2,
         enunciado:
-          'Declara un type `Tarea = { id: number; texto: string; hecho: boolean }`. Crea un array `tareas: Tarea[]` con dos tareas y muéstralo.',
+          'Declara un type `Tarea = { id: number; texto: string; hecho: boolean }`. Crea un array `tareas: Tarea[]` con dos tareas de ejemplo (por ejemplo "Comprar pan" y "Repasar closures") e imprime el array completo con console.log(...).',
         plantilla: `// Día 29 - Ejercicio 2\n\n`
       },
       {
         numero: 3,
         enunciado:
-          'Escribe una función genérica `ultimo<T>(arr: T[]): T | undefined` que devuelva el último elemento. Pruébala con un array de números y otro de strings.',
+          'Escribe una función genérica `ultimo<T>(arr: T[]): T | undefined` que devuelva el último elemento. Pruébala con un array de números y otro de strings e imprime ambos resultados con console.log.',
         plantilla: `// Día 29 - Ejercicio 3\n\n`
       }
     ]
@@ -2582,13 +2607,13 @@ console.log(transformar([1, -2, 3, -4])); // [2, -2, 6, -4]`,
       {
         numero: 1,
         enunciado:
-          'Escribe una función `invertirCadena(texto)` que devuelva el string al revés. Prueba con "hola".',
+          'Escribe una función `invertirCadena(texto)` que devuelva el string al revés. Prueba con "hola" e imprime con console.log.',
         plantilla: `// Día 34 - Ejercicio 1\nfunction invertirCadena(texto) {\n  // ...\n}\nconsole.log(invertirCadena('hola'));\n`
       },
       {
         numero: 2,
         enunciado:
-          'Escribe `fizzBuzz(n)` que imprima del 1 a n: "Fizz" si múltiplo de 3, "Buzz" si de 5, "FizzBuzz" si de ambos. Si no, el número. Prueba con n=15.',
+          'Escribe `fizzBuzz(n)` que recorra del 1 a n e imprima en consola una línea por número: "Fizz" si es múltiplo de 3, "Buzz" si de 5, "FizzBuzz" si de ambos; si no, el número. Usa console.log en cada iteración. Prueba con n=15.',
         plantilla: `// Día 34 - Ejercicio 2\nfunction fizzBuzz(n) {\n  // ...\n}\nfizzBuzz(15);\n`
       },
       {
@@ -2607,24 +2632,24 @@ console.log(transformar([1, -2, 3, -4])); // [2, -2, 6, -4]`,
     tipo: 'examen',
     titulo: 'Examen Final: repaso global',
     objetivo: 'Demostrar que estás listo para una entrevista junior.',
-    instrucciones: `Cinco ejercicios mezclando todo el temario: JS moderno, async, Svelte 5, SvelteKit y entrevista. Con 4 de 5 correctos completas el curso.`,
+    instrucciones: `Cinco ejercicios mezclando todo el temario: JS moderno, async, Svelte 5, SvelteKit y entrevista. Con 4 de 5 correctos completas el curso. En los trozos de JavaScript "clásico", imprime resultados con console.log cuando quieras comprobar o dejar claro el output.`,
     ejercicios: [
       {
         numero: 1,
         enunciado:
-          'Dado `const items = [{nombre:"A",precio:10,stock:0},{nombre:"B",precio:5,stock:3},{nombre:"C",precio:8,stock:1}]`, devuelve con filter+map un array de nombres SOLO de los items con stock > 0.',
-        plantilla: `// Examen Final - Ejercicio 1\nconst items = [\n  { nombre: 'A', precio: 10, stock: 0 },\n  { nombre: 'B', precio: 5, stock: 3 },\n  { nombre: 'C', precio: 8, stock: 1 }\n];\n\n`
+          'En una tienda online ficticia: `const items = [{nombre:"Camiseta",precio:10,stock:0},{nombre:"Gorra",precio:5,stock:3},{nombre:"Pegatina",precio:8,stock:1}]`. Devuelve con filter+map un array de nombres SOLO de los productos con stock > 0. Opcional: imprime el resultado con console.log.',
+        plantilla: `// Examen Final - Ejercicio 1\nconst items = [\n  { nombre: 'Camiseta', precio: 10, stock: 0 },\n  { nombre: 'Gorra', precio: 5, stock: 3 },\n  { nombre: 'Pegatina', precio: 8, stock: 1 }\n];\n\n`
       },
       {
         numero: 2,
         enunciado:
-          'Escribe una función async `cargarUsuarios()` que haga fetch a "https://jsonplaceholder.typicode.com/users", maneje errores con try/catch y devuelva los nombres (array de strings) o [] si falla.',
+          'Escribe una función async `cargarUsuarios()` que haga fetch a "https://jsonplaceholder.typicode.com/users", maneje errores con try/catch y devuelva los nombres (array de strings) o [] si falla. Al final imprime el array con console.log para comprobarlo.',
         plantilla: `// Examen Final - Ejercicio 2\n\n`
       },
       {
         numero: 3,
         enunciado:
-          'En `const codigo`, escribe el <script> de un componente Svelte 5 que use $state para `cantidad` y $derived para `iva` (cantidad * 0.21).',
+          'En `const codigo`, escribe el <script> de un componente Svelte 5 que use $state para `entradasVendidas` (número) y $derived para `comision` (entradasVendidas * 0.21, por ejemplo un 21% de comisión simbólica).',
         plantilla: `// Examen Final - Ejercicio 3\nconst codigo = \`...\`;\n`
       },
       {
