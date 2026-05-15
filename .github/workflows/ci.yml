@@ -15,7 +15,7 @@ jobs:
       PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
       PUBLIC_SUPABASE_ANON_KEY: sb_publishable_placeholder_for_ci_build_only
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v5
         with:
           node-version: 22
