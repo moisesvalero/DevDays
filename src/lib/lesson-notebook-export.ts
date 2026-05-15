@@ -7,9 +7,7 @@ export const NOTEBOOKLM_EPISODE_FOCUS = `Clase completa de bootcamp de programac
 
 Estilo profesor paciente y claro: qué es, qué hace en código y para qué sirve en una aplicación real. La analogía del documento: como máximo una frase de apoyo; el tema es programación, no logística ni metáforas largas. No leer sintaxis letra por letra.
 
-PROHIBIDO: decir que investigue por su cuenta, que busque en Google, que lea documentación externa o que "profundice fuera". La lección debe sentirse cerrada con este material.
-
-Cierre obligatorio: resumen oral de lo visto ("hoy / esta semana has visto…") y animar a practicar en DevDays (ejercicios o retos del portal), sin deberes vagos ni tareas genéricas fuera de la plataforma.`;
+PROHIBIDO: decir que investigue por su cuenta, que busque en Google, que lea documentación externa o que "profundice fuera". La lección debe sentirse cerrada con este material.`;
 
 const PROMPT_LECCION = `INSTRUCCIONES PARA NOTEBOOKLM (Audio Overview — tratar como CLASE, no como podcast suelto)
 - Idioma: español.
@@ -19,7 +17,6 @@ const PROMPT_LECCION = `INSTRUCCIONES PARA NOTEBOOKLM (Audio Overview — tratar
 - La analogía del documento: máximo una frase de apoyo; NO conviertas el audio en logística ni transporte.
 - Estilo: profesor claro, paciente, como una clase bien explicada. Ejemplos con palabras, no leer código letra por letra.
 - PROHIBIDO al final: decir "investiga por tu cuenta", "búscalo en Google", "lee la documentación" o mandar fuera de la lección. La clase debe sentirse COMPLETA con lo que trae este documento.
-- Cierre obligatorio: resumen de 30–60 segundos con los puntos del día ("hoy has visto…") y una frase de transición a practicar en DevDays (sin dar deberes genéricos).
 - Duración: corta, pero densa en contenido del documento; no rellenes con charla vacía.`;
 
 const PROMPT_REPASO = `INSTRUCCIONES PARA NOTEBOOKLM (Audio Overview — REPASO SEMANAL, estilo clase)
@@ -28,7 +25,6 @@ const PROMPT_REPASO = `INSTRUCCIONES PARA NOTEBOOKLM (Audio Overview — REPASO 
 - Recorre los días del documento en orden; conecta ideas y nombra cada concepto técnico.
 - Analogías solo como apoyo breve; el tema es PROGRAMACIÓN, no logística.
 - Estilo: clase de repaso clara, no entrevista dispersa. No mandar a investigar por fuera ni a "profundizar por tu cuenta".
-- Cierre: mapa mental verbal de la semana ("esta semana pasaste de… a…") y preparación para los retos del examen en DevDays.
 - No dictar sintaxis al detalle; sí explicar qué hace cada idea y cuándo usarla.`;
 
 function isLeccionNormal(l: Leccion): l is LeccionNormal {

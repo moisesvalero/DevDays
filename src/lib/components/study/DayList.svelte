@@ -4,10 +4,13 @@
   let {
     lessons,
     currentDay,
+    diasCompletados,
     onSelect
   }: {
     lessons: Leccion[];
     currentDay: number;
+    /** Días marcados como completados en Supabase */
+    diasCompletados: ReadonlySet<number>;
     onSelect: (dia: number) => void;
   } = $props();
 
@@ -43,26 +46,41 @@
       {#each items as lesson (lesson.dia)}
         {@const activo = lesson.dia === currentDay}
         {@const esExamen = lesson.tipo === 'examen'}
+        {@const completado = diasCompletados.has(lesson.dia)}
         <button
           type="button"
           class="group flex w-full items-center gap-3 border-l-4 px-5 py-2 text-left transition-colors hover:bg-surface-container-high
-            {activo ? 'border-primary bg-surface-container-high' : 'border-transparent'}"
+            {activo ? 'border-primary bg-surface-container-high' : completado ? 'border-success/50' : 'border-transparent'}"
           onclick={() => onSelect(lesson.dia)}
         >
-          {#if esExamen}
-            <span class="material-symbols-outlined text-lg text-tertiary">quiz</span>
+          {#if completado}
+            <span
+              class="material-symbols-outlined text-lg text-success"
+              style="font-variation-settings: 'FILL' 1;"
+              aria-hidden="true">check_circle</span
+            >
+          {:else if esExamen}
+            <span class="material-symbols-outlined text-lg text-tertiary" aria-hidden="true"
+              >quiz</span
+            >
           {:else if activo}
-            <span class="material-symbols-outlined text-lg text-primary">play_circle</span>
+            <span class="material-symbols-outlined text-lg text-primary" aria-hidden="true"
+              >play_circle</span
+            >
           {:else}
-            <span class="material-symbols-outlined text-lg text-outline">circle</span>
+            <span class="material-symbols-outlined text-lg text-outline" aria-hidden="true"
+              >circle</span
+            >
           {/if}
           <span
             class="text-xs font-semibold tracking-wide
               {activo
               ? 'text-primary'
-              : esExamen
-                ? 'text-tertiary group-hover:text-on-surface'
-                : 'text-on-surface-variant group-hover:text-on-surface'}"
+              : completado
+                ? 'text-success group-hover:text-success'
+                : esExamen
+                  ? 'text-tertiary group-hover:text-on-surface'
+                  : 'text-on-surface-variant group-hover:text-on-surface'}"
           >
             Día {lesson.dia}: {lesson.titulo}
           </span>

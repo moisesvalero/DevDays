@@ -128,8 +128,10 @@
   async function marcarCompletado() {
     const fd = new FormData();
     fd.append('dia', String(currentDay));
-    await fetch('/estudio?/marcar', { method: 'POST', body: fd });
-    await invalidateAll();
+    const res = await fetch('/estudio?/marcar', { method: 'POST', body: fd });
+    if (res.ok) {
+      await invalidateAll();
+    }
   }
 </script>
 
@@ -160,7 +162,7 @@
 
 <main class="flex flex-1 overflow-hidden">
   <aside class="w-[280px] shrink-0 border-r border-outline-variant bg-surface-container-low">
-    <DayList lessons={data.lessons} {currentDay} onSelect={seleccionarDia} />
+    <DayList lessons={data.lessons} {currentDay} diasCompletados={completados} onSelect={seleccionarDia} />
   </aside>
 
   <section class="flex flex-1 flex-col overflow-y-auto bg-background">
