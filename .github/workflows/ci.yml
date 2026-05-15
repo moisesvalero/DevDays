@@ -16,7 +16,7 @@ jobs:
       PUBLIC_SUPABASE_ANON_KEY: sb_publishable_placeholder_for_ci_build_only
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: 'npm'
