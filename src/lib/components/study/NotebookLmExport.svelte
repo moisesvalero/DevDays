@@ -45,8 +45,8 @@
       Descarga el <strong>repaso de toda la semana {lesson.semana}</strong> para un audio un poco más largo.
       Luego haz los retos del examen aquí.
     {:else}
-      Descarga solo esta lección para un audio <strong>corto</strong> (Brief/Short en NotebookLM).
-      Escucha y después practica los ejercicios de abajo.
+      Descarga solo esta lección para un audio corto en NotebookLM. Escucha y después practica los
+      ejercicios de abajo.
     {/if}
   </p>
   <ol class="mb-4 list-decimal space-y-1 pl-5 text-xs text-on-surface-variant">
