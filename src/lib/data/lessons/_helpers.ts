@@ -6,16 +6,15 @@ export function sec(
   analogia: string,
   paraQueSirve: string,
   texto: string,
-  ejemplo?: string
+  ejemplo?: string,
+  pasosPractica?: string[]
 ): Seccion {
-  return { titulo, analogia, paraQueSirve, texto, ejemplo };
+  return { titulo, analogia, paraQueSirve, texto, ejemplo, pasosPractica };
 }
 
 /**
  * Ejercicio de práctica.
- *
- * `enunciado`: tono impersonal / usted, planteamiento + requisitos (a)(b) + salida esperada.
- * `criteriosLogica`: solo para la IA al corregir.
+ * `enunciado.seccionRef` debe coincidir con una sección del mismo día (o «Repaso semana N» en exámenes).
  */
 export function ej(
   numero: number,
@@ -38,6 +37,8 @@ export function enunciadoParaIA(enunciado: EnunciadoEjercicio): string {
   const partes = [
     enunciado.planteamiento,
     '',
+    `Sección de referencia: ${enunciado.seccionRef}`,
+    '',
     'Requisitos:',
     reqs,
     '',
@@ -47,4 +48,9 @@ export function enunciadoParaIA(enunciado: EnunciadoEjercicio): string {
     partes.push('', `Notas: ${enunciado.notas}`);
   }
   return partes.join('\n');
+}
+
+/** Id HTML estable para anclas en /estudio */
+export function seccionAnchorId(dia: number, indice: number): string {
+  return `sec-d${dia}-${indice}`;
 }

@@ -16,7 +16,9 @@ describe('lesson helpers', () => {
       {
         planteamiento: 'Se pide un contador.',
         requisitos: ['Inicialice en 0', 'Muestre el valor'],
-        salidaEsperada: '5'
+        salidaEsperada: '5',
+        seccionRef: 'Variables con let',
+        notas: 'Véase sección Variables con let.'
       },
       ['Usa let'],
       '// plantilla'
@@ -31,7 +33,8 @@ describe('lesson helpers', () => {
     const texto = enunciadoParaIA({
       planteamiento: 'Problema de prueba.',
       requisitos: ['Haga A', 'Haga B'],
-      salidaEsperada: 'ok'
+      salidaEsperada: 'ok',
+      seccionRef: 'Sección prueba'
     });
     expect(texto).toContain('Problema de prueba');
     expect(texto).toContain('(a) Haga A');

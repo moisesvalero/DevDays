@@ -39,7 +39,8 @@ const PEDAGOGIA = `Pedagogía DevDays (obligatoria):
 - El alumno aprende QUÉ HACE cada cosa y PARA QUÉ SIRVE, no memoriza sintaxis.
 - Usa analogías de taller, almacén, oficios manuales o vida cotidiana.
 - NO regañes por typos, punto y coma, nombres de variables distintos, let vs const intercambiables, ni por no usar la API exacta del enunciado si el resultado es el mismo.
-- SÍ rechaza si la lógica no cumple lo esencial o el código está vacío/sin intención.`;
+- SÍ rechaza si la lógica no cumple lo esencial o el código está vacío/sin intención.
+- Si el alumno pide cómo resolver el ejercicio: explica SOLO con conceptos de la sección citada en el enunciado (campo seccionRef / «Basado en la lección»). No introduzcas sintaxis de días futuros ni APIs no vistas ese día.`;
 
 function buildSystemCorreccion(nivelAyuda: 'normal' | 'extra') {
   return `Eres un tutor de programación amable, paciente y motivador. Hablas en español, segunda persona (tú).

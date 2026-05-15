@@ -12,57 +12,84 @@ export const week1: Leccion[] = [
       intro: `En JavaScript guardas datos en **variables** con nombres legibles. Hoy trabajas con \`const\`, \`let\`, tipos \`string\`, \`number\` y \`boolean\`, y compruebas resultados con \`console.log\` y template strings.`,
       secciones: [
         sec(
-          'const y let',
-          'Como una etiqueta fija y otra bandeja que rellenas cada día.',
-          'Separar lo que no cambia de lo que sí cambia evita errores al actualizar estado.',
-          'Una **variable** es un nombre que apunta a un valor. \`const\` declara un enlace que no reasignas; \`let\` permite cambiar el valor después. Lee y escribe siempre usando el nombre: \`cajas = 5\` actualiza el contenido de la variable \`cajas\`.',
-          `const nombre = 'Ana';\nlet cajas = 0;\ncajas = 5;`
+          'Variables con let y console.log',
+          'Como una bandeja que rellenas cada día y una ventanilla para ver el resultado.',
+          'Actualizar contadores y comprobar valores antes de seguir.',
+          'Use `const nombre = "Ana"` para datos que no cambian y `let cajas = 0` para contadores que actualiza. Con `cajas = cajas + 5` o `cajas += 5` suma al valor actual. **console.log(valor)** muestra el resultado en consola.',
+          `const nombre = 'Ana';\nlet cajas = 0;\ncajas = cajas + 5;\nconsole.log(cajas); // 5`,
+          [
+            'Declare `let cajas = 0`.',
+            'Sume 5 con `cajas = cajas + 5` o `cajas += 5`.',
+            'Muestre el resultado con `console.log(cajas)`.'
+          ]
         ),
         sec(
-          'Tipos primitivos',
-          'Texto, número y sí/no son las tres formas básicas de anotar un dato.',
-          'Elegir el tipo correcto ayuda a la IA, al tutor y a ti a saber qué operaciones tiene sentido hacer.',
-          'JavaScript infiere el tipo al asignar. **string** = texto entre comillas; **number** = números (enteros o decimales); **boolean** = \`true\` o \`false\`. Mezclar tipos sin querer (sumar texto y número) da resultados raros: piensa qué guardas en cada variable.',
-          `const cliente = 'Luis';\nconst piezas = 12;\nconst entregado = false;`
+          'Template strings',
+          'Una frase con huecos que se rellenan con el valor de cada variable.',
+          'Mensajes personalizados sin repetir datos a mano.',
+          'Use **backticks** y \`${variable}\` dentro del texto: \`const saludo = \\`Hola, soy ${nombre}\\`;\`. Luego \`console.log(saludo)\`.',
+          `const nombre = 'Ana';\nconst edad = 30;\nconst saludo = \`Hola, soy \${nombre} y tengo \${edad} años\`;\nconsole.log(saludo);`,
+          [
+            'Declare `nombre` (string) y `edad` (number) con `const`.',
+            'Cree `saludo` con backticks e interpolación `${nombre}` y `${edad}`.',
+            'Muestre `saludo` con `console.log`.'
+          ]
         ),
         sec(
-          'Meter variables dentro de un texto',
-          'Una frase con huecos: donde pone ${nombre} se rellena solo con el valor guardado.',
-          'Para el ejercicio del saludo (y casi todos los mensajes en apps) necesitas esto: no escribir "Ana" otra vez a mano en la frase si ya está en una variable.',
-          'Pasos: (1) Guardas los datos en variables, por ejemplo \`const nombre = "Ana"\` y \`const edad = 30\`. (2) Creas el mensaje con **backticks** (tecla al lado del 1, no uses comillas simples ni dobles): \`const saludo = `Hola, soy ${nombre} y tengo ${edad} años`\`. (3) Dentro de los backticks, cada variable va entre \`${ }\` — escribe el nombre de la variable tal cual: \`${nombre}\`, \`${edad}\`. JavaScript sustituye el hueco por el valor. También vale unir con \`+\` (\`"Hola " + nombre\`), pero en este curso usaremos sobre todo backticks.',
-          `const nombre = 'Ana';\nconst edad = 30;\nconst saludo = \`Hola, soy \${nombre} y tengo \${edad} años\`;\nconsole.log(saludo);`
-        ),
-        sec(
-          'console.log',
-          'La ventanilla donde ves el resultado al probar el código.',
-          'Comprobar que el saludo (u otro mensaje) sale bien antes de seguir.',
-          'Cuando ya tienes el texto en una variable (por ejemplo \`saludo\`), lo muestras con \`console.log(saludo)\`. También puedes hacer \`console.log(`Hola ${nombre}`)\` en una sola línea. En DevDays la IA lee tu código; \`console.log\` es la forma clásica de ver qué está pasando.',
-          `console.log('Hola');\nconsole.log(2 + 2);`
+          'Mensaje con varias variables',
+          'Combinar dos datos distintos en una sola frase legible.',
+          'Etiquetas de producto, tickets, resúmenes de pedido.',
+          'Guarde producto y precio por separado; construya la frase con backticks: \`La ${producto} cuesta ${precio} euros\` y muéstrela con \`console.log\`.',
+          `const producto = 'camiseta';\nconst precio = 19.99;\nconst frase = \`La \${producto} cuesta \${precio} euros\`;\nconsole.log(frase);`,
+          [
+            'Use las variables `producto` y `precio` de la plantilla.',
+            'Arme la frase con template literals.',
+            'Escriba el texto final con `console.log`.'
+          ]
         )
       ],
       resumen: [
         'Variable = nombre → valor en memoria.',
         'const = no reasignar; let = valor modificable.',
+        'Sumar al valor actual: cajas = cajas + 5 o cajas += 5.',
+        'console.log(valor) = ver resultado en consola.',
         'string, number, boolean = tipos básicos.',
-        'console.log = ver salida al desarrollar.',
-        'Backticks + ${variable} = meter variables en un texto.',
-        'console.log = mostrar el resultado.'
+        'Backticks + ${variable} = meter variables en un texto.'
       ]
     },
     ejercicios: [
       ej(
         1,
+        'Contador desde cero',
+        {
+          planteamiento:
+            'Se desea modelar un contador numérico que arranca en cero, aumenta en cinco unidades y muestra el resultado en consola. Todo lo necesario está en la sección «Variables con let y console.log».',
+          requisitos: [
+            'Parta de `let cajas = 0` (ya en la plantilla).',
+            'Aumente el valor en 5 con la forma vista en la lección: `cajas = cajas + 5` o `cajas += 5`.',
+            'Muestre el resultado con `console.log(cajas)`.'
+          ],
+          salidaEsperada: '5',
+          seccionRef: 'Variables con let y console.log',
+          notas: 'Véase sección «Variables con let y console.log».'
+        },
+        ['Hay contador que empieza en 0', 'Se suma 5', 'Se imprime 5'],
+        `// Día 1 — Ej. 1 Contador\nlet cajas = 0;\n// cajas = cajas + 5;\n// console.log(cajas);\n\n`
+      ),
+      ej(
+        2,
         'Saludo con nombre y edad',
         {
           planteamiento:
-            'Se desea elaborar un mensaje de presentación que incorpore el nombre y la edad del operador mediante variables, sin repetir esos datos de forma literal en la cadena final. El resultado debe comprobarse en consola antes de continuar.',
+            'Se desea elaborar un mensaje de presentación que incorpore el nombre y la edad mediante variables. Requiere template literals, explicados en la sección «Meter variables dentro de un texto».',
           requisitos: [
-            'Declare las variables `nombre` y `edad` con `const`, asignando valores propios de texto y número.',
-            'Construya el saludo con template literals (backticks), interpolando `${nombre}` y `${edad}`.',
-            'Escriba en consola el mensaje resultante con `console.log`.'
+            'Declare `nombre` (texto) y `edad` (número) con `const`.',
+            'Cree `saludo` con backticks e interpolación: `${nombre}` y `${edad}`.',
+            'Muestre el mensaje con `console.log(saludo)`.'
           ],
           salidaEsperada: 'Hola, soy Tu nombre y tengo 25 años',
-          notas: 'Consulte la sección «Meter variables dentro de un texto».'
+          seccionRef: 'Template strings',
+          notas: 'Véase sección «Template strings».'
         },
         [
           'Existe variable con nombre',
@@ -70,23 +97,7 @@ export const week1: Leccion[] = [
           'El saludo usa los valores de las variables (backticks con ${...} o concatenación con +), no el texto fijo escrito a mano',
           'La salida menciona ambos datos'
         ],
-        `// Día 1 — Saludo\nconst nombre = 'Tu nombre';\nconst edad = 25;\n// saludo con backticks: \`Hola, soy \${nombre} y tengo \${edad} años\`\n\n`
-      ),
-      ej(
-        2,
-        'Contador desde cero',
-        {
-          planteamiento:
-            'Se desea representar un contador que comienza en cero y recibe un incremento fijo de cinco unidades en el mismo proceso, mostrando después el resultado al operador.',
-          requisitos: [
-            'Declare la variable `cajas` con `let`, inicializada en 0.',
-            'Incremente `cajas` en 5 unidades.',
-            'Escriba en consola el valor final de `cajas` con `console.log`.'
-          ],
-          salidaEsperada: '5'
-        },
-        ['Hay contador que empieza en 0', 'Se suma 5', 'Se imprime 5'],
-        `// Día 1 — Contador desde cero\nlet cajas = 0;\n\n`
+        "// Día 1 — Ej. 2 Saludo\nconst nombre = 'Tu nombre';\nconst edad = 25;\n// Cree saludo con backticks y console.log\n\n"
       ),
       ej(
         3,
@@ -99,7 +110,9 @@ export const week1: Leccion[] = [
             'Construya la frase con template literals o concatenación, incluyendo producto y precio.',
             'Escriba en consola el texto final con `console.log`.'
           ],
-          salidaEsperada: 'La camiseta cuesta 19.99 euros'
+          salidaEsperada: 'La camiseta cuesta 19.99 euros',
+          seccionRef: 'Mensaje con varias variables',
+          notas: 'Véase sección «Mensaje con varias variables».'
         },
         ['Hay precio y nombre de producto', 'El mensaje final los menciona'],
         `// Día 1 — Producto y precio\nconst precio = 19.99;\nconst producto = 'camiseta';\n\n`
@@ -119,22 +132,37 @@ export const week1: Leccion[] = [
           'Operadores aritméticos',
           'Sumar y repartir unidades, como en una hoja de cálculo.',
           'Calcular totales, medias y restos en lógica de negocio.',
-          'Los operadores **+**, **-**, **\***, **/** hacen aritmética habitual. El **módulo** \`%\` devuelve el resto de una división entera: \`10 % 3\` es \`1\`. Útil para pares/impares, ciclos y límites.',
-          'console.log(10 + 5);\nconsole.log(10 % 3);'
+          'Los operadores **+**, **-**, **\***, **/** hacen aritmética habitual. El **módulo** \`%\` devuelve el resto: \`10 % 3\` es \`1\`. Use \`console.log\` para ver el resultado.',
+          'console.log(10 + 5);\nconsole.log(10 % 3);',
+          [
+            'Calcule `10 + 5` y muestre el resultado.',
+            'Calcule `10 % 3` y muestre el resto.',
+            'Use `console.log` en cada paso.'
+          ]
         ),
         sec(
-          'Comparación estricta ===',
-          'Pregunta si dos valores son exactamente iguales, tipo incluido.',
-          'Evitar comparaciones ambiguas en condiciones y filtros.',
-          '\`===\` compara **valor y tipo** y devuelve \`true\` o \`false\`. \`5 === 5\` es true; \`5 === "5"\` es false. Prefiere \`===\` frente a \`==\`, que convierte tipos y sorprende.',
-          'console.log(5 === 5);\nconsole.log(5 === "5"); // false'
+          'Comparar dos valores con if',
+          'Elegir el mayor de dos números con una rama condicional.',
+          'Precios, puntuaciones, límites de stock.',
+          'Con \`if (a > b)\` ejecuta un bloque solo si la condición es verdadera; con \`else\` cubres el caso contrario. Guarde el mayor en una variable y muéstrelo con \`console.log\`.',
+          'const a = 12;\nconst b = 9;\nlet mayor;\nif (a > b) {\n  mayor = a;\n} else {\n  mayor = b;\n}\nconsole.log(mayor);',
+          [
+            'Compare `a` y `b` con `if (a > b)`.',
+            'Asigne el valor mayor a una variable.',
+            'Muestre esa variable con `console.log`.'
+          ]
         ),
         sec(
-          'Lógicos y truthy/falsy',
-          'Combinar varias preguntas sí/no en una sola decisión.',
-          'Modelar reglas: “puede enviar si pagó Y hay stock”.',
-          '\`&&\` exige que ambas partes sean verdaderas; \`||\` basta con una. En condiciones, valores **falsy** (\`0\`, \`""\`, \`null\`, \`undefined\`, \`false\`, \`NaN\`) se tratan como “no”; el resto es **truthy**.',
-          'const hayStock = cantidad > 0;\nconst puedeEnviar = pagado && hayStock;'
+          'Lógicos && y truthy/falsy',
+          'Combinar condiciones y detectar cadenas vacías.',
+          'Reglas de envío, formularios, validaciones simples.',
+          '\`&&\` exige que ambas partes sean verdaderas. Valores **falsy** (\`""\`, \`0\`, \`false\`, etc.) cuentan como «no». \`pagado && stock > 0\` modela «puede enviar»; \`nota.length > 0\` o \`Boolean(nota)\` comprueba si hay texto.',
+          'const pagado = true;\nconst stock = 3;\nconsole.log(pagado && stock > 0);\nconst nota = "";\nconsole.log(nota.length > 0);',
+          [
+            'Combine `pagado` y stock con `&&`.',
+            'Escriba el booleano en consola.',
+            'Para una cadena vacía, compruebe si hay contenido y muestre un booleano.'
+          ]
         )
       ],
       resumen: [
@@ -147,22 +175,41 @@ export const week1: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'El precio más alto',
+        'Suma y resto',
         {
           planteamiento:
-            'Se comparan dos importes numéricos representando precios alternativos. El programa debe determinar cuál es el mayor y comunicar ese valor al operador por consola.',
+            'Se solicita evaluar dos expresiones aritméticas sobre enteros y mostrar cada resultado en consola.',
           requisitos: [
-            'Utilice las variables `a` y `b` ya definidas en la plantilla.',
-            'Calcule o seleccione el precio mayor mediante operadores o condicionales.',
-            'Escriba en consola el valor numérico resultante con `console.log`.'
+            'Calcule `10 + 5` y muestre el resultado con `console.log`.',
+            'Calcule `10 % 3` (resto de la división) y muestre el resultado con `console.log`.'
           ],
-          salidaEsperada: '12'
+          salidaEsperada: '15\n1',
+          seccionRef: 'Operadores aritméticos',
+          notas: 'Véase sección «Operadores aritméticos».'
         },
-        ['Hay dos precios', 'Se elige el mayor', 'Se imprime un número'],
-        `// Día 2 — Precio más alto\nconst a = 12;\nconst b = 9;\n\n`
+        ['Muestra suma 15', 'Muestra resto 1'],
+        `// Día 2 — Suma y resto\n// console.log(10 + 5);\n// console.log(10 % 3);\n\n`
       ),
       ej(
         2,
+        'El precio más alto',
+        {
+          planteamiento:
+            'Se comparan dos importes numéricos. El programa debe determinar cuál es el mayor con `if` y mostrarlo en consola.',
+          requisitos: [
+            'Utilice las variables `a` y `b` de la plantilla.',
+            'Con `if (a > b)` (y `else` si hace falta) asigne el mayor a una variable.',
+            'Escriba en consola el valor numérico mayor con `console.log`.'
+          ],
+          salidaEsperada: '12',
+          seccionRef: 'Comparar dos valores con if',
+          notas: 'Véase sección «Comparar dos valores con if».'
+        },
+        ['Hay dos precios', 'Se elige el mayor con if', 'Se imprime un número'],
+        `// Día 2 — Precio más alto\nconst a = 12;\nconst b = 9;\n\n`
+      ),
+      ej(
+        3,
         '¿Se puede enviar el pedido?',
         {
           planteamiento:
@@ -172,26 +219,12 @@ export const week1: Leccion[] = [
             'Combine ambas condiciones con operadores lógicos (`&&` u equivalente).',
             'Escriba en consola el valor booleano que indique si el envío es posible.'
           ],
-          salidaEsperada: 'true'
+          salidaEsperada: 'true',
+          seccionRef: 'Lógicos && y truthy/falsy',
+          notas: 'Véase sección «Lógicos && y truthy/falsy».'
         },
         ['Combina pago y stock', 'Resultado booleano visible'],
         `// Día 2 — Envío del pedido\nconst pagado = true;\nconst stock = 3;\n\n`
-      ),
-      ej(
-        3,
-        '¿Hay texto en la nota?',
-        {
-          planteamiento:
-            'Se dispone de una cadena que representa una nota interna, posiblemente vacía. Se requiere comprobar si contiene texto útil y mostrar un booleano que indique si hay contenido.',
-          requisitos: [
-            'Utilice la variable `nota` de la plantilla.',
-            'Evalúe si la cadena tiene contenido (no está vacía) y obtenga un booleano.',
-            'Escriba en consola ese resultado con `console.log`.'
-          ],
-          salidaEsperada: 'false'
-        },
-        ['Comprueba si hay contenido', 'Imprime booleano'],
-        `// Día 2 — Nota vacía\nconst nota = '';\n\n`
       )
     ]
   },
@@ -209,21 +242,36 @@ export const week1: Leccion[] = [
           'Una bifurcación: o entras por la rama A o por la B.',
           'Mostrar mensajes distintos, aplicar reglas de negocio, validar datos.',
           'La forma \`if (condicion) { ... } else { ... }\` ejecuta el primer bloque solo si la condición es truthy. **else if** encadena más preguntas. Las llaves delimitan el bloque; con una sola línea a veces se omiten, pero en aprendizaje conviene usarlas.',
-          'if (edad >= 18) {\n  console.log("adulto");\n} else {\n  console.log("menor");\n}'
+          'if (edad >= 18) {\n  console.log("adulto");\n} else {\n  console.log("menor");\n}',
+          [
+            'Lea `edad` de la plantilla.',
+            'Con `if (edad >= 18)` asigne «adulto» o «menor».',
+            'Muestre la etiqueta con `console.log`.'
+          ]
         ),
         sec(
           'Operador ternario',
           'Elegir entre dos expresiones en una línea.',
           'Asignar etiquetas cortas según estado.',
           'Sintaxis: \`condicion ? valorSiTrue : valorSiFalse\`. Devuelve un valor (no es un “mini-if” con varias líneas). Útil para textos o flags simples; para lógica larga usa \`if\`.',
-          'const tipo = esVip ? "oro" : "normal";'
+          'const tipo = esVip ? "oro" : "normal";',
+          [
+            'Use la variable `esVip`.',
+            'Asigne el mensaje con ternario: VIP → «descuento», si no → «precio normal».',
+            'Muestre el texto con `console.log`.'
+          ]
         ),
         sec(
           'switch',
           'Varias etiquetas con el mismo nombre de variable.',
           'Menús, estados de pedido, días de la semana.',
           '\`switch (expresion)\` compara con \`case\` y ejecuta el bloque que coincida; \`break\` evita “caer” al siguiente case. \`default\` es la rama si nada coincide. Ideal cuando comparas contra muchos valores concretos del mismo tipo.',
-          'switch (dia) {\n  case "lunes": ...\n  default: ...\n}'
+          'switch (dia) {\n  case "lunes": console.log("Rutina de lunes"); break;\n  default: console.log("Otro día");\n}',
+          [
+            'Use la variable `dia` de la plantilla.',
+            'Defina al menos dos `case` con mensajes distintos.',
+            'Imprima la rutina con `console.log` y `break`.'
+          ]
         )
       ],
       resumen: [
@@ -245,7 +293,9 @@ export const week1: Leccion[] = [
             'Implemente una rama condicional: si `edad >= 18`, asigne el texto «adulto»; en caso contrario, «menor».',
             'Escriba en consola la etiqueta resultante con `console.log`.'
           ],
-          salidaEsperada: 'adulto'
+          salidaEsperada: 'adulto',
+          seccionRef: 'if / else',
+          notas: 'Véase sección «if / else».'
         },
         ['Usa condición con edad', 'Salida coherente con 18+'],
         `// Día 3 — Adulto o menor\nconst edad = 20;\n\n`
@@ -258,10 +308,12 @@ export const week1: Leccion[] = [
             'Un cliente puede tener estatus VIP, lo que afecta el mensaje de tarifa mostrado. Se debe elegir entre dos mensajes exclusivos según el valor de `esVip` y mostrarlo en consola.',
           requisitos: [
             'Utilice la variable `esVip` de la plantilla.',
-            'Asigne el texto «descuento» si es VIP, o «precio normal» en caso contrario (ternario o `if`).',
+            'Asigne el texto «descuento» si es VIP, o «precio normal» en caso contrario con el operador ternario.',
             'Escriba en consola el mensaje elegido con `console.log`.'
           ],
-          salidaEsperada: 'descuento'
+          salidaEsperada: 'descuento',
+          seccionRef: 'Operador ternario',
+          notas: 'Véase sección «Operador ternario».'
         },
         ['Depende de esVip', 'Dos resultados posibles'],
         `// Día 3 — Tarifa VIP\nconst esVip = true;\n\n`
@@ -271,13 +323,15 @@ export const week1: Leccion[] = [
         'Rutina según el día',
         {
           planteamiento:
-            'Se conoce el día de la semana en forma de cadena. El programa debe seleccionar e imprimir una rutina distinta según ese valor, empleando `switch` o una cadena de `if`.',
+            'Se conoce el día de la semana en forma de cadena. El programa debe seleccionar e imprimir una rutina distinta según ese valor, empleando `switch`.',
           requisitos: [
             'Utilice la variable `dia` de la plantilla (`\'lunes\'`).',
-            'Defina al menos dos ramas con mensajes de rutina diferentes según el día.',
-            'Escriba en consola la rutina correspondiente al valor de `dia`.'
+            'Defina al menos dos `case` con mensajes de rutina diferentes.',
+            'Escriba en consola la rutina correspondiente con `break` en cada case.'
           ],
-          salidaEsperada: 'Rutina de lunes (texto distinto según el día elegido en código)'
+          salidaEsperada: 'Rutina de lunes (texto distinto según el día elegido en código)',
+          seccionRef: 'switch',
+          notas: 'Véase sección «switch».'
         },
         ['Ramifica por dia', 'Imprime texto'],
         `// Día 3 — Rutina semanal\nconst dia = 'lunes';\n\n`
@@ -297,22 +351,37 @@ export const week1: Leccion[] = [
           'function declaración',
           'Un procedimiento con nombre al que llamas cuando lo necesitas.',
           'No repetir el mismo cálculo en muchos sitios del código.',
-          '\`function nombre(param) { return valor; }\` crea una función **hoisted** (usable antes en el archivo en scripts clásicos). \`return\` termina la función y entrega el resultado; sin \`return\` obtienes \`undefined\`.',
-          'function duplicar(x) { return x * 2; }'
+          '`function duplicar(n) { return n * 2; }` crea una función con `return`. Invóquela y muestre el resultado: `console.log(duplicar(4))`.',
+          'function duplicar(n) {\n  return n * 2;\n}\nconsole.log(duplicar(4));',
+          [
+            'Complete `duplicar(n)` con `return n * 2`.',
+            'Invoque `duplicar(4)`.',
+            'Muestre el resultado con `console.log`.'
+          ]
         ),
         sec(
           'Arrow function',
           'La misma idea con sintaxis más compacta.',
           'Callbacks en arrays y código moderno (Svelte, APIs).',
-          '\`const fn = (x) => x * 2\` es una **arrow function**. Si el cuerpo es una expresión, puedes omitir llaves y \`return\`. Con varias líneas usa llaves y \`return\` explícito.',
-          'const duplicar = (x) => x * 2;\nconst sumar = (a, b) => a + b;'
+          '`const sumar = (a, b) => a + b` es una arrow function. `console.log(sumar(3, 7))` muestra la suma.',
+          'const sumar = (a, b) => a + b;\nconsole.log(sumar(3, 7));',
+          [
+            'Complete `sumar(a, b)` para devolver `a + b`.',
+            'Invoque `sumar(3, 7)`.',
+            'Escriba el resultado con `console.log`.'
+          ]
         ),
         sec(
           'Parámetros por defecto',
           'Valor de respaldo si no pasan argumento.',
           'APIs flexibles y menos comprobaciones repetidas.',
-          'En la firma: \`function saludar(nombre = "invitado")\`. Si llamas \`saludar()\`, \`nombre\` vale \`"invitado"\`. Los parámetros por defecto se evalúan en cada llamada.',
-          'function saludar(nombre = "invitado") { ... }'
+          '`function saludar(nombre = "invitado")` usa valor por defecto si omites el argumento. `console.log(saludar())` debe mostrar un saludo con «invitado».',
+          `function saludar(nombre = 'invitado') {\n  return \`Hola, \${nombre}\`;\n}\nconsole.log(saludar());`,
+          [
+            'Complete `saludar` con parámetro por defecto `invitado`.',
+            'Invoque `saludar()` sin argumentos.',
+            'Muestre el saludo con `console.log`.'
+          ]
         )
       ],
       resumen: [
@@ -334,7 +403,9 @@ export const week1: Leccion[] = [
             'Invoque `duplicar` pasando el argumento `4`.',
             'Escriba en consola el valor devuelto con `console.log`.'
           ],
-          salidaEsperada: '8'
+          salidaEsperada: '8',
+          seccionRef: 'function declaración',
+          notas: 'Véase la sección «function declaración»: `return` e invocación con `console.log`.'
         },
         ['Hay función que duplica', 'Se usa y se imprime resultado'],
         `// Día 4 — Función duplicar\nfunction duplicar(n) {\n  // return ...\n}\n\n`
@@ -350,7 +421,9 @@ export const week1: Leccion[] = [
             'Invoque `sumar(3, 7)` y capture o use directamente su resultado.',
             'Escriba en consola el valor obtenido con `console.log`.'
           ],
-          salidaEsperada: '10'
+          salidaEsperada: '10',
+          seccionRef: 'Arrow function',
+          notas: 'Véase la sección «Arrow function»: arrow con `=>` y `console.log`.'
         },
         ['Función suma dos valores', 'Salida 10'],
         `// Día 4 — Función sumar\nconst sumar = (a, b) => {\n};\n\n`
@@ -366,7 +439,9 @@ export const week1: Leccion[] = [
             'Invoque `saludar()` sin argumentos.',
             'Escriba en consola el saludo generado (debe mencionar «invitado»).'
           ],
-          salidaEsperada: 'Hola, invitado'
+          salidaEsperada: 'Hola, invitado',
+          seccionRef: 'Parámetros por defecto',
+          notas: 'Véase la sección «Parámetros por defecto»: `nombre = \'invitado\'`.'
         },
         ['Valor por defecto', 'Devuelve o imprime saludo'],
         `// Día 4 — Saludo por defecto\nfunction saludar(nombre = 'invitado') {\n}\n\n`
@@ -386,22 +461,37 @@ export const week1: Leccion[] = [
           'map',
           'Aplicas la misma operación a cada elemento y obtienes una lista nueva.',
           'Convertir formatos, calcular precios con IVA, derivar datos para la UI.',
-          '\`array.map((elemento) => nuevoValor)\` recorre el array y devuelve **otro array de la misma longitud**. No muta el original. El callback recibe el elemento (y opcionalmente índice y array).',
-          'const mm = cm.map((x) => x * 10);'
+          '`minutos.map((m) => m * 60)` devuelve un array nuevo con cada valor transformado. `console.log(segundos)` muestra el resultado.',
+          'const minutos = [25, 40, 15];\nconst segundos = minutos.map((m) => m * 60);\nconsole.log(segundos);',
+          [
+            'Use el array `minutos` de la plantilla.',
+            'Aplique `map` multiplicando cada elemento por 60.',
+            'Muestre el array resultante con `console.log`.'
+          ]
         ),
         sec(
           'filter',
           'Te quedas solo con los elementos que pasan una prueba.',
           'Listas de productos activos, tareas completadas, usuarios mayores de edad.',
-          '\`array.filter((el) => condicion)\` devuelve un subarray con los elementos donde la condición es true. Longitud ≤ la original.',
-          'const buenas = tablas.filter((t) => !t.rota);'
+          '`mascotas.filter((nombre) => nombre.length > 4)` devuelve un subarray. `console.log(largos)` muestra solo los nombres que pasan la prueba.',
+          `const mascotas = ['gato', 'perro', 'elefante', 'pez'];\nconst largos = mascotas.filter((n) => n.length > 4);\nconsole.log(largos);`,
+          [
+            'Use el array `mascotas` de la plantilla.',
+            'Filtre con `nombre.length > 4`.',
+            'Muestre el subarray con `console.log`.'
+          ]
         ),
         sec(
           'find',
           'Buscas el primero que coincide y paras.',
           'Obtener un registro por id sin recorrer manualmente.',
-          '\`array.find((el) => condicion)\` devuelve el **primer** match o \`undefined\` si no hay ninguno. A diferencia de \`filter\`, no devuelve array.',
-          'const pedido = lista.find((p) => p.id === 4521);'
+          '`usuarios.find((u) => u.id === 2)` devuelve el primer objeto que cumple. `console.log(usuario.nombre)` muestra solo el nombre.',
+          `const usuarios = [{ id: 1, nombre: 'Ana' }, { id: 2, nombre: 'Luis' }];\nconst usuario = usuarios.find((u) => u.id === 2);\nconsole.log(usuario.nombre);`,
+          [
+            'Use el array `usuarios` de la plantilla.',
+            'Busque con `find` donde `id === 2`.',
+            'Muestre la propiedad `nombre` con `console.log`.'
+          ]
         )
       ],
       resumen: [
@@ -423,7 +513,9 @@ export const week1: Leccion[] = [
             'Aplique `map` para obtener un array de segundos (cada valor × 60).',
             'Escriba en consola el array resultante con `console.log`.'
           ],
-          salidaEsperada: '[1500, 2400, 900]'
+          salidaEsperada: '[1500, 2400, 900]',
+          seccionRef: 'map',
+          notas: 'Véase la sección «map»: transformar con callback y `console.log`.'
         },
         ['Usa map', 'Multiplica por 60', 'Muestra array'],
         `// Día 5 — Minutos a segundos\nconst minutos = [25, 40, 15];\n\n`
@@ -439,7 +531,9 @@ export const week1: Leccion[] = [
             'Aplique `filter` con la condición `nombre.length > 4`.',
             'Escriba en consola el array filtrado con `console.log`.'
           ],
-          salidaEsperada: "['perro', 'elefante']"
+          salidaEsperada: "['perro', 'elefante']",
+          seccionRef: 'filter',
+          notas: 'Véase la sección «filter»: condición en el callback y `console.log`.'
         },
         ['Usa filter', 'Condición longitud > 4'],
         `// Día 5 — Filtrar nombres largos\nconst mascotas = ['gato', 'perro', 'elefante', 'pez'];\n\n`
@@ -455,7 +549,9 @@ export const week1: Leccion[] = [
             'Aplique `find` para obtener el objeto con `id === 2`.',
             'Escriba en consola solo la propiedad `nombre` del resultado.'
           ],
-          salidaEsperada: 'Luis'
+          salidaEsperada: 'Luis',
+          seccionRef: 'find',
+          notas: 'Véase la sección «find»: primer match y acceso a `nombre`.'
         },
         ['find por id', 'Imprime nombre'],
         `// Día 5 — Buscar por id\nconst usuarios = [{ id: 1, nombre: 'Ana' }, { id: 2, nombre: 'Luis' }];\n\n`
@@ -475,22 +571,37 @@ export const week1: Leccion[] = [
           'reduce',
           'Recorres la lista y acumulas un único resultado.',
           'Sumar precios, contar votos, agrupar en un objeto.',
-          '\`array.reduce((acumulador, elemento) => nuevoAcum, valorInicial)\` reduce la lista a un valor (número, string, objeto…). El acumulador guarda el estado entre pasos; el valor inicial evita sorpresas con arrays vacíos.',
-          'const total = precios.reduce((acc, p) => acc + p, 0);'
+          '`precios.reduce((acc, p) => acc + p, 0)` suma todos los valores. `console.log(total)` muestra el acumulado.',
+          'const precios = [10, 20, 30];\nconst total = precios.reduce((acc, p) => acc + p, 0);\nconsole.log(total);',
+          [
+            'Use el array `precios` de la plantilla.',
+            'Aplique `reduce` con valor inicial `0`.',
+            'Muestre el total con `console.log`.'
+          ]
         ),
         sec(
           'some y every',
           'Una pregunta sobre “¿alguno?” o “¿todos?”.',
           'Validar formularios, permisos, listas de edades.',
-          '\`some\` devuelve true si **al menos un** elemento cumple la condición. \`every\` exige que **todos** la cumplan. Ambos devuelven boolean y dejan de iterar en cuanto pueden (some) o si falla uno (every).',
-          'edades.some((e) => e < 18);\nedades.every((e) => e >= 18);'
+          '`edades.some((e) => e < 18)` devuelve true si al menos uno cumple. `console.log(hayMenor)` expone el booleano.',
+          'const edades = [22, 17, 31];\nconst hayMenor = edades.some((e) => e < 18);\nconsole.log(hayMenor);',
+          [
+            'Use el array `edades` de la plantilla.',
+            'Aplique `some` con condición `edad < 18`.',
+            'Muestre el booleano con `console.log`.'
+          ]
         ),
         sec(
           'sort',
           'Reordenar elementos in-place.',
           'Tablas, rankings, prioridades.',
-          '\`array.sort()\` sin argumentos ordena como **strings** (10 antes que 2). Para números usa comparador: \`(a, b) => a - b\` (ascendente). \`sort\` muta el array original; si necesitas preservarlo, copia antes con spread o \`toSorted\` donde exista.',
-          'nums.sort((a, b) => a - b);'
+          'Para números use `nums.sort((a, b) => a - b)`. `console.log(nums)` muestra el array ordenado de menor a mayor.',
+          'const nums = [10, 1, 21, 2];\nnums.sort((a, b) => a - b);\nconsole.log(nums);',
+          [
+            'Use el array `nums` de la plantilla.',
+            'Ordene con `sort((a, b) => a - b)`.',
+            'Muestre el array ordenado con `console.log`.'
+          ]
         )
       ],
       resumen: [
@@ -512,7 +623,9 @@ export const week1: Leccion[] = [
             'Aplique `reduce` con valor inicial `0` para acumular la suma.',
             'Escriba en consola el total obtenido con `console.log`.'
           ],
-          salidaEsperada: '60'
+          salidaEsperada: '60',
+          seccionRef: 'reduce',
+          notas: 'Véase la sección «reduce»: acumulador y valor inicial `0`.'
         },
         ['reduce suma', 'Resultado 60'],
         `// Día 6 — Suma de precios\nconst precios = [10, 20, 30];\n\n`
@@ -528,7 +641,9 @@ export const week1: Leccion[] = [
             'Aplique `some` con la condición `edad < 18`.',
             'Escriba en consola el booleano resultante con `console.log`.'
           ],
-          salidaEsperada: 'true'
+          salidaEsperada: 'true',
+          seccionRef: 'some y every',
+          notas: 'Véase la sección «some y every»: `some` con condición y `console.log`.'
         },
         ['some con condición < 18'],
         `// Día 6 — Menor de edad\nconst edades = [22, 17, 31];\n\n`
@@ -544,7 +659,9 @@ export const week1: Leccion[] = [
             'Ordene con `sort((a, b) => a - b)` o lógica equivalente.',
             'Escriba en consola el array ordenado con `console.log`.'
           ],
-          salidaEsperada: '[1, 2, 10, 21]'
+          salidaEsperada: '[1, 2, 10, 21]',
+          seccionRef: 'sort',
+          notas: 'Véase la sección «sort»: comparador `(a, b) => a - b`.'
         },
         ['sort numérico o lógica que ordene'],
         `// Día 6 — Orden ascendente\nconst nums = [10, 1, 21, 2];\n\n`
@@ -570,7 +687,9 @@ export const week1: Leccion[] = [
             'Construya el mensaje con template literals o concatenación, incluyendo nombre y ciudad.',
             'Escriba en consola el texto final con `console.log`.'
           ],
-          salidaEsperada: 'Envío para Moisés hacia Alcoy'
+          salidaEsperada: 'Envío para Moisés hacia Alcoy',
+          seccionRef: 'Repaso semana 1',
+          notas: 'Repaso de los días 1–6 (variables, operadores, condicionales, funciones, arrays).'
         },
         ['Dos datos', 'Texto final los incluye'],
         `// Día 7 — Mensaje de envío\nconst nombre = 'Moisés';\nconst ciudad = 'Alcoy';\n\n`
@@ -586,7 +705,9 @@ export const week1: Leccion[] = [
             'Implemente una rama: si `stock < 5`, imprima «reponer»; si no, «ok».',
             'Escriba en consola la etiqueta resultante con `console.log`.'
           ],
-          salidaEsperada: 'reponer'
+          salidaEsperada: 'reponer',
+          seccionRef: 'Repaso semana 1',
+          notas: 'Repaso de los días 1–6 (variables, operadores, condicionales, funciones, arrays).'
         },
         ['Condición con stock', 'Dos salidas'],
         `// Día 7 — Alerta de stock\nconst stock = 3;\n\n`
@@ -602,7 +723,9 @@ export const week1: Leccion[] = [
             'Aplique `map` para devolver cada elemento multiplicado por 2.',
             'Escriba en consola el array resultante con `console.log`.'
           ],
-          salidaEsperada: '[2, 4, 6]'
+          salidaEsperada: '[2, 4, 6]',
+          seccionRef: 'Repaso semana 1',
+          notas: 'Repaso de los días 1–6 (variables, operadores, condicionales, funciones, arrays).'
         },
         ['map duplica'],
         `// Día 7 — Duplicar con map\nconst nums = [1, 2, 3];\n\n`
@@ -618,7 +741,9 @@ export const week1: Leccion[] = [
             'Aplique `reduce` con valor inicial `0` para acumular la suma.',
             'Escriba en consola el total con `console.log`.'
           ],
-          salidaEsperada: '30'
+          salidaEsperada: '30',
+          seccionRef: 'Repaso semana 1',
+          notas: 'Repaso de los días 1–6 (variables, operadores, condicionales, funciones, arrays).'
         },
         ['reduce suma'],
         `// Día 7 — Suma con reduce\nconst v = [5, 10, 15];\n\n`
@@ -634,7 +759,9 @@ export const week1: Leccion[] = [
             'Invoque `areaRect(4, 5)` y utilice su valor de retorno.',
             'Escriba en consola el área obtenida con `console.log`.'
           ],
-          salidaEsperada: '20'
+          salidaEsperada: '20',
+          seccionRef: 'Repaso semana 1',
+          notas: 'Repaso de los días 1–6 (variables, operadores, condicionales, funciones, arrays).'
         },
         ['Función área', 'Resultado 20'],
         `// Día 7 — Área del rectángulo\nfunction areaRect(b, h) {\n}\n\n`

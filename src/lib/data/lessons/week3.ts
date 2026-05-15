@@ -17,21 +17,36 @@ export const week3: Leccion[] = [
           'Como un taller que corta las piezas de madera en fábrica y te las entrega listas para montar, en lugar de traer la sierra entera a cada obra.',
           'Interfaces más ligeras: menos runtime en el navegador, arranque más rápido en móvil y redes lentas.',
           'Svelte analiza tu `.svelte` en compile time y genera código DOM eficiente. No es una librería que re-renderiza un árbol virtual en cada tick como React.',
-          'Componente = archivo MiCard.svelte exportado e importado.'
+          'Componente = archivo MiCard.svelte exportado e importado.',
+          [
+            'Lea el bloque «En código» y el ejemplo.',
+            'Complete la plantilla del ejercicio 1.',
+            'Compruebe la salida con console.log.'
+          ]
         ),
         sec(
           'SvelteKit (app framework)',
           'El plano del edificio: cada habitación tiene dirección (URL) y puertas al servidor (load, actions, hooks).',
           'Rutas, datos en servidor, auth y deploy sin montar Express a mano.',
           'Carpetas bajo `src/routes/` mapean URLs: `+page.svelte` pinta la vista, `+page.server.ts` carga datos con `load`, `+layout.svelte` envuelve hijas. `+page.ts` sirve para load universal (cliente + servidor).',
-          'src/routes/+page.svelte → /'
+          'src/routes/+page.svelte → /',
+          [
+            'Lea el bloque «En código» y el ejemplo.',
+            'Complete la plantilla del ejercicio 2.',
+            'Compruebe la salida con console.log.'
+          ]
         ),
         sec(
           'Stack DevDays',
           'Tres proveedores en el mismo mostrador: UI (Svelte), datos (Supabase), corrección (API `/api/corregir`).',
           'Saber qué archivo tocar cuando cambias pantalla, sesión o lección.',
           'Frontend SvelteKit 2 + runes; backend vía endpoints en `src/routes/api/`; sesión Supabase en `hooks.server.ts`. Las lecciones viven en TypeScript estático (`week3.ts`), no en CMS.',
-          ''
+          '// UI + datos + tutor IA en el mismo repo',
+          [
+            'Lea el bloque «En código» y el ejemplo.',
+            'Complete la plantilla del ejercicio 3.',
+            'Compruebe la salida con console.log.'
+          ]
         )
       ],
       resumen: [
@@ -51,7 +66,9 @@ export const week3: Leccion[] = [
             'Defina la variable `respuesta` con una frase técnica que describa qué es un componente Svelte.',
             'Escriba en consola el valor de `respuesta`.'
           ],
-          salidaEsperada: 'Menciona pieza reutilizable o .svelte'
+          salidaEsperada: 'Menciona pieza reutilizable o .svelte',
+          seccionRef: 'Svelte (compilador UI)',
+          notas: 'Consulte la sección «Svelte (compilador UI)».'
         },
         ['Texto define componente'],
         `const respuesta = \`...\`;\nconsole.log(respuesta);`
@@ -66,7 +83,9 @@ export const week3: Leccion[] = [
             'Asigne a `path` la ruta de archivo que sirve la URL `/` en SvelteKit.',
             'Escriba en consola `path`.'
           ],
-          salidaEsperada: 'src/routes/+page.svelte'
+          salidaEsperada: 'src/routes/+page.svelte',
+          seccionRef: 'SvelteKit (app framework)',
+          notas: 'Consulte la sección «SvelteKit (app framework)».'
         },
         ['Convención +page.svelte en routes'],
         `const path = '';\nconsole.log(path);`
@@ -81,7 +100,9 @@ export const week3: Leccion[] = [
             'Defina la variable `respuesta` con una frase que justifique el menor peso del bundle en cliente.',
             'Escriba en consola `respuesta`.'
           ],
-          salidaEsperada: 'Menciona compilar / build / ligero'
+          salidaEsperada: 'Menciona compilar / build / ligero',
+          seccionRef: 'Stack DevDays',
+          notas: 'Consulte la sección «Stack DevDays».'
         },
         ['Texto sobre compilación o bundle'],
         `const respuesta = \`...\`;\nconsole.log(respuesta);`
@@ -103,21 +124,36 @@ export const week3: Leccion[] = [
           'Plano en tres capas: motor arriba, cartel en el centro, pintura abajo que solo afecta a esta pieza.',
           'Separar lógica, vista y estilo sin mezclar CSS global por accidente.',
           '`<script lang="ts">` declara variables, runes e imports. El markup es HTML con `{expresiones}` y directivas (`{#if}`, `{#each}`). `<style>` aplica estilos scoped al componente (Svelte añade atributos únicos).',
-          '<script lang="ts">let x = 1;</script>\n<p>{x}</p>\n<style>p { color: teal; }</style>'
+          '<script lang="ts">let x = 1;</script>\n<p>{x}</p>\n<style>p { color: teal; }</style>',
+          [
+            'Lea el bloque «En código» y el ejemplo.',
+            'Complete la plantilla del ejercicio 1.',
+            'Compruebe la salida con console.log.'
+          ]
         ),
         sec(
           'Import y composición',
           'Encajar piezas prefabricadas: el `+page` es el montaje final del catálogo.',
           'Apps mantenibles: pantallas pequeñas reutilizables (botón, card, editor).',
           'Importas con ES modules: `import Card from "$lib/components/ui/card/card.svelte"`. El árbol de componentes es estático — el bundler (Vite) resuelve dependencias en build.',
-          "import Button from '$lib/components/ui/button/button.svelte';"
+          "import Button from '$lib/components/ui/button/button.svelte';",
+          [
+            'Lea el bloque «En código» y el ejemplo.',
+            'Complete la plantilla del ejercicio 2.',
+            'Compruebe la salida con console.log.'
+          ]
         ),
         sec(
           'Interpolación `{expresión}`',
           'Hueco en el cartel donde entra el valor actual del almacén.',
           'Mostrar estado, props y `$derived` sin concatenar strings en el DOM a mano.',
           'En markup, `{nombre}` evalúa JavaScript y escapa HTML por defecto. Para HTML crudo existe `{@html}` (úsalo solo con contenido confiable).',
-          '<p>Hola {nombre}</p>'
+          '<p>Hola {nombre}</p>',
+          [
+            'Lea el bloque «En código» y el ejemplo.',
+            'Complete la plantilla del ejercicio 3.',
+            'Compruebe la salida con console.log.'
+          ]
         )
       ],
       resumen: [
@@ -137,7 +173,9 @@ export const week3: Leccion[] = [
             'Defina `markup` como string con un `h1` que incluya `{titulo}` al estilo Svelte (placeholder dentro del string).',
             'Escriba en consola `markup`.'
           ],
-          salidaEsperada: 'h1 con placeholder de titulo'
+          salidaEsperada: 'h1 con placeholder de titulo',
+          seccionRef: 'Tres bloques del archivo',
+          notas: 'Consulte la sección «Tres bloques del archivo».'
         },
         ['String contiene h1 y titulo'],
         `const titulo = 'DevDays';\nconst markup = \`...\`;\nconsole.log(markup);`
@@ -152,7 +190,9 @@ export const week3: Leccion[] = [
             'Construya el array `partes` con tres strings: `script`, `html` y `style` (nombres de sección).',
             'Escriba en consola `partes.length`.'
           ],
-          salidaEsperada: '3'
+          salidaEsperada: '3',
+          seccionRef: 'Import y composición',
+          notas: 'Consulte la sección «Import y composición».'
         },
         ['Array de tres elementos'],
         `const partes = [];\nconsole.log(partes.length);`
@@ -167,7 +207,9 @@ export const week3: Leccion[] = [
             'Asigne a `importPath` un string válido para importar `Button.svelte` desde `$lib`.',
             'Escriba en consola `importPath`.'
           ],
-          salidaEsperada: 'Ruta con $lib o relativa a components'
+          salidaEsperada: 'Ruta con $lib o relativa a components',
+          seccionRef: 'Interpolación `{expresión}`',
+          notas: 'Consulte la sección «Interpolación `{expresión}`».'
         },
         ['String de import ES'],
         `const importPath = '';\nconsole.log(importPath);`
@@ -189,21 +231,36 @@ export const week3: Leccion[] = [
           'Contador en el mostrador: si sube el número en el almacén, el cartel cambia sin que nadie repinte a mano.',
           'Contadores, inputs controlados, flags de UI (modal abierto, pestaña activa).',
           '`let contador = $state(0)` crea una señal reactiva. `contador++` o `contador = 1` disparan actualización en el template que lo lee. No necesitas `setState` ni stores para estado local.',
-          'let n = $state(0);\nn++;'
+          'let n = $state(0);\nn++;',
+          [
+            'Lea el bloque «En código» y el ejemplo.',
+            'Complete la plantilla del ejercicio 1.',
+            'Compruebe la salida con console.log.'
+          ]
         ),
         sec(
           '$state(objeto | array)',
           'La ficha del pedido entera está viva: cambias una línea y la lista en pantalla se entera.',
           'Listas de tareas, carritos, formularios con varios campos en un solo objeto.',
           '`let items = $state<string[]>([])` y `let user = $state({ nombre: "" })` son reactivos. Mutaciones como `items.push(x)` o `user.nombre = "Ana"` invalidan lectores. Para reemplazo inmutable también vale `items = [...items, x]`.',
-          'let items = $state([]);\nitems.push("nuevo");'
+          'let items = $state([]);\nitems.push("nuevo");',
+          [
+            'Lea el bloque «En código» y el ejemplo.',
+            'Complete la plantilla del ejercicio 2.',
+            'Compruebe la salida con console.log.'
+          ]
         ),
         sec(
           'TypeScript con runes',
           'Etiqueta en la caja que dice “solo números” — el editor avisa antes de romper producción.',
           'Menos bugs en equipos: autocompletado y errores en `$props` y `$state`.',
           'Anota genéricos: `let n = $state<number>(0)`, `let lista = $state<Producto[]>([])`. En `<script lang="ts">` el checker de Svelte valida tipos en compile time.',
-          'let n = $state<number>(0);'
+          'let n = $state<number>(0);',
+          [
+            'Lea el bloque «En código» y el ejemplo.',
+            'Complete la plantilla del ejercicio 3.',
+            'Compruebe la salida con console.log.'
+          ]
         )
       ],
       resumen: [
@@ -222,7 +279,9 @@ export const week3: Leccion[] = [
           requisitos: [
             'Utilice el objeto `ui` con `count: 0`, incremente `count` en una unidad y escriba en consola su valor.'
           ],
-          salidaEsperada: '1'
+          salidaEsperada: '1',
+          seccionRef: '$state(primitivo)',
+          notas: 'Consulte la sección «$state(primitivo)».'
         },
         ['Incremento y log 1'],
         `const ui = { count: 0 };\nui.count++;\nconsole.log(ui.count);`
@@ -236,7 +295,9 @@ export const week3: Leccion[] = [
           requisitos: [
             'Parta de un array vacío, añada el elemento `"a"` con `push` y escriba en consola `length`.'
           ],
-          salidaEsperada: '1'
+          salidaEsperada: '1',
+          seccionRef: '$state(objeto | array)',
+          notas: 'Consulte la sección «$state(objeto | array)».'
         },
         ['push y length'],
         `const lista = [];\nlista.push('a');\nconsole.log(lista.length);`
@@ -251,7 +312,9 @@ export const week3: Leccion[] = [
             'Defina la variable `respuesta` con una frase que explique qué hace `$state`.',
             'Escriba en consola `respuesta`.'
           ],
-          salidaEsperada: 'Menciona reactivo o actualiza UI'
+          salidaEsperada: 'Menciona reactivo o actualiza UI',
+          seccionRef: 'TypeScript con runes',
+          notas: 'Consulte la sección «TypeScript con runes».'
         },
         ['Texto explica $state'],
         `const respuesta = \`...\`;\nconsole.log(respuesta);`
@@ -273,21 +336,36 @@ export const week3: Leccion[] = [
           'Precio en etiqueta: si cambia el coste en almacén, el total con IVA se recalcula solo en la caja.',
           'Totales, filtros, clases CSS condicionales, texto formateado derivado de props/estado.',
           '`const total = $derived(precio * cantidad)` se recalcula cuando `precio` o `cantidad` cambian. Para lógica multi-línea: `const etiqueta = $derived.by(() => { ... })`.',
-          'const doble = $derived(precio * 2);'
+          'const doble = $derived(precio * 2);',
+          [
+            'Lea el bloque «En código» y el ejemplo.',
+            'Complete la plantilla del ejercicio 1.',
+            'Compruebe la salida con console.log.'
+          ]
         ),
         sec(
           '$effect',
           'Cuando cambia el cliente en ficha, el sistema archiva copia en el cajón lateral.',
           'Sincronizar con APIs del navegador, analytics, focus, suscripciones fuera del template.',
           '`$effect(() => { ... })` corre tras commit DOM cuando lee señales reactivas dentro. Puede devolver cleanup: `return () => { subscription.unsubscribe() }` al destruir el componente.',
-          '$effect(() => { console.log(usuario); });'
+          '$effect(() => { console.log(usuario); });',
+          [
+            'Lea el bloque «En código» y el ejemplo.',
+            'Complete la plantilla del ejercicio 2.',
+            'Compruebe la salida con console.log.'
+          ]
         ),
         sec(
           'Cleanup en $effect',
           'Apagar la máquina al cerrar el turno: quitar listeners que no siguen en otra pantalla.',
           'Evitar fugas de memoria en SPA largas (timers, listeners, observers).',
           'Si registras `setInterval`, `addEventListener` o `IntersectionObserver`, retorna función que los desmonte. Svelte la ejecuta antes del siguiente efecto o al unmount.',
-          'return () => clearInterval(id);'
+          'return () => clearInterval(id);',
+          [
+            'Lea el bloque «En código» y el ejemplo.',
+            'Complete la plantilla del ejercicio 3.',
+            'Compruebe la salida con console.log.'
+          ]
         )
       ],
       resumen: [
@@ -306,7 +384,9 @@ export const week3: Leccion[] = [
           requisitos: [
             'Con `precio` 10 e `iva` 0.21, calcule el total con IVA incluido y escriba el resultado en consola.'
           ],
-          salidaEsperada: '12.1'
+          salidaEsperada: '12.1',
+          seccionRef: '$derived',
+          notas: 'Consulte la sección «$derived».'
         },
         ['Multiplica precio por 1+iva o suma iva'],
         `const precio = 10;\nconst iva = 0.21;\n\n`
@@ -320,7 +400,9 @@ export const week3: Leccion[] = [
           requisitos: [
             'Escriba un comentario indicando en qué caso usaría `$effect` en un componente real.'
           ],
-          salidaEsperada: 'Menciona cambio, sync o side effect'
+          salidaEsperada: 'Menciona cambio, sync o side effect',
+          seccionRef: '$effect',
+          notas: 'Consulte la sección «$effect».'
         },
         ['Comentario con idea de efecto'],
         `// Usaría $effect cuando...\n\n`
@@ -334,7 +416,9 @@ export const week3: Leccion[] = [
           requisitos: [
             'Con `n` igual a 5, escriba en consola el doble (`n * 2`).'
           ],
-          salidaEsperada: '10'
+          salidaEsperada: '10',
+          seccionRef: 'Cleanup en $effect',
+          notas: 'Consulte la sección «Cleanup en $effect».'
         },
         ['Multiplicación por 2'],
         `const n = 5;\nconsole.log(n * 2);`
@@ -356,21 +440,36 @@ export const week3: Leccion[] = [
           'Instrucciones en el sobre que llega al taller: título del cartel, color, si está activo.',
           'Reutilizar `Card`, `Button`, filas de lista con distintos datos sin duplicar markup.',
           'En `<script lang="ts">`: `let { titulo, activo = false } = $props();`. Props son de solo lectura — si el hijo necesita mutar, copia a `$state` local o usa `$bindable` en casos concretos.',
-          'let { titulo, activo = false } = $props();'
+          'let { titulo, activo = false } = $props();',
+          [
+            'Lea el bloque «En código» y el ejemplo.',
+            'Complete la plantilla del ejercicio 1.',
+            'Compruebe la salida con console.log.'
+          ]
         ),
         sec(
           'Valores por defecto',
           'Si el capataz no manda color, pintas gris de fábrica.',
           'Componentes flexibles sin obligar al padre a pasar cada atributo.',
           'Defaults en destructuring: `let { variant = "default" } = $props()`. También puedes tipar: `let { label }: { label: string } = $props()`.',
-          'let { color = "gris" } = $props();'
+          'let { color = "gris" } = $props();',
+          [
+            'Lea el bloque «En código» y el ejemplo.',
+            'Complete la plantilla del ejercicio 2.',
+            'Compruebe la salida con console.log.'
+          ]
         ),
         sec(
           'Snippets y children',
           'Hueco en el marco donde el padre inserta su propio cartel interior.',
           'Layouts (`+layout.svelte`), wrappers, tabs — composición sin prop-drilling de HTML strings.',
           'Define `children` como `Snippet` opcional: `import type { Snippet } from "svelte";` y `let { children }: { children?: Snippet } = $props();`. En markup: `{@render children?.()}`.',
-          '{@render children?.()}'
+          '{@render children?.()}',
+          [
+            'Lea el bloque «En código» y el ejemplo.',
+            'Complete la plantilla del ejercicio 3.',
+            'Compruebe la salida con console.log.'
+          ]
         )
       ],
       resumen: [
@@ -389,7 +488,9 @@ export const week3: Leccion[] = [
           requisitos: [
             'Simule `props = { label: "OK" }` y escriba en consola `props.label`.'
           ],
-          salidaEsperada: 'OK'
+          salidaEsperada: 'OK',
+          seccionRef: '$props() y destructuring',
+          notas: 'Consulte la sección «$props() y destructuring».'
         },
         ['Acceso a label'],
         `const props = { label: 'OK' };\nconsole.log(props.label);`
@@ -404,7 +505,9 @@ export const week3: Leccion[] = [
             'Parta de un objeto `props` vacío y resuelva `color` con el operador `??` para que valga `"gris"`.',
             'Escriba en consola `color`.'
           ],
-          salidaEsperada: 'gris'
+          salidaEsperada: 'gris',
+          seccionRef: 'Valores por defecto',
+          notas: 'Consulte la sección «Valores por defecto».'
         },
         ['Nullish coalescing o default'],
         `const props = {};\nconst color = props.color ?? 'gris';\nconsole.log(color);`
@@ -419,7 +522,9 @@ export const week3: Leccion[] = [
             'Asigne a `linea` el texto exacto `{@render children?.()}`.',
             'Escriba en consola `linea`.'
           ],
-          salidaEsperada: 'Contiene render children'
+          salidaEsperada: 'Contiene render children',
+          seccionRef: 'Snippets y children',
+          notas: 'Consulte la sección «Snippets y children».'
         },
         ['String con sintaxis Svelte 5'],
         `const linea = '{@render children?.()}';\nconsole.log(linea);`
@@ -440,22 +545,37 @@ export const week3: Leccion[] = [
           'Eventos (onclick, onsubmit)',
           'Timbre del mostrador: el usuario pulsa y ejecutas la función registrada.',
           'Botones, formularios, teclado; lógica en script, markup declarativo.',
-          '`<button onclick={() => contador++}>+</button>`. Pasa el handler: `onclick={incrementar}` o inline. En formularios: `onsubmit={(e) => { e.preventDefault(); ... }}`. Modificadores legacy (`|preventDefault`) existen pero el patrón moderno es manejar en la función.',
-          '<button onclick={() => n++}>Sumar</button>'
+          '`<button onclick={() => contador++}>+</button>`. Pasa el handler: `onclick={incrementar}` o define `function incrementar() { ... }` en script. En formularios: `onsubmit={(e) => { e.preventDefault(); ... }}`.',
+          '<button onclick={() => n++}>Sumar</button>',
+          [
+            'Lea el bloque «En código» y el ejemplo.',
+            'Complete la plantilla del ejercicio 1.',
+            'Compruebe la salida con console.log.'
+          ]
         ),
         sec(
           'bind:value',
           'Cable entre el cuaderno del operario y el cartel: escribes en uno y se lee en el otro.',
           'Formularios de login, búsqueda, comentarios sin sincronizar input y variable a mano.',
           '`<input bind:value={nombre} />` mantiene `nombre` al día con el input text/textarea. Con `$state`, la mutación del input re-renderiza dependientes.',
-          '<input bind:value={nombre} />'
+          '<input bind:value={nombre} />',
+          [
+            'Lea el bloque «En código» y el ejemplo.',
+            'Complete la plantilla del ejercicio 2.',
+            'Compruebe la salida con console.log.'
+          ]
         ),
         sec(
           'bind:checked y booleanos',
           'Interruptor sí/no del almacén enlazado al checkbox.',
           'Términos legales, filtros “solo activos”, toggles de configuración.',
-          '`<input type="checkbox" bind:checked={acepto} />` liga boolean. Combina con `{#if acepto}` para mostrar pasos siguientes del flujo.',
-          '<input type="checkbox" bind:checked={ok} />'
+          '`<input type="checkbox" bind:checked={acepto} />` liga boolean. Combina con `{#if acepto}` o un ternario en script: `ok ? "aceptado" : "pendiente"`.',
+          '<input type="checkbox" bind:checked={ok} />',
+          [
+            'Lea el bloque «En código» y el ejemplo.',
+            'Complete la plantilla del ejercicio 3.',
+            'Compruebe la salida con console.log.'
+          ]
         )
       ],
       resumen: [
@@ -474,7 +594,9 @@ export const week3: Leccion[] = [
           requisitos: [
             'Con `c` inicializado en 0, defina la función `click` que incrementa `c`, invóquela y escriba `c` en consola.'
           ],
-          salidaEsperada: '1'
+          salidaEsperada: '1',
+          seccionRef: 'Eventos (onclick, onsubmit)',
+          notas: 'Consulte la sección «Eventos (onclick, onsubmit)».'
         },
         ['Función muta contador'],
         `let c = 0;\nfunction click() { c++; }\nclick();\nconsole.log(c);`
@@ -488,7 +610,9 @@ export const week3: Leccion[] = [
           requisitos: [
             'Con `nombre` igual a `"Ana"`, defina `msg` como template de saludo e imprímalo en consola.'
           ],
-          salidaEsperada: 'Hola Ana o equivalente'
+          salidaEsperada: 'Hola Ana o equivalente',
+          seccionRef: 'bind:value',
+          notas: 'Consulte la sección «bind:value».'
         },
         ['Template incluye nombre'],
         `let nombre = 'Ana';\nconst msg = \`Hola \${nombre}\`;\nconsole.log(msg);`
@@ -502,7 +626,9 @@ export const week3: Leccion[] = [
           requisitos: [
             'Con `ok` en `true`, escriba en consola `"aceptado"`; en caso contrario, `"pendiente"`.'
           ],
-          salidaEsperada: 'aceptado'
+          salidaEsperada: 'aceptado',
+          seccionRef: 'bind:checked y booleanos',
+          notas: 'Consulte la sección «bind:checked y booleanos».'
         },
         ['Ternario o if con ok'],
         `const ok = true;\nconsole.log(ok ? 'aceptado' : 'pendiente');`
@@ -527,7 +653,9 @@ export const week3: Leccion[] = [
             'Defina la variable `respuesta` explicando `$state` en una o dos frases.',
             'Escriba en consola `respuesta`.'
           ],
-          salidaEsperada: 'Menciona reactivo o actualización UI'
+          salidaEsperada: 'Menciona reactivo o actualización UI',
+          seccionRef: 'Repaso semana 3',
+          notas: 'Repaso de los días 15–20 (semana 3): rune $state.'
         },
         ['Texto con idea de $state'],
         `const respuesta = \`...\`;\nconsole.log(respuesta);`
@@ -541,7 +669,9 @@ export const week3: Leccion[] = [
           requisitos: [
             'Con `precio` 5 y `cant` 3, escriba en consola el producto (total).'
           ],
-          salidaEsperada: '15'
+          salidaEsperada: '15',
+          seccionRef: 'Repaso semana 3',
+          notas: 'Repaso de los días 15–20 (semana 3): $derived y cálculos derivados.'
         },
         ['Multiplica precio por cantidad'],
         `const precio = 5, cant = 3;\nconsole.log(precio * cant);`
@@ -554,7 +684,9 @@ export const week3: Leccion[] = [
           requisitos: [
             'Utilice `props` con `titulo: "Hola"` y escriba en consola `props.titulo`.'
           ],
-          salidaEsperada: 'Hola'
+          salidaEsperada: 'Hola',
+          seccionRef: 'Repaso semana 3',
+          notas: 'Repaso de los días 15–20 (semana 3): $props y lectura de props.'
         },
         ['Lee props.titulo'],
         `const props = { titulo: 'Hola' };\nconsole.log(props.titulo);`
@@ -568,7 +700,9 @@ export const week3: Leccion[] = [
           requisitos: [
             'Con `on` en `false`, defina `toggle` que invierte el booleano, invóquela y escriba `on` en consola.'
           ],
-          salidaEsperada: 'true'
+          salidaEsperada: 'true',
+          seccionRef: 'Repaso semana 3',
+          notas: 'Repaso de los días 15–20 (semana 3): eventos onclick y handlers.'
         },
         ['toggle cambia on'],
         `let on = false;\nfunction toggle() { on = !on; }\ntoggle();\nconsole.log(on);`
@@ -582,7 +716,9 @@ export const week3: Leccion[] = [
           requisitos: [
             'Utilice un array con `script`, `html` y `style` y escriba en consola su longitud.'
           ],
-          salidaEsperada: '3'
+          salidaEsperada: '3',
+          seccionRef: 'Repaso semana 3',
+          notas: 'Repaso de los días 15–20 (semana 3): anatomía del archivo .svelte.'
         },
         ['Array tres elementos'],
         `console.log(['script', 'html', 'style'].length);`

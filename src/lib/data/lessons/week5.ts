@@ -17,28 +17,36 @@ export const week5: Leccion[] = [
           'En el almacén, cada hueco tiene etiqueta: TEXTURA, CANTIDAD o SÍ/NO. TypeScript hace lo mismo con string, number y boolean.',
           'Evitas sumar texto con números por error y el editor te sugiere métodos correctos.',
           'Anotas el tipo después de dos puntos: let piezas: number = 12. También puedes dejar que TS infiera el tipo si asignas valor al declarar.',
-          'let nombre: string = "Ana";\nlet edad: number = 30;\nlet activo: boolean = true;'
+          'let nombre: string = "Ana";\nlet edad: number = 30;\nlet activo: boolean = true;',
+          [
+            'Declare `let edad: number = 30`.',
+            'Opcional: declare `nombre` como `string`.',
+            'Muestre `edad` con `console.log(edad)`.'
+          ]
         ),
         sec(
           'Interfaces: forma de un objeto',
           'Una ficha de cliente fija qué campos existen: nombre obligatorio, email opcional. interface User es esa ficha en código.',
           'Contratos claros entre funciones y componentes: todos saben qué propiedades tiene un usuario o una lección.',
           'interface User { nombre: string; email?: string } — el ? marca opcional. Luego const u: User = { nombre: "Ana" }.',
-          'interface Leccion {\n  dia: number;\n  titulo: string;\n}'
+          'interface Leccion {\n  dia: number;\n  titulo: string;\n}\nconst usuario: Leccion = { dia: 1, titulo: "Intro" };',
+          [
+            'Defina `interface Usuario { nombre: string }` (o use JSDoc equivalente).',
+            'Cree `const usuario` que cumpla el contrato.',
+            'Muestre `usuario.nombre` con `console.log`.'
+          ]
         ),
         sec(
           'Tipos en Svelte 5',
           'Las runes también pueden llevar etiqueta: $state<number>(0) o props con tipo en $props().',
           'Menos bugs al pasar datos entre DayList, LessonContent y el tutor IA.',
           'let { titulo, dia }: { titulo: string; dia: number } = $props();\nlet contador = $state<number>(0);',
-          'import type { Snippet } from "svelte";'
-        ),
-        sec(
-          'Qué NO hace TypeScript',
-          'La etiqueta no impide que alguien meta algo malo en runtime si los datos vienen de fuera sin validar.',
-          'Sigue necesitando validación en formularios, APIs y respuestas de IA. TS es red de seguridad en desarrollo, no policía en producción.',
-          'En build, tsc/svelte-check convierte o rechaza; en el navegador solo queda JS plano.',
-          '// npm run check — comprueba tipos antes de deploy'
+          'import type { Snippet } from "svelte";\n// Tipar props y estado reactivo',
+          [
+            'Asigne a `respuesta` una o dos frases sobre para qué usar TypeScript en DevDays.',
+            'Mencione compile-time, editor o menos bugs antes de desplegar.',
+            'Muestre `respuesta` con `console.log(respuesta)`.'
+          ]
         )
       ],
       resumen: [
@@ -61,7 +69,8 @@ export const week5: Leccion[] = [
             'Escriba en consola el valor de `edad` mediante `console.log`.'
           ],
           salidaEsperada: 'En consola aparece el número 30.',
-          notas: 'Consulte la sección «Tipos básicos en variables».'
+          notas: 'Use el patrón de la sección «Tipos básicos en variables».',
+          seccionRef: 'Tipos básicos en variables'
         },
         ['Existe variable edad', 'El valor mostrado es 30', 'Se usa number o equivalente lógico'],
         `// Día 29 — Inventario\n// edad: number = 30 y console.log\n\n`
@@ -77,7 +86,8 @@ export const week5: Leccion[] = [
             'Escriba en consola el valor de `usuario.nombre`.'
           ],
           salidaEsperada: 'En consola aparece el nombre asignado (por ejemplo, Ana).',
-          notas: 'Consulte la sección «Interfaces: forma de un objeto».'
+          notas: 'Véase «Interfaces: forma de un objeto».',
+          seccionRef: 'Interfaces: forma de un objeto'
         },
         ['Hay objeto usuario', 'Tiene propiedad nombre', 'Se accede y muestra nombre'],
         `// Día 29 — Ficha usuario\n/** @type {{ nombre: string }} */\nconst usuario = { nombre: 'Ana' };\n\n`
@@ -94,7 +104,8 @@ export const week5: Leccion[] = [
           ],
           salidaEsperada:
             'Texto que mencione detección de errores al compilar, ayuda del editor o menos bugs antes de desplegar.',
-          notas: 'No hace falta citar sintaxis; priorice el «para qué sirve».'
+          notas: 'Priorice el «para qué sirve»; la sección enlaza tipos con Svelte 5.',
+          seccionRef: 'Tipos en Svelte 5'
         },
         ['Hay texto explicativo', 'Menciona compile-time, editor o menos bugs'],
         `// Día 29 — Para qué TS\nconst respuesta = \`...\`;\nconsole.log(respuesta);`
@@ -116,28 +127,36 @@ export const week5: Leccion[] = [
           'El .env es un cajón cerrado en la oficina: solo el servidor tiene llave. PUBLIC_ es la vitrina: lo que puede ver el visitante.',
           'Claves de IA, service role y secrets van sin PUBLIC_. URLs y anon key de Supabase suelen ser PUBLIC_ porque el cliente las necesita con RLS.',
           'PUBLIC_SUPABASE_URL=https://...\nOPENAI_API_KEY=sk-...  // solo servidor\nGEMINI_API_KEY=...',
-          '# .env.example documenta qué copiar'
+          '# .env.example documenta qué copiar',
+          [
+            'Asigne a `respuesta` una frase que contraste `PUBLIC_` con una variable privada.',
+            'Indique visibilidad en cliente frente a solo servidor.',
+            'Muestre `respuesta` con `console.log(respuesta)`.'
+          ]
         ),
         sec(
           'hooks.server.ts — el portero',
           'En cada visita, el portero mira el DNI (sesión), anota datos en locals y deja pasar o redirige a login.',
           'handle({ event, resolve }) recibe la petición, puedes leer cookies, llamar a Supabase, setear event.locals.user y luego return resolve(event).',
           'En DevDays: auth, allowlist de emails, locale y cabeceras CSP viven aquí.',
-          'export async function handle({ event, resolve }) {\n  // ...\n  return resolve(event);\n}'
+          'export async function handle({ event, resolve }) {\n  // auth, allowlist, locale\n  return resolve(event);\n}',
+          [
+            'Asigne a `respuesta` una frase sobre qué hace `hooks.server.ts` en cada petición.',
+            'Mencione interceptar requests o middleware antes de la ruta.',
+            'Muestre `respuesta` con `console.log(respuesta)`.'
+          ]
         ),
         sec(
           'Leer env en el servidor',
           'No importes secretos en +page.svelte del cliente. En +server.ts o lib/server usas módulos de entorno dinámicos.',
-          'import { OPENAI_API_KEY } from "$env/dynamic/private" — solo existe en build/runtime servidor. Si falta la key, /api/corregir puede hacer fallback a Gemini.',
+          'import { OPENAI_API_KEY } from "$env/dynamic/private" — solo existe en servidor. Si falta la key, /api/corregir puede hacer fallback a Gemini.',
           '$env/dynamic/private — variables sin PUBLIC_\n$env/dynamic/public — variables PUBLIC_',
-          'import { GEMINI_API_KEY } from "$env/dynamic/private";'
-        ),
-        sec(
-          'Flujo DevDays (resumen)',
-          'Login magic link → callback intercambia code → hooks rellenan sesión → /estudio carga lecciones → /api/corregir usa keys en servidor.',
-          'Repasar este flujo te ayuda a explicar el repo y a no commitear .env por accidente.',
-          'ALLOWED_EMAILS opcional filtra quién entra. PUBLIC_SITE_URL define redirect del magic link en producción.',
-          'src/routes/auth/callback/+server.ts\nsrc/hooks.server.ts'
+          'import { GEMINI_API_KEY } from "$env/dynamic/private";',
+          [
+            'Escriba un comentario de línea con el nombre de `OPENAI_API_KEY` o `GEMINI_API_KEY`.',
+            'No incluya valores reales de la clave.',
+            'El comentario debe ser reconocible en revisión manual.'
+          ]
         )
       ],
       resumen: [
@@ -161,7 +180,8 @@ export const week5: Leccion[] = [
           ],
           salidaEsperada:
             'Texto que indique visibilidad en cliente frente a uso solo en servidor (o equivalente).',
-          notas: 'Consulte la sección «Archivo .env y prefijo PUBLIC_».'
+          notas: 'Véase «Archivo .env y prefijo PUBLIC_».',
+          seccionRef: 'Archivo .env y prefijo PUBLIC_'
         },
         ['Hay texto claro', 'Diferencia PUBLIC vs privado'],
         `// Día 30 — Public vs private\nconst respuesta = \`...\`;\nconsole.log(respuesta);`
@@ -178,7 +198,8 @@ export const week5: Leccion[] = [
           ],
           salidaEsperada:
             'Menciona interceptar cada request, middleware o ejecutar lógica antes de resolver la ruta.',
-          notas: 'Consulte la sección «hooks.server.ts — el portero».'
+          notas: 'Véase «hooks.server.ts — el portero».',
+          seccionRef: 'hooks.server.ts — el portero'
         },
         ['Respuesta sobre interceptar peticiones'],
         `// Día 30 — Portero\nconst respuesta = \`...\`;\nconsole.log(respuesta);`
@@ -194,7 +215,8 @@ export const week5: Leccion[] = [
           ],
           salidaEsperada:
             'Comentario que contenga `OPENAI_API_KEY` o `GEMINI_API_KEY` (u otro nombre reconocible del proyecto).',
-          notas: 'No incluya valores reales de la clave; solo el nombre de la variable.'
+          notas: 'Solo el nombre de la variable; importe desde `$env/dynamic/private` en código real.',
+          seccionRef: 'Leer env en el servidor'
         },
         ['Hay comentario', 'Nombre de variable de IA reconocible'],
         `// Día 30 — Variable IA\n// API key en .env:\n\n`
@@ -214,29 +236,37 @@ export const week5: Leccion[] = [
           'Vercel: de repo a URL pública',
           'Conectas el repositorio como si alquilaras un escaparate: cada push a main (o PR) genera una versión nueva.',
           'Import project → Framework SvelteKit → añades las mismas variables que en .env → Deploy. Obtienes URL tipo tu-app.vercel.app.',
-          'Configura PUBLIC_SITE_URL y claves Supabase/IA en el panel Environment Variables. Preview deployments prueban ramas sin tocar producción.',
-          'vercel.com → Import → env vars → Deploy'
+          'Configura PUBLIC_SITE_URL y claves Supabase/IA en el panel Environment Variables.',
+          'vercel.com → Import → env vars → Deploy',
+          [
+            'Asigne a `respuesta` un texto breve sobre qué copiar de `.env` al panel de Vercel.',
+            'Mencione variables de entorno, Supabase o claves de IA.',
+            'Muestre `respuesta` con `console.log(respuesta)`.'
+          ]
         ),
         sec(
           'README mínimo viable',
           'Quien llega nuevo no debería adivinar: título, qué hace, cómo instalar, cómo arrancar, stack y variables necesarias.',
           'GitHub muestra el README en la portada. Clientes o entrevistadores lo leen antes de la demo.',
+          'Incluya secciones Instalar, Desarrollo y Variables (ver `.env.example`).',
           '# DevDays\n\nBootcamp 35 días...\n\n## Instalar\nnpm install\n\n## Desarrollo\nnpm run dev',
-          '## Variables\nVer .env.example'
+          [
+            'Cree el arreglo `secciones` con al menos tres cadenas (Instalación, Desarrollo, Variables).',
+            'Cada elemento debe ser un string descriptivo.',
+            'Escriba en consola `secciones.length`.'
+          ]
         ),
         sec(
           'npm run build y npm run check',
           'build simula producción: si falla aquí, fallará en Vercel. check ejecuta svelte-check y TypeScript.',
           'Antes de cerrar una feature o abrir PR, corre check. CI en el repo puede hacer lo mismo.',
+          'adapter-vercel en svelte.config si aplica.',
           'npm run build\nnpm run check',
-          'adapter-vercel en svelte.config si aplica'
-        ),
-        sec(
-          'Checklist antes del primer deploy',
-          'Variables copiadas, build local OK, dominio o PUBLIC_SITE_URL correcto para magic link de Supabase.',
-          'Evitas “funciona en mi máquina” y login roto en producción.',
-          '1) .env.example actualizado 2) build 3) env en Vercel 4) redirect URLs en Supabase',
-          'Site URL + Redirect URLs en dashboard Supabase'
+          [
+            'Asigne a `cmd` la cadena `npm run dev`.',
+            'Escriba en consola el valor de `cmd`.',
+            'Compruebe que coincide con el comando de desarrollo del README.'
+          ]
         )
       ],
       resumen: [
@@ -250,38 +280,6 @@ export const week5: Leccion[] = [
     ejercicios: [
       ej(
         1,
-        'Índice del cartel del taller',
-        {
-          planteamiento:
-            'Un README mínimo se organiza en secciones reconocibles. Se solicita modelar ese índice como un arreglo de cadenas.',
-          requisitos: [
-            'Cree el arreglo `secciones` con al menos tres cadenas (por ejemplo: Instalación, Desarrollo, Variables).',
-            'Escriba en consola `secciones.length`.'
-          ],
-          salidaEsperada: 'En consola aparece un entero mayor o igual que 3.',
-          notas: 'Consulte la sección «README mínimo viable».'
-        },
-        ['Array con length >= 3', 'Cada elemento es string de sección'],
-        `// Día 31 — README\nconst secciones = [];\nconsole.log(secciones.length);`
-      ),
-      ej(
-        2,
-        'Arrancar el motor en local',
-        {
-          planteamiento:
-            'Antes de desplegar, el proyecto debe arrancar en local. Se solicita registrar el comando de desarrollo estándar de npm.',
-          requisitos: [
-            'Asigne a la variable `cmd` la cadena del comando para modo desarrollo (`npm run dev`).',
-            'Escriba en consola el valor de `cmd`.'
-          ],
-          salidaEsperada: 'En consola aparece exactamente `npm run dev`.',
-          notas: 'Consulte la sección «npm run build y npm run check».'
-        },
-        ['Variable cmd con comando dev', 'console.log del comando'],
-        `// Día 31 — Comando dev\nconst cmd = '';\nconsole.log(cmd);`
-      ),
-      ej(
-        3,
         'Copiar llaves al escaparate',
         {
           planteamiento:
@@ -292,10 +290,45 @@ export const week5: Leccion[] = [
           ],
           salidaEsperada:
             'Menciona variables de entorno, claves de Supabase, IA o las listadas en `.env.example`.',
-          notas: 'Consulte la sección «Checklist antes del primer deploy».'
+          notas: 'Véase «Vercel: de repo a URL pública».',
+          seccionRef: 'Vercel: de repo a URL pública'
         },
         ['Texto sobre env vars en producción'],
         `// Día 31 — Env prod\nconst respuesta = \`...\`;\nconsole.log(respuesta);`
+      ),
+      ej(
+        2,
+        'Índice del cartel del taller',
+        {
+          planteamiento:
+            'Un README mínimo se organiza en secciones reconocibles. Se solicita modelar ese índice como un arreglo de cadenas.',
+          requisitos: [
+            'Cree el arreglo `secciones` con al menos tres cadenas (por ejemplo: Instalación, Desarrollo, Variables).',
+            'Escriba en consola `secciones.length`.'
+          ],
+          salidaEsperada: 'En consola aparece un entero mayor o igual que 3.',
+          notas: 'Véase «README mínimo viable».',
+          seccionRef: 'README mínimo viable'
+        },
+        ['Array con length >= 3', 'Cada elemento es string de sección'],
+        `// Día 31 — README\nconst secciones = [];\nconsole.log(secciones.length);`
+      ),
+      ej(
+        3,
+        'Arrancar el motor en local',
+        {
+          planteamiento:
+            'Antes de desplegar, el proyecto debe arrancar en local. Se solicita registrar el comando de desarrollo estándar de npm.',
+          requisitos: [
+            'Asigne a la variable `cmd` la cadena del comando para modo desarrollo (`npm run dev`).',
+            'Escriba en consola el valor de `cmd`.'
+          ],
+          salidaEsperada: 'En consola aparece exactamente `npm run dev`.',
+          notas: 'Véase «npm run build y npm run check».',
+          seccionRef: 'npm run build y npm run check'
+        },
+        ['Variable cmd con comando dev', 'console.log del comando'],
+        `// Día 31 — Comando dev\nconst cmd = '';\nconsole.log(cmd);`
       )
     ]
   },
@@ -314,28 +347,36 @@ export const week5: Leccion[] = [
           'Primero el dolor del cliente; luego tu puente; al final las herramientas como medios, no como protagonistas.',
           'Problema → Solución → Stack (por qué cada pieza) → Demo o invitación a probar.',
           'DevDays: "Los juniors pierden horas sin feedback" → "Bootcamp con tutor IA que corrige por lógica" → SvelteKit + Supabase + OpenAI/Gemini.',
-          '1) Problema  2) Solución  3) Stack  4) Demo'
+          '1) Problema  2) Solución  3) Stack  4) Demo',
+          [
+            'Asigne a `respuesta` dos frases: qué es DevDays y para quién está pensado.',
+            'Mencione bootcamp, tutor IA o feedback automático.',
+            'Muestre `respuesta` con `console.log(respuesta)`.'
+          ]
         ),
         sec(
           'Tu stack real (este repo)',
           'SvelteKit: rutas por carpetas, SSR, endpoints /api. Supabase: auth magic link y progreso opcional. IA: corrección y chat en servidor.',
           'Cada pieza responde a un requisito: UI rápida, login sin contraseña propia, feedback automático.',
+          'CodeMirror en el cliente; las API keys de IA solo en el servidor.',
           'SvelteKit — portal y APIs\nSupabase — sesión y tabla progreso\nIA — /api/corregir y /api/preguntar',
-          'CodeMirror en el cliente; keys solo en servidor'
+          [
+            'Asigne a `respuesta` una frase con una razón para elegir SvelteKit en DevDays.',
+            'Mencione rutas, SSR, compilación o bundle ligero.',
+            'Muestre `respuesta` con `console.log(respuesta)`.'
+          ]
         ),
         sec(
           'Frases que funcionan (y las que no)',
           'Di "construyo con SvelteKit" en lugar de "soy experto senior en todo". La honestidad genera confianza.',
           'Si llevas poco tiempo, enfatiza lo que ya desplegaste y lo que aprendiste haciendo DevDays.',
+          'Muestra repo o URL desplegada si puedes.',
           'Bien: "Elegí Svelte porque compila y el bundle es ligero."\nEvitar: "Sé más que React" sin demostrar nada.',
-          'Muestra repo o URL desplegada si puedes'
-        ),
-        sec(
-          'Practicar en voz alta',
-          'Graba 90 segundos en el móvil. Si te atas, simplifica: una frase por bloque del guion.',
-          'Repetición baja la ansiedad más que memorizar definiciones de MDN.',
-          'Timer 2 min → problema → solución → stack → "¿quieres que abra la demo?"',
-          ''
+          [
+            'Asigne a `respuesta` una frase sobre auth y base de datos de DevDays.',
+            'Mencione magic link o Postgres/Supabase.',
+            'Muestre `respuesta` con `console.log(respuesta)`.'
+          ]
         )
       ],
       resumen: [
@@ -359,7 +400,8 @@ export const week5: Leccion[] = [
           ],
           salidaEsperada:
             'Texto que mencione bootcamp o aprendizaje, y tutor IA, corrección automática o feedback.',
-          notas: 'Consulte la sección «Estructura del pitch (2 minutos)».'
+          notas: 'Véase «Estructura del pitch (2 minutos)».',
+          seccionRef: 'Estructura del pitch (2 minutos)'
         },
         ['Texto de 2 frases aprox', 'Problema o público claro'],
         `// Día 32 — Pitch DevDays\nconst respuesta = \`...\`;\nconsole.log(respuesta);`
@@ -376,7 +418,8 @@ export const week5: Leccion[] = [
           ],
           salidaEsperada:
             'Menciona rutas por carpetas, SSR, compilación, bundle ligero o menos JavaScript en cliente.',
-          notas: 'Consulte la sección «Tu stack real (este repo)».'
+          notas: 'Véase «Tu stack real (este repo)».',
+          seccionRef: 'Tu stack real (este repo)'
         },
         ['Una frase con razón técnica o de producto'],
         `// Día 32 — SvelteKit\nconst respuesta = \`...\`;\nconsole.log(respuesta);`
@@ -393,7 +436,8 @@ export const week5: Leccion[] = [
           ],
           salidaEsperada:
             'Menciona login o autenticación (magic link) y almacenamiento de datos o Postgres.',
-          notas: 'Evite listar solo features sin enlazarlas al proyecto.'
+          notas: 'Véase «Frases que funcionan (y las que no)».',
+          seccionRef: 'Frases que funcionan (y las que no)'
         },
         ['Una frase con auth y almacenamiento'],
         `// Día 32 — Supabase\nconst respuesta = \`...\`;\nconsole.log(respuesta);`
@@ -414,29 +458,37 @@ export const week5: Leccion[] = [
           'JavaScript: closure, ===, map/filter',
           'Closure: la función guarda el despacho donde nació aunque la llamen desde otro pasillo. === compara valor y tipo; == hace conversiones raras.',
           'map devuelve array nuevo transformado; filter deja solo los que pasan el filtro. En DevDays: listar días, filtrar completados.',
-          'Closure: función que "recuerda" variables del scope exterior.\n[1,2,3].map(n => n * 2) → [2,4,6]\narr.filter(x => x > 0)',
-          'const activos = dias.filter(d => d.estado === "completado");'
+          'const activos = dias.filter(d => d.estado === "completado");\n[1,2,3].map(n => n * 2);',
+          'const activos = dias.filter(x => x > 0);',
+          [
+            'Asigne a `respuesta` una o dos frases que definan closure en JavaScript.',
+            'Indique que la función recuerda variables del scope exterior.',
+            'Muestre `respuesta` con `console.log(respuesta)`.'
+          ]
         ),
         sec(
           'Svelte 5 y SvelteKit',
           '$state: dato vivo; $derived: calculado; $props: entrada al componente. +page.server.ts: solo servidor (secretos, cookies). +page.ts: load universal.',
           'Relaciona con LessonContent, CodeEditor y load de /estudio.',
-          'runes en .svelte\n+page.server.ts → actions, cookies, DB\nhooks.server → cada request',
-          'let abierto = $state(false);'
+          'let abierto = $state(false);\n// +page.server.ts en servidor',
+          'runes en .svelte\n+page.server.ts → actions, cookies, DB',
+          [
+            'Asigne a `respuesta` una frase que diferencie `+page.svelte` de `+page.server.ts`.',
+            'Mencione servidor, secretos o que no se envía al cliente.',
+            'Muestre `respuesta` con `console.log(respuesta)`.'
+          ]
         ),
         sec(
           'Git: commit, branch, pull request',
           'commit = foto del taller en un momento. branch = copia para probar sin romper main. PR = pedir que fusionen tu rama tras revisión.',
           'Flujo colaborativo: branch → commits → push → PR → review → merge.',
-          'git checkout -b feature/login\ngit commit -m "feat: magic link"\ngh pr create',
-          'main protegida; trabajas en ramas'
-        ),
-        sec(
-          'Cómo responder bajo presión',
-          'Respira, repite la pregunta, da analogía de 1 frase y luego el detalle técnico. Si no sabes, di qué buscarías en el repo.',
-          'Mejor "en DevDays lo vi en hooks.server" que inventar.',
-          'Estructura: analogía → qué hace → ejemplo del proyecto',
-          ''
+          'main protegida; trabajas en ramas.',
+          'git checkout -b feature/login\ngit commit -m "feat: magic link"',
+          [
+            'Cree el arreglo `pasos` con exactamente tres cadenas del flujo colaborativo.',
+            'Incluya ideas de branch, commit y PR o push.',
+            'Escriba en consola `pasos.length`.'
+          ]
         )
       ],
       resumen: [
@@ -460,7 +512,8 @@ export const week5: Leccion[] = [
           ],
           salidaEsperada:
             'Texto que indique que la función recuerda variables del entorno donde se creó (scope exterior).',
-          notas: 'Consulte la sección «JavaScript: closure, ===, map/filter».'
+          notas: 'Véase «JavaScript: closure, ===, map/filter».',
+          seccionRef: 'JavaScript: closure, ===, map/filter'
         },
         ['Texto explicativo', 'Idea de scope/entorno'],
         `// Día 33 — Closure\nconst respuesta = \`...\`;\nconsole.log(respuesta);`
@@ -477,7 +530,8 @@ export const week5: Leccion[] = [
           ],
           salidaEsperada:
             'Menciona que `+page.server.ts` ejecuta en servidor, puede usar secretos o no se envía al cliente.',
-          notas: 'Consulte la sección «Svelte 5 y SvelteKit».'
+          notas: 'Véase «Svelte 5 y SvelteKit».',
+          seccionRef: 'Svelte 5 y SvelteKit'
         },
         ['Diferencia cliente vs servidor'],
         `// Día 33 — page.server\nconst respuesta = \`...\`;\nconsole.log(respuesta);`
@@ -493,7 +547,8 @@ export const week5: Leccion[] = [
             'Escriba en consola `pasos.length`.'
           ],
           salidaEsperada: 'En consola aparece el número 3.',
-          notas: 'Consulte la sección «Git: commit, branch, pull request».'
+          notas: 'Véase «Git: commit, branch, pull request».',
+          seccionRef: 'Git: commit, branch, pull request'
         },
         ['pasos.length === 3', 'Strings con ideas de branch/commit/PR/push'],
         `// Día 33 — Git colaborar\nconst pasos = [];\nconsole.log(pasos.length);`
@@ -514,29 +569,37 @@ export const week5: Leccion[] = [
           'Guion de demo (4 bloques)',
           'Como un tour guiado: por qué existe, qué ves en pantalla, qué hay bajo el capó, qué mejorarías.',
           '1) Problema y usuario  2) Demo en vivo  3) Archivos clave (rutas, API)  4) Roadmap honesto.',
-          'problema → /login magic link → /estudio → ejercicio → /api/corregir → feedback',
-          "No hace falta teclear todo; puedes scrollar el editor"
+          'problema → /login → /estudio → /api/corregir',
+          '1) Problema  2) Demo  3) Archivos clave  4) Roadmap',
+          [
+            'Cree el arreglo `guion` con cuatro cadenas: problema, demo, archivos clave y roadmap.',
+            'Cada elemento describe un bloque del tour.',
+            'Escriba en consola `guion.length`.'
+          ]
         ),
         sec(
           'Rutas que debes poder señalar',
           '/login, /auth/callback, /estudio, /api/corregir, /api/preguntar. Saber qué archivo corresponde a cada URL.',
           'src/routes/login/+page.svelte, hooks.server.ts, src/routes/estudio/+page.svelte, src/routes/api/corregir/+server.ts.',
           'Carpeta = URL en SvelteKit. +server.ts = endpoint HTTP (POST fetch desde el cliente).',
-          "fetch('/api/corregir', { method: 'POST', body: ... })"
+          "const ruta = '/estudio';\nconsole.log(ruta);",
+          [
+            'Asigne a `ruta` la cadena `/estudio`.',
+            'Escriba en consola el valor de `ruta`.',
+            'Compruebe que coincide con la URL del portal.'
+          ]
         ),
         sec(
           'Debug narrado con IA',
           'Bug → hipótesis → prueba (log, network, check) → fix. El tutor no sustituye entender; acelera el ciclo.',
-          'Ejemplo: "La corrección falla" → revisar env keys → mirar respuesta de /api/corregir → ajustar prompt o criterios.',
-          'Pregunta concreta al tutor: "¿Por qué load no recibe sesión?" mejor que "arregla todo".',
-          'npm run check + consola del navegador + logs Vercel'
-        ),
-        sec(
-          'Qué decir si te bloqueas',
-          'Pausa, muestra el archivo correcto, explica en castellano qué hace cada bloque. Pedir 30 segundos para buscar en el repo es profesional.',
-          'Mejor honestidad que inventar. "Lo implementaría en hooks" muestra criterio aunque no recuerdes la línea exacta.',
-          '"Aquí el servidor valida la sesión antes de devolver las lecciones."',
-          ''
+          'Ejemplo: "La corrección falla" → revisar env keys → mirar respuesta de /api/corregir → ajustar criterios.',
+          'npm run check + consola del navegador + logs Vercel.',
+          "fetch('/api/corregir', { method: 'POST' })",
+          [
+            'Asigne a `respuesta` un texto breve sobre qué hace `/api/corregir`.',
+            'Mencione revisar código del alumno, IA o criterios de lógica.',
+            'Muestre `respuesta` con `console.log(respuesta)`.'
+          ]
         )
       ],
       resumen: [
@@ -559,7 +622,8 @@ export const week5: Leccion[] = [
             'Escriba en consola `guion.length`.'
           ],
           salidaEsperada: 'En consola aparece el número 4.',
-          notas: 'Consulte la sección «Guion de demo (4 bloques)».'
+          notas: 'Véase «Guion de demo (4 bloques)».',
+          seccionRef: 'Guion de demo (4 bloques)'
         },
         ['guion.length === 4', 'Cuatro strings descriptivos'],
         `// Día 34 — Guion\nconst guion = [];\nconsole.log(guion.length);`
@@ -575,7 +639,8 @@ export const week5: Leccion[] = [
             'Escriba en consola el valor de `ruta`.'
           ],
           salidaEsperada: 'En consola aparece exactamente `/estudio`.',
-          notas: 'Consulte la sección «Rutas que debes poder señalar».'
+          notas: 'Véase «Rutas que debes poder señalar».',
+          seccionRef: 'Rutas que debes poder señalar'
         },
         ['ruta es /estudio', 'console.log de ruta'],
         `// Día 34 — Ruta estudio\nconst ruta = '';\nconsole.log(ruta);`
@@ -592,7 +657,8 @@ export const week5: Leccion[] = [
           ],
           salidaEsperada:
             'Menciona revisar el código del alumno, usar IA o evaluar criterios de lógica (no solo sintaxis).',
-          notas: 'Consulte la sección «Debug narrado con IA».'
+          notas: 'Véase «Debug narrado con IA».',
+          seccionRef: 'Debug narrado con IA'
         },
         ['Texto sobre corrección de ejercicios'],
         `// Día 34 — API corregir\nconst respuesta = \`...\`;\nconsole.log(respuesta);`
@@ -619,7 +685,8 @@ export const week5: Leccion[] = [
             'Escriba en consola ambos valores (pueden ir en la misma línea o en dos `console.log`).'
           ],
           salidaEsperada: 'En consola aparecen el nombre y el rol asignados.',
-          notas: 'Repaso del día 1 — variables y template literals opcionales.'
+          notas: 'Repaso del día 1 — variables y template literals opcionales.',
+          seccionRef: 'Repaso semana 5'
         },
         ['Dos variables string', 'Salida con ambos valores'],
         `// Examen — Variables\nconst nombre = 'Moi';\nconst rol = 'dev';\n\n`
@@ -635,7 +702,8 @@ export const week5: Leccion[] = [
             'Invoque `obtener()` y escriba en consola el resultado (con `await` en una función async o con `.then`).'
           ],
           salidaEsperada: 'En consola aparece un objeto que incluye `ok: true`.',
-          notas: 'Repaso de la semana 2 — promesas y async.'
+          notas: 'Repaso de la semana 2 — promesas y async.',
+          seccionRef: 'Repaso semana 5'
         },
         ['Función async', 'Retorno { ok: true }', 'Se consume la promesa'],
         `// Examen — Async\nasync function obtener() {\n  return { ok: true };\n}\n\n`
@@ -652,7 +720,8 @@ export const week5: Leccion[] = [
           ],
           salidaEsperada:
             'Texto que mencione estado reactivo o que la interfaz se actualiza al cambiar el valor.',
-          notas: 'Repaso de la semana 3 — runes.'
+          notas: 'Repaso de la semana 3 — runes.',
+          seccionRef: 'Repaso semana 5'
         },
         ['Texto sobre $state/reactivo'],
         `// Examen — Svelte\nconst r = \`...\`;\nconsole.log(r);`
@@ -669,7 +738,8 @@ export const week5: Leccion[] = [
           ],
           salidaEsperada:
             'Cadena que incluye `routes/blog` (o `routes\\blog`) y `+page.svelte`.',
-          notas: 'Repaso de la semana 4 — convención de carpetas.'
+          notas: 'Repaso de la semana 4 — convención de carpetas.',
+          seccionRef: 'Repaso semana 5'
         },
         ['String con ruta de archivo SvelteKit'],
         `// Examen — Ruta blog\nconst p = '';\nconsole.log(p);`
@@ -685,7 +755,8 @@ export const week5: Leccion[] = [
             'Escriba en consola `stack.length`.'
           ],
           salidaEsperada: 'En consola aparece el número 3.',
-          notas: 'Repaso de la semana 5 — visión del proyecto completo.'
+          notas: 'Repaso de la semana 5 — visión del proyecto completo.',
+          seccionRef: 'Repaso semana 5'
         },
         ['Array de 3 strings', 'stack.length === 3'],
         `// Examen — Stack\nconst stack = [];\nconsole.log(stack.length);`

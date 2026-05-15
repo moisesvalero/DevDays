@@ -4,6 +4,7 @@
   import Callout from './Callout.svelte';
   import NotebookLmExport from './NotebookLmExport.svelte';
   import ExerciseEnunciado from './ExerciseEnunciado.svelte';
+  import { seccionAnchorId } from '$lib/data/lessons/_helpers';
 
   let {
     lesson,
@@ -45,7 +46,10 @@
 
   <article class="mt-8 space-y-8">
     {#each lesson.contenido.secciones as s, i (i)}
-      <section class="space-y-3 rounded-lg border border-outline-variant/60 p-5">
+      <section
+        id={seccionAnchorId(lesson.dia, i)}
+        class="scroll-mt-24 space-y-3 rounded-lg border border-outline-variant/60 p-5"
+      >
         <h3 class="text-lg font-semibold text-on-surface">{s.titulo}</h3>
         <div class="rounded-md border-l-4 border-primary bg-primary/5 p-4">
           <p class="text-xs font-bold uppercase tracking-wider text-primary">En código</p>
@@ -63,6 +67,16 @@
         </p>
         {#if s.ejemplo}
           <CodeBlock code={s.ejemplo} />
+        {/if}
+        {#if s.pasosPractica?.length}
+          <div class="rounded-md border border-primary/30 bg-primary/5 p-4">
+            <p class="text-xs font-bold uppercase tracking-wider text-primary">En la práctica</p>
+            <ol class="mt-2 list-decimal space-y-1 pl-5 text-sm leading-relaxed text-on-surface">
+              {#each s.pasosPractica as paso, j (j)}
+                <li>{paso}</li>
+              {/each}
+            </ol>
+          </div>
         {/if}
         {#if s.nota}
           <Callout tipo={s.nota.tipo} texto={s.nota.texto} />
@@ -105,6 +119,11 @@
   <h2 class="text-xs font-semibold uppercase tracking-widest text-primary">
     {lesson.tipo === 'examen' ? `Retos (${totalEjercicios})` : 'Práctica'}
   </h2>
+  {#if lesson.tipo === 'leccion'}
+    <p class="text-sm text-on-surface-variant">
+      Los ejercicios usan solo las secciones de arriba, en el mismo orden (1 → 1, 2 → 2, 3 → 3).
+    </p>
+  {/if}
   <div class="grid gap-3">
     {#each lesson.ejercicios as ej (ej.numero)}
       {@const completo = correctos.has(ej.numero)}
@@ -149,7 +168,11 @@
     <h3 class="text-base font-semibold text-on-surface">
       Ejercicio {ejercicioSel.numero}: {ejercicioSel.titulo}
     </h3>
-    <ExerciseEnunciado enunciado={ejercicioSel.enunciado} />
+    <ExerciseEnunciado
+      enunciado={ejercicioSel.enunciado}
+      dia={lesson.dia}
+      seccionIndice={ejercicioSel.numero - 1}
+    />
     <p class="text-xs text-on-surface-variant">
       La corrección automática comprueba que la salida coincida con lo indicado; la sintaxis puede
       variar.

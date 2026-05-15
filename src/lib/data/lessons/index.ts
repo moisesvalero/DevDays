@@ -6,3 +6,4 @@ import { week4 } from './week4';
 import { week5 } from './week5';
 
 export const lessons: Leccion[] = [...week1, ...week2, ...week3, ...week4, ...week5];
+export const lecciones = lessons;

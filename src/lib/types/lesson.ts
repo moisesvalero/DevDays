@@ -9,6 +9,8 @@ export type Seccion = {
   paraQueSirve: string;
   texto: string;
   ejemplo?: string;
+  /** Pasos numerados mostrados en UI; alineados con el ejercicio del mismo índice */
+  pasosPractica?: string[];
   nota?: Callout;
 };
 
@@ -28,6 +30,8 @@ export type EnunciadoEjercicio = {
   salidaEsperada: string;
   /** Aclaraciones opcionales (sección del día, sintaxis permitida) */
   notas?: string;
+  /** Título exacto de la sección del mismo día (lección) o «Repaso semana N» (examen) */
+  seccionRef: string;
 };
 
 export type Ejercicio = {
