@@ -4,7 +4,7 @@
   import {
     copyNotebookMarkdown,
     downloadNotebookMarkdown,
-    openNotebookLM
+    NOTEBOOKLM_URL
   } from '$lib/lesson-notebook-export';
 
   let {
@@ -63,7 +63,12 @@
       <span class="material-symbols-outlined mr-1 text-base">content_copy</span>
       {copiado ? 'Copiado' : 'Copiar texto'}
     </Button>
-    <Button type="button" variant="outline" onclick={openNotebookLM}>
+    <Button
+      href={NOTEBOOKLM_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      variant="outline"
+    >
       <span class="material-symbols-outlined mr-1 text-base">open_in_new</span>
       Abrir NotebookLM
     </Button>

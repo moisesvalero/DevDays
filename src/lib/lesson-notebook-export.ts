@@ -1,6 +1,6 @@
 import type { Leccion, LeccionNormal } from '$lib/types/lesson';
 
-const NOTEBOOKLM_URL = 'https://notebooklm.google.com';
+export const NOTEBOOKLM_URL = 'https://notebooklm.google.com/';
 
 const PROMPT_LECCION = `INSTRUCCIONES PARA NOTEBOOKLM (Audio Overview)
 - Idioma: español.
@@ -131,6 +131,11 @@ export async function copyNotebookMarkdown(lesson: Leccion, allLessons: Leccion[
   }
 }
 
+/** Abre NotebookLM en pestaña nueva (respaldo programático). */
 export function openNotebookLM(): void {
-  window.open(NOTEBOOKLM_URL, '_blank', 'noopener,noreferrer');
+  const a = document.createElement('a');
+  a.href = NOTEBOOKLM_URL;
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
+  a.click();
 }
