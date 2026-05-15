@@ -6,46 +6,46 @@ export const week1: Leccion[] = [
     dia: 1,
     semana: 1,
     tipo: 'leccion',
-    titulo: 'Cajas con nombre: guardar datos',
-    objetivo: 'Entender qué es guardar un dato y mostrarlo, sin pelear con la sintaxis.',
+    titulo: 'Variables: guardar y mostrar datos',
+    objetivo: 'Entender variables, const/let, tipos básicos y console.log.',
     contenido: {
-      intro: `Todo programa es una serie de cajas etiquetadas. Hoy solo necesitas la idea: guardo un nombre, guardo una edad, y quiero mostrar un mensaje con eso. La forma exacta de escribirlo la completas con Tab o el tutor.`,
+      intro: `En JavaScript guardas datos en **variables** con nombres legibles. Hoy trabajas con \`const\`, \`let\`, tipos \`string\`, \`number\` y \`boolean\`, y compruebas resultados con \`console.log\` y template strings.`,
       secciones: [
         sec(
-          'Cajas fijas y cajas que cambian',
-          'En un almacén, algunas estanterías llevan etiqueta permanente (PIEZA A). Otras son “bandeja del día” y hoy pones 0 cajas, mañana 5.',
-          'En código guardas datos en variables. Unas no las vas a reasignar (const), otras sí porque el valor cambia (let).',
-          'No importa si escribes const o let mal al principio: importa si entiendes qué dato guardas y si puede cambiar o no.',
+          'const y let',
+          'Como una etiqueta fija y otra bandeja que rellenas cada día.',
+          'Separar lo que no cambia de lo que sí cambia evita errores al actualizar estado.',
+          'Una **variable** es un nombre que apunta a un valor. \`const\` declara un enlace que no reasignas; \`let\` permite cambiar el valor después. Lee y escribe siempre usando el nombre: \`cajas = 5\` actualiza el contenido de la variable \`cajas\`.',
           `const nombre = 'Ana';\nlet cajas = 0;\ncajas = 5;`
         ),
         sec(
-          'Tipos de dato (texto, número, sí/no)',
-          'En la carpintería anotas en un papel: texto (cliente), número (piezas), sí/no (¿entregado?).',
-          'La web hace lo mismo: texto (string), número (number), verdadero/falso (boolean).',
-          'JavaScript adivina el tipo. Tú piensa qué estás guardando en cada caja.',
+          'Tipos primitivos',
+          'Texto, número y sí/no son las tres formas básicas de anotar un dato.',
+          'Elegir el tipo correcto ayuda a la IA, al tutor y a ti a saber qué operaciones tiene sentido hacer.',
+          'JavaScript infiere el tipo al asignar. **string** = texto entre comillas; **number** = números (enteros o decimales); **boolean** = \`true\` o \`false\`. Mezclar tipos sin querer (sumar texto y número) da resultados raros: piensa qué guardas en cada variable.',
           `const cliente = 'Luis';\nconst piezas = 12;\nconst entregado = false;`
         ),
         sec(
-          'Ver el resultado (consola)',
-          'Es la ventanilla donde el taller grita “listo” para que tú compruebes sin montar toda la web.',
-          'console.log muestra un valor al desarrollador. En este portal la IA revisa tu código; la consola es la forma clásica de comprobar.',
-          'Escribe la idea; si falta un paréntesis, el autocompletado o el tutor te ayudan.',
+          'console.log',
+          'La ventanilla del desarrollador para ver qué hay dentro.',
+          'Depurar y validar valores antes de pintarlos en la interfaz.',
+          '\`console.log(valor)\` imprime en la consola del navegador o del entorno Node. Sirve para comprobar variables, resultados de operaciones y mensajes intermedios. En DevDays la corrección IA lee tu código; la consola sigue siendo la herramienta clásica de depuración.',
           `console.log('Hola');\nconsole.log(2 + 2);`
         ),
         sec(
-          'Texto con variables dentro',
-          'En vez de escribir a mano “Hola Ana” en diez sitios, tienes una plantilla con huecos.',
-          'Los template strings (backticks) meten variables dentro del texto. Equivalente a rellenar una etiqueta de envío.',
-          'Si usas comillas y concatenas con + y funciona, también vale.',
+          'Template strings',
+          'Una frase con huecos que se rellenan solos.',
+          'Construir mensajes dinámicos sin concatenar muchas veces con \`+\`.',
+          'Los **template strings** usan backticks (\`) y \`\${expresion}\` para insertar variables o expresiones dentro del texto. Equivalente a concatenar, pero más legible: \`Hola \${nombre}\`.',
           'const n = "Ana";\nconst msg = `Hola ${n}`;'
         )
       ],
       resumen: [
-        'Variables = cajas con nombre.',
-        'const = no cambio el enlace; let = el valor puede cambiar.',
-        'string, number, boolean son los básicos.',
-        'console.log = comprobar en la ventanilla.',
-        'Template string = texto con huecos rellenables.'
+        'Variable = nombre → valor en memoria.',
+        'const = no reasignar; let = valor modificable.',
+        'string, number, boolean = tipos básicos.',
+        'console.log = ver salida al desarrollar.',
+        'Template string = texto con ${...} interpolado.'
       ]
     },
     ejercicios: [
@@ -79,38 +79,38 @@ export const week1: Leccion[] = [
     dia: 2,
     semana: 1,
     tipo: 'leccion',
-    titulo: 'Comparar y decidir: ¿es igual? ¿es mayor?',
-    objetivo: 'Entender comparaciones como preguntas sí/no, no como álgebra.',
+    titulo: 'Operadores y comparaciones',
+    objetivo: 'Usar operadores aritméticos, ===, &&, || y valores truthy/falsy.',
     contenido: {
-      intro: `Programar es preguntar todo el rato: ¿hay stock? ¿es mayor el pedido? ¿coincide el DNI? Son preguntas con respuesta sí o no.`,
+      intro: `JavaScript evalúa **expresiones** que devuelven valores. Hoy operas con números (+, -, *, /, %), comparas con \`===\` y combinas condiciones con \`&&\` y \`||\`.`,
       secciones: [
         sec(
-          'Sumar, restar, contar',
-          'En el taller sumas tornillos, restas los usados, cuentas lo que queda.',
-          'Los operadores + - * / son herramientas de conteo. El % (módulo) es “cuánto sobra” al repartir en cajas iguales.',
-          'No necesitas fórmulas raras: piensa en unidades físicas.',
+          'Operadores aritméticos',
+          'Sumar y repartir unidades, como en una hoja de cálculo.',
+          'Calcular totales, medias y restos en lógica de negocio.',
+          'Los operadores **+**, **-**, **\***, **/** hacen aritmética habitual. El **módulo** \`%\` devuelve el resto de una división entera: \`10 % 3\` es \`1\`. Útil para pares/impares, ciclos y límites.',
           'console.log(10 + 5);\nconsole.log(10 % 3);'
         ),
         sec(
-          'Comparar (===)',
-          '¿Esta caja es la misma que la etiqueta? Miras valor Y tipo.',
-          '=== responde true o false. Evita == (convierte tipos y confunde).',
-          'En la vida: “¿es exactamente este pedido?”',
+          'Comparación estricta ===',
+          'Pregunta si dos valores son exactamente iguales, tipo incluido.',
+          'Evitar comparaciones ambiguas en condiciones y filtros.',
+          '\`===\` compara **valor y tipo** y devuelve \`true\` o \`false\`. \`5 === 5\` es true; \`5 === "5"\` es false. Prefiere \`===\` frente a \`==\`, que convierte tipos y sorprende.',
           'console.log(5 === 5);\nconsole.log(5 === "5"); // false'
         ),
         sec(
-          'Y / O / vacío',
-          '¿Hay luz Y hay material? ¿Hay camión O hay furgoneta? ¿La caja está vacía?',
-          'Truthy/falsy: caja vacía, 0, texto vacío cuentan como “no” en una decisión rápida.',
-          'No memorices tablas: piensa “¿hay algo dentro de la caja?”.',
+          'Lógicos y truthy/falsy',
+          'Combinar varias preguntas sí/no en una sola decisión.',
+          'Modelar reglas: “puede enviar si pagó Y hay stock”.',
+          '\`&&\` exige que ambas partes sean verdaderas; \`||\` basta con una. En condiciones, valores **falsy** (\`0\`, \`""\`, \`null\`, \`undefined\`, \`false\`, \`NaN\`) se tratan como “no”; el resto es **truthy**.',
           'const hayStock = cantidad > 0;\nconst puedeEnviar = pagado && hayStock;'
         )
       ],
       resumen: [
-        'Operadores = contar y repartir.',
-        '=== pregunta si dos valores son iguales de verdad.',
-        '&& y || combinan preguntas.',
-        'Vacío o cero suele significar “no” en una condición.'
+        'Operadores = expresiones numéricas.',
+        '=== = igualdad estricta (boolean).',
+        '&& y || = combinar condiciones.',
+        'Truthy/falsy = qué cuenta como “no” en un if.'
       ]
     },
     ejercicios: [
@@ -144,36 +144,38 @@ export const week1: Leccion[] = [
     dia: 3,
     semana: 1,
     tipo: 'leccion',
-    titulo: 'Caminos: si pasa esto, haz aquello',
-    objetivo: 'Entender condicionales como desvíos en un taller.',
+    titulo: 'Condicionales: if, else, ternario, switch',
+    objetivo: 'Ramificar el flujo del programa según condiciones.',
     contenido: {
-      intro: `Un programa es un taller con señales: si llueve, trabajo dentro; si no, fuera. Eso es if/else.`,
+      intro: `El **control de flujo** decide qué bloque de código se ejecuta. Usarás \`if\` / \`else\`, el **operador ternario** y \`switch\` para ramas múltiples con el mismo valor.`,
       secciones: [
         sec(
           'if / else',
-          'El capataz mira la etiqueta y manda por un pasillo u otro.',
-          'if evalúa una pregunta. else es el camino alternativo.',
-          'Puedes encadenar else if como más señales seguidas.',
+          'Una bifurcación: o entras por la rama A o por la B.',
+          'Mostrar mensajes distintos, aplicar reglas de negocio, validar datos.',
+          'La forma \`if (condicion) { ... } else { ... }\` ejecuta el primer bloque solo si la condición es truthy. **else if** encadena más preguntas. Las llaves delimitan el bloque; con una sola línea a veces se omiten, pero en aprendizaje conviene usarlas.',
           'if (edad >= 18) {\n  console.log("adulto");\n} else {\n  console.log("menor");\n}'
         ),
         sec(
-          'Atajo de dos caminos (ternario)',
-          'Una señal pequeña: ¿sí o no? Elige A o B en una línea.',
-          'Útil para etiquetas cortas, no para lógica enorme.',
+          'Operador ternario',
+          'Elegir entre dos expresiones en una línea.',
+          'Asignar etiquetas cortas según estado.',
+          'Sintaxis: \`condicion ? valorSiTrue : valorSiFalse\`. Devuelve un valor (no es un “mini-if” con varias líneas). Útil para textos o flags simples; para lógica larga usa \`if\`.',
           'const tipo = esVip ? "oro" : "normal";'
         ),
         sec(
-          'switch: varias etiquetas iguales',
-          'Como un buzón con compartimentos: día lunes → un procedimiento, martes → otro.',
-          'Cuando hay muchos valores concretos iguales (días, estados).',
+          'switch',
+          'Varias etiquetas con el mismo nombre de variable.',
+          'Menús, estados de pedido, días de la semana.',
+          '\`switch (expresion)\` compara con \`case\` y ejecuta el bloque que coincida; \`break\` evita “caer” al siguiente case. \`default\` es la rama si nada coincide. Ideal cuando comparas contra muchos valores concretos del mismo tipo.',
           'switch (dia) {\n  case "lunes": ...\n  default: ...\n}'
         )
       ],
       resumen: [
-        'if = pregunta con caminos.',
-        'else = si no se cumple.',
-        'Ternario = elección corta.',
-        'switch = muchas etiquetas fijas.'
+        'if/else = ramas según condición.',
+        'Ternario = elección entre dos valores.',
+        'switch = muchos casos sobre una variable.',
+        'break/default en switch evitan errores.'
       ]
     },
     ejercicios: [
@@ -207,35 +209,38 @@ export const week1: Leccion[] = [
     dia: 4,
     semana: 1,
     tipo: 'leccion',
-    titulo: 'Herramientas: funciones que reciben y devuelven',
-    objetivo: 'Ver una función como una máquina del taller.',
+    titulo: 'Funciones: declaración, flecha y parámetros',
+    objetivo: 'Encapsular lógica reutilizable con parámetros y return.',
     contenido: {
-      intro: `Una función es una herramienta: metes materia prima (parámetros), sale un resultado. Le pones nombre para reutilizarla.`,
+      intro: `Una **función** agrupa pasos con nombre. Declararás funciones clásicas y **arrow functions**, pasarás **parámetros** y devolverás valores con \`return\`.`,
       secciones: [
         sec(
-          'Declarar una función',
-          'Como montar un torno con instrucciones pegadas: “si me das X, devuelvo Y”.',
-          'Evitas repetir el mismo trabajo en diez sitios del taller.',
+          'function declaración',
+          'Un procedimiento con nombre al que llamas cuando lo necesitas.',
+          'No repetir el mismo cálculo en muchos sitios del código.',
+          '\`function nombre(param) { return valor; }\` crea una función **hoisted** (usable antes en el archivo en scripts clásicos). \`return\` termina la función y entrega el resultado; sin \`return\` obtienes \`undefined\`.',
           'function duplicar(x) { return x * 2; }'
         ),
         sec(
-          'Función flecha',
-          'La misma herramienta, etiqueta más corta. Muy común en JS moderno.',
-          'const duplicar = (x) => x * 2;',
-          'const sumar = (a, b) => a + b;'
+          'Arrow function',
+          'La misma idea con sintaxis más compacta.',
+          'Callbacks en arrays y código moderno (Svelte, APIs).',
+          '\`const fn = (x) => x * 2\` es una **arrow function**. Si el cuerpo es una expresión, puedes omitir llaves y \`return\`. Con varias líneas usa llaves y \`return\` explícito.',
+          'const duplicar = (x) => x * 2;\nconst sumar = (a, b) => a + b;'
         ),
         sec(
-          'Valores por defecto',
-          'Si el cliente no dice color, usas “natural”.',
-          'function saludar(nombre = "invitado") { ... }',
-          'Parámetro opcional con respaldo.'
+          'Parámetros por defecto',
+          'Valor de respaldo si no pasan argumento.',
+          'APIs flexibles y menos comprobaciones repetidas.',
+          'En la firma: \`function saludar(nombre = "invitado")\`. Si llamas \`saludar()\`, \`nombre\` vale \`"invitado"\`. Los parámetros por defecto se evalúan en cada llamada.',
+          'function saludar(nombre = "invitado") { ... }'
         )
       ],
       resumen: [
-        'Función = máquina reutilizable.',
-        'return = lo que sale.',
-        'Parámetros = lo que entra.',
-        'Flecha = forma corta de escribirla.'
+        'Función = bloque reutilizable con nombre.',
+        'return = valor de salida.',
+        'Arrow = sintaxis corta => .',
+        'Parámetros por defecto = argumentos opcionales.'
       ]
     },
     ejercicios: [
@@ -269,34 +274,38 @@ export const week1: Leccion[] = [
     dia: 5,
     semana: 1,
     tipo: 'leccion',
-    titulo: 'Listas de pedidos: transformar y filtrar',
-    objetivo: 'Entender arrays como listas de la carpintería.',
+    titulo: 'Arrays: map, filter y find',
+    objetivo: 'Transformar y consultar listas sin bucles manuales largos.',
     contenido: {
-      intro: `Un array es una lista ordenada: pedido 1, pedido 2… Hoy aprendes tres movimientos: transformar todos, quedarte con algunos, encontrar uno.`,
+      intro: `Un **array** es una lista ordenada de valores. Aprenderás \`map\` (transformar todos), \`filter\` (quedarte con algunos) y \`find\` (primer elemento que cumple).`,
       secciones: [
         sec(
-          'map: cambiar cada pieza',
-          'Tienes lista de medidas en cm y quieres la misma lista en mm.',
-          'map recorre y devuelve lista nueva con la misma longitud.',
+          'map',
+          'Aplicas la misma operación a cada elemento y obtienes una lista nueva.',
+          'Convertir formatos, calcular precios con IVA, derivar datos para la UI.',
+          '\`array.map((elemento) => nuevoValor)\` recorre el array y devuelve **otro array de la misma longitud**. No muta el original. El callback recibe el elemento (y opcionalmente índice y array).',
           'const mm = cm.map((x) => x * 10);'
         ),
         sec(
-          'filter: quedarte con los válidos',
-          'De 10 tablas, solo las que no tienen grieta.',
-          'filter devuelve lista más corta (o igual) con los que pasan la prueba.',
+          'filter',
+          'Te quedas solo con los elementos que pasan una prueba.',
+          'Listas de productos activos, tareas completadas, usuarios mayores de edad.',
+          '\`array.filter((el) => condicion)\` devuelve un subarray con los elementos donde la condición es true. Longitud ≤ la original.',
           'const buenas = tablas.filter((t) => !t.rota);'
         ),
         sec(
-          'find: el primero que coincida',
-          'Buscar el pedido con referencia 4521 en la pila.',
-          'find devuelve un elemento o undefined.',
+          'find',
+          'Buscas el primero que coincide y paras.',
+          'Obtener un registro por id sin recorrer manualmente.',
+          '\`array.find((el) => condicion)\` devuelve el **primer** match o \`undefined\` si no hay ninguno. A diferencia de \`filter\`, no devuelve array.',
           'const pedido = lista.find((p) => p.id === 4521);'
         )
       ],
       resumen: [
-        'map = misma lista, valores transformados.',
-        'filter = sublista que cumple condición.',
-        'find = primer match.'
+        'map = nuevo array, misma longitud.',
+        'filter = subarray que cumple condición.',
+        'find = un elemento o undefined.',
+        'Callbacks = función por elemento.'
       ]
     },
     ejercicios: [
@@ -330,35 +339,38 @@ export const week1: Leccion[] = [
     dia: 6,
     semana: 1,
     tipo: 'leccion',
-    titulo: 'Inventario: totales y comprobaciones',
-    objetivo: 'reduce, some, every y sort sin fórmulas abstractas.',
+    titulo: 'Arrays: reduce, some, every y sort',
+    objetivo: 'Agregar valores, comprobar condiciones globales y ordenar listas.',
     contenido: {
-      intro: `Sigues con listas: ahora sumar todo el almacén, preguntar “¿alguno falla?” o “¿todos listos?” y ordenar cajas por número.`,
+      intro: `Sigues con métodos de array: **reduce** (un solo resultado), **some** / **every** (preguntas sobre toda la lista) y **sort** (ordenar, con cuidado en números).`,
       secciones: [
         sec(
-          'reduce: un solo total',
-          'Sumas todas las cajas del camión en un único número al final del recorrido.',
-          'reduce junta la lista en un valor (suma, conteo…).',
+          'reduce',
+          'Recorres la lista y acumulas un único resultado.',
+          'Sumar precios, contar votos, agrupar en un objeto.',
+          '\`array.reduce((acumulador, elemento) => nuevoAcum, valorInicial)\` reduce la lista a un valor (número, string, objeto…). El acumulador guarda el estado entre pasos; el valor inicial evita sorpresas con arrays vacíos.',
           'const total = precios.reduce((acc, p) => acc + p, 0);'
         ),
         sec(
           'some y every',
-          'some: ¿hay al menos una pieza rota? every: ¿todas pasan control?',
-          'Respuesta sí/no sobre toda la lista.',
+          'Una pregunta sobre “¿alguno?” o “¿todos?”.',
+          'Validar formularios, permisos, listas de edades.',
+          '\`some\` devuelve true si **al menos un** elemento cumple la condición. \`every\` exige que **todos** la cumplan. Ambos devuelven boolean y dejan de iterar en cuanto pueden (some) o si falla uno (every).',
           'edades.some((e) => e < 18);\nedades.every((e) => e >= 18);'
         ),
         sec(
-          'sort: ordenar la estantería',
-          'Ordenar por número de estante, no por abecedario del código postal.',
-          'sort con comparador para números: (a,b) => a - b',
-          'Opcional si te lías: basta entender “ordenar lista”.'
+          'sort',
+          'Reordenar elementos in-place.',
+          'Tablas, rankings, prioridades.',
+          '\`array.sort()\` sin argumentos ordena como **strings** (10 antes que 2). Para números usa comparador: \`(a, b) => a - b\` (ascendente). \`sort\` muta el array original; si necesitas preservarlo, copia antes con spread o \`toSorted\` donde exista.',
+          'nums.sort((a, b) => a - b);'
         )
       ],
       resumen: [
-        'reduce = un resultado de toda la lista.',
-        'some = al menos uno.',
-        'every = todos.',
-        'sort = reordenar (cuidado con números).'
+        'reduce = un valor a partir de la lista.',
+        'some = ∃ cumple; every = ∀ cumplen.',
+        'sort muta; comparador numérico (a,b)=>a-b.',
+        'Valor inicial en reduce = buena práctica.'
       ]
     },
     ejercicios: [
@@ -392,9 +404,9 @@ export const week1: Leccion[] = [
     dia: 7,
     semana: 1,
     tipo: 'examen',
-    titulo: 'Repaso Semana 1: el almacén en código',
-    objetivo: 'Demostrar que entiendes flujo, listas y decisiones (no sintaxis perfecta).',
-    instrucciones: `Cinco retos del taller. Explica con código la idea; la IA mira si el efecto es correcto. Puedes ir a cualquier día después; esto no bloquea nada.`,
+    titulo: 'Repaso Semana 1: fundamentos JavaScript',
+    objetivo: 'Demostrar variables, condicionales, funciones y métodos de array.',
+    instrucciones: `Cinco retos sobre la semana 1. La IA evalúa el efecto del código, no la sintaxis perfecta. Puedes usar el podcast de repaso (NotebookLM) con los días 1–6.`,
     ejercicios: [
       ej(1, 'Etiqueta de envío.', 'Nombre y ciudad en mensaje de envío.', ['Mensaje con nombre y ciudad'], ['Dos datos', 'Texto final los incluye'], `const nombre = 'Moisés';\nconst ciudad = 'Alcoy';\n\n`),
       ej(2, 'Stock mínimo.', 'Si stock < 5 muestra "reponer", si no "ok".', ['Texto según stock'], ['Condición con stock', 'Dos salidas'], `const stock = 3;\n\n`),

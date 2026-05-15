@@ -2,14 +2,17 @@
   import type { Leccion, Ejercicio } from '$lib/types/lesson';
   import CodeBlock from './CodeBlock.svelte';
   import Callout from './Callout.svelte';
+  import NotebookLmExport from './NotebookLmExport.svelte';
 
   let {
     lesson,
+    lessons,
     correctos,
     ejercicioActivo,
     onSelectEjercicio
   }: {
     lesson: Leccion;
+    lessons: Leccion[];
     correctos: Set<number>;
     ejercicioActivo: number;
     onSelectEjercicio: (n: number) => void;
@@ -39,6 +42,7 @@
       tipo="info"
       texto="Aquí importa entender la lógica. La sintaxis la completas con Tab (autocompletado), el tutor o búsquedas. No memorices puntos y comas."
     />
+    <NotebookLmExport {lesson} {lessons} />
   </header>
 
   <article class="mt-8 space-y-8">
@@ -46,8 +50,8 @@
       <section class="space-y-3 rounded-lg border border-outline-variant/60 p-5">
         <h3 class="text-lg font-semibold text-on-surface">{s.titulo}</h3>
         <div class="rounded-md border-l-4 border-primary bg-primary/5 p-4">
-          <p class="text-xs font-bold uppercase tracking-wider text-primary">Imagínalo así</p>
-          <p class="mt-2 leading-relaxed whitespace-pre-line text-on-surface">{s.analogia}</p>
+          <p class="text-xs font-bold uppercase tracking-wider text-primary">En código</p>
+          <p class="mt-2 leading-relaxed whitespace-pre-line text-on-surface">{s.texto}</p>
         </div>
         <div class="rounded-md border-l-4 border-tertiary bg-tertiary-container/10 p-4">
           <p class="text-xs font-bold uppercase tracking-wider text-tertiary">Para qué sirve</p>
@@ -55,7 +59,10 @@
             {s.paraQueSirve}
           </p>
         </div>
-        <p class="leading-relaxed whitespace-pre-line text-on-surface-variant">{s.texto}</p>
+        <p class="text-sm leading-relaxed text-on-surface-variant">
+          <span class="font-medium text-on-surface">Analogía breve:</span>
+          {s.analogia}
+        </p>
         {#if s.ejemplo}
           <p class="text-xs text-on-surface-variant">Referencia (no hace falta memorizarla):</p>
           <CodeBlock code={s.ejemplo} />
@@ -93,6 +100,7 @@
     <p class="text-xs text-on-surface-variant">
       No es un examen de sintaxis: demuestra que entiendes el flujo. Puedes ir a cualquier día cuando quieras.
     </p>
+    <NotebookLmExport {lesson} {lessons} />
   </header>
 {/if}
 

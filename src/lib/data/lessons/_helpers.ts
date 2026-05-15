@@ -1,5 +1,6 @@
 import type { Ejercicio, Seccion } from '$lib/types/lesson';
 
+/** En cada sección: `texto` = técnico (JavaScript); `analogia` = 1–2 frases de apoyo. */
 export function sec(
   titulo: string,
   analogia: string,

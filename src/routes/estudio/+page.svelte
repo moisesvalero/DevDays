@@ -166,6 +166,7 @@
     <div class="mx-auto w-full max-w-[920px] space-y-8 p-10">
       <LessonContent
         {lesson}
+        lessons={data.lessons}
         correctos={correctosDia}
         {ejercicioActivo}
         onSelectEjercicio={seleccionarEjercicio}
