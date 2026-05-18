@@ -125,107 +125,93 @@ export const week1: Leccion[] = [
     semana: 1,
     tipo: 'leccion',
     titulo: 'Operadores y comparaciones',
-    objetivo: 'Usar operadores aritméticos, comparaciones, ===, && y ||.',
+    objetivo: 'Traducir reglas de producto (+, %, ===, &&) a comportamiento de UI.',
     contenido: {
       intro:
-        'Cada expresión en JavaScript devuelve un valor. Hoy practicarás operaciones con números (+, -, *, /, %), comparaciones con === y >, y condiciones combinadas con && y ||.',
+        'Laboratorio visual: carrito, planes y checkout. Cada control es una spec; la consola de abajo valida la misma lógica.',
+      modo: 'laboratorio',
+      laboratorio: 'dia-2-operadores',
       secciones: [
         sec(
-          'Operadores aritméticos',
-          'Sumar y repartir unidades, como en una hoja de cálculo.',
-          'Calcular totales, medias y restos en lógica de negocio.',
-          'Los operadores +, -, *, / hacen la aritmética habitual. El operador % (módulo) devuelve el resto de una división: 10 % 3 es 1. Usa console.log para ver cada resultado.',
-          'console.log(10 + 5);\nconsole.log(10 % 3);',
-          [
-            'Calcule `10 + 5` y muestre el resultado.',
-            'Calcule `10 % 3` y muestre el resto.',
-            'Use `console.log` en cada paso.'
-          ]
+          'Carrito y filas de tabla',
+          'Precio × cantidad y resto de packs.',
+          'Subtotales, envíos y zebra en tablas.',
+          '',
+          undefined,
+          ['Subtotal con + y *', 'Sobrante con %']
         ),
         sec(
-          'Comparar dos valores con if',
-          'Elegir el mayor de dos números con una rama condicional.',
-          'Precios, puntuaciones, límites de stock.',
-          'Para igualdad estricta usa === (devuelve true o false). Para ordenar números usa > o <. Con if (a > b) ejecutas un bloque solo si la condición es verdadera; con else cubres el otro caso. Guarda el mayor en una variable y muéstralo con console.log.',
-          'const a = 12;\nconst b = 9;\nlet mayor;\nif (a > b) {\n  mayor = a;\n} else {\n  mayor = b;\n}\nconsole.log(mayor);',
-          [
-            'Compare `a` y `b` con `if (a > b)`.',
-            'Asigne el valor mayor a una variable.',
-            'Muestre esa variable con `console.log`.'
-          ]
+          'Comparar planes en la UI',
+          'Destacar el plan con precio mayor.',
+          'Pricing y badges «Recomendado».',
+          '',
+          undefined,
+          ['Comparar con > y ===', 'Elegir rama con if']
         ),
         sec(
-          'Combinar condiciones con && y ||',
-          'Dos preguntas a la vez: «¿pago Y hay stock?» o «¿cupón O es VIP?».',
-          'Reglas de envío, descuentos, validaciones simples.',
-          '&& exige que las dos partes sean verdaderas. || basta con que una lo sea. La expresión pagado && stock > 0 indica si el pedido puede enviarse. Muestra el booleano con console.log.',
-          'const pagado = true;\nconst stock = 3;\nconsole.log(pagado && stock > 0);',
-          [
-            'Combine `pagado` y `stock` con `&&`.',
-            'Escriba en consola el booleano resultante.'
-          ]
+          'Reglas de compra',
+          'Botón activo solo si pago y stock.',
+          'Checkout, banners y promos.',
+          '',
+          undefined,
+          ['Combinar con &&', 'Promo con ||']
         )
       ],
-      resumen: [
-        '+, -, *, /, % = operaciones numéricas.',
-        '=== compara igualdad; > y < comparan orden.',
-        '&& = las dos deben cumplirse; || = basta una.',
-        'if usa condiciones true/false para elegir un camino.'
-      ]
+      resumen: []
     },
     ejercicios: [
       ej(
         1,
-        'Suma y resto',
+        'Spec: subtotal y sobrante',
         {
           planteamiento:
-            'Se solicita evaluar dos expresiones aritméticas sobre enteros y mostrar cada resultado en consola.',
+            'En el checkout debes calcular el subtotal de línea (10 + 5 unidades de envío simulado) y el sobrante al empaquetar 10 unidades en packs de 3.',
           requisitos: [
-            'Calcule `10 + 5` y muestre el resultado con `console.log`.',
-            'Calcule `10 % 3` (resto de la división) y muestre el resultado con `console.log`.'
+            'Calcule `10 + 5` (línea de carrito) y muestre el resultado con `console.log`.',
+            'Calcule `10 % 3` (unidades sueltas tras empaquetar) y muestre el resto con `console.log`.'
           ],
           salidaEsperada: '15\n1',
-          seccionRef: 'Operadores aritméticos',
-          notas: 'Véase sección «Operadores aritméticos».'
+          seccionRef: 'Carrito y filas de tabla',
+          notas: 'Laboratorio 1 — mismos valores que el carrito interactivo.'
         },
-        ['Muestra suma 15', 'Muestra resto 1'],
-        `// Día 2 — Suma y resto\n// console.log(10 + 5);\n// console.log(10 % 3);\n\n`
+        ['Muestra subtotal 15', 'Muestra sobrante 1'],
+        `// Spec: subtotal de línea + sobrante de pack\n// console.log(10 + 5);\n// console.log(10 % 3);\n\n`
       ),
       ej(
         2,
-        'El precio más alto',
+        'Spec: plan destacado',
         {
           planteamiento:
-            'Se comparan dos importes numéricos. El programa debe determinar cuál es el mayor con `if` y mostrarlo en consola.',
+            'Dos planes (Pro y Starter) tienen precios `a` y `b`. El producto debe exponer en consola el importe del plan más caro para el checkout.',
           requisitos: [
             'Utilice las variables `a` y `b` de la plantilla.',
             'Con `if (a > b)` (y `else` si hace falta) asigne el mayor a una variable.',
-            'Escriba en consola el valor numérico mayor con `console.log`.'
+            'Escriba en consola el precio del plan destacado con `console.log`.'
           ],
           salidaEsperada: '12',
-          seccionRef: 'Comparar dos valores con if',
-          notas: 'Véase sección «Comparar dos valores con if».'
+          seccionRef: 'Comparar planes en la UI',
+          notas: 'Laboratorio 2 — misma lógica que la etiqueta «Recomendado».'
         },
-        ['Hay dos precios', 'Se elige el mayor con if', 'Se imprime un número'],
-        `// Día 2 — Precio más alto\nconst a = 12;\nconst b = 9;\n\n`
+        ['Dos precios de plan', 'Elige el mayor con if', 'Imprime el importe'],
+        `// Spec: precio del plan destacado\nconst a = 12;\nconst b = 9;\n\n`
       ),
       ej(
         3,
-        '¿Se puede enviar el pedido?',
+        'Spec: botón de compra',
         {
           planteamiento:
-            'Un pedido solo puede enviarse si el cliente ha pagado y existe stock disponible (cantidad estrictamente mayor que cero). Se deben evaluar ambas condiciones y exponer el resultado booleano en consola.',
+            'El botón «Completar compra» solo debe estar habilitado si `pagado` es true y `stock` es mayor que 0. Expón esa regla como booleano en consola.',
           requisitos: [
             'Utilice las variables `pagado` y `stock` de la plantilla.',
-            'Combine ambas condiciones con operadores lógicos (`&&` u equivalente).',
-            'Escriba en consola el valor booleano que indique si el envío es posible.'
+            'Combine ambas condiciones con `&&`.',
+            'Escriba en consola si la compra puede completarse (true/false).'
           ],
           salidaEsperada: 'true',
-          seccionRef: 'Combinar condiciones con && y ||',
-          notas: 'Véase sección «Combinar condiciones con && y ||».'
+          seccionRef: 'Reglas de compra',
+          notas: 'Laboratorio 3 — misma regla que el botón del checkout.'
         },
-        ['Combina pago y stock', 'Resultado booleano visible'],
-        `// Día 2 — Envío del pedido\nconst pagado = true;\nconst stock = 3;\n\n`
+        ['Regla pagado && stock', 'Booleano en consola'],
+        `// Spec: habilitar botón de compra\nconst pagado = true;\nconst stock = 3;\n\n`
       )
     ]
   },

@@ -4,6 +4,7 @@
   import Callout from './Callout.svelte';
   import NotebookLmExport from './NotebookLmExport.svelte';
   import ExerciseEnunciado from './ExerciseEnunciado.svelte';
+  import VisualLessonRenderer from './VisualLessonRenderer.svelte';
   import { seccionAnchorId } from '$lib/data/lessons/_helpers';
 
   let {
@@ -20,6 +21,10 @@
     onSelectEjercicio: (n: number) => void;
   } = $props();
 
+  const esLaboratorio = $derived(
+    lesson.tipo === 'leccion' ? lesson.contenido.modo === 'laboratorio' : false
+  );
+
   const totalEjercicios = $derived(lesson.ejercicios.length);
   const ejercicioSel = $derived(
     lesson.ejercicios.find((e) => e.numero === ejercicioActivo) ?? lesson.ejercicios[0]
@@ -31,20 +36,30 @@
   <header class="space-y-3">
     <span class="text-xs font-semibold uppercase tracking-widest text-primary">
       Semana {lesson.semana} · Día {lesson.dia}
+      {#if esLaboratorio}
+        <span class="ml-2 rounded-full bg-primary/15 px-2 py-0.5 text-[10px]">Lab visual</span>
+      {/if}
     </span>
     <h1 class="text-4xl font-bold tracking-tight text-on-surface">{lesson.titulo}</h1>
     <p class="text-base font-medium text-on-surface-variant">{lesson.objetivo}</p>
-    <p class="text-base leading-relaxed whitespace-pre-line text-on-surface-variant">
-      {lesson.contenido.intro}
-    </p>
+    {#if !esLaboratorio}
+      <p class="text-base leading-relaxed whitespace-pre-line text-on-surface-variant">
+        {lesson.contenido.intro}
+      </p>
+    {/if}
     <Callout
       tipo="info"
-      texto="Aquí importa entender la lógica. La sintaxis la completas con Tab (autocompletado), el tutor o búsquedas. No memorices puntos y comas."
+      texto={esLaboratorio
+        ? 'Toca cada laboratorio, observa la UI y abre «Ver Spec» para la línea exacta. La práctica de abajo valida la misma lógica en consola.'
+        : 'Aquí importa entender la lógica. La sintaxis la completas con Tab (autocompletado), el tutor o búsquedas. No memorices puntos y comas.'}
     />
     <NotebookLmExport {lesson} {lessons} />
   </header>
 
   <article class="mt-8 space-y-8">
+    {#if esLaboratorio && lesson.contenido.laboratorio}
+      <VisualLessonRenderer laboratorio={lesson.contenido.laboratorio} />
+    {:else}
     {#each lesson.contenido.secciones as s, i (i)}
       <section
         id={seccionAnchorId(lesson.dia, i)}
@@ -92,6 +107,7 @@
         {/each}
       </ul>
     </section>
+    {/if}
   </article>
 {:else}
   <header
@@ -117,11 +133,17 @@
 
 <section class="mt-8 space-y-3">
   <h2 class="text-xs font-semibold uppercase tracking-widest text-primary">
-    {lesson.tipo === 'examen' ? `Retos (${totalEjercicios})` : 'Práctica'}
+    {lesson.tipo === 'examen'
+      ? `Retos (${totalEjercicios})`
+      : esLaboratorio
+        ? `Retos de spec (${totalEjercicios})`
+        : 'Práctica'}
   </h2>
   {#if lesson.tipo === 'leccion'}
     <p class="text-sm text-on-surface-variant">
-      Los ejercicios usan solo las secciones de arriba, en el mismo orden (1 → 1, 2 → 2, 3 → 3).
+      {esLaboratorio
+        ? 'Cada reto valida en consola la spec del laboratorio del mismo número.'
+        : 'Los ejercicios usan solo las secciones de arriba, en el mismo orden (1 → 1, 2 → 2, 3 → 3).'}
     </p>
   {/if}
   <div class="grid gap-3">

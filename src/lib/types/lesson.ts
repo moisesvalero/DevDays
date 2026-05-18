@@ -14,8 +14,16 @@ export type Seccion = {
   nota?: Callout;
 };
 
+/** Laboratorios visuales interactivos (modo producto). */
+export type IdLaboratorio = 'dia-2-operadores';
+
+export type ModoContenido = 'clasico' | 'laboratorio';
+
 export type ContenidoLeccion = {
   intro: string;
+  /** Por defecto `clasico` (texto + CodeBlock). `laboratorio` activa UI interactiva. */
+  modo?: ModoContenido;
+  laboratorio?: IdLaboratorio;
   secciones: Seccion[];
   resumen: string[];
 };
