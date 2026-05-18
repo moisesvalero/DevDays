@@ -9,13 +9,14 @@ export const week1: Leccion[] = [
     titulo: 'Variables: guardar y mostrar datos',
     objetivo: 'Entender variables, const/let, tipos básicos y console.log.',
     contenido: {
-      intro: `En JavaScript guardas datos en **variables** con nombres legibles. Hoy trabajas con \`const\`, \`let\`, tipos \`string\`, \`number\` y \`boolean\`, y compruebas resultados con \`console.log\` y template strings.`,
+      intro:
+        'En JavaScript guardas datos en variables con nombres legibles. Hoy trabajas con const, let, tipos string, number y boolean, y compruebas resultados con console.log y template strings.',
       secciones: [
         sec(
           'Variables con let y console.log',
           'Como una bandeja que rellenas cada día y una ventanilla para ver el resultado.',
           'Actualizar contadores y comprobar valores antes de seguir.',
-          'Use `const nombre = "Ana"` para datos que no cambian y `let cajas = 0` para contadores que actualiza. Con `cajas = cajas + 5` o `cajas += 5` suma al valor actual. **console.log(valor)** muestra el resultado en consola.',
+          'Use `const nombre = "Ana"` para datos que no cambian y `let cajas = 0` para contadores que actualiza. Con `cajas = cajas + 5` o `cajas += 5` suma al valor actual. console.log(valor) muestra el resultado en consola.',
           `const nombre = 'Ana';\nlet cajas = 0;\ncajas = cajas + 5;\nconsole.log(cajas); // 5`,
           [
             'Declare `let cajas = 0`.',
@@ -27,7 +28,7 @@ export const week1: Leccion[] = [
           'Template strings',
           'Una frase con huecos que se rellenan con el valor de cada variable.',
           'Mensajes personalizados sin repetir datos a mano.',
-          'Use **backticks** y \`${variable}\` dentro del texto: \`const saludo = \\`Hola, soy ${nombre}\\`;\`. Luego \`console.log(saludo)\`.',
+          'Use backticks (`) y ${variable} dentro del texto: const saludo = `Hola, soy ${nombre}`;. Luego console.log(saludo).',
           `const nombre = 'Ana';\nconst edad = 30;\nconst saludo = \`Hola, soy \${nombre} y tengo \${edad} años\`;\nconsole.log(saludo);`,
           [
             'Declare `nombre` (string) y `edad` (number) con `const`.',
@@ -124,15 +125,16 @@ export const week1: Leccion[] = [
     semana: 1,
     tipo: 'leccion',
     titulo: 'Operadores y comparaciones',
-    objetivo: 'Usar operadores aritméticos, ===, &&, || y valores truthy/falsy.',
+    objetivo: 'Usar operadores aritméticos, comparaciones, ===, && y ||.',
     contenido: {
-      intro: `JavaScript evalúa **expresiones** que devuelven valores. Hoy operas con números (+, -, *, /, %), comparas con \`===\` y combinas condiciones con \`&&\` y \`||\`.`,
+      intro:
+        'Cada expresión en JavaScript devuelve un valor. Hoy practicarás operaciones con números (+, -, *, /, %), comparaciones con === y >, y condiciones combinadas con && y ||.',
       secciones: [
         sec(
           'Operadores aritméticos',
           'Sumar y repartir unidades, como en una hoja de cálculo.',
           'Calcular totales, medias y restos en lógica de negocio.',
-          'Los operadores **+**, **-**, **\***, **/** hacen aritmética habitual. El **módulo** \`%\` devuelve el resto: \`10 % 3\` es \`1\`. Use \`console.log\` para ver el resultado.',
+          'Los operadores +, -, *, / hacen la aritmética habitual. El operador % (módulo) devuelve el resto de una división: 10 % 3 es 1. Usa console.log para ver cada resultado.',
           'console.log(10 + 5);\nconsole.log(10 % 3);',
           [
             'Calcule `10 + 5` y muestre el resultado.',
@@ -144,7 +146,7 @@ export const week1: Leccion[] = [
           'Comparar dos valores con if',
           'Elegir el mayor de dos números con una rama condicional.',
           'Precios, puntuaciones, límites de stock.',
-          'Con \`if (a > b)\` ejecuta un bloque solo si la condición es verdadera; con \`else\` cubres el caso contrario. Guarde el mayor en una variable y muéstrelo con \`console.log\`.',
+          'Para igualdad estricta usa === (devuelve true o false). Para ordenar números usa > o <. Con if (a > b) ejecutas un bloque solo si la condición es verdadera; con else cubres el otro caso. Guarda el mayor en una variable y muéstralo con console.log.',
           'const a = 12;\nconst b = 9;\nlet mayor;\nif (a > b) {\n  mayor = a;\n} else {\n  mayor = b;\n}\nconsole.log(mayor);',
           [
             'Compare `a` y `b` con `if (a > b)`.',
@@ -153,23 +155,22 @@ export const week1: Leccion[] = [
           ]
         ),
         sec(
-          'Lógicos && y truthy/falsy',
-          'Combinar condiciones y detectar cadenas vacías.',
-          'Reglas de envío, formularios, validaciones simples.',
-          '\`&&\` exige que ambas partes sean verdaderas. Valores **falsy** (\`""\`, \`0\`, \`false\`, etc.) cuentan como «no». \`pagado && stock > 0\` modela «puede enviar»; \`nota.length > 0\` o \`Boolean(nota)\` comprueba si hay texto.',
-          'const pagado = true;\nconst stock = 3;\nconsole.log(pagado && stock > 0);\nconst nota = "";\nconsole.log(nota.length > 0);',
+          'Combinar condiciones con && y ||',
+          'Dos preguntas a la vez: «¿pago Y hay stock?» o «¿cupón O es VIP?».',
+          'Reglas de envío, descuentos, validaciones simples.',
+          '&& exige que las dos partes sean verdaderas. || basta con que una lo sea. La expresión pagado && stock > 0 indica si el pedido puede enviarse. Muestra el booleano con console.log.',
+          'const pagado = true;\nconst stock = 3;\nconsole.log(pagado && stock > 0);',
           [
-            'Combine `pagado` y stock con `&&`.',
-            'Escriba el booleano en consola.',
-            'Para una cadena vacía, compruebe si hay contenido y muestre un booleano.'
+            'Combine `pagado` y `stock` con `&&`.',
+            'Escriba en consola el booleano resultante.'
           ]
         )
       ],
       resumen: [
-        'Operadores = expresiones numéricas.',
-        '=== = igualdad estricta (boolean).',
-        '&& y || = combinar condiciones.',
-        'Truthy/falsy = qué cuenta como “no” en un if.'
+        '+, -, *, /, % = operaciones numéricas.',
+        '=== compara igualdad; > y < comparan orden.',
+        '&& = las dos deben cumplirse; || = basta una.',
+        'if usa condiciones true/false para elegir un camino.'
       ]
     },
     ejercicios: [
@@ -220,8 +221,8 @@ export const week1: Leccion[] = [
             'Escriba en consola el valor booleano que indique si el envío es posible.'
           ],
           salidaEsperada: 'true',
-          seccionRef: 'Lógicos && y truthy/falsy',
-          notas: 'Véase sección «Lógicos && y truthy/falsy».'
+          seccionRef: 'Combinar condiciones con && y ||',
+          notas: 'Véase sección «Combinar condiciones con && y ||».'
         },
         ['Combina pago y stock', 'Resultado booleano visible'],
         `// Día 2 — Envío del pedido\nconst pagado = true;\nconst stock = 3;\n\n`
@@ -235,13 +236,14 @@ export const week1: Leccion[] = [
     titulo: 'Condicionales: if, else, ternario, switch',
     objetivo: 'Ramificar el flujo del programa según condiciones.',
     contenido: {
-      intro: `El **control de flujo** decide qué bloque de código se ejecuta. Usarás \`if\` / \`else\`, el **operador ternario** y \`switch\` para ramas múltiples con el mismo valor.`,
+      intro:
+        'El control de flujo decide qué bloque de código se ejecuta. Usarás if / else, el operador ternario y switch para ramas múltiples con el mismo valor.',
       secciones: [
         sec(
           'if / else',
           'Una bifurcación: o entras por la rama A o por la B.',
           'Mostrar mensajes distintos, aplicar reglas de negocio, validar datos.',
-          'La forma \`if (condicion) { ... } else { ... }\` ejecuta el primer bloque solo si la condición es truthy. **else if** encadena más preguntas. Las llaves delimitan el bloque; con una sola línea a veces se omiten, pero en aprendizaje conviene usarlas.',
+          'La forma if (condicion) { ... } else { ... } ejecuta el primer bloque solo si la condición es truthy. else if encadena más preguntas. Las llaves delimitan el bloque; con una sola línea a veces se omiten, pero en aprendizaje conviene usarlas.',
           'if (edad >= 18) {\n  console.log("adulto");\n} else {\n  console.log("menor");\n}',
           [
             'Lea `edad` de la plantilla.',
@@ -345,7 +347,8 @@ export const week1: Leccion[] = [
     titulo: 'Funciones: declaración, flecha y parámetros',
     objetivo: 'Encapsular lógica reutilizable con parámetros y return.',
     contenido: {
-      intro: `Una **función** agrupa pasos con nombre. Declararás funciones clásicas y **arrow functions**, pasarás **parámetros** y devolverás valores con \`return\`.`,
+      intro:
+        'Una función agrupa pasos con nombre. Declararás funciones clásicas y arrow functions, pasarás parámetros y devolverás valores con return.',
       secciones: [
         sec(
           'function declaración',
@@ -455,7 +458,8 @@ export const week1: Leccion[] = [
     titulo: 'Arrays: map, filter y find',
     objetivo: 'Transformar y consultar listas sin bucles manuales largos.',
     contenido: {
-      intro: `Un **array** es una lista ordenada de valores. Aprenderás \`map\` (transformar todos), \`filter\` (quedarte con algunos) y \`find\` (primer elemento que cumple).`,
+      intro:
+        'Un array es una lista ordenada de valores. Aprenderás map (transformar todos), filter (quedarte con algunos) y find (primer elemento que cumple).',
       secciones: [
         sec(
           'map',
@@ -565,7 +569,8 @@ export const week1: Leccion[] = [
     titulo: 'Arrays: reduce, some, every y sort',
     objetivo: 'Agregar valores, comprobar condiciones globales y ordenar listas.',
     contenido: {
-      intro: `Sigues con métodos de array: **reduce** (un solo resultado), **some** / **every** (preguntas sobre toda la lista) y **sort** (ordenar, con cuidado en números).`,
+      intro:
+        'Sigues con métodos de array: reduce (un solo resultado), some / every (preguntas sobre toda la lista) y sort (ordenar, con cuidado en números).',
       secciones: [
         sec(
           'reduce',
