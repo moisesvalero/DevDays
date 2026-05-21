@@ -315,7 +315,7 @@ export const week1: Leccion[] = [
     contenido: contenidoLab(
       'dia-5-arrays-transform',
       'Laboratorio: map, filter y find sobre catálogo de producto.',
-      ['Duplicar precios (map)', 'Solo disponibles (filter)', 'Buscar SKU (find)']
+      ['Duplicar precios (map)', 'Solo disponibles (filter)', 'Buscar por id (find)']
     ),
     ejercicios: [
       ej(
@@ -366,7 +366,7 @@ export const week1: Leccion[] = [
             'Escriba en consola solo la propiedad `nombre` del resultado.'
           ],
           salidaEsperada: 'Luis',
-          seccionRef: 'Buscar SKU (find)',
+          seccionRef: 'Buscar por id (find)',
           notas: 'Véase la sección «find»: primer match y acceso a `nombre`.'
         },
         ['find por id', 'Imprime nombre'],

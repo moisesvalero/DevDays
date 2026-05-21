@@ -51,6 +51,10 @@
     values[key] = n;
   }
 
+  function setString(key: string, raw: string) {
+    values[key] = raw;
+  }
+
   function toggleBool(key: string) {
     values[key] = !values[key];
   }
@@ -96,6 +100,13 @@
             >
               {val}
             </button>
+          {:else if typeof val === 'string'}
+            <input
+              type="text"
+              value={val}
+              oninput={(e) => setString(line.key, e.currentTarget.value)}
+              class="lab-editable-token min-w-[4rem] rounded border border-amber-400/40 bg-amber-400/10 px-1.5 py-0.5 font-bold text-amber-200 outline-none focus:border-amber-300 focus:ring-1 focus:ring-amber-400/50"
+            />
           {:else}
             <input
               type="number"

@@ -30,7 +30,7 @@
   <LabSection numero={2} titulo="Solo disponibles (filter)" spec="filter" anchorId={seccionAnchorId(dia, 1)}>
     <FilterStockLab />
   </LabSection>
-  <LabSection numero={3} titulo="Buscar SKU (find)" spec="find" anchorId={seccionAnchorId(dia, 2)}>
+  <LabSection numero={3} titulo="Buscar por id (find)" spec="find" anchorId={seccionAnchorId(dia, 2)}>
     <FindSkuLab />
   </LabSection>
 </article>
