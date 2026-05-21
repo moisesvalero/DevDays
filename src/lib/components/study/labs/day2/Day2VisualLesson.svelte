@@ -20,8 +20,8 @@
     Operadores = reglas de tu interfaz
   </h2>
   <p class="mt-3 max-w-2xl text-sm leading-relaxed text-on-surface-variant">
-    No memorices símbolos: cada operador es una decisión de producto. Toca los controles, observa la
-    UI y abre el Spec cuando quieras ver la línea exacta.
+    Toca la vista o edita el código en vivo (panel derecho). Cada cambio recalcula la UI al instante —
+    así ves qué línea genera qué comportamiento.
   </p>
 </div>
 

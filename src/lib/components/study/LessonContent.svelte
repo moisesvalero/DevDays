@@ -25,6 +25,8 @@
     lesson.tipo === 'leccion' ? lesson.contenido.modo === 'laboratorio' : false
   );
 
+  const repasoVisual = $derived(lesson.tipo === 'examen' ? lesson.repasoVisual : undefined);
+
   const totalEjercicios = $derived(lesson.ejercicios.length);
   const ejercicioSel = $derived(
     lesson.ejercicios.find((e) => e.numero === ejercicioActivo) ?? lesson.ejercicios[0]
@@ -129,6 +131,12 @@
     </p>
     <NotebookLmExport {lesson} {lessons} />
   </header>
+
+  {#if repasoVisual}
+    <div class="mt-8">
+      <VisualLessonRenderer laboratorio={repasoVisual} />
+    </div>
+  {/if}
 {/if}
 
 <section class="mt-8 space-y-3">

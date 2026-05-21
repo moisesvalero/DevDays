@@ -288,10 +288,103 @@
   --assembly-delay: 120ms;
 }
 
+/* Laboratorios visuales — animaciones suaves */
+@keyframes lab-value-pop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.14);
+    color: var(--primary);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes lab-result-flash {
+  0% {
+    background-color: color-mix(in oklab, var(--primary) 55%, transparent);
+    transform: scale(1.05);
+  }
+  100% {
+    background-color: color-mix(in oklab, var(--primary) 25%, transparent);
+    transform: scale(1);
+  }
+}
+
+@keyframes lab-spec-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lab-preview-enter {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.lab-value-pop {
+  animation: lab-value-pop 0.48s var(--ease-out-soft);
+}
+
+.lab-result-flash {
+  animation: lab-result-flash 0.65s var(--ease-out-soft);
+}
+
+.lab-spec-enter {
+  animation: lab-spec-enter 0.5s var(--ease-out-soft) both;
+}
+
+.lab-preview-enter {
+  animation: lab-preview-enter 0.55s var(--ease-out-soft) both;
+}
+
+.lab-editable-token {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.lab-editable-token:active {
+  transform: scale(0.96);
+}
+
+.lab-card-lift {
+  transition:
+    transform 0.4s var(--ease-out-soft),
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    background-color 0.35s ease;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .assembly-item {
     opacity: 1;
     transform: none;
+    transition: none;
+  }
+
+  .lab-value-pop,
+  .lab-result-flash,
+  .lab-spec-enter,
+  .lab-preview-enter {
+    animation: none;
+  }
+
+  .lab-card-lift {
     transition: none;
   }
 }

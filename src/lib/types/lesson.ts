@@ -14,8 +14,9 @@ export type Seccion = {
   nota?: Callout;
 };
 
-/** Laboratorios visuales interactivos (modo producto). */
-export type IdLaboratorio = 'dia-2-operadores';
+import type { IdLaboratorio } from './laboratorio';
+
+export type { IdLaboratorio };
 
 export type ModoContenido = 'clasico' | 'laboratorio';
 
@@ -68,6 +69,8 @@ export type LeccionNormal = Base & {
 
 export type LeccionExamen = Base & {
   tipo: 'examen';
+  /** Mini-lab visual de repaso antes de los 5 retos */
+  repasoVisual?: IdLaboratorio;
   instrucciones: string;
   ejercicios: [Ejercicio, Ejercicio, Ejercicio, Ejercicio, Ejercicio];
 };

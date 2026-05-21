@@ -18,7 +18,7 @@
   <div class="flex min-w-max flex-wrap items-center justify-center gap-2 md:gap-4">
     {#each nodos as nodo, i (nodo.id)}
       <div
-        class="relative flex min-w-[7.5rem] flex-col items-center rounded-xl border px-4 py-3 text-center shadow-sm transition-transform hover:scale-[1.02]
+        class="relative flex min-w-[7.5rem] flex-col items-center rounded-xl border px-4 py-3 text-center shadow-sm transition-all duration-300 hover:scale-[1.04] hover:shadow-md
           {nodo.accent
           ? 'border-primary bg-primary/10 text-primary'
           : 'border-outline-variant/60 bg-card text-on-surface'}"

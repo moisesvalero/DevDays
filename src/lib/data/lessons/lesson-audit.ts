@@ -53,6 +53,7 @@ function textoEnunciado(ej: Ejercicio): string {
 function auditarLeccion(lesson: LeccionNormal): AuditIssue[] {
   const issues: AuditIssue[] = [];
   const { dia, contenido, ejercicios } = lesson;
+  const esLaboratorio = contenido.modo === 'laboratorio';
   const secciones = contenido.secciones;
   const titulos = new Set(secciones.map((s) => s.titulo));
 
@@ -73,14 +74,14 @@ function auditarLeccion(lesson: LeccionNormal): AuditIssue[] {
   }
 
   secciones.forEach((s, i) => {
-    if (!s.pasosPractica?.length) {
+    if (!esLaboratorio && !s.pasosPractica?.length) {
       issues.push({
         dia,
         codigo: 'SIN_PASOS',
         mensaje: `Sección «${s.titulo}» sin pasosPractica.`
       });
     }
-    if (!s.ejemplo?.trim()) {
+    if (!esLaboratorio && !s.ejemplo?.trim()) {
       issues.push({
         dia,
         codigo: 'SIN_EJEMPLO',
@@ -120,6 +121,8 @@ function auditarLeccion(lesson: LeccionNormal): AuditIssue[] {
 
     const sec = secciones.find((s) => s.titulo === ref);
     if (!sec) continue;
+
+    if (esLaboratorio) continue;
 
     const corpusSec = textoSeccion(sec);
     const corpusEj = textoEnunciado(ej);

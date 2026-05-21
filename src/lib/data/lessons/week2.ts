@@ -1,5 +1,5 @@
 import type { Leccion } from '$lib/types/lesson';
-import { sec, ej } from './_helpers';
+import { sec, ej, contenidoLab } from './_helpers';
 
 export const week2: Leccion[] = [
   {
@@ -8,52 +8,11 @@ export const week2: Leccion[] = [
     tipo: 'leccion',
     titulo: 'Objetos: agrupar propiedades',
     objetivo: 'Modelar entidades (usuario, producto, pedido) con objetos literales y acceder a sus propiedades.',
-    contenido: {
-      intro: `Un objeto literal agrupa propiedades relacionadas bajo un solo identificador. Es la forma estándar en JavaScript de representar registros JSON, respuestas de API y estado de componentes antes de pasarlo a Svelte.`,
-      secciones: [
-        sec(
-          'Objeto literal',
-          'Como una fila de una tabla: varias columnas (propiedades) en un mismo registro.',
-          'Modelar usuarios, productos o configuración sin variables sueltas por cada campo.',
-          'Un objeto literal usa pares clave:valor con `const`. Accedes con notación de punto (`obj.prop`) o corchetes (`obj["prop"]`). `console.log(producto.nombre)` muestra un campo concreto.',
-          `const producto = { nombre: 'mesa', precio: 99 };\nconsole.log(producto.nombre);`,
-          [
-            'Use el objeto `producto` de la plantilla.',
-            'Acceda a `nombre` con `.nombre` o corchetes.',
-            'Muestre el valor con `console.log`.'
-          ]
-        ),
-        sec(
-          'Destructuring',
-          'Sacar columnas concretas del registro en variables nombradas de un solo paso.',
-          'Extraer campos de respuestas API, props o objetos de formulario sin repetir `obj.campo` muchas veces.',
-          'La destructuring de objetos crea variables locales: `const { nombre, rol } = usuario`. Luego `console.log(nombre)` y `console.log(rol)` muestran cada campo.',
-          `const usuario = { nombre: 'Luis', rol: 'admin' };\nconst { nombre, rol } = usuario;\nconsole.log(nombre);\nconsole.log(rol);`,
-          [
-            'Aplique `const { nombre, rol } = usuario` sobre el objeto dado.',
-            'Escriba en consola el valor de `nombre`.',
-            'Escriba en consola el valor de `rol`.'
-          ]
-        ),
-        sec(
-          'Spread operator',
-          'Copiar el registro y sobrescribir solo las claves que cambian.',
-          'Actualizar estado inmutablemente (nuevo objeto en lugar de mutar el original), patrón habitual antes de asignar a `$state` o enviar a una API.',
-          'El spread `...obj` copia propiedades en un objeto nuevo: `const actualizado = { ...cliente, ciudad: "Madrid" }`. `console.log(actualizado.ciudad)` comprueba la copia sin mutar el original.',
-          `const cliente = { nombre: 'Ana', ciudad: 'Valencia' };\nconst actualizado = { ...cliente, ciudad: 'Madrid' };\nconsole.log(actualizado.ciudad);`,
-          [
-            'Cree `actualizado` con `{ ...cliente, ciudad: "Madrid" }`.',
-            'No modifique `cliente` directamente.',
-            'Muestre `actualizado.ciudad` con `console.log`.'
-          ]
-        )
-      ],
-      resumen: [
-        'Objeto literal = propiedades clave:valor en un registro.',
-        'Destructuring = extraer propiedades a variables.',
-        'Spread = copiar y mezclar objetos sin mutar el original.'
-      ]
-    },
+    contenido: contenidoLab(
+      'dia-8-objetos',
+      'Laboratorio: ficha de producto como objeto.',
+      ['Card de producto', 'Actualizar propiedad', 'Destructuring']
+    ),
     ejercicios: [
       ej(
         1,
@@ -67,7 +26,7 @@ export const week2: Leccion[] = [
             'Escriba en consola el valor obtenido.'
           ],
           salidaEsperada: 'mesa',
-          seccionRef: 'Objeto literal',
+          seccionRef: 'Card de producto',
           notas: 'Siga los pasos de la sección «Objeto literal» (`producto.nombre` y `console.log`).'
         },
         ['Objeto con campos', 'Accede a nombre'],
@@ -85,7 +44,7 @@ export const week2: Leccion[] = [
             'Escriba en consola el valor de `rol`.'
           ],
           salidaEsperada: 'Luis y admin (dos líneas o valores visibles)',
-          seccionRef: 'Destructuring',
+          seccionRef: 'Actualizar propiedad',
           notas: 'Véase la sección «Destructuring»: patrón `const { nombre, rol } = usuario`.'
         },
         ['Destructuring', 'Dos valores visibles'],
@@ -103,7 +62,7 @@ export const week2: Leccion[] = [
             'Escriba en consola `actualizado.ciudad`.'
           ],
           salidaEsperada: 'Madrid',
-          seccionRef: 'Spread operator',
+          seccionRef: 'Destructuring',
           notas: 'Repita el ejemplo de «Spread operator»: `{ ...cliente, ciudad: "Madrid" }`.'
         },
         ['Spread', 'Ciudad distinta en copia'],
@@ -117,52 +76,11 @@ export const week2: Leccion[] = [
     tipo: 'leccion',
     titulo: 'Bucles y métodos de array',
     objetivo: 'Elegir entre for, for...of y map según si necesitas índice, iteración simple o transformación de lista.',
-    contenido: {
-      intro: `Los arrays son listas ordenadas en JavaScript. Puedes iterar con bucles clásicos o con métodos de orden superior (map). En frontends modernos, map suele ser la opción más legible para transformar datos antes de renderizar.`,
-      secciones: [
-        sec(
-          'for clásico',
-          'Recorrer por índice numérico de 0 a length - 1.',
-          'Cuando necesitas la posición (i), recorrer al revés o salir con break/continue.',
-          'El bucle `for (let i = 0; i < arr.length; i++)` accede a `arr[i]` y al índice `i`. Puedes acumular: `let suma = 0; for (let i = 0; i < vals.length; i++) { suma += vals[i]; }` y luego `console.log(suma)`.',
-          `const vals = [1, 2, 3];\nlet suma = 0;\nfor (let i = 0; i < vals.length; i++) {\n  suma += vals[i];\n}\nconsole.log(suma);`,
-          [
-            'Use el array `vals` de la plantilla.',
-            'Declare `let suma = 0` y recorra con `for (let i = 0; i < vals.length; i++)`.',
-            'Sume cada `vals[i]` y muestre el total con `console.log(suma)`.'
-          ]
-        ),
-        sec(
-          'Bucle for-of',
-          'Recorrer cada elemento del iterable sin manejar el índice.',
-          'Recorrer arrays, strings o NodeLists cuando solo te importa el valor actual.',
-          '`for (const fruta of frutas)` asigna cada elemento a `fruta`. Dentro del bucle, `console.log(fruta)` imprime cada valor sin índice explícito.',
-          `const frutas = ['manzana', 'pera'];\nfor (const fruta of frutas) {\n  console.log(fruta);\n}`,
-          [
-            'Use el array `frutas` de la plantilla.',
-            'Recorra con `for (const fruta of frutas)`.',
-            'Escriba en consola cada elemento.'
-          ]
-        ),
-        sec(
-          'map',
-          'Transformar cada elemento y obtener un array nuevo del mismo tamaño.',
-          'Preparar datos para `{#each}` en Svelte o duplicar valores antes de pintar listas.',
-          '`n.map(x => x * 2)` devuelve un array nuevo donde cada número se multiplica por 2. `console.log(duplicados)` muestra el resultado.',
-          `const n = [1, 2, 3];\nconst duplicados = n.map((x) => x * 2);\nconsole.log(duplicados);`,
-          [
-            'Use el array `n` de la plantilla.',
-            'Aplique `map` para multiplicar cada elemento por 2.',
-            'Escriba en consola el array resultante.'
-          ]
-        )
-      ],
-      resumen: [
-        'for = índice y control fino del recorrido.',
-        'for-of = cada valor del iterable.',
-        'map = transformar array → nuevo array.'
-      ]
-    },
+    contenido: contenidoLab(
+      'dia-9-bucles',
+      'Laboratorio: tablas y chips desde arrays.',
+      ['Generar filas', 'Chips de categorías', 'includes en carrito']
+    ),
     ejercicios: [
       ej(
         1,
@@ -176,7 +94,7 @@ export const week2: Leccion[] = [
             'Escriba en consola el total obtenido.'
           ],
           salidaEsperada: '6',
-          seccionRef: 'for clásico',
+          seccionRef: 'Generar filas',
           notas: 'Copie el acumulador de la sección «for clásico» (`let suma` y `suma += vals[i]`).'
         },
         ['Suma total 6'],
@@ -194,7 +112,7 @@ export const week2: Leccion[] = [
             'Escriba en consola cada elemento del array.'
           ],
           salidaEsperada: 'manzana y pera (una línea por elemento)',
-          seccionRef: 'Bucle for-of',
+          seccionRef: 'Chips de categorías',
           notas: 'Véase la sección «Bucle for-of»: patrón `for (const fruta of frutas) { console.log(fruta); }`.'
         },
         ['Recorre array', 'Imprime elementos'],
@@ -212,7 +130,7 @@ export const week2: Leccion[] = [
             'Escriba en consola el array resultante.'
           ],
           salidaEsperada: '[2, 4, 6]',
-          seccionRef: 'map',
+          seccionRef: 'includes en carrito',
           notas: 'Siga el ejemplo de la sección «map»: `n.map(x => x * 2)`.'
         },
         ['map x2'],
@@ -226,52 +144,11 @@ export const week2: Leccion[] = [
     tipo: 'leccion',
     titulo: 'Scope y closures',
     objetivo: 'Entender lexical scope y closures: funciones que conservan variables del entorno donde se crearon.',
-    contenido: {
-      intro: `El scope define qué variables ve cada bloque o función. Una closure es una función que sigue accediendo a variables de su scope externo aunque esa función se ejecute más tarde. Patrón base para factories, contadores y configuración. En Svelte 5 usas runes, no this.`,
-      secciones: [
-        sec(
-          'Scope (ámbito léxico)',
-          'Cada función es una habitación: solo ve lo de adentro y lo declarado fuera que aún exista.',
-          'Evitar colisiones de nombres y fugas de variables globales en módulos y componentes.',
-          'Las variables `const` y `let` tienen scope de bloque. Una función puede leer variables del exterior: `function leer() { return externa; }` donde `const externa = 1` está fuera. `console.log(leer())` muestra el valor capturado del scope padre.',
-          `const externa = 42;\nfunction leer() {\n  return externa;\n}\nconsole.log(leer());`,
-          [
-            'Use la variable `externa` ya declarada en la plantilla.',
-            'Complete `leer` para que devuelva `externa` con `return`.',
-            'Invoque `leer()` y muestre el resultado con `console.log`.'
-          ]
-        ),
-        sec(
-          'Closure',
-          'Una función que “lleva” variables del sitio donde nació.',
-          'Contadores, memoización, callbacks con configuración y patrones de factory en librerías.',
-          'Si una función interna referencia una variable del exterior, esa referencia persiste: `function crear() { let n = 0; return () => ++n; }`. Cada llamada a la función devuelta comparte el mismo `n` encapsulado.',
-          `function crearContador() {\n  let n = 0;\n  return () => ++n;\n}\nconst siguiente = crearContador();\nconsole.log(siguiente());`,
-          [
-            'Complete `crearContador` para devolver una función que incremente `n`.',
-            'Guarde la función devuelta en una variable (por ejemplo `siguiente`).',
-            'Invóquela al menos tres veces y muestre el último valor con `console.log`.'
-          ]
-        ),
-        sec(
-          'this (referencia breve)',
-          'En JS clásico, this apunta al contexto de llamada; en Svelte casi no lo usas.',
-          'Conocerlo evita confusiones al leer código ajeno; no es requisito en este bootcamp.',
-          '`this` depende de cómo invocas la función. En módulos ES y Svelte 5 el estado vive en variables y runes (`$state`), no en `this`. Redacte en un template string por qué prefiere runes frente a `this`.',
-          `const respuesta = \`En Svelte 5 uso $state en lugar de depender de this en el componente.\`;\nconsole.log(respuesta);`,
-          [
-            'Declare `respuesta` como template string de dos frases.',
-            'Mencione `this` y runes o variables locales.',
-            'Escriba en consola `respuesta` con `console.log`.'
-          ]
-        )
-      ],
-      resumen: [
-        'Scope = visibilidad de variables por bloque/función.',
-        'Closure = función + variables del entorno capturadas.',
-        'this = contexto de llamada; poco relevante en Svelte 5.'
-      ]
-    },
+    contenido: contenidoLab(
+      'dia-10-closures',
+      'Laboratorio: closures y factory de descuento.',
+      ['Contador privado', 'Factory descuento', 'Precio final']
+    ),
     ejercicios: [
       ej(
         1,
@@ -285,7 +162,7 @@ export const week2: Leccion[] = [
             'Invoque `leer()` y escriba en consola el resultado.'
           ],
           salidaEsperada: '42',
-          seccionRef: 'Scope (ámbito léxico)',
+          seccionRef: 'Contador privado',
           notas: 'Véase «Scope (ámbito léxico)»: la función devuelve una variable del scope padre.'
         },
         ['Función lee externa', 'Imprime 42'],
@@ -303,7 +180,7 @@ export const week2: Leccion[] = [
             'Invoque esa función al menos tres veces y escriba en consola el resultado de la última llamada.'
           ],
           salidaEsperada: '3 (o secuencia 1, 2, 3 visible en consola)',
-          seccionRef: 'Closure',
+          seccionRef: 'Factory descuento',
           notas: 'Siga el patrón de la sección «Closure»: `let n = 0; return () => ++n`.'
         },
         ['Closure contador'],
@@ -321,7 +198,7 @@ export const week2: Leccion[] = [
             'Escriba en consola el contenido de `respuesta`.'
           ],
           salidaEsperada: 'Texto que mencione this y runes o variables',
-          seccionRef: 'this (referencia breve)',
+          seccionRef: 'Precio final',
           notas: 'Consulte la sección «this (referencia breve)»; no hace falta código ejecutable más allá del template string.'
         },
         ['Texto sobre this y runes'],
@@ -335,52 +212,11 @@ export const week2: Leccion[] = [
     tipo: 'leccion',
     titulo: 'Promesas (Promise)',
     objetivo: 'Representar operaciones asíncronas con Promise, then y catch antes de pasar a async/await.',
-    contenido: {
-      intro: `JavaScript no bloquea el hilo principal mientras espera red o disco. Una Promise representa un valor futuro: pending hasta resolverse (fulfilled) o fallar (rejected). fetch, timers y APIs de Supabase devuelven promesas.`,
-      secciones: [
-        sec(
-          '¿Por qué asincronía?',
-          'El navegador sigue respondiendo mientras espera la respuesta del servidor.',
-          'Cargar JSON, autenticar o llamar a la IA sin congelar la interfaz.',
-          'Las operaciones I/O (red, base de datos) tardan milisegundos o segundos. `fetch(url)` devuelve una Promise: el programa sigue y el callback se ejecuta cuando llega la respuesta. Sin asincronía, la página quedaría bloqueada.',
-          `// fetch devuelve una Promise; el hilo no se bloquea\nfetch('https://ejemplo.com/datos');`,
-          [
-            'Escriba un comentario de dos líneas en el archivo.',
-            'Explique por qué `fetch` no congela la interfaz.',
-            'Mencione que `fetch` devuelve una Promise.'
-          ]
-        ),
-        sec(
-          'then / catch',
-          'then encadena el éxito; catch captura el rechazo.',
-          'Encadenar transformaciones de respuesta HTTP y manejar errores de red o 4xx/5xx.',
-          '`promise.then(valor => { ... })` ejecuta si resolve; `.catch(err => { ... })` si reject. Ejemplo: `new Promise((resolve) => resolve("hola")).then(v => console.log(v))` o `new Promise((_, reject) => reject("error")).catch(e => console.log(e))`.',
-          `const p = new Promise((resolve) => {\n  resolve('hola');\n});\np.then((valor) => console.log(valor));`,
-          [
-            'Complete el constructor invocando `resolve("hola")` o `reject("error")`.',
-            'Encadene `.then` o `.catch` según el enunciado.',
-            'Escriba en consola el valor o el error capturado.'
-          ]
-        ),
-        sec(
-          'Encadenar then',
-          'Varios then transforman el valor resuelto antes de consumirlo.',
-          'Normalizar cadenas, parsear JSON en pasos o preparar datos para la UI.',
-          'Parta de `Promise.resolve("hola")`, encadene `.then(s => s.toUpperCase())` y luego `.then(s => console.log(s))` para obtener `HOLA` en consola.',
-          `Promise.resolve('hola')\n  .then((s) => s.toUpperCase())\n  .then((s) => console.log(s));`,
-          [
-            'Use `Promise.resolve("hola")` como punto de partida.',
-            'Encadene un `then` que aplique `toUpperCase()`.',
-            'Muestre el resultado final con `console.log` en otro `then`.'
-          ]
-        )
-      ],
-      resumen: [
-        'Promise = valor futuro con estados pending/fulfilled/rejected.',
-        'then = manejar éxito y encadenar.',
-        'catch = manejar error o rechazo.'
-      ]
-    },
+    contenido: contenidoLab(
+      'dia-11-promesas',
+      'Laboratorio: estados de Promise en checkout.',
+      ['Simular carga', 'Timeout', 'Encadenar']
+    ),
     ejercicios: [
       ej(
         1,
@@ -394,7 +230,7 @@ export const week2: Leccion[] = [
             'Explique que el hilo principal no queda bloqueado mientras espera la red.'
           ],
           salidaEsperada: 'Comentario que mencione fetch, Promise y no bloqueo',
-          seccionRef: '¿Por qué asincronía?',
+          seccionRef: 'Simular carga',
           notas: 'Véase la sección «¿Por qué asincronía?» sobre fetch y el event loop.'
         },
         ['Comentario sobre fetch y Promise'],
@@ -412,7 +248,7 @@ export const week2: Leccion[] = [
             'Elija una variante y deje visible el resultado en consola.'
           ],
           salidaEsperada: 'hola o error según la variante elegida',
-          seccionRef: 'then / catch',
+          seccionRef: 'Timeout',
           notas: 'Copie los patrones de la sección «then / catch» (`resolve` + `then` o `reject` + `catch`).'
         },
         ['then o catch con salida en consola'],
@@ -430,7 +266,7 @@ export const week2: Leccion[] = [
             'Escriba en consola el resultado final del encadenamiento.'
           ],
           salidaEsperada: 'HOLA',
-          seccionRef: 'Encadenar then',
+          seccionRef: 'Encadenar',
           notas: 'Siga el ejemplo de «Encadenar then»: `.then(s => s.toUpperCase())`.'
         },
         ['then transforma'],
@@ -444,52 +280,11 @@ export const week2: Leccion[] = [
     tipo: 'leccion',
     titulo: 'async/await y fetch',
     objetivo: 'Escribir flujo asíncrono lineal con async/await, try/catch y fetch para consumir APIs REST.',
-    contenido: {
-      intro: `async/await es azúcar sintáctico sobre promesas: lees el código en orden como funciones síncronas. fetch realiza peticiones HTTP GET/POST y devuelve un Response; .json() parsea el cuerpo a objeto JavaScript.`,
-      secciones: [
-        sec(
-          'async / await',
-          'async marca una función que devuelve Promise; await pausa hasta que resuelva.',
-          'Funciones load en SvelteKit, handlers de formulario y llamadas a APIs en +page.ts o en el cliente.',
-          '`async function main() { const n = await Promise.resolve(42); console.log(n); }` — `await` solo dentro de `async`. Cada `await` devuelve el valor resuelto.',
-          `async function main() {\n  const n = await Promise.resolve(42);\n  console.log(n);\n}\nmain();`,
-          [
-            'Declare `main` como `async function`.',
-            'Use `await` sobre `Promise.resolve(42)`.',
-            'Muestre el valor con `console.log` e invoque `main()`.'
-          ]
-        ),
-        sec(
-          'try / catch',
-          'try envuelve código que puede lanzar; catch recibe el error.',
-          'Manejar fallos de red, JSON inválido o respuestas no ok sin romper la app.',
-          '`try { ... } catch { console.log("error"); }` dentro de una función `async` captura excepciones y rechazos de `await`.',
-          `async function probar() {\n  try {\n    throw new Error('fallo');\n  } catch {\n    console.log('error');\n  }\n}\nprobar();`,
-          [
-            'Complete `probar` como función `async`.',
-            'Envuelva en `try` una operación que lance o rechace.',
-            'En `catch`, escriba `console.log("error")` e invoque `probar()`.'
-          ]
-        ),
-        sec(
-          'fetch + JSON',
-          'fetch devuelve Response; .json() convierte el body a objeto/array.',
-          'Consumir REST públicos, Supabase REST o tu propia API en SvelteKit.',
-          '`const res = await fetch(url); const data = await res.json(); console.log(data.title);` — revisa `res.ok` antes de confiar en `data`.',
-          `async function cargar() {\n  const res = await fetch('https://jsonplaceholder.typicode.com/posts/1');\n  const data = await res.json();\n  console.log(data.title);\n}\ncargar();`,
-          [
-            'Complete `cargar` como función `async`.',
-            'Haga `fetch` a la URL del enunciado y parsee con `.json()`.',
-            'Escriba en consola la propiedad `title`.'
-          ]
-        )
-      ],
-      resumen: [
-        'async/await = flujo asíncrono legible en orden.',
-        'try/catch = capturar errores de await o parseo.',
-        'fetch = petición HTTP; .json() = parsear cuerpo.'
-      ]
-    },
+    contenido: contenidoLab(
+      'dia-12-async',
+      'Laboratorio: async/await y estados de fetch.',
+      ['Cargar catálogo', 'Skeleton', 'Retry']
+    ),
     ejercicios: [
       ej(
         1,
@@ -503,7 +298,7 @@ export const week2: Leccion[] = [
             'Escriba en consola el valor obtenido e invoque `main()`.'
           ],
           salidaEsperada: '42',
-          seccionRef: 'async / await',
+          seccionRef: 'Cargar catálogo',
           notas: 'Véase «async / await»: `const n = await Promise.resolve(42);`.'
         },
         ['async await', '42 visible'],
@@ -522,7 +317,7 @@ export const week2: Leccion[] = [
             'Invoque `probar()` al final del script.'
           ],
           salidaEsperada: 'error',
-          seccionRef: 'try / catch',
+          seccionRef: 'Skeleton',
           notas: 'Repita el patrón de la sección «try / catch» con `console.log("error")` en el bloque catch.'
         },
         ['try y catch'],
@@ -540,7 +335,7 @@ export const week2: Leccion[] = [
             'Parsee el cuerpo con `.json()` y escriba en consola la propiedad `title`.'
           ],
           salidaEsperada: 'title del post (cadena no vacía) o manejo de error documentado',
-          seccionRef: 'fetch + JSON',
+          seccionRef: 'Retry',
           notas: 'Siga «fetch + JSON»: `await fetch`, luego `await res.json()` y `console.log(data.title)`.'
         },
         ['fetch y json', 'title visible'],
@@ -554,52 +349,11 @@ export const week2: Leccion[] = [
     tipo: 'leccion',
     titulo: 'DOM, eventos y localStorage',
     objetivo: 'Conocer el DOM del navegador, eventos y almacenamiento local; Svelte abstrae la mayor parte del DOM manual.',
-    contenido: {
-      intro: `El DOM (Document Object Model) es el árbol de nodos HTML que el navegador expone a JavaScript. Svelte actualiza el DOM por ti con reactividad; aun así conviene saber querySelector, addEventListener y localStorage para depurar y entender APIs del navegador.`,
-      secciones: [
-        sec(
-          'Seleccionar y mutar nodos',
-          'querySelector devuelve el primer nodo que coincide con un selector CSS.',
-          'Scripts vanilla, tests e2e o migraciones; en componentes Svelte usas bindings y `{#if}`, no DOM imperativo.',
-          '`document.querySelector("h1")` devuelve un Element o null. Puedes cambiar `textContent` para actualizar el texto. En Svelte el markup del `.svelte` es la fuente de verdad.',
-          `// document.querySelector('h1').textContent = 'Hola';`,
-          [
-            'Escriba un comentario de una o dos líneas.',
-            'Indique el selector CSS para un `<h1>`.',
-            'Nombre la propiedad para cambiar el texto (`textContent`).'
-          ]
-        ),
-        sec(
-          'Eventos del navegador',
-          'addEventListener registra un callback cuando ocurre click, input, submit, etc.',
-          'Entender cómo funcionan on:click en Svelte (delegación y handlers) y formularios nativos.',
-          '`elemento.addEventListener("click", handler)` ejecuta `handler` al hacer click. En Svelte escribes `onclick` o `on:click` en el template en lugar de imperativo.',
-          `const respuesta = \`addEventListener registra una función cuando ocurre un evento como click.\`;\nconsole.log(respuesta);`,
-          [
-            'Declare `respuesta` con un template string de una frase.',
-            'Explique qué hace `addEventListener` (tipo de evento y callback).',
-            'Escriba en consola `respuesta`.'
-          ]
-        ),
-        sec(
-          'localStorage',
-          'API key-value persistente en el origen (mismo protocolo + host + puerto).',
-          'Guardar tema, borrador o preferencias del usuario entre sesiones (no datos sensibles).',
-          '`localStorage.setItem("clave", "valor")` guarda strings; `getItem` lee o devuelve null. `console.log(localStorage.getItem("tema"))` comprueba la lectura.',
-          `localStorage.setItem('tema', 'oscuro');\nconsole.log(localStorage.getItem('tema'));`,
-          [
-            'Use `localStorage.setItem("tema", "oscuro")`.',
-            'Lea con `localStorage.getItem("tema")`.',
-            'Muestre el valor leído con `console.log`.'
-          ]
-        )
-      ],
-      resumen: [
-        'DOM = árbol de nodos HTML manipulable con JS.',
-        'addEventListener = reaccionar a eventos del usuario.',
-        'localStorage = persistencia string en el navegador.'
-      ]
-    },
+    contenido: contenidoLab(
+      'dia-13-dom',
+      'Laboratorio: eventos y localStorage simulado.',
+      ['Tema claro/oscuro', 'onclick', 'Carrito guardado']
+    ),
     ejercicios: [
       ej(
         1,
@@ -613,7 +367,7 @@ export const week2: Leccion[] = [
             'Explique qué propiedad modificaría para cambiar el texto de un `<h1>`.'
           ],
           salidaEsperada: 'Comentario que mencione querySelector y textContent (o equivalente)',
-          seccionRef: 'Seleccionar y mutar nodos',
+          seccionRef: 'Tema claro/oscuro',
           notas: 'Véase «Seleccionar y mutar nodos»: `querySelector` y `textContent`.'
         },
         ['Menciona querySelector o selección'],
@@ -631,7 +385,7 @@ export const week2: Leccion[] = [
             'Escriba en consola el contenido de `respuesta`.'
           ],
           salidaEsperada: 'Texto que explique registrar un listener para un evento',
-          seccionRef: 'Eventos del navegador',
+          seccionRef: 'onclick',
           notas: 'Consulte la sección «Eventos del navegador» sobre `addEventListener`.'
         },
         ['Texto sobre evento'],
@@ -649,7 +403,7 @@ export const week2: Leccion[] = [
             'Escriba en consola el valor leído.'
           ],
           salidaEsperada: 'oscuro',
-          seccionRef: 'localStorage',
+          seccionRef: 'Carrito guardado',
           notas: 'Siga el ejemplo de «localStorage»: `setItem` y `getItem` con `console.log`.'
         },
         ['setItem y getItem'],
@@ -661,6 +415,7 @@ export const week2: Leccion[] = [
     dia: 14,
     semana: 2,
     tipo: 'examen',
+    repasoVisual: 'repaso-s2',
     titulo: 'Repaso Semana 2: objetos y asincronía',
     objetivo: 'Demostrar objetos, iteración, closures, promesas/async y APIs del navegador (sin exigir sintaxis perfecta).',
     instrucciones: `Cinco retos. La corrección evalúa el efecto del código (salida, datos, comportamiento), no cada punto y coma.`,

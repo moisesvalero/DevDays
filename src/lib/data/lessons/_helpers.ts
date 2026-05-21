@@ -1,4 +1,5 @@
-import type { Ejercicio, EnunciadoEjercicio, Seccion } from '$lib/types/lesson';
+import type { Ejercicio, EnunciadoEjercicio, Seccion, ContenidoLeccion } from '$lib/types/lesson';
+import type { IdLaboratorio } from '$lib/types/laboratorio';
 
 /** En cada sección: `texto` = técnico (JavaScript); `analogia` = 1–2 frases de apoyo. */
 export function sec(
@@ -53,4 +54,41 @@ export function enunciadoParaIA(enunciado: EnunciadoEjercicio): string {
 /** Id HTML estable para anclas en /estudio */
 export function seccionAnchorId(dia: number, indice: number): string {
   return `sec-d${dia}-${indice}`;
+}
+
+const PASOS_LAB = [
+  'Abre el bloque visual con el mismo título y mueve los controles.',
+  'Observa el panel «Código en vivo»: ahí está la spec que debes replicar en consola.',
+  'Cuando entiendas el flujo, baja al reto de consola y valida la salida esperada.'
+] as const;
+
+const EJEMPLO_LAB =
+  '// let / const / console.log / template literals — según el bloque del laboratorio.\nlet ejemplo = 0;\nconsole.log(ejemplo);';
+
+/** Contenido en modo laboratorio visual (3 secciones alineadas con ejercicios). */
+export function contenidoLab(
+  laboratorio: IdLaboratorio,
+  intro: string,
+  titulos: [string, string, string]
+): ContenidoLeccion {
+  return {
+    intro,
+    modo: 'laboratorio',
+    laboratorio,
+    secciones: titulos.map((titulo) =>
+      sec(
+        titulo,
+        'La explicación interactiva está en el laboratorio de arriba; esta sección enlaza el reto de consola.',
+        'Validar en consola lo que ya viste mover en la UI.',
+        'Practica primero en el laboratorio visual; luego replica la lógica en el editor de retos.',
+        EJEMPLO_LAB,
+        [...PASOS_LAB]
+      )
+    ),
+    resumen: [
+      'Cada bloque visual corresponde 1:1 con un reto de consola (mismo título).',
+      'Si el corrector falla, vuelve al spec del bloque y compara variable a variable.',
+      'Los exámenes de semana incluyen un repaso visual antes de los cinco retos.'
+    ]
+  };
 }

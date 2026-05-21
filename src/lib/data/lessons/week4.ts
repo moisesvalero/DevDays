@@ -1,5 +1,5 @@
 import type { Leccion } from '$lib/types/lesson';
-import { sec, ej } from './_helpers';
+import { sec, ej, contenidoLab } from './_helpers';
 
 export const week4: Leccion[] = [
   {
@@ -8,53 +8,11 @@ export const week4: Leccion[] = [
     tipo: 'leccion',
     titulo: 'Rutas: el plano de la app',
     objetivo: 'Entender que en SvelteKit las carpetas de src/routes son las URLs, sin configurar un router aparte.',
-    contenido: {
-      intro: `Hasta ahora piezas Svelte sueltas. Ahora el edificio: cada carpeta bajo src/routes es una habitación con dirección pública. Quieres /contacto → creas contacto/+page.svelte. El sistema lee el disco y arma el mapa de navegación.`,
-      secciones: [
-        sec(
-          'Plano: carpetas y URLs',
-          'Como plano de un centro comercial: cada local tiene cartel (página) y a veces mostrador trasero (API).',
-          'Organizar la app por URLs sin listar rutas a mano en un archivo gigante.',
-          'SvelteKit reconoce convenciones: `+page.svelte` = pantalla visible; `+layout.svelte` = marco compartido; `+server.ts` = endpoint HTTP. Cada carpeta bajo `src/routes` es un tramo de URL. `src/routes/+page.svelte` → `/`. `src/routes/contacto/+page.svelte` → `/contacto`.',
-          'src/routes/\n  +page.svelte\n  contacto/\n    +page.svelte',
-          [
-            'Declare `const rutas` con tres strings: `/`, `/contacto` y `/proyectos`.',
-            'Use `console.log(rutas)` para ver el plano en consola.',
-            'Compruebe que el array tiene longitud 3.'
-          ]
-        ),
-        sec(
-          '+page.svelte: la pantalla',
-          'La habitación que el visitante entra: muestra contenido concreto.',
-          'Cada URL “final” que el usuario ve (inicio, contacto, lección del día).',
-          'Es un componente Svelte normal en `src/routes/<carpeta>/+page.svelte`. Puede recibir datos de `load` en `+page.ts` o `+page.server.ts` y usarlos con `$props()`.',
-          '<script lang="ts">\n  let { data } = $props();\n</script>\n<h1>{data.titulo}</h1>',
-          [
-            'Asigne a `const path` la ruta del archivo `+page.svelte` que responde a `/precios`.',
-            'El string debe incluir `precios` y `+page.svelte`.',
-            'Muestre `path` con `console.log`.'
-          ]
-        ),
-        sec(
-          'Enlaces sin recargar',
-          'Pasillos internos del edificio: cambias de sala sin salir al parking y volver a entrar.',
-          'Navegación fluida entre páginas del mismo sitio (menús, listas de días, etc.).',
-          'Use `<a href="/ruta">` con rutas relativas a su app. SvelteKit intercepta el clic y actualiza solo lo necesario. Puede armar HTML con template literals: `` `<a href="${href}">${label}</a>` ``.',
-          '<a href="/estudio">Ir al estudio</a>',
-          [
-            'Declare `const enlaces` con al menos tres objetos `{ href, label }`.',
-            'Construya un `const html` con tres etiquetas `<a>` (plantilla literal).',
-            'Escriba `html` en consola con `console.log`.'
-          ]
-        )
-      ],
-      resumen: [
-        'Carpeta en src/routes ≈ tramo de URL.',
-        '+page.svelte = pantalla de esa ruta.',
-        '<a href> = ir a otra ruta de la app.',
-        'Convención de nombres; no router manual.'
-      ]
-    },
+    contenido: contenidoLab(
+      'dia-22-rutas',
+      'Laboratorio: mapa de rutas de la app.',
+      ['Navegación', 'Link activo', '404']
+    ),
     ejercicios: [
       ej(
         1,
@@ -67,7 +25,7 @@ export const week4: Leccion[] = [
             'Escriba en consola el array con `console.log`.'
           ],
           salidaEsperada: 'Un array de 3 URLs que incluye la raíz y dos rutas adicionales.',
-          seccionRef: 'Plano: carpetas y URLs',
+          seccionRef: 'Navegación',
           notas: 'Véase la sección «Plano: carpetas y URLs» y el ejemplo de árbol de carpetas.'
         },
         ['rutas es array', 'length 3 o tres strings correctos'],
@@ -84,7 +42,7 @@ export const week4: Leccion[] = [
             'Escriba en consola el valor de `path`.'
           ],
           salidaEsperada: 'Un string que menciona `precios` y `+page.svelte`.',
-          seccionRef: '+page.svelte: la pantalla',
+          seccionRef: 'Link activo',
           notas: 'La convención está explicada en «+page.svelte: la pantalla».'
         },
         ['String con routes/precios y +page'],
@@ -102,7 +60,7 @@ export const week4: Leccion[] = [
             'Escriba en consola el string resultante.'
           ],
           salidaEsperada: 'Tres enlaces con `href` y `label`; el markup incluye `<a href=`.',
-          seccionRef: 'Enlaces sin recargar',
+          seccionRef: '404',
           notas: 'Use template literals como en el ejemplo de «Enlaces sin recargar».'
         },
         ['Array 3 elementos', 'String con etiquetas a'],
@@ -116,53 +74,11 @@ export const week4: Leccion[] = [
     tipo: 'leccion',
     titulo: 'Layouts: marco común',
     objetivo: 'Poner header, footer o menú una sola vez y dejar que cada página llene el hueco central.',
-    contenido: {
-      intro: `Repetir el mismo menú en diez +page.svelte es copiar el marco de la puerta en cada habitación. +layout.svelte es el marco fijo; {@render children?.()} es el hueco donde entra el contenido de la página hija.`,
-      secciones: [
-        sec(
-          'Layout raíz',
-          'La fachada del edificio: logo y menú visibles en todas las plantas.',
-          'Nav global, tema, toasts, cosas que no quieres duplicar.',
-          '`src/routes/+layout.svelte` envuelve todas las rutas hijas. Dentro del HTML llama `{@render children?.()}` donde debe aparecer la página actual. Puede incluir `header` y `nav`.',
-          '<header>DevDays</header>\n<main>{@render children?.()}</main>',
-          [
-            'Asigne a `codigo` un string que incluya `header`, `nav` y `{@render children?.()}`.',
-            'Use `console.log(codigo.includes("children"))` para comprobar.',
-            'La salida debe ser `true`.'
-          ]
-        ),
-        sec(
-          'Layouts anidados',
-          'Un piso del edificio con decoración distinta (solo blog, solo admin).',
-          'Secciones con chrome diferente sin tocar el layout raíz.',
-          '`blog/+layout.svelte` solo envuelve rutas bajo `/blog`. Para `/admin` el archivo vive en `src/routes/admin/+layout.svelte`.',
-          'src/routes/admin/+layout.svelte',
-          [
-            'Asigne a `ubicacion` la ruta del `+layout.svelte` que envuelve solo `/admin`.',
-            'El string debe mencionar `admin` y `+layout`.',
-            'Muestre el valor con `console.log`.'
-          ]
-        ),
-        sec(
-          'Snippet children en Svelte 5',
-          'El hueco del marco no es un slot antiguo: es un snippet que renderizas.',
-          'Migración mental: layout = componente padre; página = hijo inyectado.',
-          'Sintaxis exacta: `{@render children?.()}`. En `+layout.server.ts` o `+layout.ts` puede exportar `load` para datos compartidos (sesión, idioma).',
-          '{@render children?.()}',
-          [
-            'Asigne a `linea` el texto exacto `{@render children?.()}`.',
-            'Escriba en consola `linea` con `console.log`.',
-            'Compruebe que la salida contiene `render` y `children`.'
-          ]
-        )
-      ],
-      resumen: [
-        '+layout.svelte = marco repetido.',
-        'children = contenido de la ruta hija.',
-        'Layouts anidables por carpeta.',
-        'load en layout = datos para todo el subárbol.'
-      ]
-    },
+    contenido: contenidoLab(
+      'dia-23-layouts',
+      'Laboratorio: layouts y slots.',
+      ['Shell', 'Slot principal', 'Layout anidado']
+    ),
     ejercicios: [
       ej(
         1,
@@ -175,7 +91,7 @@ export const week4: Leccion[] = [
             'Escriba en consola si `codigo` incluye la cadena `"children"`.'
           ],
           salidaEsperada: 'Un string con `header` y `children`; la comprobación devuelve `true`.',
-          seccionRef: 'Layout raíz',
+          seccionRef: 'Shell',
           notas: 'Copie el patrón del ejemplo en «Layout raíz».'
         },
         ['codigo incluye header', 'codigo incluye render o children'],
@@ -192,7 +108,7 @@ export const week4: Leccion[] = [
             'Escriba en consola el valor.'
           ],
           salidaEsperada: 'Un string que menciona `admin` y `+layout`.',
-          seccionRef: 'Layouts anidados',
+          seccionRef: 'Slot principal',
           notas: 'Véase el ejemplo de ruta en «Layouts anidados».'
         },
         ['String routes/admin o src/routes/admin con layout'],
@@ -209,7 +125,7 @@ export const week4: Leccion[] = [
             'Escriba en consola el valor de `linea`.'
           ],
           salidaEsperada: '`{@render children?.()}` impreso en consola.',
-          seccionRef: 'Snippet children en Svelte 5',
+          seccionRef: 'Layout anidado',
           notas: 'La sintaxis exacta está en «Snippet children en Svelte 5».'
         },
         ['linea coincide con render children'],
@@ -223,53 +139,11 @@ export const week4: Leccion[] = [
     tipo: 'leccion',
     titulo: 'Rutas dinámicas [slug]',
     objetivo: 'Una sola plantilla de página para miles de URLs que solo cambian un trozo (post, producto, día).',
-    contenido: {
-      intro: `No puedes crear blog/post-1, blog/post-2… a mano. Carpeta [slug] = comodín: /blog/hola → slug vale "hola". Una plantilla, muchas direcciones.`,
-      secciones: [
-        sec(
-          'Carpeta [param]',
-          'Etiqueta en el pasillo: “aquí va cualquier nombre de habitación”.',
-          'Posts, productos, perfiles, lecciones por id o slug.',
-          'El nombre entre corchetes es la clave en `params`: `[slug]` → `params.slug`. Archivo: `blog/[slug]/+page.svelte`. Existen variantes `[[lang]]` y `[...rest]` para casos avanzados.',
-          'src/routes/blog/[slug]/+page.svelte',
-          [
-            'Declare `const slug = "mi-post"`.',
-            'Escriba en consola `Post: mi-post` con plantilla literal `` `Post: ${slug}` ``.',
-            'La salida debe incluir `mi-post`.'
-          ]
-        ),
-        sec(
-          'Leer el parámetro en load',
-          'El mozo lee la etiqueta del pasillo antes de abrir la puerta.',
-          'Cargar el post correcto desde API o base de datos según la URL.',
-          '`export const load = async ({ params }) => { const slug = params.slug; return { slug }; }`. La página usa `data.slug` en el template.',
-          'params.slug en +page.ts o +page.server.ts',
-          [
-            'Asigne a `path` la ruta del `+page.svelte` dinámico para blog con parámetro `slug` (incluya corchetes).',
-            'Use `console.log(path)`.',
-            'El string debe contener `[slug]` y `+page.svelte`.'
-          ]
-        ),
-        sec(
-          'Enlaces a rutas dinámicas',
-          'Construyes la dirección con el valor concreto del slug.',
-          'Listas de artículos, días del bootcamp, enlaces desde el menú lateral.',
-          '`` href={`/blog/${post.slug}`} `` o `const urls = ["/blog/a", "/blog/b"]`. Misma plantilla, distinta URL al hacer clic.',
-          '<a href="/blog/intro-js">Intro</a>',
-          [
-            'Declare `const urls` con `/blog/a` y `/blog/b`.',
-            'Escriba en consola `urls.length`.',
-            'La salida debe ser `2`.'
-          ]
-        )
-      ],
-      resumen: [
-        '[nombre] = segmento dinámico de URL.',
-        'params en load trae el valor.',
-        'Un +page.svelte, muchas URLs.',
-        'Enlaces armados con el slug concreto.'
-      ]
-    },
+    contenido: contenidoLab(
+      'dia-24-dinamicas',
+      'Laboratorio: rutas dinámicas [slug].',
+      ['Lista → detalle', 'params.slug', '404 producto']
+    ),
     ejercicios: [
       ej(
         1,
@@ -282,7 +156,7 @@ export const week4: Leccion[] = [
             'Escriba en consola un mensaje `Post: mi-post` usando plantilla literal o concatenación.'
           ],
           salidaEsperada: 'Salida que incluye `mi-post`.',
-          seccionRef: 'Carpeta [param]',
+          seccionRef: 'Lista → detalle',
           notas: 'Use `const` y template literals como en «Carpeta [param]».'
         },
         ['Usa slug en el mensaje', 'Texto Post: mi-post o equivalente'],
@@ -299,7 +173,7 @@ export const week4: Leccion[] = [
             'Escriba en consola `path`.'
           ],
           salidaEsperada: 'Un string que contiene `[slug]` y `+page.svelte`.',
-          seccionRef: 'Leer el parámetro en load',
+          seccionRef: 'params.slug',
           notas: 'La ruta del archivo está en el ejemplo de «Leer el parámetro en load».'
         },
         ['String blog/[slug]/+page o src/routes/blog/[slug]/+page.svelte'],
@@ -316,7 +190,7 @@ export const week4: Leccion[] = [
             'Escriba en consola la propiedad `length` del array.'
           ],
           salidaEsperada: 'El número `2` en consola.',
-          seccionRef: 'Enlaces a rutas dinámicas',
+          seccionRef: '404 producto',
           notas: 'Véase el array de ejemplo en «Enlaces a rutas dinámicas».'
         },
         ['Array dos elementos', 'Mismo prefijo /blog/'],
@@ -330,53 +204,11 @@ export const week4: Leccion[] = [
     tipo: 'leccion',
     titulo: 'load: datos antes de pintar',
     objetivo: 'Usar +page.ts o +page.server.ts para traer datos y pasarlos a la pantalla de forma tipada.',
-    contenido: {
-      intro: `La página no debería “llegar vacía” y luego rellenarse a ciegas si los datos son públicos en el servidor. load corre antes del render: trae posts, usuario, lección del día y devuelve un objeto data.`,
-      secciones: [
-        sec(
-          'export const load',
-          'El mozo va al archivador antes de abrir la tienda.',
-          'Fetch, leer fichero, consultar Supabase, preparar props de la página.',
-          'En `+page.ts` o `+page.server.ts`: `export const load = async () => { return { titulo: "Hola" }; }`. También puede ser función síncrona: `function load() { return { titulo: "Hola" }; }`. El `return` se fusiona en `data` para el componente.',
-          'export const load = async () => ({ titulo: "Hola" });',
-          [
-            'Defina `function load` que devuelva `{ titulo: "Hola" }`.',
-            'Escriba en consola `load().titulo` con `console.log`.',
-            'La salida debe ser `Hola`.'
-          ]
-        ),
-        sec(
-          'Tipos, $props() y load con params',
-          'Etiquetas en las cajas y conexión URL → datos.',
-          'Menos errores al usar `data.titulo` en el markup; páginas dinámicas coherentes con la barra de direcciones.',
-          '`let { data } = $props()` en `+page.svelte`. `export const load = async ({ params }) => ({ slug: params.slug })`. Para datos async: `await Promise.resolve([1, 2])` dentro de `load`.',
-          'let { data }: { data: { titulo: string } } = $props();',
-          [
-            'Defina `async function load` que haga `await Promise.resolve([1, 2])` y devuelva `{ n: resultado }`.',
-            'Tras `load()`, escriba en consola `d.n.length`.',
-            'La salida debe ser `2`.'
-          ]
-        ),
-        sec(
-          '+page.ts vs +page.server.ts',
-          'Universal = puede correr en servidor y en cliente según navegación. Server = solo en el servidor, seguro para secretos.',
-          'Claves API, service role de Supabase, lógica que no debe filtrarse al navegador.',
-          '`+page.ts`: load visible en ambos entornos (cuidado con secretos). `+page.server.ts`: solo servidor; ideal para cookies, sesión, API keys. En DevDays el estudio usa server load para auth y progreso.',
-          '+page.server.ts → load con cookies y Supabase',
-          [
-            'Asigne a `respuesta` una frase que explique la diferencia y cuál usar para API keys.',
-            'Escriba en consola `respuesta`.',
-            'El texto debe mencionar servidor o `+page.server.ts`.'
-          ]
-        )
-      ],
-      resumen: [
-        'load = preparar data antes de la UI.',
-        'return → objeto data en la página.',
-        'server = secretos y sesión.',
-        'params conectan URL y fetch.'
-      ]
-    },
+    contenido: contenidoLab(
+      'dia-25-load',
+      'Laboratorio: load antes de pintar.',
+      ['load function', 'Skeleton', '$props data']
+    ),
     ejercicios: [
       ej(
         1,
@@ -389,7 +221,7 @@ export const week4: Leccion[] = [
             'Escriba en consola `load().titulo`.'
           ],
           salidaEsperada: '`Hola` en consola.',
-          seccionRef: 'export const load',
+          seccionRef: 'load function',
           notas: 'Patrón de `return` en «export const load».'
         },
         ['load devuelve objeto con titulo', 'Salida Hola'],
@@ -406,7 +238,7 @@ export const week4: Leccion[] = [
             'Escriba en consola la longitud del array en `n` tras ejecutar `load()`.'
           ],
           salidaEsperada: '`2` (array de dos elementos).',
-          seccionRef: 'Tipos, $props() y load con params',
+          seccionRef: 'Skeleton',
           notas: 'Use `async`/`await` como en «Tipos, $props() y load con params».'
         },
         ['async/await', 'n con dos elementos'],
@@ -423,7 +255,7 @@ export const week4: Leccion[] = [
             'Escriba en consola `respuesta`.'
           ],
           salidaEsperada: 'Texto que menciona servidor o secretos en `+page.server.ts`.',
-          seccionRef: '+page.ts vs +page.server.ts',
+          seccionRef: '$props data',
           notas: 'Compare ambos archivos en la sección homónima.'
         },
         ['Texto que ubica secretos en server'],
@@ -437,53 +269,11 @@ export const week4: Leccion[] = [
     tipo: 'leccion',
     titulo: 'Form actions: enviar al servidor',
     objetivo: 'Procesar POST en +page.server.ts con actions, validar y devolver éxito o error sin exponer lógica al cliente.',
-    contenido: {
-      intro: `Un formulario HTML puede apuntar a una action del servidor: como dejar una nota en el almacén tras el mostrador. El navegador envía; SvelteKit ejecuta tu función en +page.server.ts y puede devolver datos o fail.`,
-      secciones: [
-        sec(
-          'export const actions',
-          'Buzón del almacén: cada nombre de action es un cajón distinto.',
-          'Login, contacto, guardar progreso, borrar fila — lógica que debe correr en servidor.',
-          'En `+page.server.ts`: `export const actions = { default: async ({ request }) => { const fd = await request.formData(); ... } }`. En el form: `<form method="POST">` o `action="?/nombreAction"`.',
-          'export const actions = { default: async ({ request }) => ({ ok: true }) };',
-          [
-            'Escriba un comentario de una línea que explique qué hace una action en SvelteKit.',
-            'El comentario debe mencionar servidor o POST.',
-            'No hace falta código ejecutable más allá del comentario.'
-          ]
-        ),
-        sec(
-          'fail y FormData',
-          'Si falta el email, devuelves error 400 con mensaje; lees campos del sobre.',
-          'Validación y feedback al usuario (errores de campo, toast).',
-          '`import { fail } from "@sveltejs/kit"`. `return fail(400, { error: "Email vacío" })`. `const fd = await request.formData(); const email = fd.get("email")?.toString() ?? ""`. Función `validar(email)` puede devolver `"ok"` o `"fail"`.',
-          'return fail(400, { mensaje: "Revisa el formulario" });',
-          [
-            'Defina `function validar(email)`: si está vacío devuelve `"fail"`, si no `"ok"`.',
-            'Pruebe con `""` y escriba en consola el resultado con `console.log`.',
-            'La salida debe ser `fail`.'
-          ]
-        ),
-        sec(
-          'use:enhance',
-          'El formulario sigue yendo al servidor, pero la página no parpadea como recarga completa de los 90.',
-          'Mejor UX: spinner, mantener scroll, actualizar solo lo necesario.',
-          '`import { enhance } from "$app/forms"`. `<form method="POST" use:enhance>`. Progresivo: sin JS sigue funcionando el POST clásico.',
-          '<form method="POST" use:enhance>',
-          [
-            'Asigne a `respuesta` una frase sobre qué mejora `use:enhance` (evitar recarga brusca).',
-            'Escriba en consola `respuesta`.',
-            'Mencione UX, recarga o experiencia de usuario.'
-          ]
-        )
-      ],
-      resumen: [
-        'actions = funciones POST en servidor.',
-        'fail = error con código HTTP.',
-        'use:enhance = UX moderna.',
-        'formData = campos del formulario.'
-      ]
-    },
+    contenido: contenidoLab(
+      'dia-26-forms',
+      'Laboratorio: form actions.',
+      ['POST action', 'Validación', 'Progressive']
+    ),
     ejercicios: [
       ej(
         1,
@@ -495,7 +285,7 @@ export const week4: Leccion[] = [
             'Escriba un comentario de una línea que explique qué hace una action de formulario en SvelteKit.'
           ],
           salidaEsperada: 'Comentario que menciona servidor o procesar el formulario.',
-          seccionRef: 'export const actions',
+          seccionRef: 'POST action',
           notas: 'Véase el bloque `export const actions` en la sección homónima.'
         },
         ['Comentario con idea de POST/servidor'],
@@ -512,7 +302,7 @@ export const week4: Leccion[] = [
             'Pruebe con `""` y escriba en consola el resultado.'
           ],
           salidaEsperada: '`fail` al validar cadena vacía.',
-          seccionRef: 'fail y FormData',
+          seccionRef: 'Validación',
           notas: 'Patrón condicional como en «fail y FormData».'
         },
         ['Condicional email vacío', 'Salida fail'],
@@ -529,7 +319,7 @@ export const week4: Leccion[] = [
             'Escriba en consola `respuesta`.'
           ],
           salidaEsperada: 'Menciona recarga, UX o experiencia de usuario.',
-          seccionRef: 'use:enhance',
+          seccionRef: 'Progressive',
           notas: 'Consulte el ejemplo `<form method="POST" use:enhance>`.'
         },
         ['Texto sobre enhance/UX'],
@@ -543,53 +333,11 @@ export const week4: Leccion[] = [
     tipo: 'leccion',
     titulo: 'Supabase: base de datos y auth',
     objetivo: 'Conectar SvelteKit con Postgres + autenticación como en DevDays (magic link, progreso, RLS).',
-    contenido: {
-      intro: `Supabase es Postgres en la nube con auth y APIs listas. En este portal: magic link por email, callback que cambia code por sesión, tabla de progreso. Cliente con URL pública y anon key; reglas RLS en la base.`,
-      secciones: [
-        sec(
-          'Cliente createClient',
-          'Llave de la recepción: entra a zonas permitidas, no al almacén privado completo.',
-          'Leer y escribir filas desde el navegador o el servidor con las mismas reglas.',
-          '`const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)`. Consultas: `await supabase.from("progreso").select("*").eq("user_id", id)`. En servidor SSR usa cookies (`@supabase/ssr`).',
-          'const supabase = createClient(url, anonKey);\nsupabase.from("progreso").select("dia, estado")',
-          [
-            'Escriba un comentario que explique qué devuelve `supabase.from("tabla").select()`.',
-            'El comentario debe mencionar filas o lectura de datos.',
-            'No requiere ejecutar Supabase real.'
-          ]
-        ),
-        sec(
-          'Auth: magic link (OTP)',
-          'Te mandan un enlace mágico al correo; un clic y la sesión queda abierta.',
-          'Login sin contraseña nueva que recordar — igual que /login en DevDays.',
-          '`await supabase.auth.signInWithOtp({ email: "tu@mail.com" })`. El usuario abre el enlace → `/auth/callback` intercambia el code por sesión.',
-          'await supabase.auth.signInWithOtp({ email: "tu@mail.com" })',
-          [
-            'Asigne a `respuesta` una frase que explique el magic link (email con enlace para entrar).',
-            'Escriba en consola `respuesta`.',
-            'Debe mencionar email o enlace.'
-          ]
-        ),
-        sec(
-          'RLS (Row Level Security)',
-          'Cada fila lleva permiso: “solo el dueño puede leer su progreso”.',
-          'Seguridad en la base aunque alguien tenga la anon key en el navegador.',
-          'Políticas SQL: `auth.uid() = user_id` en SELECT/INSERT. Sin RLS, la anon key sería demasiado poderosa.',
-          'POLICY "solo mi progreso" ON progreso FOR SELECT USING (auth.uid() = user_id);',
-          [
-            'Asigne a `respuesta` una frase sobre por qué hace falta RLS con la anon key en el navegador.',
-            'Escriba en consola `respuesta`.',
-            'Mencione seguridad, permisos o “solo sus filas”.'
-          ]
-        )
-      ],
-      resumen: [
-        'Supabase = Postgres + auth + API.',
-        'from/select = leer tablas.',
-        'OTP = magic link por email.',
-        'RLS = permisos por fila.'
-      ]
-    },
+    contenido: contenidoLab(
+      'dia-27-supabase',
+      'Laboratorio: auth y datos Supabase.',
+      ['Login', 'Query', 'RLS']
+    ),
     ejercicios: [
       ej(
         1,
@@ -601,7 +349,7 @@ export const week4: Leccion[] = [
             'Escriba un comentario que explique qué devuelve `supabase.from("tabla").select()`.'
           ],
           salidaEsperada: 'Comentario que menciona filas o lectura de datos.',
-          seccionRef: 'Cliente createClient',
+          seccionRef: 'Login',
           notas: 'Véase `createClient` y las consultas en «Cliente createClient».'
         },
         ['Idea de lectura de tabla'],
@@ -618,7 +366,7 @@ export const week4: Leccion[] = [
             'Escriba en consola `respuesta`.'
           ],
           salidaEsperada: 'Menciona email o enlace.',
-          seccionRef: 'Auth: magic link (OTP)',
+          seccionRef: 'Query',
           notas: 'Véase `signInWithOtp` en «Auth: magic link (OTP)».'
         },
         ['Texto coherente con OTP/magic link'],
@@ -635,7 +383,7 @@ export const week4: Leccion[] = [
             'Escriba en consola `respuesta`.'
           ],
           salidaEsperada: 'Menciona seguridad, permisos o que solo ve sus propias filas.',
-          seccionRef: 'RLS (Row Level Security)',
+          seccionRef: 'RLS',
           notas: 'Lea el ejemplo de política SQL en «RLS (Row Level Security)».'
         },
         ['Texto sobre restricción por usuario'],
@@ -647,6 +395,7 @@ export const week4: Leccion[] = [
     dia: 28,
     semana: 4,
     tipo: 'examen',
+    repasoVisual: 'repaso-s4',
     titulo: 'Repaso Semana 4: SvelteKit y datos',
     objetivo: 'Demostrar que entiendes rutas, layouts, dinámicas, load, forms y Supabase a nivel concepto (la IA mira el efecto, no la sintaxis perfecta).',
     instrucciones: `Cinco retos cortos. Puedes usar comentarios, strings o código mínimo. Ir a otro día no depende de aprobar esto.`,
