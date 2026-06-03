@@ -10,7 +10,7 @@ DevDays sirve a alumnos casi desde cero que quieren aprender JavaScript, Svelte 
 
 ## Product Purpose
 
-DevDays es un taller guiado de 21 días para construir un gestor de tareas paso a paso. Su éxito se mide por claridad, continuidad y práctica: el alumno entiende qué añade cada día, puede probarlo en la interfaz y conserva progreso sin login inicial.
+DevDays es un taller guiado de 21 días para construir un primer portfolio web paso a paso. Su éxito se mide por claridad, continuidad y utilidad real: el alumno entiende qué añade cada día, ve su CV online tomar forma y conserva progreso sin login inicial.
 
 La primera pantalla debe explicar la experiencia como si el alumno no supiera nada de código, pero sin saturar: un hero de entrada, una acción principal clara y el resto del contenido revelado poco a poco.
 
@@ -25,12 +25,12 @@ No debe parecer una landing comercial, un SaaS serio, un dashboard frío, una ca
 ## Design Principles
 
 - Una idea por día: cada pantalla debe reducir carga cognitiva y mostrar un objetivo principal.
-- Aprender construyendo: todo concepto se conecta con el gestor de tareas.
+- Aprender construyendo: todo concepto se conecta con el portfolio personal del alumno.
 - Feedback sin juicio: las pistas ayudan a avanzar, no evalúan a la persona.
 - Progreso visible: el alumno debe ver dónde está, qué hizo y qué sigue.
 - Cero fricción inicial: entrar al curso no requiere cuenta ni configuración previa.
 - Actitud con claridad: títulos, estados y sellos pueden tener energía callejera; pasos, mentor y código deben ser legibles y directos.
-- Modo principiante real: misión, gestor, checklist, pista y mentor deben explicarse en palabras comunes antes de pedir acción.
+- Modo principiante real: misión, portfolio, checklist, pista y mentor deben explicarse en palabras comunes antes de pedir acción.
 - Baja densidad: no enseñar todo a la vez. Primero entrada, luego acción actual, después detalles opcionales.
 - Acceso claro: el Magic Link de Supabase debe explicarse como email → enlace → vuelta al curso.
 

@@ -5,20 +5,25 @@
 	import { SvelteSet } from 'svelte/reactivity';
 	import { Button } from '$lib/components/ui/button';
 	import CodeBlock from '$lib/components/study/CodeBlock.svelte';
-	import { blockLabels, starterTasks } from '$lib/data/task-course';
-	import type { CourseBlock, TaskCourseDay, TaskItem } from '$lib/types/task-course';
+	import { blockLabels, starterPortfolio } from '$lib/data/task-course';
+	import type {
+		CourseBlock,
+		PortfolioProfile,
+		PortfolioProject,
+		TaskCourseDay
+	} from '$lib/types/task-course';
 
 	type StudyState = {
 		currentDay: number;
 		completedDays: number[];
 		checklistByDay: Record<number, number[]>;
 		hintByDay: Record<number, number>;
-		tasks: TaskItem[];
+		portfolio: PortfolioProfile;
 	};
 
 	let { data }: { data: { days: TaskCourseDay[]; userEmail: string | null } } = $props();
 
-	const storageKey = 'devdays-task-course-state-v2';
+	const storageKey = 'devdays-portfolio-course-state-v1';
 	const blocks: CourseBlock[] = ['javascript', 'svelte', 'sveltekit'];
 	const blockNames: Record<CourseBlock, string> = {
 		javascript: 'JavaScript',
@@ -30,8 +35,9 @@
 	const completedDays = new SvelteSet<number>();
 	let checklistByDay = $state<Record<number, number[]>>({});
 	let hintByDay = $state<Record<number, number>>({});
-	let tasks = $state<TaskItem[]>(starterTasks.map((task) => ({ ...task })));
-	let draftTitle = $state('');
+	let portfolio = $state<PortfolioProfile>(clonePortfolio(starterPortfolio));
+	let draftSkill = $state('');
+	let draftProjectTitle = $state('');
 	let hydrated = $state(false);
 	let toastMessage = $state('');
 	let mentorQuestion = $state('');
@@ -46,8 +52,7 @@
 	const visibleHints = $derived(current.mentorHints.slice(0, currentHintLevel + 1));
 	const completedCount = $derived(completedDays.size);
 	const completionPercent = $derived(Math.round((completedCount / data.days.length) * 100));
-	const pendingTasks = $derived(tasks.filter((task) => !task.done));
-	const doneTasks = $derived(tasks.filter((task) => task.done));
+	const featuredProjects = $derived(portfolio.projects.filter((project) => project.featured));
 	const isCurrentComplete = $derived(completedDays.has(currentDay));
 	const currentChecklistPercent = $derived(
 		Math.round((currentChecklist.length / current.checklist.length) * 100)
@@ -83,8 +88,8 @@
 				if (parsed.hintByDay && typeof parsed.hintByDay === 'object') {
 					hintByDay = sanitizeHintMap(parsed.hintByDay as Record<string, unknown>);
 				}
-				if (Array.isArray(parsed.tasks) && parsed.tasks.length > 0) {
-					tasks = parsed.tasks.filter(isTaskItem);
+				if (isPortfolioProfile(parsed.portfolio)) {
+					portfolio = parsed.portfolio;
 				}
 			} catch {
 				localStorage.removeItem(storageKey);
@@ -102,7 +107,7 @@
 			completedDays: [...completedDays],
 			checklistByDay,
 			hintByDay,
-			tasks
+			portfolio
 		};
 
 		localStorage.setItem(storageKey, JSON.stringify(state));
@@ -131,14 +136,39 @@
 		return next;
 	}
 
-	function isTaskItem(task: unknown): task is TaskItem {
-		if (!task || typeof task !== 'object') return false;
-		const candidate = task as Partial<TaskItem>;
+	function clonePortfolio(source: PortfolioProfile): PortfolioProfile {
+		return {
+			...source,
+			skills: [...source.skills],
+			projects: source.projects.map((project) => ({ ...project }))
+		};
+	}
+
+	function isPortfolioProfile(value: unknown): value is PortfolioProfile {
+		if (!value || typeof value !== 'object') return false;
+		const candidate = value as Partial<PortfolioProfile>;
+		return (
+			typeof candidate.name === 'string' &&
+			typeof candidate.role === 'string' &&
+			typeof candidate.bio === 'string' &&
+			typeof candidate.location === 'string' &&
+			typeof candidate.email === 'string' &&
+			Array.isArray(candidate.skills) &&
+			candidate.skills.every((skill) => typeof skill === 'string') &&
+			Array.isArray(candidate.projects) &&
+			candidate.projects.every(isPortfolioProject)
+		);
+	}
+
+	function isPortfolioProject(project: unknown): project is PortfolioProject {
+		if (!project || typeof project !== 'object') return false;
+		const candidate = project as Partial<PortfolioProject>;
 		return (
 			typeof candidate.id === 'number' &&
 			typeof candidate.title === 'string' &&
-			typeof candidate.done === 'boolean' &&
-			typeof candidate.tag === 'string'
+			typeof candidate.description === 'string' &&
+			typeof candidate.tag === 'string' &&
+			typeof candidate.featured === 'boolean'
 		);
 	}
 
@@ -183,7 +213,7 @@
 	function getNextStudentAction(): string {
 		if (isCurrentComplete) return 'Puedes pasar al siguiente día o repetir este sin presión.';
 		if (currentChecklist.length === 0) {
-			return 'Empieza leyendo “Hoy vas a aprender esto” y luego prueba el gestor de tareas.';
+			return 'Empieza leyendo “Hoy vas a aprender esto” y luego mira el mockup de tu portfolio.';
 		}
 		if (currentChecklist.length < current.checklist.length) {
 			return 'Sigue el checklist de uno en uno. No tienes que entenderlo todo a la primera.';
@@ -205,30 +235,51 @@
 		}
 	}
 
-	function addTask() {
-		const title = draftTitle.trim();
+	function addSkill() {
+		const skill = draftSkill.trim();
+		if (!skill) return;
+
+		portfolio = {
+			...portfolio,
+			skills: [...portfolio.skills, skill]
+		};
+		draftSkill = '';
+		showToast('Skill pegada al portfolio. Ya se ve en tu web.');
+	}
+
+	function addProject() {
+		const title = draftProjectTitle.trim();
 		if (!title) return;
 
-		tasks = [
-			...tasks,
-			{
-				id: Date.now(),
-				title,
-				done: false,
-				tag: current.block === 'javascript' ? 'lógica' : blockNames[current.block]
-			}
-		];
-		draftTitle = '';
-		showToast('Tarea pegada al muro. El gestor ya responde a tu práctica.');
+		portfolio = {
+			...portfolio,
+			projects: [
+				...portfolio.projects,
+				{
+					id: Date.now(),
+					title,
+					description: 'Describe aquí qué hiciste y qué aprendiste.',
+					tag: current.block === 'javascript' ? 'base' : blockNames[current.block],
+					featured: false
+				}
+			]
+		};
+		draftProjectTitle = '';
+		showToast('Proyecto añadido. Tu portfolio tiene otra pieza.');
 	}
 
-	function toggleTask(id: number) {
-		tasks = tasks.map((task) => (task.id === id ? { ...task, done: !task.done } : task));
+	function toggleFeaturedProject(id: number) {
+		portfolio = {
+			...portfolio,
+			projects: portfolio.projects.map((project) =>
+				project.id === id ? { ...project, featured: !project.featured } : project
+			)
+		};
 	}
 
-	function resetTasks() {
-		tasks = starterTasks.map((task) => ({ ...task }));
-		showToast('Muro limpio. Vuelta al beat inicial.');
+	function resetPortfolio() {
+		portfolio = clonePortfolio(starterPortfolio);
+		showToast('Portfolio reiniciado. Vuelta a la primera versión.');
 	}
 
 	function toggleCurrentDay() {
@@ -355,16 +406,16 @@
 		>
 			<div class="relative min-h-[58vh] overflow-hidden py-6">
 				<div
-					class="pointer-events-none absolute -right-16 bottom-0 h-64 w-80 rotate-[-8deg] bg-[url('/street-stickers.svg')] bg-contain bg-no-repeat opacity-25 sm:h-80 sm:w-[28rem] sm:opacity-35"
+					class="pointer-events-none absolute -right-16 bottom-0 h-64 w-80 rotate-[-8deg] bg-[url('/street-stickers.webp')] bg-contain bg-no-repeat opacity-25 sm:h-80 sm:w-[28rem] sm:opacity-35"
 				></div>
 				<p class="street-tag px-3 py-1 text-xs">Empieza aquí · sin saber código</p>
 				<h1
 					class="street-display relative mt-5 max-w-4xl text-5xl leading-[0.9] text-[var(--street-lime)] [-webkit-text-stroke:2px_var(--street-shadow)] sm:text-7xl lg:text-8xl"
 				>
-					Aprende código haciendo una app.
+					Crea tu primer portfolio web.
 				</h1>
 				<p class="relative mt-5 max-w-xl text-lg font-black text-[var(--street-ink)] sm:text-xl">
-					21 días. Una lista de tareas. Un paso cada vez.
+					21 días. Tu CV online. Un paso cada vez.
 				</p>
 				<div class="relative mt-7 flex flex-wrap gap-3">
 					<Button href={data.userEmail ? '#mision-actual' : '/login'}>
@@ -388,7 +439,7 @@
 					</li>
 					<li class="flex gap-3">
 						<span class="street-sticker street-sticker-pink h-7 w-7 shrink-0 text-xs">2</span>
-						<span>Baja al día actual y toca la lista.</span>
+						<span>Baja al día actual y mira tu portfolio separado.</span>
 					</li>
 					<li class="flex gap-3">
 						<span class="street-sticker h-7 w-7 shrink-0 text-xs">3</span>
@@ -399,7 +450,7 @@
 					<summary class="cursor-pointer text-sm font-black">Qué significa cada zona</summary>
 					<div class="mt-3 grid gap-2 text-sm font-bold">
 						<p><strong>Misión:</strong> lo que practicas hoy.</p>
-						<p><strong>Lista:</strong> la app que construyes.</p>
+						<p><strong>Portfolio:</strong> la web personal que construyes.</p>
 						<p><strong>Pasos:</strong> pequeñas marcas para no perderte.</p>
 						<p><strong>Pista:</strong> ayuda sin examen.</p>
 					</div>
@@ -507,87 +558,123 @@
 
 			<div class="grid gap-5 xl:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
 				<section
-					aria-labelledby="task-preview-title"
+					aria-labelledby="portfolio-preview-title"
 					class="street-panel relative overflow-hidden p-5"
 				>
 					<div
-						class="absolute top-3 right-4 h-20 w-28 rotate-6 bg-[url('/street-stickers.svg')] bg-contain bg-no-repeat opacity-25"
+						class="absolute top-3 right-4 h-20 w-28 rotate-6 bg-[url('/street-stickers.webp')] bg-contain bg-no-repeat opacity-25"
 					></div>
 					<div class="mb-5 flex flex-wrap items-center justify-between gap-3">
 						<div>
-							<p class="street-tag px-2 py-0.5 text-xs">Tu app de práctica</p>
+							<p class="street-tag px-2 py-0.5 text-xs">Mockup separado</p>
 							<h2
-								id="task-preview-title"
+								id="portfolio-preview-title"
 								class="street-display mt-3 text-4xl leading-none text-[var(--street-ink)]"
 							>
-								Lista de tareas
+								Tu portfolio
 							</h2>
 							<p class="text-sm font-bold text-[var(--street-ink)]">
-								Es una app sencilla: escribes algo, lo añades y lo puedes marcar como hecho.
+								Esto no es DevDays. Es la web personal que estás construyendo.
 							</p>
 							<p class="mt-1 text-sm font-bold text-[var(--street-ink)]">
-								Ahora tienes {pendingTasks.length} pendientes y {doneTasks.length} hechas.
+								{portfolio.skills.length} skills · {portfolio.projects.length} proyectos · {featuredProjects.length}
+								destacados
 							</p>
 						</div>
-						<Button variant="outline" onclick={resetTasks}>Reiniciar lista</Button>
+						<Button variant="outline" onclick={resetPortfolio}>Reiniciar portfolio</Button>
 					</div>
 
-					<form
-						class="flex flex-col gap-2 sm:flex-row"
-						onsubmit={(event) => {
-							event.preventDefault();
-							addTask();
-						}}
+					<div
+						class="rounded-lg border-[3px] border-[var(--street-shadow)] bg-[#101018] p-3 shadow-[7px_7px_0_var(--street-shadow)]"
+						aria-label="Vista previa del portfolio que estás creando"
 					>
-						<label class="sr-only" for="task-title">Nueva tarea</label>
-						<input
-							id="task-title"
-							bind:value={draftTitle}
-							class="min-h-11 flex-1 rounded-md border-[3px] border-[var(--street-shadow)] bg-[var(--street-paper)] px-3 text-sm font-bold text-[#101018] shadow-[4px_4px_0_var(--street-shadow)] outline-none transition focus:translate-x-1 focus:translate-y-1 focus:shadow-none focus:ring-3 focus:ring-[var(--street-lime)]"
-							placeholder="Escribe una tarea pequeña"
-							autocomplete="off"
-						/>
-						<Button type="submit">Añadir tarea</Button>
-					</form>
-
-					<div class="mt-5 space-y-2">
-						{#each tasks as task (task.id)}
-							<div
-								class="street-paper flex min-h-16 items-center gap-3 px-3 py-2 transition-transform hover:rotate-[-0.5deg]"
-							>
-								<button
-									type="button"
-									onclick={() => toggleTask(task.id)}
-									class={`flex h-9 w-9 shrink-0 items-center justify-center rounded-md border-[3px] border-[var(--street-shadow)] transition-transform ${
-										task.done
-											? 'bg-[var(--street-lime)] text-[#101018]'
-											: 'bg-white text-[#101018] hover:-translate-y-0.5'
-									}`}
-									aria-label={task.done
-										? `Marcar ${task.title} como pendiente`
-										: `Marcar ${task.title} como completada`}
-								>
-									<span class="material-symbols-outlined text-base" aria-hidden="true">
-										{task.done ? 'check' : 'radio_button_unchecked'}
-									</span>
-								</button>
-								<div class="min-w-0 flex-1">
-									<p
-										class={`truncate text-sm font-black ${task.done ? 'text-[#101018]/60 line-through' : 'text-[#101018]'}`}
-									>
-										{task.title}
-									</p>
-									<p class="text-xs font-bold uppercase tracking-wide text-[#101018]/70">
-										{task.tag}
-									</p>
-								</div>
+						<div class="mb-3 flex items-center gap-2">
+							<span class="h-3 w-3 rounded-full bg-[var(--street-pink)]"></span>
+							<span class="h-3 w-3 rounded-full bg-[var(--street-lime)]"></span>
+							<span class="h-3 w-3 rounded-full bg-[#fff7df]"></span>
+							<span class="ml-2 rounded bg-[#fff7df] px-2 py-1 text-xs font-black text-[#101018]">
+								tu-portfolio.dev
+							</span>
+						</div>
+						<div class="rounded-md bg-[#fff7df] p-4 text-[#101018]">
+							<div class="border-b-[3px] border-[#101018] pb-4">
+								<p class="text-xs font-black uppercase tracking-wide">{portfolio.location}</p>
+								<h3 class="street-display mt-2 text-5xl leading-none text-[#101018]">
+									{portfolio.name}
+								</h3>
+								<p class="mt-1 text-lg font-black text-[var(--street-pink)]">{portfolio.role}</p>
+								<p class="mt-3 max-w-md text-sm font-bold">{portfolio.bio}</p>
 							</div>
-						{/each}
+							<div class="mt-4 flex flex-wrap gap-2">
+								{#each portfolio.skills as skill (skill)}
+									<span
+										class="rounded-full border-2 border-[#101018] bg-[var(--street-lime)] px-3 py-1 text-xs font-black"
+									>
+										{skill}
+									</span>
+								{/each}
+							</div>
+							<div class="mt-4 grid gap-3 sm:grid-cols-2">
+								{#each portfolio.projects as project (project.id)}
+									<article class="rounded-md border-2 border-[#101018] bg-white p-3">
+										<div class="flex items-start justify-between gap-2">
+											<p class="text-sm font-black">{project.title}</p>
+											<button
+												type="button"
+												onclick={() => toggleFeaturedProject(project.id)}
+												class={`rounded border-2 border-[#101018] px-2 py-0.5 text-xs font-black ${
+													project.featured ? 'bg-[var(--street-pink)] text-white' : 'bg-[#fff7df]'
+												}`}
+												aria-label={`Cambiar destacado de ${project.title}`}
+											>
+												{project.featured ? '★' : '☆'}
+											</button>
+										</div>
+										<p class="mt-2 text-xs font-bold">{project.description}</p>
+										<p class="mt-3 text-xs font-black uppercase text-[#101018]/60">{project.tag}</p>
+									</article>
+								{/each}
+							</div>
+							<p class="mt-4 text-xs font-black uppercase">{portfolio.email}</p>
+						</div>
 					</div>
-					<p class="mt-4 text-sm font-bold text-[var(--street-ink)]">
-						No estás rompiendo nada: esta lista es para tocar y aprender. Se guarda en este
-						navegador.
-					</p>
+
+					<div class="mt-5 grid gap-3 md:grid-cols-2">
+						<form
+							class="flex gap-2"
+							onsubmit={(event) => {
+								event.preventDefault();
+								addSkill();
+							}}
+						>
+							<label class="sr-only" for="skill-title">Nueva skill</label>
+							<input
+								id="skill-title"
+								bind:value={draftSkill}
+								class="min-h-11 min-w-0 flex-1 rounded-md border-[3px] border-[var(--street-shadow)] bg-[var(--street-paper)] px-3 text-sm font-bold text-[#101018] shadow-[4px_4px_0_var(--street-shadow)] outline-none transition focus:translate-x-1 focus:translate-y-1 focus:shadow-none focus:ring-3 focus:ring-[var(--street-lime)]"
+								placeholder="Añade una skill"
+								autocomplete="off"
+							/>
+							<Button type="submit">Añadir</Button>
+						</form>
+						<form
+							class="flex gap-2"
+							onsubmit={(event) => {
+								event.preventDefault();
+								addProject();
+							}}
+						>
+							<label class="sr-only" for="project-title">Nuevo proyecto</label>
+							<input
+								id="project-title"
+								bind:value={draftProjectTitle}
+								class="min-h-11 min-w-0 flex-1 rounded-md border-[3px] border-[var(--street-shadow)] bg-[var(--street-paper)] px-3 text-sm font-bold text-[#101018] shadow-[4px_4px_0_var(--street-shadow)] outline-none transition focus:translate-x-1 focus:translate-y-1 focus:shadow-none focus:ring-3 focus:ring-[var(--street-lime)]"
+								placeholder="Añade un proyecto"
+								autocomplete="off"
+							/>
+							<Button type="submit">Añadir</Button>
+						</form>
+					</div>
 				</section>
 
 				<section aria-labelledby="checklist-title" class="street-panel p-5">

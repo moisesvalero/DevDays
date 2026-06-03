@@ -1,4 +1,4 @@
-import type { CourseBlock, TaskCourseDay, TaskItem } from '$lib/types/task-course';
+import type { CourseBlock, PortfolioProfile, TaskCourseDay } from '$lib/types/task-course';
 
 type RawTaskCourseDay = Omit<
 	TaskCourseDay,
@@ -12,282 +12,295 @@ type RawTaskCourseDay = Omit<
 >;
 
 export const blockLabels: Record<CourseBlock, string> = {
-	javascript: 'Días 1-7 · JavaScript aplicado',
-	svelte: 'Días 8-14 · Interfaz con Svelte 5',
-	sveltekit: 'Días 15-21 · App completa con SvelteKit'
+	javascript: 'Días 1-7 · Datos de tu CV',
+	svelte: 'Días 8-14 · Portfolio visible',
+	sveltekit: 'Días 15-21 · Web publicable'
 };
 
-export const starterTasks: TaskItem[] = [
-	{ id: 1, title: 'Escribir la primera tarea', done: true, tag: 'inicio' },
-	{ id: 2, title: 'Probar el botón de añadir', done: false, tag: 'práctica' },
-	{ id: 3, title: 'Marcar una tarea como hecha', done: false, tag: 'producto' }
-];
+export const starterPortfolio: PortfolioProfile = {
+	name: 'Tu Nombre',
+	role: 'Frontend junior en construcción',
+	bio: 'Estoy aprendiendo a crear interfaces web claras, útiles y con personalidad.',
+	location: 'Tu ciudad',
+	email: 'hola@email.com',
+	skills: ['HTML', 'CSS', 'JavaScript'],
+	projects: [
+		{
+			id: 1,
+			title: 'Portfolio Street Lab',
+			description: 'Mi primera web personal creada paso a paso.',
+			tag: 'portfolio',
+			featured: true
+		},
+		{
+			id: 2,
+			title: 'Landing de práctica',
+			description: 'Una página sencilla para practicar estructura y estilos.',
+			tag: 'ui',
+			featured: false
+		}
+	]
+};
 
 const rawTaskCourseDays: RawTaskCourseDay[] = [
 	{
 		day: 1,
 		block: 'javascript',
-		title: 'La primera tarea en memoria',
-		objective: 'Entender cómo una variable guarda un dato que la app necesita recordar.',
-		productStory:
-			'El gestor empieza con una sola tarea escrita a mano para ver qué dato vive dentro de la app.',
-		concept: 'Variables y cadenas de texto.',
+		title: 'Tu nombre como primer dato',
+		objective: 'Entender cómo una variable guarda un dato personal que la web va a mostrar.',
+		productStory: 'El portfolio empieza con tu nombre y un titular sencillo.',
+		concept: 'Variables y textos.',
 		guidedSteps: [
-			'Crea una variable con el texto de una tarea real.',
-			'Muestra ese texto con console.log para comprobar que la app lo recuerda.',
-			'Cambia el texto y observa que todo lo demás sigue igual.'
+			'Crea una variable para tu nombre.',
+			'Crea otra variable para tu titular profesional.',
+			'Muestra ambos valores para comprobar que la web ya tiene identidad.'
 		],
-		miniChallenge: 'Cambia la tarea por algo que harías hoy y vuelve a mostrarla.',
-		expectedState: 'El gestor de tareas tiene una tarea fija guardada en una variable.',
-		codeFocus: 'Una tarea como texto',
-		codeSample: "let tarea = 'Preparar el tablero del gestor';\n\nconsole.log(tarea);",
+		miniChallenge: 'Cambia el titular por una frase que te represente mejor.',
+		expectedState: 'El portfolio web muestra un nombre y un titular personal.',
+		codeFocus: 'Identidad básica',
+		codeSample:
+			"let nombre = 'Tu Nombre';\nlet titular = 'Frontend junior en construcción';\n\nconsole.log(nombre, titular);",
 		mentorPrompts: [
-			'Una variable es una etiqueta pegada a un valor. Hoy solo necesitamos que recuerde una tarea.',
-			'Si te pierdes, lee de derecha a izquierda: primero el texto, luego el nombre que le ponemos.'
+			'Una variable es una etiqueta pegada a un valor. Hoy solo guarda quién eres.',
+			'No busques sonar perfecto: empieza con una frase simple y editable.'
 		]
 	},
 	{
 		day: 2,
 		block: 'javascript',
-		title: 'Varias tareas en una lista',
-		objective: 'Usar un array para guardar más de una tarea sin crear muchas variables sueltas.',
-		productStory:
-			'El gestor ya no sirve de mucho con una sola tarea, así que pasamos a una lista pequeña.',
-		concept: 'Arrays y posiciones.',
+		title: 'Skills en una lista',
+		objective: 'Usar un array para guardar varias habilidades sin crear variables sueltas.',
+		productStory: 'El portfolio necesita enseñar qué estás aprendiendo o qué sabes usar.',
+		concept: 'Arrays.',
 		guidedSteps: [
-			'Crea un array con tres textos de tareas.',
-			'Lee la primera tarea usando su posición.',
-			'Añade una tarea nueva con push.'
+			'Crea un array con tres skills.',
+			'Lee la primera skill por su posición.',
+			'Añade una skill nueva con push.'
 		],
-		miniChallenge: 'Añade una cuarta tarea y muestra cuántas tareas tiene la lista.',
-		expectedState: 'El gestor de tareas mantiene varias tareas en un array.',
-		codeFocus: 'Lista de tareas',
+		miniChallenge: 'Añade una skill que quieras aprender, aunque todavía no la domines.',
+		expectedState: 'El portfolio web mantiene una lista de skills.',
+		codeFocus: 'Lista de skills',
 		codeSample:
-			"let tareas = ['Crear lista', 'Añadir botón', 'Probar guardado'];\n\ntareas.push('Revisar tareas pendientes');\nconsole.log(tareas.length);",
+			"let skills = ['HTML', 'CSS', 'JavaScript'];\n\nskills.push('Svelte');\nconsole.log(skills.length);",
 		mentorPrompts: [
-			'Un array es una fila ordenada. La primera posición es 0, no 1.',
-			'Cuando uses push, imagina que colocas una tarjeta nueva al final del tablero.'
+			'Un array es una fila ordenada. Sirve muy bien para skills, proyectos o enlaces.',
+			'La primera posición es 0. Es raro al principio, pero se vuelve normal con práctica.'
 		]
 	},
 	{
 		day: 3,
 		block: 'javascript',
-		title: 'Cada tarea como objeto',
-		objective: 'Representar una tarea con varios datos: id, texto y si está completada.',
-		productStory:
-			'El gestor necesita saber más que el título: también debe distinguir tareas y recordar su estado.',
+		title: 'Tu perfil como objeto',
+		objective: 'Usar un objeto para juntar datos relacionados de tu perfil.',
+		productStory: 'Nombre, titular, ciudad y bio pertenecen a la misma ficha personal.',
 		concept: 'Objetos con propiedades.',
 		guidedSteps: [
-			'Crea una tarea con id, title y done.',
-			'Lee cada propiedad con punto.',
-			'Cambia done de false a true.'
+			'Crea un objeto perfil.',
+			'Añade name, role, location y bio.',
+			'Lee una propiedad con punto.'
 		],
-		miniChallenge: 'Añade una propiedad tag para clasificar la tarea.',
-		expectedState: 'El gestor de tareas usa objetos para describir cada tarea completa.',
-		codeFocus: 'Objeto tarea',
+		miniChallenge: 'Añade una propiedad email con un correo de ejemplo.',
+		expectedState: 'El portfolio web usa un objeto para representar tu perfil.',
+		codeFocus: 'Ficha personal',
 		codeSample:
-			"let tarea = {\n\tid: 1,\n\ttitle: 'Crear estructura del gestor',\n\tdone: false\n};\n\ntarea.done = true;",
+			"let perfil = {\n\tname: 'Tu Nombre',\n\trole: 'Frontend junior',\n\tlocation: 'Tu ciudad'\n};\n\nconsole.log(perfil.role);",
 		mentorPrompts: [
 			'Un objeto es una ficha con campos. Cada campo responde a una pregunta concreta.',
-			'No memorices propiedades: pregúntate qué necesita saber el gestor sobre una tarea.'
+			'Si varios datos describen lo mismo, probablemente quieren vivir juntos.'
 		]
 	},
 	{
 		day: 4,
 		block: 'javascript',
-		title: 'Crear tareas con una función',
-		objective: 'Usar una función para crear tareas nuevas siempre con la misma forma.',
-		productStory:
-			'Cada vez que alguien escribe una tarea, el gestor debe convertir ese texto en una ficha útil.',
+		title: 'Crear proyectos con una función',
+		objective: 'Usar una función para crear proyectos con la misma forma.',
+		productStory: 'Cada proyecto del portfolio necesita título, descripción y etiqueta.',
 		concept: 'Funciones y parámetros.',
 		guidedSteps: [
-			'Escribe una función que reciba title.',
-			'Devuelve un objeto tarea con done en false.',
-			'Usa la función dos veces con textos distintos.'
+			'Escribe una función que reciba title y tag.',
+			'Devuelve un objeto proyecto.',
+			'Usa la función dos veces con proyectos distintos.'
 		],
-		miniChallenge: 'Haz que la función reciba también una etiqueta.',
-		expectedState: 'El gestor de tareas puede crear tareas nuevas mediante una función reusable.',
-		codeFocus: 'Fábrica de tareas',
+		miniChallenge: 'Haz que la función reciba también una descripción corta.',
+		expectedState: 'El portfolio web puede crear fichas de proyecto con una función reusable.',
+		codeFocus: 'Fábrica de proyectos',
 		codeSample:
-			"function crearTarea(id, title) {\n\treturn { id, title, done: false };\n}\n\nlet tarea = crearTarea(1, 'Añadir formulario');",
+			"function crearProyecto(title, tag) {\n\treturn { title, tag, featured: false };\n}\n\nlet proyecto = crearProyecto('Portfolio Street Lab', 'web');",
 		mentorPrompts: [
-			'Una función evita repetir pasos. Le das un texto y ella arma la tarea.',
-			'Si algo se repite tres veces, suele querer convertirse en función.'
+			'Una función evita repetir la misma estructura una y otra vez.',
+			'Piensa en ella como un molde para crear tarjetas de proyecto.'
 		]
 	},
 	{
 		day: 5,
 		block: 'javascript',
-		title: 'Pendiente o completada',
-		objective: 'Usar condicionales para mostrar un mensaje distinto según el estado de una tarea.',
-		productStory:
-			'El gestor debe hablar claro: no es lo mismo una tarea pendiente que una ya terminada.',
+		title: 'Proyecto destacado',
+		objective: 'Usar condicionales para mostrar un proyecto como destacado o normal.',
+		productStory: 'Tu portfolio debe poder señalar el trabajo más importante.',
 		concept: 'if, else y booleanos.',
 		guidedSteps: [
-			'Crea una tarea con done en false.',
-			'Escribe un if que revise done.',
-			'Muestra un texto para pendiente y otro para completada.'
+			'Crea un proyecto con featured en true.',
+			'Escribe un if que revise featured.',
+			'Muestra un texto para destacado y otro para normal.'
 		],
-		miniChallenge: 'Cambia done a true y comprueba que aparece el otro mensaje.',
-		expectedState: 'El gestor de tareas distingue tareas pendientes y completadas.',
-		codeFocus: 'Estado de una tarea',
+		miniChallenge: 'Cambia featured a false y comprueba que aparece el otro mensaje.',
+		expectedState: 'El portfolio web distingue proyectos destacados y normales.',
+		codeFocus: 'Estado destacado',
 		codeSample:
-			"let tarea = { title: 'Probar estados', done: false };\n\nif (tarea.done) {\n\tconsole.log('Completada');\n} else {\n\tconsole.log('Pendiente');\n}",
+			"let proyecto = { title: 'Mi portfolio', featured: true };\n\nif (proyecto.featured) {\n\tconsole.log('Proyecto destacado');\n} else {\n\tconsole.log('Proyecto normal');\n}",
 		mentorPrompts: [
-			'Un booleano solo puede ser true o false. Perfecto para una tarea hecha o pendiente.',
-			'El if no juzga tu código: solo mira una condición y elige camino.'
+			'Un booleano solo puede ser true o false. Perfecto para destacar algo o no.',
+			'El if no juzga nada: mira una condición y elige un camino.'
 		]
 	},
 	{
 		day: 6,
 		block: 'javascript',
-		title: 'Recorrer todas las tareas',
-		objective: 'Usar map para transformar una lista de tareas en textos listos para pintar.',
-		productStory:
-			'La app tiene que recorrer todo el tablero y preparar una línea visible para cada tarea.',
+		title: 'Preparar tarjetas visibles',
+		objective: 'Usar map para transformar proyectos en textos listos para pintar.',
+		productStory: 'Los datos internos empiezan a convertirse en tarjetas del portfolio.',
 		concept: 'map y transformación de listas.',
 		guidedSteps: [
-			'Crea un array de objetos tarea.',
-			'Usa map para devolver solo los títulos.',
-			'Añade un prefijo visual según done.'
+			'Crea una lista de proyectos.',
+			'Usa map para preparar textos de tarjeta.',
+			'Añade una marca visual si featured es true.'
 		],
-		miniChallenge: 'Devuelve textos con “OK” para hechas y “...” para pendientes.',
-		expectedState: 'El gestor de tareas puede preparar una vista de todas sus tareas.',
-		codeFocus: 'Pintar una lista',
+		miniChallenge: 'Devuelve textos con estrella para los destacados.',
+		expectedState: 'El portfolio web prepara una vista de sus proyectos.',
+		codeFocus: 'Tarjetas desde datos',
 		codeSample:
-			"let tareas = [\n\t{ title: 'Diseñar lista', done: true },\n\t{ title: 'Crear filtro', done: false }\n];\n\nlet vista = tareas.map((tarea) => `${tarea.done ? 'OK' : '...'} ${tarea.title}`);",
+			"let tarjetas = proyectos.map((proyecto) =>\n\t`${proyecto.featured ? '★' : '•'} ${proyecto.title}`\n);",
 		mentorPrompts: [
-			'map no cambia el tamaño de la lista: transforma cada elemento en otra cosa.',
-			'Piensa en map como preparar tarjetas visibles a partir de datos internos.'
+			'map no cambia cuántos elementos hay: transforma cada elemento en otra cosa.',
+			'Los datos no son la tarjeta todavía. map ayuda a preparar esa vista.'
 		]
 	},
 	{
 		day: 7,
 		block: 'javascript',
-		title: 'Filtrar lo importante',
-		objective: 'Usar filter para separar tareas pendientes y completadas.',
-		productStory: 'El gestor empieza a ser útil cuando puede enseñar solo lo que falta por hacer.',
+		title: 'Filtrar lo que quieres enseñar',
+		objective: 'Usar filter para separar proyectos destacados del resto.',
+		productStory: 'El portfolio puede enseñar primero lo más fuerte.',
 		concept: 'filter y predicados.',
 		guidedSteps: [
-			'Crea una lista con tareas hechas y pendientes.',
-			'Filtra las que tengan done en false.',
-			'Cuenta cuántas quedan pendientes.'
+			'Crea una lista con proyectos destacados y normales.',
+			'Filtra los que tengan featured en true.',
+			'Cuenta cuántos proyectos destacados tienes.'
 		],
-		miniChallenge: 'Crea también una lista de tareas completadas.',
-		expectedState: 'El gestor de tareas muestra subconjuntos de tareas según su estado.',
-		codeFocus: 'Filtro de pendientes',
+		miniChallenge: 'Crea también una lista por etiqueta, por ejemplo web o ui.',
+		expectedState: 'El portfolio web filtra proyectos por estado o etiqueta.',
+		codeFocus: 'Filtro de proyectos',
 		codeSample:
-			'let pendientes = tareas.filter((tarea) => !tarea.done);\nlet completadas = tareas.filter((tarea) => tarea.done);\n\nconsole.log(pendientes.length);',
+			'let destacados = proyectos.filter((proyecto) => proyecto.featured);\n\nconsole.log(destacados.length);',
 		mentorPrompts: [
-			'filter conserva solo los elementos que responden true a una pregunta.',
-			'La pregunta de hoy es sencilla: ¿esta tarea sigue pendiente?'
+			'filter conserva solo lo que responde true a una pregunta.',
+			'La pregunta de hoy es: ¿este proyecto merece aparecer arriba?'
 		]
 	},
 	{
 		day: 8,
 		block: 'svelte',
-		title: 'La lista entra en Svelte',
-		objective: 'Crear la primera interfaz Svelte para mostrar tareas estáticas.',
-		productStory: 'La lógica deja la consola y aparece en pantalla como una lista real.',
-		concept: 'Componentes Svelte y bloque each.',
+		title: 'El perfil aparece en pantalla',
+		objective: 'Crear la primera interfaz Svelte para mostrar tu perfil.',
+		productStory: 'El portfolio deja la consola y empieza a verse como una web personal.',
+		concept: 'Componentes Svelte y HTML dinámico.',
 		guidedSteps: [
-			'Crea un array de tareas en el script.',
-			'Usa {#each} para pintar cada título.',
-			'Añade una marca visual si done es true.'
+			'Crea un objeto perfil en el script.',
+			'Muestra name y role dentro del HTML.',
+			'Añade una bio corta debajo.'
 		],
-		miniChallenge: 'Muestra también la etiqueta de cada tarea.',
-		expectedState: 'El gestor de tareas enseña sus tareas en una interfaz Svelte.',
-		codeFocus: 'Lista en Svelte',
+		miniChallenge: 'Muestra también la ciudad o el email.',
+		expectedState: 'El portfolio web enseña tu perfil en una interfaz Svelte.',
+		codeFocus: 'Perfil en Svelte',
 		codeSample:
-			'<script lang="ts">\n\tlet tareas = [{ title: \'Pintar lista\', done: false }];\n</script>\n\n{#each tareas as tarea}\n\t<p>{tarea.title}</p>\n{/each}',
+			"<script lang=\"ts\">\n\tlet perfil = { name: 'Tu Nombre', role: 'Frontend junior' };\n</script>\n\n<h1>{perfil.name}</h1>\n<p>{perfil.role}</p>",
 		mentorPrompts: [
-			'Svelte deja mezclar datos y HTML de forma bastante directa.',
-			'El each no inventa tareas: solo recorre las que ya existen.'
+			'Svelte permite meter datos dentro del HTML con llaves.',
+			'No estás haciendo magia: solo estás enseñando valores que ya existen.'
 		]
 	},
 	{
 		day: 9,
 		block: 'svelte',
-		title: 'Estado con runes',
-		objective: 'Usar $state para que la lista pueda cambiar y Svelte actualice la pantalla.',
-		productStory: 'El gestor necesita reaccionar cuando añadimos o marcamos tareas.',
+		title: 'Editar tu titular',
+		objective: 'Usar $state para que el titular cambie y la pantalla se actualice.',
+		productStory: 'El portfolio empieza a sentirse editable por la persona que aprende.',
 		concept: '$state en Svelte 5.',
 		guidedSteps: [
-			'Convierte la lista de tareas en $state.',
-			'Reasigna la lista al añadir una tarea.',
-			'Comprueba que la pantalla cambia sin recargar.'
+			'Convierte role en un dato con $state.',
+			'Muestra role en pantalla.',
+			'Cambia role desde un input.'
 		],
-		miniChallenge: 'Añade una tarea inicial más y verifica que aparece.',
-		expectedState: 'El gestor de tareas tiene una lista reactiva con $state.',
-		codeFocus: 'Lista reactiva',
+		miniChallenge: 'Haz lo mismo con la ciudad.',
+		expectedState: 'El portfolio web actualiza el titular con estado reactivo.',
+		codeFocus: 'Titular reactivo',
 		codeSample:
-			"<script lang=\"ts\">\n\tlet tareas = $state([{ id: 1, title: 'Probar $state', done: false }]);\n\n\tfunction agregar() {\n\t\ttareas = [...tareas, { id: 2, title: 'Nueva tarea', done: false }];\n\t}\n</script>",
+			'<script lang="ts">\n\tlet role = $state(\'Frontend junior\');\n</script>\n\n<input bind:value={role} />\n<p>{role}</p>',
 		mentorPrompts: [
-			'$state marca datos que pueden moverse. Svelte mira esos movimientos.',
-			'Reasignar con una lista nueva hace que el cambio sea fácil de seguir.'
+			'$state marca datos que pueden cambiar mientras usas la app.',
+			'bind:value conecta lo que escribes con el dato que se muestra.'
 		]
 	},
 	{
 		day: 10,
 		block: 'svelte',
-		title: 'Botones que cambian tareas',
-		objective: 'Conectar eventos de botón para marcar una tarea como hecha.',
-		productStory: 'Ahora la persona que usa la app puede interactuar con el tablero.',
-		concept: 'Eventos onclick.',
+		title: 'Pintar skills',
+		objective: 'Usar each para mostrar una lista de skills como chips visuales.',
+		productStory: 'Las habilidades dejan de ser texto suelto y se convierten en etiquetas.',
+		concept: 'Bloque each.',
 		guidedSteps: [
-			'Crea una función toggleTask que reciba un id.',
-			'Usa map para invertir done solo en esa tarea.',
-			'Conecta la función a un botón.'
+			'Crea un array de skills.',
+			'Usa {#each} para pintar cada skill.',
+			'Dale estilo de chip o pegatina.'
 		],
-		miniChallenge: 'Cambia el texto del botón según el estado de la tarea.',
-		expectedState: 'El gestor de tareas permite marcar y desmarcar tareas desde la interfaz.',
-		codeFocus: 'Toggle de tarea',
-		codeSample:
-			'function toggleTask(id: number) {\n\ttareas = tareas.map((tarea) =>\n\t\ttarea.id === id ? { ...tarea, done: !tarea.done } : tarea\n\t);\n}',
+		miniChallenge: 'Añade una skill nueva y comprueba que aparece sola.',
+		expectedState: 'El portfolio web muestra skills como chips visibles.',
+		codeFocus: 'Skills en pantalla',
+		codeSample: '{#each skills as skill}\n\t<span class="chip">{skill}</span>\n{/each}',
 		mentorPrompts: [
-			'El botón no cambia todo: pide cambiar una tarea concreta por id.',
-			'map ayuda porque devuelve una lista completa con solo una ficha modificada.'
+			'each recorre una lista y repite una pieza visual por cada elemento.',
+			'Si hay tres skills, habrá tres chips. Si añades una, aparece otra.'
 		]
 	},
 	{
 		day: 11,
 		block: 'svelte',
-		title: 'Formulario para añadir',
-		objective: 'Crear un campo de texto que añada tareas nuevas a la lista.',
-		productStory: 'El gestor ya acepta tareas escritas por la persona que aprende.',
+		title: 'Formulario para añadir skills',
+		objective: 'Crear un campo de texto que añada skills nuevas al portfolio.',
+		productStory: 'El alumno puede personalizar su CV web sin tocar el array a mano.',
 		concept: 'Formularios, bind:value y submit.',
 		guidedSteps: [
-			'Crea una variable draftTitle con $state.',
-			'Enlaza el input con bind:value.',
-			'Al enviar, añade la tarea y limpia el campo.'
+			'Crea una variable draftSkill.',
+			'Enlaza un input con bind:value.',
+			'Al enviar, añade la skill y limpia el campo.'
 		],
-		miniChallenge: 'Evita añadir tareas vacías usando trim.',
-		expectedState: 'El gestor de tareas permite escribir y añadir tareas nuevas.',
-		codeFocus: 'Input controlado',
+		miniChallenge: 'Evita añadir skills vacías usando trim.',
+		expectedState: 'El portfolio web permite escribir y añadir skills nuevas.',
+		codeFocus: 'Input de skills',
 		codeSample:
-			"let draftTitle = $state('');\n\nfunction addTask() {\n\tif (!draftTitle.trim()) return;\n\ttareas = [...tareas, { id: Date.now(), title: draftTitle.trim(), done: false }];\n\tdraftTitle = '';\n}",
+			"let draftSkill = $state('');\n\nfunction addSkill() {\n\tif (!draftSkill.trim()) return;\n\tskills = [...skills, draftSkill.trim()];\n\tdraftSkill = '';\n}",
 		mentorPrompts: [
-			'El input y draftTitle son dos caras de lo mismo: lo que escribes se guarda ahí.',
-			'trim es una pequeña limpieza antes de confiar en el texto.'
+			'El input guarda lo que escribes en draftSkill.',
+			'trim limpia espacios antes de confiar en el texto.'
 		]
 	},
 	{
 		day: 12,
 		block: 'svelte',
-		title: 'Contadores automáticos',
-		objective: 'Usar $derived para calcular cuántas tareas quedan pendientes.',
-		productStory: 'El gestor resume el trabajo sin que tengamos que actualizar números a mano.',
+		title: 'Proyectos destacados automáticos',
+		objective: 'Usar $derived para calcular cuántos proyectos destacados hay.',
+		productStory: 'El portfolio resume tus mejores piezas sin actualizar números a mano.',
 		concept: '$derived para datos calculados.',
 		guidedSteps: [
-			'Crea pendientes con $derived.',
-			'Crea completadas con $derived.',
-			'Muestra ambos contadores encima de la lista.'
+			'Crea destacados con $derived.',
+			'Crea totalDestacados con $derived.',
+			'Muestra el contador encima de los proyectos.'
 		],
-		miniChallenge: 'Muestra un mensaje de celebración cuando no quede ninguna pendiente.',
-		expectedState: 'El gestor de tareas calcula automáticamente pendientes y completadas.',
+		miniChallenge: 'Muestra un mensaje si todavía no hay proyecto destacado.',
+		expectedState: 'El portfolio web calcula automáticamente proyectos destacados.',
 		codeFocus: 'Datos derivados',
 		codeSample:
-			'const pendientes = $derived(tareas.filter((tarea) => !tarea.done));\nconst totalPendientes = $derived(pendientes.length);',
+			'const destacados = $derived(projects.filter((project) => project.featured));\nconst totalDestacados = $derived(destacados.length);',
 		mentorPrompts: [
 			'$derived sirve para respuestas que salen de otros datos.',
 			'No guardes dos veces lo mismo si puedes calcularlo.'
@@ -296,65 +309,64 @@ const rawTaskCourseDays: RawTaskCourseDay[] = [
 	{
 		day: 13,
 		block: 'svelte',
-		title: 'Separar componentes',
-		objective: 'Extraer una tarea a un componente pequeño y fácil de leer.',
-		productStory: 'El gestor empieza a ordenarse por piezas, no por una pantalla enorme.',
+		title: 'Tarjeta de proyecto',
+		objective: 'Extraer un proyecto a un componente pequeño y fácil de leer.',
+		productStory: 'El portfolio empieza a ordenarse por piezas reutilizables.',
 		concept: 'Componentes y responsabilidad pequeña.',
 		guidedSteps: [
-			'Crea un componente TaskRow.',
-			'Pásale una tarea como prop.',
-			'Déjale pintar solo una fila de la lista.'
+			'Crea un componente ProjectCard.',
+			'Pásale un proyecto como prop.',
+			'Déjale pintar solo una tarjeta.'
 		],
-		miniChallenge: 'Mueve la etiqueta de la tarea dentro de TaskRow.',
-		expectedState: 'El gestor de tareas usa un componente dedicado para cada tarea.',
-		codeFocus: 'Componente de fila',
+		miniChallenge: 'Muestra la etiqueta dentro de ProjectCard.',
+		expectedState: 'El portfolio web usa un componente dedicado para cada proyecto.',
+		codeFocus: 'Componente ProjectCard',
 		codeSample:
-			'<script lang="ts">\n\tlet { tarea }: { tarea: { title: string; done: boolean } } = $props();\n</script>\n\n<p class:line-through={tarea.done}>{tarea.title}</p>',
+			'<script lang="ts">\n\tlet { project }: { project: { title: string; tag: string } } = $props();\n</script>\n\n<article>{project.title}</article>',
 		mentorPrompts: [
 			'Un componente pequeño se entiende antes y se rompe menos.',
-			'No extraigas por extraer: hoy TaskRow tiene sentido porque la fila ya tiene trabajo propio.'
+			'ProjectCard tiene sentido porque la tarjeta ya tiene contenido propio.'
 		]
 	},
 	{
 		day: 14,
 		block: 'svelte',
-		title: 'Props y acciones hacia arriba',
+		title: 'Cambiar destacados desde la tarjeta',
 		objective: 'Pasar datos y funciones entre componentes sin perder claridad.',
-		productStory:
-			'TaskRow puede mostrar una tarea y avisar a la pantalla cuando hay que cambiarla.',
+		productStory: 'La tarjeta puede pedir destacar un proyecto sin controlar toda la lista.',
 		concept: 'Props con funciones callback.',
 		guidedSteps: [
-			'Pasa tarea y onToggle a TaskRow.',
-			'Desde TaskRow llama a onToggle(tarea.id).',
+			'Pasa project y onToggleFeatured a ProjectCard.',
+			'Desde ProjectCard llama a onToggleFeatured(project.id).',
 			'Mantén la lista principal en el componente padre.'
 		],
-		miniChallenge: 'Pasa también una función onDelete, aunque todavía no la uses.',
-		expectedState: 'El gestor de tareas coordina componentes con props y callbacks.',
+		miniChallenge: 'Cambia el texto del botón según featured.',
+		expectedState: 'El portfolio web coordina tarjetas con props y callbacks.',
 		codeFocus: 'Comunicación simple',
 		codeSample:
-			'<script lang="ts">\n\tlet { tarea, onToggle }: { tarea: Task; onToggle: (id: number) => void } = $props();\n</script>\n\n<button onclick={() => onToggle(tarea.id)}>Cambiar</button>',
+			'<script lang="ts">\n\tlet { project, onToggleFeatured } = $props();\n</script>\n\n<button onclick={() => onToggleFeatured(project.id)}>Destacar</button>',
 		mentorPrompts: [
-			'El padre guarda la lista; la fila solo pide una acción.',
+			'El padre guarda la lista; la tarjeta solo pide una acción.',
 			'Esta separación ayuda a no buscar cambios por toda la app.'
 		]
 	},
 	{
 		day: 15,
 		block: 'sveltekit',
-		title: 'Una ruta para el tablero',
+		title: 'Ruta para el portfolio',
 		objective: 'Entender cómo SvelteKit convierte archivos en pantallas navegables.',
-		productStory: 'El gestor obtiene su propia página y deja de ser un experimento suelto.',
+		productStory: 'Tu portfolio obtiene su propia URL dentro del proyecto.',
 		concept: 'Rutas de SvelteKit.',
 		guidedSteps: [
-			'Crea una carpeta routes/tareas.',
-			'Añade un +page.svelte con el gestor.',
-			'Comprueba que /tareas abre el tablero.'
+			'Crea una carpeta routes/portfolio.',
+			'Añade un +page.svelte con el portfolio.',
+			'Comprueba que /portfolio abre la web personal.'
 		],
-		miniChallenge: 'Añade un enlace desde la portada del curso hacia esa ruta.',
-		expectedState: 'El gestor de tareas vive en una ruta propia de SvelteKit.',
-		codeFocus: 'Página de tareas',
+		miniChallenge: 'Añade un enlace desde la pantalla de estudio hacia esa ruta.',
+		expectedState: 'El portfolio web vive en una ruta propia de SvelteKit.',
+		codeFocus: 'Página portfolio',
 		codeSample:
-			'<!-- src/routes/tareas/+page.svelte -->\n<script lang="ts">\n\tlet title = \'Gestor de tareas\';\n</script>\n\n<h1>{title}</h1>',
+			'<!-- src/routes/portfolio/+page.svelte -->\n<script lang="ts">\n\tlet title = \'Mi portfolio\';\n</script>\n\n<h1>{title}</h1>',
 		mentorPrompts: [
 			'En SvelteKit, una carpeta dentro de routes puede convertirse en una URL.',
 			'No necesitas router manual para este primer paso.'
@@ -364,133 +376,130 @@ const rawTaskCourseDays: RawTaskCourseDay[] = [
 		day: 16,
 		block: 'sveltekit',
 		title: 'Datos iniciales con load',
-		objective: 'Cargar tareas iniciales desde una función load sencilla.',
-		productStory: 'La página puede recibir datos preparados antes de pintar la interfaz.',
+		objective: 'Cargar datos iniciales del portfolio desde una función load sencilla.',
+		productStory: 'La página puede recibir perfil y proyectos antes de pintar la interfaz.',
 		concept: '+page.ts y load.',
 		guidedSteps: [
 			'Crea un +page.ts junto a la página.',
-			'Devuelve una lista de tareas iniciales.',
+			'Devuelve un perfil inicial.',
 			'Lee data en +page.svelte.'
 		],
-		miniChallenge: 'Añade una tarea inicial distinta según el día del curso.',
-		expectedState: 'El gestor de tareas recibe tareas iniciales desde load.',
-		codeFocus: 'Carga de datos',
+		miniChallenge: 'Devuelve también una lista inicial de proyectos.',
+		expectedState: 'El portfolio web recibe datos iniciales desde load.',
+		codeFocus: 'Carga de perfil',
 		codeSample:
-			"export const load = () => {\n\treturn {\n\t\ttareas: [{ id: 1, title: 'Cargada desde load', done: false }]\n\t};\n};",
+			"export const load = () => {\n\treturn {\n\t\tprofile: { name: 'Tu Nombre', role: 'Frontend junior' }\n\t};\n};",
 		mentorPrompts: [
-			'load prepara datos para la pantalla. Hoy lo usamos de forma muy pequeña.',
+			'load prepara datos para la pantalla. Hoy lo usamos de forma pequeña.',
 			'La página no tiene que inventar todo si data se lo entrega.'
 		]
 	},
 	{
 		day: 17,
 		block: 'sveltekit',
-		title: 'Guardar en el navegador',
-		objective: 'Usar localStorage para conservar tareas sin pedir login.',
-		productStory: 'El gestor recuerda el tablero aunque cierres y vuelvas a abrir la página.',
+		title: 'Guardar cambios en el navegador',
+		objective: 'Usar localStorage para conservar el portfolio mientras aprendes.',
+		productStory: 'Tu perfil no se borra aunque cierres y vuelvas a abrir la página.',
 		concept: 'localStorage y efecto de hidratación.',
 		guidedSteps: [
 			'Lee localStorage solo en el navegador.',
-			'Guarda la lista cuando cambie.',
-			'Usa un fallback con tareas iniciales si no hay nada guardado.'
+			'Guarda el perfil cuando cambie.',
+			'Usa datos iniciales si no hay nada guardado.'
 		],
-		miniChallenge: 'Añade un botón para borrar el guardado local y empezar de cero.',
-		expectedState: 'El gestor de tareas conserva tareas en localStorage sin login.',
+		miniChallenge: 'Añade un botón para volver al perfil inicial.',
+		expectedState: 'El portfolio web conserva cambios en localStorage sin login.',
 		codeFocus: 'Persistencia local',
 		codeSample:
-			"if (browser) {\n\tconst saved = localStorage.getItem('tasks');\n\tif (saved) tareas = JSON.parse(saved);\n}",
+			"if (browser) {\n\tconst saved = localStorage.getItem('portfolio');\n\tif (saved) profile = JSON.parse(saved);\n}",
 		mentorPrompts: [
 			'localStorage vive en el navegador, por eso no se lee durante el servidor.',
-			'Guardar localmente es suficiente para aprender sin meter cuentas al principio.'
+			'Guardar localmente es suficiente para practicar sin montar una base de datos.'
 		]
 	},
 	{
 		day: 18,
 		block: 'sveltekit',
-		title: 'Filtros con URL simple',
-		objective: 'Usar un parámetro de búsqueda para cambiar entre todas, pendientes y hechas.',
-		productStory: 'El tablero puede compartir vistas: una URL para ver solo pendientes.',
+		title: 'Filtrar proyectos con URL',
+		objective: 'Usar un parámetro de búsqueda para cambiar entre todos y destacados.',
+		productStory: 'El portfolio puede compartir una vista concreta de proyectos.',
 		concept: 'searchParams y estado de filtro.',
 		guidedSteps: [
-			'Lee ?filtro=pendientes desde la URL.',
-			'Calcula qué tareas se muestran.',
-			'Crea enlaces para cambiar de filtro.'
+			'Lee ?vista=destacados desde la URL.',
+			'Calcula qué proyectos se muestran.',
+			'Crea enlaces para cambiar de vista.'
 		],
-		miniChallenge: 'Añade un filtro para tareas completadas.',
-		expectedState: 'El gestor de tareas filtra la lista usando una URL simple.',
+		miniChallenge: 'Añade una vista por etiqueta, por ejemplo ?tag=ui.',
+		expectedState: 'El portfolio web filtra proyectos usando una URL simple.',
 		codeFocus: 'Filtro por URL',
-		codeSample: "const filtro = url.searchParams.get('filtro') ?? 'todas';\n\nreturn { filtro };",
+		codeSample: "const vista = url.searchParams.get('vista') ?? 'todos';\n\nreturn { vista };",
 		mentorPrompts: [
 			'La URL también puede ser estado de la app cuando interesa compartirlo.',
-			'Empieza con tres filtros claros: todas, pendientes y hechas.'
+			'Empieza con dos vistas claras: todos y destacados.'
 		]
 	},
 	{
 		day: 19,
 		block: 'sveltekit',
-		title: 'Mentor de errores suaves',
-		objective: 'Diseñar mensajes de ayuda que expliquen intención antes que castigar fallos.',
-		productStory: 'El gestor se convierte también en un espacio de práctica acompañada.',
-		concept: 'Feedback contextual.',
+		title: 'Formulario de contacto visual',
+		objective: 'Crear un formulario de contacto claro aunque todavía no envíe emails reales.',
+		productStory: 'El portfolio empieza a parecer una web que podrías enseñar.',
+		concept: 'Formularios y feedback contextual.',
 		guidedSteps: [
-			'Escribe mensajes de pista para añadir, marcar y filtrar.',
-			'Muestra una pista según la acción actual.',
-			'Evita tratar cada intento como una nota rígida.'
+			'Crea campos para nombre, email y mensaje.',
+			'Añade labels visibles.',
+			'Muestra una respuesta amable al enviar.'
 		],
-		miniChallenge: 'Añade una segunda pista que aparezca solo si la persona pide más ayuda.',
-		expectedState: 'El gestor de tareas incluye pistas suaves y contextuales para practicar.',
-		codeFocus: 'Pistas graduales',
+		miniChallenge: 'Valida que el mensaje no esté vacío.',
+		expectedState: 'El portfolio web incluye un formulario de contacto visual.',
+		codeFocus: 'Contacto simple',
 		codeSample:
-			"const pistas = [\n\t'Primero revisa qué dato cambia.',\n\t'Después busca la función que modifica la lista.'\n];",
+			"function sendMessage() {\n\tfeedback = 'Mensaje preparado. En una app real lo enviaríamos al servidor.';\n}",
 		mentorPrompts: [
-			'Una buena pista reduce el tamaño del problema sin quitar todo el descubrimiento.',
-			'La meta es acompañar, no convertir cada paso en una prueba rígida.'
+			'Un formulario puede ser útil aunque todavía no conecte con un backend.',
+			'La persona necesita saber qué pasó después de pulsar enviar.'
 		]
 	},
 	{
 		day: 20,
 		block: 'sveltekit',
 		title: 'Pulido y accesibilidad',
-		objective: 'Mejorar lectura, foco y estados vacíos para que el gestor sea cómodo de usar.',
-		productStory:
-			'La app empieza a sentirse como una herramienta real, no solo como código que funciona.',
+		objective: 'Mejorar lectura, foco y estados vacíos para que el portfolio sea cómodo de usar.',
+		productStory: 'La web personal empieza a sentirse presentable, no solo funcional.',
 		concept: 'Accesibilidad básica y estados de interfaz.',
 		guidedSteps: [
 			'Asegura labels en formularios.',
-			'Muestra un estado vacío cuando no hay tareas visibles.',
+			'Muestra un estado vacío si no hay proyectos.',
 			'Revisa contraste, foco y textos de botones.'
 		],
-		miniChallenge: 'Añade un mensaje amable cuando todas las tareas están completadas.',
-		expectedState: 'El gestor de tareas tiene estados claros y controles accesibles.',
+		miniChallenge: 'Añade un enlace de saltar al contenido principal.',
+		expectedState: 'El portfolio web tiene estados claros y controles accesibles.',
 		codeFocus: 'Estado vacío',
-		codeSample: '{#if tareas.length === 0}\n\t<p>No hay tareas en esta vista.</p>\n{/if}',
+		codeSample: '{#if projects.length === 0}\n\t<p>Añade tu primer proyecto.</p>\n{/if}',
 		mentorPrompts: [
-			'Una app clara no solo funciona: también se deja usar sin pelearse con ella.',
+			'Una web clara no solo funciona: también se deja usar sin pelearse con ella.',
 			'Los estados vacíos son parte del producto, no un detalle menor.'
 		]
 	},
 	{
 		day: 21,
 		block: 'sveltekit',
-		title: 'Mini proyecto final',
-		objective: 'Unir lo aprendido en una versión pequeña, usable y explicable del gestor.',
-		productStory:
-			'La última sesión cierra con una demo que puedes enseñar: añadir, marcar, filtrar y guardar.',
-		concept: 'Integración y revisión final.',
+		title: 'Publicar tu primera versión',
+		objective: 'Unir lo aprendido en una versión pequeña, usable y explicable del portfolio.',
+		productStory: 'La última sesión cierra con una web personal que puedes enseñar.',
+		concept: 'Integración, build y deploy.',
 		guidedSteps: [
-			'Revisa que añadir tareas funcione.',
-			'Revisa que marcar y filtrar no pierdan datos.',
+			'Revisa que perfil, skills y proyectos se vean bien.',
+			'Revisa que el build pase sin errores.',
 			'Explica con tus palabras qué hace cada pieza principal.'
 		],
-		miniChallenge:
-			'Añade una mejora personal pequeña: borrar tareas, editar texto o cambiar etiquetas.',
-		expectedState: 'El gestor de tareas final permite añadir, marcar, filtrar y guardar tareas.',
-		codeFocus: 'Cierre del producto',
+		miniChallenge: 'Añade una mejora personal pequeña: color, sección extra o proyecto nuevo.',
+		expectedState: 'El portfolio web final muestra perfil, skills, proyectos y contacto.',
+		codeFocus: 'Cierre publicable',
 		codeSample:
-			"const listoParaDemo = tareas.length > 0 && tareas.some((tarea) => tarea.done);\n\nconsole.log(listoParaDemo ? 'Demo lista' : 'Falta practicar un poco');",
+			"const listoParaPublicar = profile.name && projects.length > 0;\n\nconsole.log(listoParaPublicar ? 'Portfolio listo' : 'Falta una pieza');",
 		mentorPrompts: [
 			'Terminar no significa saberlo todo: significa poder explicar la versión pequeña.',
-			'Si puedes contar qué dato cambia en cada acción, ya tienes una base muy sólida.'
+			'Si puedes contar qué dato cambia en cada sección, ya tienes una base muy sólida.'
 		]
 	}
 ];
@@ -509,7 +518,7 @@ function estimatedMinutesFor(day: number): number {
 
 export const taskCourseDays: TaskCourseDay[] = rawTaskCourseDays.map((day) => ({
 	...day,
-	introSummary: `${day.concept} aplicado al gestor, sin saltos grandes y con una práctica visible.`,
+	introSummary: `${day.concept} aplicado a tu portfolio, con una pieza visible y útil.`,
 	missionTitle: `Misión ${day.day}: ${day.title}`,
 	checklist: [
 		`Entiende la idea: ${day.concept.replace(/\.$/, '')}.`,
@@ -521,7 +530,7 @@ export const taskCourseDays: TaskCourseDay[] = rawTaskCourseDays.map((day) => ({
 		day.mentorPrompts[1] ?? 'Vuelve al objetivo y busca qué dato cambia en esta misión.',
 		`Ejemplo parcial para orientarte: ${day.codeFocus}.`
 	],
-	completionCue: `Has practicado el día ${day.day}. El gestor de tareas ya tiene una pieza más.`,
+	completionCue: `Has practicado el día ${day.day}. Tu portfolio ya tiene una pieza más.`,
 	difficulty: difficultyFor(day.day),
 	estimatedMinutes: estimatedMinutesFor(day.day)
 }));

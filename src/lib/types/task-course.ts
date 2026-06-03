@@ -22,9 +22,20 @@ export type TaskCourseDay = {
 	estimatedMinutes: number;
 };
 
-export type TaskItem = {
+export type PortfolioProject = {
 	id: number;
 	title: string;
-	done: boolean;
+	description: string;
 	tag: string;
+	featured: boolean;
+};
+
+export type PortfolioProfile = {
+	name: string;
+	role: string;
+	bio: string;
+	location: string;
+	email: string;
+	skills: string[];
+	projects: PortfolioProject[];
 };

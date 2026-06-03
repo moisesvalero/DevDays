@@ -12,7 +12,7 @@
 	<title>DevDays — Curso 21 días</title>
 	<meta
 		name="description"
-		content="Curso guiado de 21 días para aprender JavaScript, Svelte y SvelteKit construyendo un gestor de tareas."
+		content="Curso guiado de 21 días para aprender JavaScript, Svelte y SvelteKit construyendo tu primer portfolio web."
 	/>
 </svelte:head>
 

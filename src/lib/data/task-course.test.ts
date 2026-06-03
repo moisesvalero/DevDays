@@ -17,9 +17,9 @@ describe('taskCourseDays', () => {
 		}
 	});
 
-	it('referencia el estado esperado del gestor de tareas en cada día', () => {
+	it('referencia el estado esperado del portfolio web en cada día', () => {
 		for (const day of taskCourseDays) {
-			expect(day.expectedState.toLowerCase()).toMatch(/gestor de tareas/);
+			expect(day.expectedState.toLowerCase()).toMatch(/portfolio web/);
 		}
 	});
 
