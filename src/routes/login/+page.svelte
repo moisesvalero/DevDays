@@ -29,7 +29,7 @@
 				DevDays
 			</CardTitle>
 			<CardDescription>
-				Street Lab privado. Pon tu email y te mandamos un Magic Link para entrar sin contraseña.
+				Entra con tu email. Te mandamos un enlace seguro y vuelves directo al curso.
 			</CardDescription>
 		</CardHeader>
 		<CardContent>
@@ -51,6 +51,9 @@
 					}}
 					class="space-y-4"
 				>
+					<div class="street-paper p-3 text-sm font-black text-[#101018]">
+						1. Escribe tu email. 2. Abre el enlace. 3. Sigue aprendiendo.
+					</div>
 					<div class="space-y-2">
 						<Label for="email">Email</Label>
 						<Input
@@ -68,7 +71,7 @@
 					{/if}
 
 					<Button type="submit" class="w-full" disabled={loading}>
-						{loading ? 'Enviando...' : 'Enviar Magic Link'}
+						{loading ? 'Enviando...' : 'Enviar enlace de entrada'}
 					</Button>
 				</form>
 			{/if}

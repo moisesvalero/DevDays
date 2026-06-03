@@ -22,18 +22,18 @@ DevDays usa un sistema **Street Lab educativo**: calle + neobrutal, stickers, ta
 ## Components
 
 - Shell Street Lab: cabecera sticky con marca tipo sticker, progreso global y modo claro/oscuro.
-- Intro cartel: explica qué se construye, qué tocar primero y que no hace falta saber código.
-- Leyenda principiante: define misión, gestor, checklist y pista con palabras comunes.
+- Hero de entrada: primera pantalla casi completa, con una promesa clara y una acción principal.
+- Leyenda principiante: define misión, gestor, checklist y pista solo bajo demanda.
 - Barra de bloques: JavaScript, Svelte, SvelteKit como tracks con progreso.
 - Panel misión: cartel neobrutal con día, dificultad, minutos, objetivo y estado esperado.
 - Checklist: pasos practicables como sellos/checks persistidos.
 - Gestor de tareas: pieza central, con aspecto de panel pegado/libreta de misión.
-- Mentor: pistas por capas, microfeedback y consulta IA opcional con tono de apoyo.
-- Ruta compacta: navegación como tablero de stickers numerados.
+- Mentor: pistas visibles por capas y consulta IA plegada hasta que haga falta.
+- Ruta compacta: navegación como tablero de stickers numerados, plegada por defecto.
 
 ## Layout
 
-- Desktop: curso en fases, con contenido principal dominante y apoyos laterales sticky.
+- Desktop: hero respirado, curso en fases, contenido principal dominante y apoyos laterales sticky.
 - Mobile: intro → leyenda principiante → misión → gestor → checklist → mentor → días del curso.
 - Evitar contenedores `fixed` que bloqueen scroll global.
 - Evitar tarjetas dentro de tarjetas cuando no aportan una agrupación real.

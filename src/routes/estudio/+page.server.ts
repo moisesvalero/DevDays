@@ -1,8 +1,9 @@
 import { taskCourseDays } from '$lib/data/task-course';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = () => {
+export const load: PageServerLoad = ({ locals }) => {
 	return {
-		days: taskCourseDays
+		days: taskCourseDays,
+		userEmail: locals.user?.email ?? null
 	};
 };

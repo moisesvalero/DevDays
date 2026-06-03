@@ -16,7 +16,7 @@
 		tasks: TaskItem[];
 	};
 
-	let { data }: { data: { days: TaskCourseDay[] } } = $props();
+	let { data }: { data: { days: TaskCourseDay[]; userEmail: string | null } } = $props();
 
 	const storageKey = 'devdays-task-course-state-v2';
 	const blocks: CourseBlock[] = ['javascript', 'svelte', 'sveltekit'];
@@ -347,83 +347,63 @@
 </header>
 
 <main class="street-shell min-h-dvh">
-	<section class="border-b-[3px] border-[var(--street-shadow)]">
+	<section
+		class="flex min-h-[calc(100dvh-76px)] items-center border-b-[3px] border-[var(--street-shadow)]"
+	>
 		<div
-			class="mx-auto grid max-w-7xl gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[minmax(0,1fr)_390px] lg:px-8"
+			class="mx-auto grid w-full max-w-7xl items-center gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:px-8"
 		>
-			<div class="street-panel relative max-w-3xl overflow-hidden p-5 sm:p-7">
+			<div class="relative min-h-[58vh] overflow-hidden py-6">
 				<div
-					class="absolute -right-16 -bottom-20 h-52 w-72 rotate-[-8deg] bg-[url('/street-stickers.svg')] bg-contain bg-no-repeat opacity-25 sm:opacity-35"
+					class="pointer-events-none absolute -right-16 bottom-0 h-64 w-80 rotate-[-8deg] bg-[url('/street-stickers.svg')] bg-contain bg-no-repeat opacity-25 sm:h-80 sm:w-[28rem] sm:opacity-35"
 				></div>
 				<p class="street-tag px-3 py-1 text-xs">Empieza aquí · sin saber código</p>
 				<h1
-					class="street-display relative mt-4 max-w-2xl text-5xl leading-[0.9] text-[var(--street-lime)] [-webkit-text-stroke:2px_var(--street-shadow)] sm:text-7xl"
+					class="street-display relative mt-5 max-w-4xl text-5xl leading-[0.9] text-[var(--street-lime)] [-webkit-text-stroke:2px_var(--street-shadow)] sm:text-7xl lg:text-8xl"
 				>
-					Aprende código haciendo una app real.
+					Aprende código haciendo una app.
 				</h1>
-				<p class="relative mt-5 max-w-2xl text-base font-semibold text-[var(--street-ink)]">
-					No tienes que saber JavaScript, Svelte ni palabras raras para empezar. Cada día haces una
-					mejora pequeña en un gestor de tareas, como una lista para organizar cosas. La idea es
-					mirar, tocar, equivocarte un poco y entender una pieza cada vez.
+				<p class="relative mt-5 max-w-xl text-lg font-black text-[var(--street-ink)] sm:text-xl">
+					21 días. Una lista de tareas. Un paso cada vez.
 				</p>
-				<div class="mt-5 flex flex-wrap gap-3">
-					<Button onclick={() => selectDay(1)}>Empezar por el día 1</Button>
-					<Button variant="outline" href="#mision-actual">Ver qué hago ahora</Button>
+				<div class="relative mt-7 flex flex-wrap gap-3">
+					<Button href={data.userEmail ? '#mision-actual' : '/login'}>
+						{data.userEmail ? 'Seguir aprendiendo' : 'Entrar con Magic Link'}
+					</Button>
+					<Button variant="outline" href="#mision-actual">Probar sin agobio</Button>
 				</div>
+				<p class="relative mt-4 max-w-lg text-sm font-bold text-[var(--street-ink)]">
+					{data.userEmail
+						? `Sesión iniciada como ${data.userEmail}.`
+						: 'El Magic Link te manda un enlace al email. Sin contraseña, sin líos.'}
+				</p>
 			</div>
 
 			<div class="street-paper street-tape p-5 pt-7">
-				<p class="street-display text-3xl text-[#101018]">Cómo se usa esto</p>
-				<div class="mt-4 space-y-3">
-					<div class="flex gap-3">
-						<span
-							class="material-symbols-outlined street-sticker h-8 w-8 text-base"
-							aria-hidden="true">flag</span
-						>
-						<p class="text-sm font-bold text-[#101018]">
-							Lee el objetivo del día. Es solo una idea, no una clase entera.
-						</p>
+				<p class="street-display text-3xl text-[#101018]">Primer minuto</p>
+				<ol class="mt-4 space-y-3 text-sm font-black text-[#101018]">
+					<li class="flex gap-3">
+						<span class="street-sticker h-7 w-7 shrink-0 text-xs">1</span>
+						<span>Entra con tu email para guardar el acceso.</span>
+					</li>
+					<li class="flex gap-3">
+						<span class="street-sticker street-sticker-pink h-7 w-7 shrink-0 text-xs">2</span>
+						<span>Baja al día actual y toca la lista.</span>
+					</li>
+					<li class="flex gap-3">
+						<span class="street-sticker h-7 w-7 shrink-0 text-xs">3</span>
+						<span>Marca solo lo que entiendas.</span>
+					</li>
+				</ol>
+				<details class="mt-5 rounded-md border-2 border-[#101018] bg-white p-3 text-[#101018]">
+					<summary class="cursor-pointer text-sm font-black">Qué significa cada zona</summary>
+					<div class="mt-3 grid gap-2 text-sm font-bold">
+						<p><strong>Misión:</strong> lo que practicas hoy.</p>
+						<p><strong>Lista:</strong> la app que construyes.</p>
+						<p><strong>Pasos:</strong> pequeñas marcas para no perderte.</p>
+						<p><strong>Pista:</strong> ayuda sin examen.</p>
 					</div>
-					<div class="flex gap-3">
-						<span
-							class="material-symbols-outlined street-sticker street-sticker-pink h-8 w-8 text-base"
-							aria-hidden="true">checklist</span
-						>
-						<p class="text-sm font-bold text-[#101018]">
-							Prueba la app de tareas y marca pasos cuando los entiendas.
-						</p>
-					</div>
-					<div class="flex gap-3">
-						<span
-							class="material-symbols-outlined street-sticker h-8 w-8 text-base"
-							aria-hidden="true">psychology</span
-						>
-						<p class="text-sm font-bold text-[#101018]">
-							Si te pierdes, pide una pista. No bloquea el curso ni te examina.
-						</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<section class="border-b-[3px] border-[var(--street-shadow)] bg-[var(--street-paper)]">
-		<div class="mx-auto grid max-w-7xl gap-3 px-4 py-5 sm:px-6 md:grid-cols-4 lg:px-8">
-			<div class="rounded-md border-[3px] border-[#101018] bg-white p-4 shadow-[5px_5px_0_#101018]">
-				<p class="street-display text-2xl text-[#101018]">Misión</p>
-				<p class="mt-1 text-sm font-bold text-[#101018]">Lo que practicas hoy, explicado corto.</p>
-			</div>
-			<div class="rounded-md border-[3px] border-[#101018] bg-white p-4 shadow-[5px_5px_0_#101018]">
-				<p class="street-display text-2xl text-[#101018]">Gestor</p>
-				<p class="mt-1 text-sm font-bold text-[#101018]">La app de tareas que vas construyendo.</p>
-			</div>
-			<div class="rounded-md border-[3px] border-[#101018] bg-white p-4 shadow-[5px_5px_0_#101018]">
-				<p class="street-display text-2xl text-[#101018]">Checklist</p>
-				<p class="mt-1 text-sm font-bold text-[#101018]">Pasos pequeños para no perderte.</p>
-			</div>
-			<div class="rounded-md border-[3px] border-[#101018] bg-white p-4 shadow-[5px_5px_0_#101018]">
-				<p class="street-display text-2xl text-[#101018]">Pista</p>
-				<p class="mt-1 text-sm font-bold text-[#101018]">Ayuda cuando algo no te encaja todavía.</p>
+				</details>
 			</div>
 		</div>
 	</section>
@@ -431,27 +411,24 @@
 	<section
 		class="border-b-[3px] border-[var(--street-shadow)] bg-[color-mix(in_oklab,var(--street-pink)_14%,transparent)]"
 	>
-		<div class="mx-auto grid max-w-7xl gap-3 px-4 py-4 sm:px-6 md:grid-cols-3 lg:px-8">
+		<div class="mx-auto flex max-w-7xl flex-wrap items-center gap-3 px-4 py-3 sm:px-6 lg:px-8">
+			<p class="street-display mr-2 text-2xl leading-none text-[var(--street-ink)]">Tracks</p>
 			{#each blocks as block (block)}
 				<button
 					type="button"
 					onclick={() => selectDay(data.days.find((day) => day.block === block)?.day ?? 1)}
-					class="street-panel p-4 text-left transition-transform hover:-translate-y-1 focus-visible:outline-[3px] focus-visible:outline-[var(--street-lime)]"
+					class="flex min-w-0 flex-1 basis-56 items-center gap-3 rounded-md border-[3px] border-[var(--street-shadow)] bg-[var(--street-paper)] px-3 py-2 text-left text-[#101018] shadow-[4px_4px_0_var(--street-shadow)] transition-transform hover:-translate-y-0.5 focus-visible:outline-[3px] focus-visible:outline-[var(--street-lime)]"
 				>
-					<div class="flex items-center justify-between gap-3">
-						<p class="street-display text-2xl leading-none text-[var(--street-ink)]">
-							{blockLabels[block]}
-						</p>
-						<span class="street-sticker px-2 py-0.5 text-xs">{blockProgress(block)}%</span>
-					</div>
 					<div
-						class="mt-3 h-3 overflow-hidden rounded-full border-2 border-[var(--street-shadow)] bg-[var(--street-paper)]"
+						class="h-3 flex-1 overflow-hidden rounded-full border-2 border-[var(--street-shadow)] bg-white"
 					>
 						<div
 							class="h-full rounded-full bg-[var(--street-lime)]"
 							style={`width: ${blockProgress(block)}%`}
 						></div>
 					</div>
+					<span class="truncate text-xs font-black">{blockLabels[block]}</span>
+					<span class="text-xs font-black">{blockProgress(block)}%</span>
 				</button>
 			{/each}
 		</div>
@@ -487,7 +464,7 @@
 						>
 							{current.missionTitle}
 						</h2>
-						<p class="mt-3 max-w-2xl text-base font-semibold text-[var(--street-ink)]">
+						<p class="mt-3 max-w-2xl text-sm font-bold text-[var(--street-ink)] sm:text-base">
 							{current.introSummary}
 						</p>
 					</div>
@@ -509,16 +486,23 @@
 					</div>
 				</div>
 
-				<div class="mt-5 grid gap-4 md:grid-cols-2">
-					<div class="street-paper p-4">
-						<p class="street-display text-2xl text-[#101018]">Hoy vas a aprender esto</p>
-						<p class="mt-2 text-sm font-semibold text-[#101018]">{current.objective}</p>
+				<details
+					class="mt-4 rounded-md border-[3px] border-[var(--street-shadow)] bg-[var(--street-paper)] p-4 text-[#101018] shadow-[5px_5px_0_var(--street-shadow)]"
+				>
+					<summary class="cursor-pointer text-sm font-black">
+						Ver objetivo y resultado esperado
+					</summary>
+					<div class="mt-3 grid gap-3 md:grid-cols-2">
+						<div>
+							<p class="street-display text-xl text-[#101018]">Hoy vas a aprender</p>
+							<p class="mt-1 text-sm font-semibold text-[#101018]">{current.objective}</p>
+						</div>
+						<div>
+							<p class="street-display text-xl text-[#101018]">Al final verás</p>
+							<p class="mt-1 text-sm font-semibold text-[#101018]">{current.expectedState}</p>
+						</div>
 					</div>
-					<div class="street-paper p-4">
-						<p class="street-display text-2xl text-[#101018]">Al final deberías ver esto</p>
-						<p class="mt-2 text-sm font-semibold text-[#101018]">{current.expectedState}</p>
-					</div>
-				</div>
+				</details>
 			</div>
 
 			<div class="grid gap-5 xl:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
@@ -655,27 +639,32 @@
 				</section>
 			</div>
 
-			<section aria-labelledby="code-title" class="street-panel p-5">
-				<div class="mb-4 flex flex-wrap items-end justify-between gap-3">
-					<div>
-						<p class="street-tag px-2 py-0.5 text-xs">Ejemplo para mirar</p>
-						<h2
-							id="code-title"
-							class="street-display mt-3 text-4xl leading-none text-[var(--street-ink)]"
-						>
-							{current.codeFocus}
-						</h2>
+			<details class="street-panel p-5">
+				<summary class="cursor-pointer list-none">
+					<div class="flex flex-wrap items-center justify-between gap-3">
+						<div>
+							<p class="street-tag px-2 py-0.5 text-xs">Opcional al principio</p>
+							<h2
+								id="code-title"
+								class="street-display mt-3 text-4xl leading-none text-[var(--street-ink)]"
+							>
+								Ver ejemplo de código
+							</h2>
+						</div>
+						<span class="street-sticker px-3 py-1 text-xs">abrir</span>
 					</div>
-					<p class="max-w-md text-sm font-semibold text-[var(--street-ink)]">
-						No tienes que memorizar este código. Léelo como si fuera una receta y fíjate en qué
-						cambia en la app.
+				</summary>
+				<div class="mt-4">
+					<p class="max-w-2xl text-sm font-semibold text-[var(--street-ink)]">
+						No tienes que memorizarlo. Léelo como una receta y fíjate en qué cambia en la app.
 					</p>
+					<div class="street-paper my-4 p-3">
+						<p class="street-display text-xl text-[#101018]">{current.codeFocus}</p>
+						<p class="mt-1 text-sm font-bold text-[#101018]">{current.productStory}</p>
+					</div>
+					<CodeBlock code={current.codeSample} language="javascript" />
 				</div>
-				<div class="street-paper mb-4 p-3">
-					<p class="text-sm font-bold text-[#101018]">{current.productStory}</p>
-				</div>
-				<CodeBlock code={current.codeSample} language="javascript" />
-			</section>
+			</details>
 		</section>
 
 		<aside class="space-y-5 lg:sticky lg:top-24">
@@ -711,34 +700,38 @@
 				</div>
 			</section>
 
-			<section class="street-panel p-5">
-				<p class="street-display text-3xl leading-none text-[var(--street-ink)]">
-					Preguntar al mentor
-				</p>
-				<p class="mt-2 text-sm font-semibold text-[var(--street-ink)]">
-					Opcional. Pregunta como hablarías con una persona: “no entiendo esto” también vale.
-				</p>
-				<textarea
-					bind:value={mentorQuestion}
-					class="mt-4 min-h-24 w-full resize-y rounded-md border-[3px] border-[var(--street-shadow)] bg-[var(--street-paper)] p-3 text-sm font-semibold text-[#101018] shadow-[4px_4px_0_var(--street-shadow)] outline-none transition focus:translate-x-1 focus:translate-y-1 focus:shadow-none focus:ring-3 focus:ring-[var(--street-lime)]"
-					placeholder="Ejemplo: no entiendo qué estoy viendo en este ejemplo"
-				></textarea>
-				<div class="mt-3 flex justify-end">
-					<Button onclick={askMentor} disabled={mentorLoading || !mentorQuestion.trim()}>
-						{mentorLoading ? 'Preguntando...' : 'Preguntar al mentor'}
-					</Button>
+			<details class="street-panel p-5">
+				<summary class="cursor-pointer list-none">
+					<p class="street-display text-3xl leading-none text-[var(--street-ink)]">
+						Preguntar al mentor
+					</p>
+					<p class="mt-2 text-sm font-semibold text-[var(--street-ink)]">
+						Opcional, solo si te atascas.
+					</p>
+				</summary>
+				<div class="mt-4">
+					<textarea
+						bind:value={mentorQuestion}
+						class="min-h-24 w-full resize-y rounded-md border-[3px] border-[var(--street-shadow)] bg-[var(--street-paper)] p-3 text-sm font-semibold text-[#101018] shadow-[4px_4px_0_var(--street-shadow)] outline-none transition focus:translate-x-1 focus:translate-y-1 focus:shadow-none focus:ring-3 focus:ring-[var(--street-lime)]"
+						placeholder="Ejemplo: no entiendo qué estoy viendo en este ejemplo"
+					></textarea>
+					<div class="mt-3 flex justify-end">
+						<Button onclick={askMentor} disabled={mentorLoading || !mentorQuestion.trim()}>
+							{mentorLoading ? 'Preguntando...' : 'Preguntar al mentor'}
+						</Button>
+					</div>
+					{#if mentorAnswer}
+						<div class="street-paper mt-4 p-3">
+							<p class="text-sm font-semibold text-[#101018]">{mentorAnswer}</p>
+						</div>
+					{/if}
+					{#if mentorError}
+						<div class="street-paper mt-4 p-3">
+							<p class="text-sm font-semibold text-[#101018]">{mentorError}</p>
+						</div>
+					{/if}
 				</div>
-				{#if mentorAnswer}
-					<div class="street-paper mt-4 p-3">
-						<p class="text-sm font-semibold text-[#101018]">{mentorAnswer}</p>
-					</div>
-				{/if}
-				{#if mentorError}
-					<div class="street-paper mt-4 p-3">
-						<p class="text-sm font-semibold text-[#101018]">{mentorError}</p>
-					</div>
-				{/if}
-			</section>
+			</details>
 		</aside>
 	</div>
 
@@ -746,35 +739,41 @@
 		class="border-t-[3px] border-[var(--street-shadow)] bg-[color-mix(in_oklab,var(--street-lime)_12%,transparent)]"
 	>
 		<div class="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
-			<div class="mb-3 flex flex-wrap items-center justify-between gap-3">
-				<div>
-					<p class="street-display text-4xl leading-none text-[var(--street-ink)]">
-						Días del curso
-					</p>
-					<p class="text-sm font-bold text-[var(--street-ink)]">
-						Puedes cambiar de día cuando quieras. Si dudas, vuelve al día 1.
-					</p>
+			<details>
+				<summary class="cursor-pointer list-none">
+					<div class="flex flex-wrap items-center justify-between gap-3">
+						<div>
+							<p class="street-display text-4xl leading-none text-[var(--street-ink)]">
+								Días del curso
+							</p>
+							<p class="text-sm font-bold text-[var(--street-ink)]">
+								Día actual: {current.day}. Abre esto solo si quieres cambiar.
+							</p>
+						</div>
+						<p class="street-sticker px-3 py-1 text-sm">{completionPercent}% practicado</p>
+					</div>
+				</summary>
+				<div
+					class="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-7 lg:grid-cols-[repeat(21,minmax(0,1fr))]"
+				>
+					{#each data.days as day (day.day)}
+						<button
+							type="button"
+							onclick={() => selectDay(day.day)}
+							class={`min-h-12 rounded-md border-[3px] border-[var(--street-shadow)] px-2 text-sm font-black shadow-[4px_4px_0_var(--street-shadow)] transition-transform hover:-translate-y-0.5 ${
+								day.day === currentDay
+									? 'bg-[var(--street-pink)] text-white'
+									: completedDays.has(day.day)
+										? 'bg-[var(--street-lime)] text-[#101018]'
+										: 'bg-[var(--street-paper)] text-[#101018]'
+							}`}
+							aria-label={`Ir al día ${day.day}: ${day.title}`}
+						>
+							{day.day}
+						</button>
+					{/each}
 				</div>
-				<p class="street-sticker px-3 py-1 text-sm">{completionPercent}% del curso practicado</p>
-			</div>
-			<div class="grid grid-cols-3 gap-2 sm:grid-cols-7 lg:grid-cols-[repeat(21,minmax(0,1fr))]">
-				{#each data.days as day (day.day)}
-					<button
-						type="button"
-						onclick={() => selectDay(day.day)}
-						class={`min-h-12 rounded-md border-[3px] border-[var(--street-shadow)] px-2 text-sm font-black shadow-[4px_4px_0_var(--street-shadow)] transition-transform hover:-translate-y-0.5 ${
-							day.day === currentDay
-								? 'bg-[var(--street-pink)] text-white'
-								: completedDays.has(day.day)
-									? 'bg-[var(--street-lime)] text-[#101018]'
-									: 'bg-[var(--street-paper)] text-[#101018]'
-						}`}
-						aria-label={`Ir al día ${day.day}: ${day.title}`}
-					>
-						{day.day}
-					</button>
-				{/each}
-			</div>
+			</details>
 		</div>
 	</section>
 </main>
