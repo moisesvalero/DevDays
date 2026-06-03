@@ -20,19 +20,21 @@
 </svelte:head>
 
 <!-- .dark forzado: el login siempre en oscuro, independiente de la preferencia del usuario -->
-<div class="dark flex min-h-screen items-center justify-center bg-background px-4 text-foreground">
-	<Card class="w-full max-w-md">
+<div class="dark street-shell flex min-h-screen items-center justify-center px-4 text-foreground">
+	<Card class="street-panel w-full max-w-md">
 		<CardHeader>
-			<CardTitle class="text-2xl">DevDays</CardTitle>
+			<CardTitle
+				class="street-display text-5xl leading-none text-[var(--street-lime)] [-webkit-text-stroke:1px_var(--street-shadow)]"
+			>
+				DevDays
+			</CardTitle>
 			<CardDescription>
-				Inicia sesión con tu email. Te enviaremos un Magic Link para entrar sin contraseña.
+				Street Lab privado. Pon tu email y te mandamos un Magic Link para entrar sin contraseña.
 			</CardDescription>
 		</CardHeader>
 		<CardContent>
 			{#if form?.sent}
-				<div
-					class="rounded-md border border-emerald-500/40 bg-emerald-500/10 p-4 text-sm text-emerald-200"
-				>
+				<div class="street-paper rounded-md p-4 text-sm font-semibold text-[#101018]">
 					Te hemos enviado un enlace a <strong>{form.email}</strong>. Revisa tu bandeja de entrada y
 					haz click para entrar.
 				</div>
@@ -62,7 +64,7 @@
 					</div>
 
 					{#if form?.error}
-						<p class="text-sm text-destructive">{form.error}</p>
+						<p class="street-paper p-3 text-sm font-semibold text-[#101018]">{form.error}</p>
 					{/if}
 
 					<Button type="submit" class="w-full" disabled={loading}>

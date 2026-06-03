@@ -14,11 +14,11 @@ DevDays es un taller guiado de 21 días para construir un gestor de tareas paso 
 
 ## Brand Personality
 
-Claro, amable y motivador. La voz debe acompañar sin juzgar, explicar sin infantilizar y celebrar avances pequeños sin convertir el curso en un juego ruidoso.
+DevDays es un Street Lab educativo: claro, amable, motivador y con actitud. La interfaz debe sentirse como un taller urbano de código, con energía de pegatina, tag y libreta de misión, sin perder la calma necesaria para aprender desde cero.
 
 ## Anti-references
 
-No debe parecer una landing comercial, un dashboard frío, una carrera de 35 temas, una app infantil ni un sistema de exámenes diarios. Evitar estética de marketing, promesas grandes, tarjetas repetidas sin jerarquía y lenguaje de aprobado/suspendido.
+No debe parecer una landing comercial, un SaaS serio, un dashboard frío, una carrera de 35 temas, una app infantil ni un sistema de exámenes diarios. Evitar graffiti ilegible, caos visual, gamificación ruidosa, promesas grandes, tarjetas repetidas sin jerarquía y lenguaje de aprobado/suspendido.
 
 ## Design Principles
 
@@ -27,6 +27,7 @@ No debe parecer una landing comercial, un dashboard frío, una carrera de 35 tem
 - Feedback sin juicio: las pistas ayudan a avanzar, no evalúan a la persona.
 - Progreso visible: el alumno debe ver dónde está, qué hizo y qué sigue.
 - Cero fricción inicial: entrar al curso no requiere cuenta ni configuración previa.
+- Actitud con claridad: títulos, estados y sellos pueden tener energía callejera; pasos, mentor y código deben ser legibles y directos.
 
 ## Accessibility & Inclusion
 

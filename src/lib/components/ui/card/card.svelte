@@ -18,7 +18,7 @@
 	data-slot="card"
 	data-size={size}
 	class={cn(
-		'ring-foreground/10 bg-card text-card-foreground gap-4 overflow-hidden rounded-xl py-4 text-sm ring-1 has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col',
+		'bg-card text-card-foreground gap-4 overflow-hidden rounded-md border-2 border-[var(--street-shadow)] py-4 text-sm shadow-[5px_5px_0_var(--street-shadow)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-md *:[img:last-child]:rounded-b-md group/card flex flex-col',
 		className
 	)}
 	{...rest}

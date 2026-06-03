@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
-	import { mode, toggleMode } from 'mode-watcher';
+	import { mode, setMode, toggleMode } from 'mode-watcher';
 	import { SvelteSet } from 'svelte/reactivity';
 	import { Button } from '$lib/components/ui/button';
 	import CodeBlock from '$lib/components/study/CodeBlock.svelte';
@@ -56,6 +56,10 @@
 
 	onMount(() => {
 		if (!browser || hydrated) return;
+
+		if (!localStorage.getItem('mode-watcher-mode')) {
+			setMode('dark');
+		}
 
 		const saved = localStorage.getItem(storageKey);
 		if (saved) {
@@ -203,7 +207,7 @@
 			}
 		];
 		draftTitle = '';
-		showToast('Tarea añadida. El gestor ya responde a tu práctica.');
+		showToast('Tarea pegada al muro. El gestor ya responde a tu práctica.');
 	}
 
 	function toggleTask(id: number) {
@@ -212,16 +216,16 @@
 
 	function resetTasks() {
 		tasks = starterTasks.map((task) => ({ ...task }));
-		showToast('Gestor reiniciado para practicar otra vez.');
+		showToast('Muro limpio. Vuelta al beat inicial.');
 	}
 
 	function toggleCurrentDay() {
 		if (completedDays.has(currentDay)) {
 			completedDays.delete(currentDay);
-			showToast('Marca retirada. Puedes volver a practicar este día.');
+			showToast('Sello retirado. Puedes volver a practicar este día.');
 		} else {
 			completedDays.add(currentDay);
-			showToast(current.completionCue);
+			showToast(`${current.completionCue} Sello desbloqueado.`);
 		}
 	}
 
@@ -231,7 +235,7 @@
 		showToast(
 			nextLevel === currentHintLevel
 				? 'Ya tienes todas las pistas de esta misión.'
-				: 'Nueva pista desbloqueada.'
+				: 'Nueva pista desbloqueada. Sube el volumen, pero paso a paso.'
 		);
 	}
 
@@ -275,28 +279,44 @@
 	}
 </script>
 
+<svelte:head>
+	<title>DevDays Street Lab</title>
+	<meta name="theme-color" content="#08080a" />
+</svelte:head>
+
 <header
-	class="sticky top-0 z-30 border-b border-outline-variant bg-surface-container/95 px-4 py-3 backdrop-blur sm:px-6"
+	class="sticky top-0 z-30 border-b-[3px] border-[var(--street-shadow)] bg-[var(--street-bg)]/95 px-4 py-3 text-[var(--street-ink)] backdrop-blur sm:px-6"
 >
 	<div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4">
 		<div class="flex min-w-0 items-center gap-3">
 			<span
-				class="material-symbols-outlined flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground"
+				class="material-symbols-outlined street-sticker h-11 w-11 rotate-[-4deg] text-2xl"
 				style="font-variation-settings: 'FILL' 1;"
 				aria-hidden="true">task_alt</span
 			>
 			<div class="min-w-0">
-				<p class="text-lg font-bold leading-tight text-primary">DevDays</p>
-				<p class="text-xs text-on-surface-variant">Taller guiado de 21 días</p>
+				<p
+					class="street-display text-2xl leading-none text-[var(--street-lime)] [-webkit-text-stroke:1px_var(--street-shadow)]"
+				>
+					DevDays
+				</p>
+				<p class="text-xs font-black uppercase tracking-wide text-[var(--street-ink)]">
+					Street Lab · 21 misiones
+				</p>
 			</div>
 		</div>
 
 		<div class="flex items-center gap-3">
 			<div class="hidden min-w-36 sm:block">
-				<div class="h-2 overflow-hidden rounded-full bg-surface-container-high">
-					<div class="h-full rounded-full bg-success" style={`width: ${completionPercent}%`}></div>
+				<div
+					class="h-3 overflow-hidden rounded-full border-2 border-[var(--street-shadow)] bg-[var(--street-paper)]"
+				>
+					<div
+						class="h-full rounded-full bg-[var(--street-lime)]"
+						style={`width: ${completionPercent}%`}
+					></div>
 				</div>
-				<p class="mt-1 text-right text-xs text-on-surface-variant">
+				<p class="mt-1 text-right text-xs font-bold text-[var(--street-ink)]">
 					{completedCount}/{data.days.length} misiones practicadas
 				</p>
 			</div>
@@ -304,7 +324,7 @@
 				type="button"
 				onclick={toggleMode}
 				aria-label={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
-				class="flex h-9 w-9 items-center justify-center rounded-lg text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-on-surface focus-visible:outline-2 focus-visible:outline-primary"
+				class="street-hard-shadow flex h-9 w-9 items-center justify-center rounded-md border-2 border-[var(--street-shadow)] bg-[var(--street-paper)] text-[#101018] transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-[var(--street-lime)]"
 			>
 				<span class="material-symbols-outlined text-xl" aria-hidden="true">
 					{isDark ? 'light_mode' : 'dark_mode'}
@@ -314,65 +334,83 @@
 	</div>
 </header>
 
-<main class="bg-background text-on-surface">
-	<section class="border-b border-outline-variant bg-surface-container-lowest">
+<main class="street-shell min-h-dvh">
+	<section class="border-b-[3px] border-[var(--street-shadow)]">
 		<div
-			class="mx-auto grid max-w-7xl gap-6 px-4 py-7 sm:px-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:px-8"
+			class="mx-auto grid max-w-7xl gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[minmax(0,1fr)_390px] lg:px-8"
 		>
-			<div class="max-w-3xl">
-				<p class="text-sm font-semibold text-primary">Antes de empezar</p>
-				<h1 class="mt-2 max-w-2xl text-3xl font-bold leading-tight text-on-surface sm:text-4xl">
-					Construye un gestor de tareas, una misión pequeña cada día.
+			<div class="street-panel relative max-w-3xl overflow-hidden p-5 sm:p-7">
+				<div
+					class="absolute -right-16 -bottom-20 h-52 w-72 rotate-[-8deg] bg-[url('/street-stickers.svg')] bg-contain bg-no-repeat opacity-25 sm:opacity-35"
+				></div>
+				<p class="street-tag px-3 py-1 text-xs">Street Lab · JS/Svelte</p>
+				<h1
+					class="street-display relative mt-4 max-w-2xl text-5xl leading-[0.9] text-[var(--street-lime)] [-webkit-text-stroke:2px_var(--street-shadow)] sm:text-7xl"
+				>
+					Construye tu gestor, misión a misión.
 				</h1>
-				<p class="mt-4 max-w-2xl text-base text-on-surface-variant">
-					DevDays es un taller de 21 días. No empiezas con teoría suelta: cada concepto añade una
-					pieza visible al mismo producto. Entras, practicas, pides pistas si hace falta y marcas lo
-					aprendido cuando te sientas listo.
+				<p class="relative mt-5 max-w-2xl text-base font-semibold text-[var(--street-ink)]">
+					DevDays es un taller de 21 días con ritmo de libreta urbana: una idea, una práctica, un
+					avance visible. Sin examen diario, sin pose de dashboard, sin correr antes de entender.
 				</p>
 				<div class="mt-5 flex flex-wrap gap-3">
-					<Button onclick={() => selectDay(1)}>Empezar misión 1</Button>
-					<Button variant="outline" href="#mision-actual">Ver misión actual</Button>
+					<Button onclick={() => selectDay(1)}>Soltar misión 1</Button>
+					<Button variant="outline" href="#mision-actual">Ir al beat actual</Button>
 				</div>
 			</div>
 
-			<div class="rounded-lg border border-outline-variant bg-surface-container-low p-4">
-				<p class="text-sm font-bold text-on-surface">Cómo se juega sin jugar demasiado</p>
+			<div class="street-paper street-tape p-5 pt-7">
+				<p class="street-display text-3xl text-[#101018]">Cómo va el rollo</p>
 				<div class="mt-4 space-y-3">
 					<div class="flex gap-3">
-						<span class="material-symbols-outlined text-primary" aria-hidden="true">flag</span>
-						<p class="text-sm text-on-surface-variant">
+						<span
+							class="material-symbols-outlined street-sticker h-8 w-8 text-base"
+							aria-hidden="true">flag</span
+						>
+						<p class="text-sm font-bold text-[#101018]">
 							Una misión, un objetivo y una práctica corta.
 						</p>
 					</div>
 					<div class="flex gap-3">
-						<span class="material-symbols-outlined text-primary" aria-hidden="true">checklist</span>
-						<p class="text-sm text-on-surface-variant">Checklist guardado en tu navegador.</p>
+						<span
+							class="material-symbols-outlined street-sticker street-sticker-pink h-8 w-8 text-base"
+							aria-hidden="true">checklist</span
+						>
+						<p class="text-sm font-bold text-[#101018]">Checklist guardado en tu navegador.</p>
 					</div>
 					<div class="flex gap-3">
-						<span class="material-symbols-outlined text-primary" aria-hidden="true">psychology</span
+						<span
+							class="material-symbols-outlined street-sticker h-8 w-8 text-base"
+							aria-hidden="true">psychology</span
 						>
-						<p class="text-sm text-on-surface-variant">Pistas locales y mentor IA opcional.</p>
+						<p class="text-sm font-bold text-[#101018]">Pistas locales y mentor IA opcional.</p>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<section class="border-b border-outline-variant bg-surface-container-low">
+	<section
+		class="border-b-[3px] border-[var(--street-shadow)] bg-[color-mix(in_oklab,var(--street-pink)_14%,transparent)]"
+	>
 		<div class="mx-auto grid max-w-7xl gap-3 px-4 py-4 sm:px-6 md:grid-cols-3 lg:px-8">
 			{#each blocks as block (block)}
 				<button
 					type="button"
 					onclick={() => selectDay(data.days.find((day) => day.block === block)?.day ?? 1)}
-					class="rounded-lg border border-outline-variant bg-surface-container-lowest p-4 text-left transition-colors hover:border-primary focus-visible:outline-2 focus-visible:outline-primary"
+					class="street-panel p-4 text-left transition-transform hover:-translate-y-1 focus-visible:outline-[3px] focus-visible:outline-[var(--street-lime)]"
 				>
 					<div class="flex items-center justify-between gap-3">
-						<p class="text-sm font-bold text-on-surface">{blockLabels[block]}</p>
-						<span class="text-sm font-semibold text-primary">{blockProgress(block)}%</span>
+						<p class="street-display text-2xl leading-none text-[var(--street-ink)]">
+							{blockLabels[block]}
+						</p>
+						<span class="street-sticker px-2 py-0.5 text-xs">{blockProgress(block)}%</span>
 					</div>
-					<div class="mt-3 h-2 overflow-hidden rounded-full bg-surface-container-high">
+					<div
+						class="mt-3 h-3 overflow-hidden rounded-full border-2 border-[var(--street-shadow)] bg-[var(--street-paper)]"
+					>
 						<div
-							class="h-full rounded-full bg-primary"
+							class="h-full rounded-full bg-[var(--street-lime)]"
 							style={`width: ${blockProgress(block)}%`}
 						></div>
 					</div>
@@ -382,36 +420,38 @@
 	</section>
 
 	<div
-		class="mx-auto grid max-w-7xl gap-5 px-4 py-5 sm:px-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:px-8"
+		class="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[minmax(0,1fr)_380px] lg:px-8"
 	>
 		<section id="mision-actual" class="space-y-5">
-			<div class="rounded-lg border border-outline-variant bg-surface-container-lowest p-5">
+			<div class="street-panel p-5">
 				<div class="flex flex-wrap items-start justify-between gap-4">
 					<div class="max-w-3xl">
 						<div class="flex flex-wrap items-center gap-2">
-							<span
-								class="rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground"
-							>
+							<span class="street-sticker px-3 py-1 text-xs">
 								Día {current.day}
 							</span>
 							<span
-								class="rounded-full bg-surface-container-high px-3 py-1 text-xs font-semibold text-on-surface-variant"
+								class="rounded-md border-2 border-[var(--street-shadow)] bg-[var(--street-paper)] px-3 py-1 text-xs font-black text-[#101018]"
 							>
 								{current.estimatedMinutes} min
 							</span>
 							<span
-								class="rounded-full bg-surface-container-high px-3 py-1 text-xs font-semibold text-on-surface-variant"
+								class="rounded-md border-2 border-[var(--street-shadow)] bg-white px-3 py-1 text-xs font-black text-[#101018]"
 							>
 								{current.difficulty}
 							</span>
-							<span class="rounded-full bg-success/15 px-3 py-1 text-xs font-semibold text-success">
+							<span class="street-sticker street-sticker-pink px-3 py-1 text-xs">
 								{dayStatusLabel(current)}
 							</span>
 						</div>
-						<h2 class="mt-4 text-2xl font-bold leading-tight text-on-surface sm:text-3xl">
+						<h2
+							class="street-display mt-4 text-4xl leading-none text-[var(--street-ink)] sm:text-5xl"
+						>
 							{current.missionTitle}
 						</h2>
-						<p class="mt-3 text-base text-on-surface-variant">{current.introSummary}</p>
+						<p class="mt-3 max-w-2xl text-base font-semibold text-[var(--street-ink)]">
+							{current.introSummary}
+						</p>
 					</div>
 					<Button variant={isCurrentComplete ? 'secondary' : 'default'} onclick={toggleCurrentDay}>
 						{isCurrentComplete ? 'Misión practicada' : 'Marcar misión'}
@@ -419,13 +459,13 @@
 				</div>
 
 				<div class="mt-5 grid gap-4 md:grid-cols-2">
-					<div class="rounded-lg border border-outline-variant bg-surface-container-low p-4">
-						<p class="text-sm font-bold text-on-surface">Objetivo</p>
-						<p class="mt-2 text-sm text-on-surface-variant">{current.objective}</p>
+					<div class="street-paper p-4">
+						<p class="street-display text-2xl text-[#101018]">Objetivo</p>
+						<p class="mt-2 text-sm font-semibold text-[#101018]">{current.objective}</p>
 					</div>
-					<div class="rounded-lg border border-outline-variant bg-surface-container-low p-4">
-						<p class="text-sm font-bold text-on-surface">Estado esperado</p>
-						<p class="mt-2 text-sm text-on-surface-variant">{current.expectedState}</p>
+					<div class="street-paper p-4">
+						<p class="street-display text-2xl text-[#101018]">Estado esperado</p>
+						<p class="mt-2 text-sm font-semibold text-[#101018]">{current.expectedState}</p>
 					</div>
 				</div>
 			</div>
@@ -433,15 +473,21 @@
 			<div class="grid gap-5 xl:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
 				<section
 					aria-labelledby="task-preview-title"
-					class="rounded-lg border border-outline-variant bg-surface-container-lowest p-5"
+					class="street-panel relative overflow-hidden p-5"
 				>
+					<div
+						class="absolute top-3 right-4 h-20 w-28 rotate-6 bg-[url('/street-stickers.svg')] bg-contain bg-no-repeat opacity-25"
+					></div>
 					<div class="mb-5 flex flex-wrap items-center justify-between gap-3">
 						<div>
-							<p class="text-sm font-semibold text-primary">Producto en construcción</p>
-							<h2 id="task-preview-title" class="mt-1 text-xl font-bold text-on-surface">
+							<p class="street-tag px-2 py-0.5 text-xs">Producto en construcción</p>
+							<h2
+								id="task-preview-title"
+								class="street-display mt-3 text-4xl leading-none text-[var(--street-ink)]"
+							>
 								Gestor de tareas
 							</h2>
-							<p class="text-sm text-on-surface-variant">
+							<p class="text-sm font-bold text-[var(--street-ink)]">
 								{pendingTasks.length} pendientes · {doneTasks.length} completadas
 							</p>
 						</div>
@@ -459,7 +505,7 @@
 						<input
 							id="task-title"
 							bind:value={draftTitle}
-							class="min-h-11 flex-1 rounded-lg border border-outline-variant bg-background px-3 text-sm text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+							class="min-h-11 flex-1 rounded-md border-[3px] border-[var(--street-shadow)] bg-[var(--street-paper)] px-3 text-sm font-bold text-[#101018] shadow-[4px_4px_0_var(--street-shadow)] outline-none transition focus:translate-x-1 focus:translate-y-1 focus:shadow-none focus:ring-3 focus:ring-[var(--street-lime)]"
 							placeholder="Escribe una tarea pequeña"
 							autocomplete="off"
 						/>
@@ -469,15 +515,15 @@
 					<div class="mt-5 space-y-2">
 						{#each tasks as task (task.id)}
 							<div
-								class="flex min-h-16 items-center gap-3 rounded-lg border border-outline-variant bg-surface-container-low px-3"
+								class="street-paper flex min-h-16 items-center gap-3 px-3 py-2 transition-transform hover:rotate-[-0.5deg]"
 							>
 								<button
 									type="button"
 									onclick={() => toggleTask(task.id)}
-									class={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border transition-colors ${
+									class={`flex h-9 w-9 shrink-0 items-center justify-center rounded-md border-[3px] border-[var(--street-shadow)] transition-transform ${
 										task.done
-											? 'border-success bg-success text-white'
-											: 'border-outline bg-surface-container-lowest text-on-surface-variant hover:border-primary'
+											? 'bg-[var(--street-lime)] text-[#101018]'
+											: 'bg-white text-[#101018] hover:-translate-y-0.5'
 									}`}
 									aria-label={task.done
 										? `Marcar ${task.title} como pendiente`
@@ -489,33 +535,37 @@
 								</button>
 								<div class="min-w-0 flex-1">
 									<p
-										class={`truncate text-sm font-semibold ${task.done ? 'text-on-surface-variant line-through' : 'text-on-surface'}`}
+										class={`truncate text-sm font-black ${task.done ? 'text-[#101018]/60 line-through' : 'text-[#101018]'}`}
 									>
 										{task.title}
 									</p>
-									<p class="text-xs text-on-surface-variant">{task.tag}</p>
+									<p class="text-xs font-bold uppercase tracking-wide text-[#101018]/70">
+										{task.tag}
+									</p>
 								</div>
 							</div>
 						{/each}
 					</div>
 				</section>
 
-				<section
-					aria-labelledby="checklist-title"
-					class="rounded-lg border border-outline-variant bg-surface-container-lowest p-5"
-				>
+				<section aria-labelledby="checklist-title" class="street-panel p-5">
 					<div class="flex items-start justify-between gap-4">
 						<div>
-							<p class="text-sm font-semibold text-primary">Checklist de misión</p>
-							<h2 id="checklist-title" class="mt-1 text-xl font-bold text-on-surface">
+							<p class="street-tag px-2 py-0.5 text-xs">Checklist de misión</p>
+							<h2
+								id="checklist-title"
+								class="street-display mt-3 text-4xl leading-none text-[var(--street-ink)]"
+							>
 								Practica sin perderte
 							</h2>
 						</div>
-						<span class="text-sm font-bold text-primary">{currentChecklistPercent}%</span>
+						<span class="street-sticker px-3 py-1 text-sm">{currentChecklistPercent}%</span>
 					</div>
-					<div class="mt-4 h-2 overflow-hidden rounded-full bg-surface-container-high">
+					<div
+						class="mt-4 h-3 overflow-hidden rounded-full border-2 border-[var(--street-shadow)] bg-[var(--street-paper)]"
+					>
 						<div
-							class="h-full rounded-full bg-success"
+							class="h-full rounded-full bg-[var(--street-lime)]"
 							style={`width: ${currentChecklistPercent}%`}
 						></div>
 					</div>
@@ -523,18 +573,18 @@
 					<div class="mt-5 space-y-2">
 						{#each current.checklist as item, index (item)}
 							<label
-								class="flex cursor-pointer gap-3 rounded-lg border border-outline-variant bg-surface-container-low p-3 text-sm transition-colors hover:border-primary"
+								class="flex cursor-pointer gap-3 rounded-md border-2 border-[var(--street-shadow)] bg-[var(--street-paper)] p-3 text-sm font-bold text-[#101018] shadow-[4px_4px_0_var(--street-shadow)] transition-transform hover:-translate-y-0.5"
 							>
 								<input
 									type="checkbox"
 									checked={currentChecklist.includes(index)}
 									onchange={() => toggleStep(index)}
-									class="mt-1 h-4 w-4 accent-primary"
+									class="mt-1 h-4 w-4 accent-[var(--street-pink)]"
 								/>
 								<span
 									class={currentChecklist.includes(index)
-										? 'text-on-surface-variant line-through'
-										: 'text-on-surface'}
+										? 'text-[#101018]/55 line-through'
+										: 'text-[#101018]'}
 								>
 									{item}
 								</span>
@@ -544,34 +594,36 @@
 				</section>
 			</div>
 
-			<section
-				aria-labelledby="code-title"
-				class="rounded-lg border border-outline-variant bg-surface-container-lowest p-5"
-			>
+			<section aria-labelledby="code-title" class="street-panel p-5">
 				<div class="mb-4 flex flex-wrap items-end justify-between gap-3">
 					<div>
-						<p class="text-sm font-semibold text-primary">Código guiado</p>
-						<h2 id="code-title" class="mt-1 text-xl font-bold text-on-surface">
+						<p class="street-tag px-2 py-0.5 text-xs">Código guiado</p>
+						<h2
+							id="code-title"
+							class="street-display mt-3 text-4xl leading-none text-[var(--street-ink)]"
+						>
 							{current.codeFocus}
 						</h2>
 					</div>
-					<p class="max-w-md text-sm text-on-surface-variant">{current.productStory}</p>
+					<p class="max-w-md text-sm font-semibold text-[var(--street-ink)]">
+						{current.productStory}
+					</p>
 				</div>
 				<CodeBlock code={current.codeSample} language="javascript" />
 			</section>
 		</section>
 
 		<aside class="space-y-5 lg:sticky lg:top-24">
-			<section class="rounded-lg border border-outline-variant bg-surface-container-lowest p-5">
+			<section class="street-panel p-5">
 				<div class="flex items-start gap-3">
 					<span
-						class="material-symbols-outlined mt-0.5 text-primary"
+						class="material-symbols-outlined street-sticker h-10 w-10 text-xl"
 						style="font-variation-settings: 'FILL' 1;"
 						aria-hidden="true">psychology</span
 					>
 					<div>
-						<p class="text-sm font-bold text-on-surface">Mentor</p>
-						<p class="mt-1 text-sm text-on-surface-variant">
+						<p class="street-display text-3xl leading-none text-[var(--street-ink)]">Mentor</p>
+						<p class="mt-1 text-sm font-semibold text-[var(--street-ink)]">
 							Primero prueba. Si te atascas, abre una pista más.
 						</p>
 					</div>
@@ -579,9 +631,9 @@
 
 				<div class="mt-4 space-y-3">
 					{#each visibleHints as hint, index (hint)}
-						<div class="rounded-lg border border-outline-variant bg-surface-container-low p-3">
-							<p class="text-xs font-bold text-primary">Pista {index + 1}</p>
-							<p class="mt-1 text-sm text-on-surface-variant">{hint}</p>
+						<div class="street-paper p-3">
+							<p class="street-display text-xl text-[#101018]">Pista {index + 1}</p>
+							<p class="mt-1 text-sm font-semibold text-[#101018]">{hint}</p>
 						</div>
 					{/each}
 				</div>
@@ -594,14 +646,14 @@
 				</div>
 			</section>
 
-			<section class="rounded-lg border border-outline-variant bg-surface-container-lowest p-5">
-				<p class="text-sm font-bold text-on-surface">Preguntar al mentor IA</p>
-				<p class="mt-1 text-sm text-on-surface-variant">
+			<section class="street-panel p-5">
+				<p class="street-display text-3xl leading-none text-[var(--street-ink)]">Preguntar IA</p>
+				<p class="mt-2 text-sm font-semibold text-[var(--street-ink)]">
 					Opcional. Si no hay IA configurada, las pistas locales siguen siendo suficientes.
 				</p>
 				<textarea
 					bind:value={mentorQuestion}
-					class="mt-4 min-h-24 w-full resize-y rounded-lg border border-outline-variant bg-background p-3 text-sm text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+					class="mt-4 min-h-24 w-full resize-y rounded-md border-[3px] border-[var(--street-shadow)] bg-[var(--street-paper)] p-3 text-sm font-semibold text-[#101018] shadow-[4px_4px_0_var(--street-shadow)] outline-none transition focus:translate-x-1 focus:translate-y-1 focus:shadow-none focus:ring-3 focus:ring-[var(--street-lime)]"
 					placeholder="Ejemplo: no entiendo por qué usamos arrays aquí"
 				></textarea>
 				<div class="mt-3 flex justify-end">
@@ -610,39 +662,43 @@
 					</Button>
 				</div>
 				{#if mentorAnswer}
-					<div class="mt-4 rounded-lg border border-outline-variant bg-surface-container-low p-3">
-						<p class="text-sm text-on-surface-variant">{mentorAnswer}</p>
+					<div class="street-paper mt-4 p-3">
+						<p class="text-sm font-semibold text-[#101018]">{mentorAnswer}</p>
 					</div>
 				{/if}
 				{#if mentorError}
-					<div class="mt-4 rounded-lg border border-outline-variant bg-surface-container-low p-3">
-						<p class="text-sm text-on-surface-variant">{mentorError}</p>
+					<div class="street-paper mt-4 p-3">
+						<p class="text-sm font-semibold text-[#101018]">{mentorError}</p>
 					</div>
 				{/if}
 			</section>
 		</aside>
 	</div>
 
-	<section class="border-t border-outline-variant bg-surface-container-low">
+	<section
+		class="border-t-[3px] border-[var(--street-shadow)] bg-[color-mix(in_oklab,var(--street-lime)_12%,transparent)]"
+	>
 		<div class="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
 			<div class="mb-3 flex flex-wrap items-center justify-between gap-3">
 				<div>
-					<p class="text-sm font-bold text-on-surface">Ruta compacta</p>
-					<p class="text-sm text-on-surface-variant">Cambia de misión sin perder el contexto.</p>
+					<p class="street-display text-4xl leading-none text-[var(--street-ink)]">Ruta compacta</p>
+					<p class="text-sm font-bold text-[var(--street-ink)]">
+						Cambia de misión sin perder el contexto.
+					</p>
 				</div>
-				<p class="text-sm text-on-surface-variant">{completionPercent}% del curso practicado</p>
+				<p class="street-sticker px-3 py-1 text-sm">{completionPercent}% del curso practicado</p>
 			</div>
 			<div class="grid grid-cols-3 gap-2 sm:grid-cols-7 lg:grid-cols-[repeat(21,minmax(0,1fr))]">
 				{#each data.days as day (day.day)}
 					<button
 						type="button"
 						onclick={() => selectDay(day.day)}
-						class={`min-h-12 rounded-lg border px-2 text-sm font-bold transition-colors ${
+						class={`min-h-12 rounded-md border-[3px] border-[var(--street-shadow)] px-2 text-sm font-black shadow-[4px_4px_0_var(--street-shadow)] transition-transform hover:-translate-y-0.5 ${
 							day.day === currentDay
-								? 'border-primary bg-primary text-primary-foreground'
+								? 'bg-[var(--street-pink)] text-white'
 								: completedDays.has(day.day)
-									? 'border-success bg-success/15 text-success'
-									: 'border-outline-variant bg-surface-container-lowest text-on-surface-variant hover:border-primary'
+									? 'bg-[var(--street-lime)] text-[#101018]'
+									: 'bg-[var(--street-paper)] text-[#101018]'
 						}`}
 						aria-label={`Ir al día ${day.day}: ${day.title}`}
 					>
@@ -656,7 +712,7 @@
 
 {#if toastMessage}
 	<div
-		class="fixed right-4 bottom-4 z-40 max-w-sm rounded-lg border border-outline-variant bg-inverse-surface px-4 py-3 text-sm text-inverse-on-surface shadow-lg"
+		class="street-hit fixed right-4 bottom-4 z-40 max-w-sm rounded-md border-[3px] border-[var(--street-shadow)] bg-[var(--street-pink)] px-4 py-3 text-sm font-black text-white shadow-[6px_6px_0_var(--street-shadow)]"
 		role="status"
 	>
 		{toastMessage}

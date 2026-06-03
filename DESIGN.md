@@ -2,33 +2,33 @@
 
 ## Visual Direction
 
-DevDays usa un sistema de “juego suave profesional”: interfaz calmada, táctil y motivadora, con progreso visible y pequeñas misiones. Debe sentirse como un taller guiado, no como una landing ni como un editor técnico intimidante.
+DevDays usa un sistema **Street Lab educativo**: calle + neobrutal, stickers, tags, bordes duros y superficies tipo póster pegado. Debe sentirse como un taller urbano de código, no como una landing, un SaaS serio ni un editor técnico intimidante.
 
 ## Color
 
-- Base: superficies oscuras y claras ya definidas en `src/app.css`, con contraste alto.
-- Primary: se usa para selección, acción principal y progreso activo.
-- Success: se usa solo para pasos completados, días practicados y tareas hechas.
-- Warning/info: reservado para ayuda, pistas y estados de atención.
-- No usar color como decoración masiva; el color debe comunicar estado o foco.
+- Base protagonista: negro/tinta en dark mode, blanco roto tipo póster en light mode.
+- Lima: acción principal, progreso activo, foco y checks.
+- Rosa: golpes visuales, stickers, tags y estados de energía.
+- Amarillo/blanco roto: apoyo para sellos, notas y superficies pegadas.
+- El color puede dar personalidad, pero no debe tapar el contenido ni sustituir estados textuales.
 
 ## Typography
 
-- Mantener una familia sans consistente para producto.
-- Headings compactos y claros, sin escalas hero.
+- Usar una fuente display solo en H1, tags, sellos y números grandes.
+- Mantener fuente legible para pasos, mentor, inputs y cuerpo.
 - Texto de ayuda con línea de 65-75 caracteres cuando sea prose.
-- Etiquetas cortas, verbos claros y lenguaje directo en español.
+- Etiquetas cortas con más actitud: misión, beat, pista, tag, sin slang forzado.
 
 ## Components
 
-- Shell de curso: cabecera sticky, progreso global y acceso a modo claro/oscuro.
-- Intro de curso: explica qué se construye, cómo avanzar y que no hay login inicial.
-- Barra de bloques: JavaScript, Svelte, SvelteKit con progreso por bloque.
-- Tarjeta de misión: día, dificultad, minutos, objetivo, historia y estado esperado.
-- Checklist: pasos practicables con estado persistido por día.
-- Gestor de tareas: pieza central, visible como producto que se está construyendo.
-- Mentor: pistas por capas, microfeedback y consulta IA opcional.
-- Ruta compacta: navegación de días resumida, no lista gigante dominante.
+- Shell Street Lab: cabecera sticky con marca tipo sticker, progreso global y modo claro/oscuro.
+- Intro cartel: explica qué se construye con composición de póster urbano.
+- Barra de bloques: JavaScript, Svelte, SvelteKit como tracks con progreso.
+- Panel misión: cartel neobrutal con día, dificultad, minutos, objetivo y estado esperado.
+- Checklist: pasos practicables como sellos/checks persistidos.
+- Gestor de tareas: pieza central, con aspecto de panel pegado/libreta de misión.
+- Mentor: pistas por capas, microfeedback y consulta IA opcional con tono de apoyo.
+- Ruta compacta: navegación como tablero de stickers numerados.
 
 ## Layout
 
@@ -40,6 +40,6 @@ DevDays usa un sistema de “juego suave profesional”: interfaz calmada, táct
 ## Motion & Feedback
 
 - Transiciones cortas de 150-250 ms para selección, checklist y feedback.
-- Sin animaciones decorativas de carga.
-- Feedback textual breve al completar día, añadir tarea o pedir pista.
+- Microgolpes visuales al completar, añadir tarea o desbloquear pista.
+- Animaciones decorativas solo en stickers o fondos, ligeras y no esenciales.
 - Respetar `prefers-reduced-motion`.

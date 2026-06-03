@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">DevDays Street Lab sticker sheet</title>
+  <desc id="desc">Pegatinas urbanas para la identidad visual de DevDays.</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="8" dy="8" stdDeviation="0" flood-color="#08080a" flood-opacity="1"/>
+    </filter>
+    <pattern id="dots" width="18" height="18" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="2" fill="#08080a" opacity=".28"/>
+    </pattern>
+  </defs>
+  <rect width="960" height="640" fill="#00ff00" opacity="0"/>
+  <g filter="url(#shadow)" font-family="Bangers, Impact, sans-serif" stroke="#08080a" stroke-width="8" stroke-linejoin="round">
+    <path d="M68 86 282 54l58 126-230 42Z" fill="#d7ff31"/>
+    <text x="100" y="161" fill="#08080a" stroke="none" font-size="72" letter-spacing="2">DEV</text>
+    <text x="217" y="164" fill="#ff3ea5" stroke="none" font-size="58">DAYS</text>
+
+    <path d="M414 78c72-24 154-11 190 42 35 52 10 126-63 148-78 24-160-5-188-58-27-52-9-109 61-132Z" fill="#ff3ea5"/>
+    <text x="403" y="184" fill="#fff7df" stroke="none" font-size="88" transform="rotate(-8 500 170)">TODO</text>
+
+    <path d="M694 74 872 112l-28 132-190-18Z" fill="#fff7df"/>
+    <text x="693" y="178" fill="#08080a" stroke="none" font-size="74" transform="rotate(8 760 160)">JS!</text>
+
+    <path d="M104 328c42-76 116-91 184-44l-35 54 82-5-28 77 56-10c-45 82-129 115-213 62-66-42-80-94-46-134Z" fill="#d7ff31"/>
+    <text x="128" y="412" fill="#08080a" stroke="none" font-size="72" transform="rotate(-12 190 385)">PISTA</text>
+
+    <path d="M402 330 610 284l50 158-220 34Z" fill="#101018"/>
+    <path d="M424 350 632 304l50 158-220 34Z" fill="url(#dots)" opacity=".55"/>
+    <text x="433" y="419" fill="#d7ff31" stroke="none" font-size="64" transform="rotate(-6 520 395)">MISIÓN</text>
+    <path d="m455 454 32 20 78-88" fill="none" stroke="#ff3ea5" stroke-width="18" stroke-linecap="round"/>
+
+    <path d="M742 320 872 262l-34 112 80 48-118 21-44 104-38-103-112-22 96-55Z" fill="#ff3ea5"/>
+    <text x="714" y="426" fill="#fff7df" stroke="none" font-size="66" transform="rotate(14 766 400)">SHIP</text>
+
+    <path d="M95 540c88-24 172-18 242 22l-40 48H82Z" fill="#fff7df"/>
+    <text x="116" y="600" fill="#08080a" stroke="none" font-size="54">SVELTE</text>
+
+    <path d="M440 540h245l-27 62H414Z" fill="#d7ff31"/>
+    <text x="467" y="594" fill="#08080a" stroke="none" font-size="50">CHECK</text>
+
+    <path d="M742 526c43-36 97-29 118 11 22 42-7 82-62 88-49 5-98-18-99-52 0-17 13-33 43-47Z" fill="#101018"/>
+    <text x="724" y="594" fill="#d7ff31" stroke="none" font-size="56" transform="rotate(-8 780 575)">RUN</text>
+  </g>
+</svg>
