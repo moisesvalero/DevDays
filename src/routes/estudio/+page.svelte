@@ -129,7 +129,7 @@
 </script>
 
 <header
-	class="flex min-h-16 flex-wrap items-center justify-between gap-4 border-b border-outline-variant bg-surface-container px-4 py-3 sm:px-6"
+	class="sticky top-0 z-20 flex min-h-16 flex-wrap items-center justify-between gap-4 border-b border-outline-variant bg-surface-container px-4 py-3 sm:px-6"
 >
 	<div class="flex min-w-0 items-center gap-3">
 		<span
@@ -165,12 +165,56 @@
 	</div>
 </header>
 
-<main class="min-h-[calc(100vh-4rem)] bg-background text-on-surface">
-	<div class="grid min-h-[calc(100vh-4rem)] grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)_340px]">
+<main class="bg-background text-on-surface">
+	<section class="border-b border-outline-variant bg-surface-container-lowest">
+		<div class="mx-auto flex w-full max-w-6xl flex-col gap-5 px-4 py-6 sm:px-6 lg:px-8">
+			<div class="max-w-3xl">
+				<p class="text-sm font-semibold text-primary">Antes de empezar</p>
+				<h1 class="mt-1 text-2xl font-bold leading-tight text-on-surface sm:text-3xl">
+					Vas a construir un gestor de tareas desde cero, un día cada vez.
+				</h1>
+				<p class="mt-3 text-base text-on-surface-variant">
+					DevDays ya no va de correr por muchos temas. Aquí aprendes JavaScript, Svelte y SvelteKit
+					añadiendo piezas pequeñas a la misma app: primero datos, luego interfaz y al final
+					guardado local.
+				</p>
+			</div>
+
+			<div class="grid gap-3 md:grid-cols-3">
+				<div class="rounded-lg border border-outline-variant bg-surface-container-low p-4">
+					<p class="text-sm font-bold text-on-surface">1. Lee el objetivo</p>
+					<p class="mt-1 text-sm text-on-surface-variant">
+						Cada día tiene una sola idea principal para no saturarte.
+					</p>
+				</div>
+				<div class="rounded-lg border border-outline-variant bg-surface-container-low p-4">
+					<p class="text-sm font-bold text-on-surface">2. Prueba la app</p>
+					<p class="mt-1 text-sm text-on-surface-variant">
+						Usa el gestor de tareas y conecta lo que ves con el código guiado.
+					</p>
+				</div>
+				<div class="rounded-lg border border-outline-variant bg-surface-container-low p-4">
+					<p class="text-sm font-bold text-on-surface">3. Pide una pista</p>
+					<p class="mt-1 text-sm text-on-surface-variant">
+						El mentor te ayuda con pistas suaves, sin convertir cada paso en una nota.
+					</p>
+				</div>
+			</div>
+
+			<div class="flex flex-wrap items-center gap-3">
+				<Button onclick={() => selectDay(1)}>Empezar por el día 1</Button>
+				<p class="text-sm text-on-surface-variant">
+					No necesitas cuenta: tu progreso se guarda en este navegador.
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<div class="grid grid-cols-1 lg:grid-cols-[280px_minmax(0,1fr)_340px] lg:items-start">
 		<aside
 			class="border-b border-outline-variant bg-surface-container-low lg:border-r lg:border-b-0"
 		>
-			<div class="sticky top-0 max-h-[calc(100vh-4rem)] overflow-y-auto p-4">
+			<div class="p-4 lg:sticky lg:top-20 lg:max-h-[calc(100vh-5rem)] lg:overflow-y-auto">
 				<p class="mb-3 text-xs font-semibold tracking-wide text-on-surface-variant uppercase">
 					Ruta del curso
 				</p>
@@ -216,7 +260,7 @@
 			</div>
 		</aside>
 
-		<section class="overflow-y-auto">
+		<section>
 			<div class="mx-auto flex w-full max-w-5xl flex-col gap-6 p-4 sm:p-6 lg:p-8">
 				<div
 					class="rounded-lg border border-outline-variant bg-surface-container-lowest p-5 shadow-sm"
@@ -370,7 +414,7 @@
 		<aside
 			class="border-t border-outline-variant bg-surface-container p-4 lg:border-t-0 lg:border-l"
 		>
-			<div class="sticky top-4 space-y-4">
+			<div class="space-y-4 lg:sticky lg:top-20">
 				<section class="rounded-lg border border-outline-variant bg-surface-container-lowest p-5">
 					<div class="flex items-start gap-3">
 						<span

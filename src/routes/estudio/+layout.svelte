@@ -11,6 +11,6 @@
 	/>
 </svelte:head>
 
-<div class="fixed inset-0 flex flex-col overflow-hidden bg-background text-on-surface antialiased">
+<div class="min-h-screen bg-background text-on-surface antialiased">
 	{@render children()}
 </div>
