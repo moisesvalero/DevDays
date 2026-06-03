@@ -97,12 +97,14 @@ Ver `.env.example`. Las claves de IA son **opcionales en build** (`$env/dynamic/
 
 ## Comandos
 
+Este proyecto usa `pnpm`. No uses `npm` ni generes `package-lock.json` salvo petición explícita.
+
 ```bash
-npm run dev      # desarrollo
-npm run build    # build producción
-npm run check    # svelte-check + tsc
-npm run lint     # ESLint + Prettier
-npm run format   # autoformat
+pnpm run dev      # desarrollo
+pnpm run build    # build producción
+pnpm run check    # svelte-check + tsc
+pnpm run lint     # ESLint + Prettier
+pnpm run format   # autoformat
 ```
 
-Antes de cerrar una tarea: `npm run check` debe pasar.
+Antes de cerrar una tarea: `pnpm run check` debe pasar.
