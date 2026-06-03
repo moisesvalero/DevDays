@@ -52,6 +52,7 @@
 	const currentChecklistPercent = $derived(
 		Math.round((currentChecklist.length / current.checklist.length) * 100)
 	);
+	const nextStudentAction = $derived(getNextStudentAction());
 	const isDark = $derived(browser && mode.current === 'dark');
 
 	onMount(() => {
@@ -177,6 +178,17 @@
 		if (status === 'necesito pista') return 'Con pistas';
 		if (status === 'en curso') return 'En curso';
 		return 'Sin empezar';
+	}
+
+	function getNextStudentAction(): string {
+		if (isCurrentComplete) return 'Puedes pasar al siguiente día o repetir este sin presión.';
+		if (currentChecklist.length === 0) {
+			return 'Empieza leyendo “Hoy vas a aprender esto” y luego prueba el gestor de tareas.';
+		}
+		if (currentChecklist.length < current.checklist.length) {
+			return 'Sigue el checklist de uno en uno. No tienes que entenderlo todo a la primera.';
+		}
+		return 'Ya hiciste los pasos. Marca el día como practicado cuando te suene lo que has hecho.';
 	}
 
 	function toggleStep(index: number) {
@@ -343,24 +355,25 @@
 				<div
 					class="absolute -right-16 -bottom-20 h-52 w-72 rotate-[-8deg] bg-[url('/street-stickers.svg')] bg-contain bg-no-repeat opacity-25 sm:opacity-35"
 				></div>
-				<p class="street-tag px-3 py-1 text-xs">Street Lab · JS/Svelte</p>
+				<p class="street-tag px-3 py-1 text-xs">Empieza aquí · sin saber código</p>
 				<h1
 					class="street-display relative mt-4 max-w-2xl text-5xl leading-[0.9] text-[var(--street-lime)] [-webkit-text-stroke:2px_var(--street-shadow)] sm:text-7xl"
 				>
-					Construye tu gestor, misión a misión.
+					Aprende código haciendo una app real.
 				</h1>
 				<p class="relative mt-5 max-w-2xl text-base font-semibold text-[var(--street-ink)]">
-					DevDays es un taller de 21 días con ritmo de libreta urbana: una idea, una práctica, un
-					avance visible. Sin examen diario, sin pose de dashboard, sin correr antes de entender.
+					No tienes que saber JavaScript, Svelte ni palabras raras para empezar. Cada día haces una
+					mejora pequeña en un gestor de tareas, como una lista para organizar cosas. La idea es
+					mirar, tocar, equivocarte un poco y entender una pieza cada vez.
 				</p>
 				<div class="mt-5 flex flex-wrap gap-3">
-					<Button onclick={() => selectDay(1)}>Soltar misión 1</Button>
-					<Button variant="outline" href="#mision-actual">Ir al beat actual</Button>
+					<Button onclick={() => selectDay(1)}>Empezar por el día 1</Button>
+					<Button variant="outline" href="#mision-actual">Ver qué hago ahora</Button>
 				</div>
 			</div>
 
 			<div class="street-paper street-tape p-5 pt-7">
-				<p class="street-display text-3xl text-[#101018]">Cómo va el rollo</p>
+				<p class="street-display text-3xl text-[#101018]">Cómo se usa esto</p>
 				<div class="mt-4 space-y-3">
 					<div class="flex gap-3">
 						<span
@@ -368,7 +381,7 @@
 							aria-hidden="true">flag</span
 						>
 						<p class="text-sm font-bold text-[#101018]">
-							Una misión, un objetivo y una práctica corta.
+							Lee el objetivo del día. Es solo una idea, no una clase entera.
 						</p>
 					</div>
 					<div class="flex gap-3">
@@ -376,16 +389,41 @@
 							class="material-symbols-outlined street-sticker street-sticker-pink h-8 w-8 text-base"
 							aria-hidden="true">checklist</span
 						>
-						<p class="text-sm font-bold text-[#101018]">Checklist guardado en tu navegador.</p>
+						<p class="text-sm font-bold text-[#101018]">
+							Prueba la app de tareas y marca pasos cuando los entiendas.
+						</p>
 					</div>
 					<div class="flex gap-3">
 						<span
 							class="material-symbols-outlined street-sticker h-8 w-8 text-base"
 							aria-hidden="true">psychology</span
 						>
-						<p class="text-sm font-bold text-[#101018]">Pistas locales y mentor IA opcional.</p>
+						<p class="text-sm font-bold text-[#101018]">
+							Si te pierdes, pide una pista. No bloquea el curso ni te examina.
+						</p>
 					</div>
 				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="border-b-[3px] border-[var(--street-shadow)] bg-[var(--street-paper)]">
+		<div class="mx-auto grid max-w-7xl gap-3 px-4 py-5 sm:px-6 md:grid-cols-4 lg:px-8">
+			<div class="rounded-md border-[3px] border-[#101018] bg-white p-4 shadow-[5px_5px_0_#101018]">
+				<p class="street-display text-2xl text-[#101018]">Misión</p>
+				<p class="mt-1 text-sm font-bold text-[#101018]">Lo que practicas hoy, explicado corto.</p>
+			</div>
+			<div class="rounded-md border-[3px] border-[#101018] bg-white p-4 shadow-[5px_5px_0_#101018]">
+				<p class="street-display text-2xl text-[#101018]">Gestor</p>
+				<p class="mt-1 text-sm font-bold text-[#101018]">La app de tareas que vas construyendo.</p>
+			</div>
+			<div class="rounded-md border-[3px] border-[#101018] bg-white p-4 shadow-[5px_5px_0_#101018]">
+				<p class="street-display text-2xl text-[#101018]">Checklist</p>
+				<p class="mt-1 text-sm font-bold text-[#101018]">Pasos pequeños para no perderte.</p>
+			</div>
+			<div class="rounded-md border-[3px] border-[#101018] bg-white p-4 shadow-[5px_5px_0_#101018]">
+				<p class="street-display text-2xl text-[#101018]">Pista</p>
+				<p class="mt-1 text-sm font-bold text-[#101018]">Ayuda cuando algo no te encaja todavía.</p>
 			</div>
 		</div>
 	</section>
@@ -454,17 +492,30 @@
 						</p>
 					</div>
 					<Button variant={isCurrentComplete ? 'secondary' : 'default'} onclick={toggleCurrentDay}>
-						{isCurrentComplete ? 'Misión practicada' : 'Marcar misión'}
+						{isCurrentComplete ? 'Día practicado' : 'Marcar día practicado'}
 					</Button>
+				</div>
+
+				<div class="street-paper mt-5 p-4">
+					<div class="flex items-start gap-3">
+						<span
+							class="material-symbols-outlined street-sticker street-sticker-pink h-9 w-9 shrink-0 text-lg"
+							aria-hidden="true">near_me</span
+						>
+						<div>
+							<p class="street-display text-2xl text-[#101018]">Ahora mismo haz esto</p>
+							<p class="mt-1 text-sm font-bold text-[#101018]">{nextStudentAction}</p>
+						</div>
+					</div>
 				</div>
 
 				<div class="mt-5 grid gap-4 md:grid-cols-2">
 					<div class="street-paper p-4">
-						<p class="street-display text-2xl text-[#101018]">Objetivo</p>
+						<p class="street-display text-2xl text-[#101018]">Hoy vas a aprender esto</p>
 						<p class="mt-2 text-sm font-semibold text-[#101018]">{current.objective}</p>
 					</div>
 					<div class="street-paper p-4">
-						<p class="street-display text-2xl text-[#101018]">Estado esperado</p>
+						<p class="street-display text-2xl text-[#101018]">Al final deberías ver esto</p>
 						<p class="mt-2 text-sm font-semibold text-[#101018]">{current.expectedState}</p>
 					</div>
 				</div>
@@ -480,18 +531,21 @@
 					></div>
 					<div class="mb-5 flex flex-wrap items-center justify-between gap-3">
 						<div>
-							<p class="street-tag px-2 py-0.5 text-xs">Producto en construcción</p>
+							<p class="street-tag px-2 py-0.5 text-xs">Tu app de práctica</p>
 							<h2
 								id="task-preview-title"
 								class="street-display mt-3 text-4xl leading-none text-[var(--street-ink)]"
 							>
-								Gestor de tareas
+								Lista de tareas
 							</h2>
 							<p class="text-sm font-bold text-[var(--street-ink)]">
-								{pendingTasks.length} pendientes · {doneTasks.length} completadas
+								Es una app sencilla: escribes algo, lo añades y lo puedes marcar como hecho.
+							</p>
+							<p class="mt-1 text-sm font-bold text-[var(--street-ink)]">
+								Ahora tienes {pendingTasks.length} pendientes y {doneTasks.length} hechas.
 							</p>
 						</div>
-						<Button variant="outline" onclick={resetTasks}>Reiniciar</Button>
+						<Button variant="outline" onclick={resetTasks}>Reiniciar lista</Button>
 					</div>
 
 					<form
@@ -546,17 +600,21 @@
 							</div>
 						{/each}
 					</div>
+					<p class="mt-4 text-sm font-bold text-[var(--street-ink)]">
+						No estás rompiendo nada: esta lista es para tocar y aprender. Se guarda en este
+						navegador.
+					</p>
 				</section>
 
 				<section aria-labelledby="checklist-title" class="street-panel p-5">
 					<div class="flex items-start justify-between gap-4">
 						<div>
-							<p class="street-tag px-2 py-0.5 text-xs">Checklist de misión</p>
+							<p class="street-tag px-2 py-0.5 text-xs">Pasos guiados</p>
 							<h2
 								id="checklist-title"
 								class="street-display mt-3 text-4xl leading-none text-[var(--street-ink)]"
 							>
-								Practica sin perderte
+								Marca lo que entiendas
 							</h2>
 						</div>
 						<span class="street-sticker px-3 py-1 text-sm">{currentChecklistPercent}%</span>
@@ -591,13 +649,16 @@
 							</label>
 						{/each}
 					</div>
+					<p class="mt-4 text-sm font-bold text-[var(--street-ink)]">
+						Si un paso no te sale, no lo marques todavía. Pide una pista y vuelve a probar.
+					</p>
 				</section>
 			</div>
 
 			<section aria-labelledby="code-title" class="street-panel p-5">
 				<div class="mb-4 flex flex-wrap items-end justify-between gap-3">
 					<div>
-						<p class="street-tag px-2 py-0.5 text-xs">Código guiado</p>
+						<p class="street-tag px-2 py-0.5 text-xs">Ejemplo para mirar</p>
 						<h2
 							id="code-title"
 							class="street-display mt-3 text-4xl leading-none text-[var(--street-ink)]"
@@ -606,8 +667,12 @@
 						</h2>
 					</div>
 					<p class="max-w-md text-sm font-semibold text-[var(--street-ink)]">
-						{current.productStory}
+						No tienes que memorizar este código. Léelo como si fuera una receta y fíjate en qué
+						cambia en la app.
 					</p>
+				</div>
+				<div class="street-paper mb-4 p-3">
+					<p class="text-sm font-bold text-[#101018]">{current.productStory}</p>
 				</div>
 				<CodeBlock code={current.codeSample} language="javascript" />
 			</section>
@@ -622,9 +687,9 @@
 						aria-hidden="true">psychology</span
 					>
 					<div>
-						<p class="street-display text-3xl leading-none text-[var(--street-ink)]">Mentor</p>
+						<p class="street-display text-3xl leading-none text-[var(--street-ink)]">Pistas</p>
 						<p class="mt-1 text-sm font-semibold text-[var(--street-ink)]">
-							Primero prueba. Si te atascas, abre una pista más.
+							Primero prueba. Si te atascas, abre una ayuda más. No hay nota.
 						</p>
 					</div>
 				</div>
@@ -641,24 +706,26 @@
 				<div class="mt-4 flex flex-wrap gap-2">
 					<Button variant="outline" onclick={revealNextHint}>Dame otra pista</Button>
 					<Button variant="ghost" onclick={toggleCurrentDay}>
-						{isCurrentComplete ? 'Quitar marca' : 'Lo he practicado'}
+						{isCurrentComplete ? 'Quitar marca' : 'Ya lo he practicado'}
 					</Button>
 				</div>
 			</section>
 
 			<section class="street-panel p-5">
-				<p class="street-display text-3xl leading-none text-[var(--street-ink)]">Preguntar IA</p>
+				<p class="street-display text-3xl leading-none text-[var(--street-ink)]">
+					Preguntar al mentor
+				</p>
 				<p class="mt-2 text-sm font-semibold text-[var(--street-ink)]">
-					Opcional. Si no hay IA configurada, las pistas locales siguen siendo suficientes.
+					Opcional. Pregunta como hablarías con una persona: “no entiendo esto” también vale.
 				</p>
 				<textarea
 					bind:value={mentorQuestion}
 					class="mt-4 min-h-24 w-full resize-y rounded-md border-[3px] border-[var(--street-shadow)] bg-[var(--street-paper)] p-3 text-sm font-semibold text-[#101018] shadow-[4px_4px_0_var(--street-shadow)] outline-none transition focus:translate-x-1 focus:translate-y-1 focus:shadow-none focus:ring-3 focus:ring-[var(--street-lime)]"
-					placeholder="Ejemplo: no entiendo por qué usamos arrays aquí"
+					placeholder="Ejemplo: no entiendo qué estoy viendo en este ejemplo"
 				></textarea>
 				<div class="mt-3 flex justify-end">
 					<Button onclick={askMentor} disabled={mentorLoading || !mentorQuestion.trim()}>
-						{mentorLoading ? 'Preguntando...' : 'Preguntar IA'}
+						{mentorLoading ? 'Preguntando...' : 'Preguntar al mentor'}
 					</Button>
 				</div>
 				{#if mentorAnswer}
@@ -681,9 +748,11 @@
 		<div class="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
 			<div class="mb-3 flex flex-wrap items-center justify-between gap-3">
 				<div>
-					<p class="street-display text-4xl leading-none text-[var(--street-ink)]">Ruta compacta</p>
+					<p class="street-display text-4xl leading-none text-[var(--street-ink)]">
+						Días del curso
+					</p>
 					<p class="text-sm font-bold text-[var(--street-ink)]">
-						Cambia de misión sin perder el contexto.
+						Puedes cambiar de día cuando quieras. Si dudas, vuelve al día 1.
 					</p>
 				</div>
 				<p class="street-sticker px-3 py-1 text-sm">{completionPercent}% del curso practicado</p>

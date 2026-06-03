@@ -12,6 +12,8 @@ DevDays sirve a alumnos casi desde cero que quieren aprender JavaScript, Svelte 
 
 DevDays es un taller guiado de 21 días para construir un gestor de tareas paso a paso. Su éxito se mide por claridad, continuidad y práctica: el alumno entiende qué añade cada día, puede probarlo en la interfaz y conserva progreso sin login inicial.
 
+La primera pantalla debe explicar la experiencia como si el alumno no supiera nada de código: qué está construyendo, qué debe tocar primero, qué significa cada zona y por qué puede avanzar sin miedo a romper nada.
+
 ## Brand Personality
 
 DevDays es un Street Lab educativo: claro, amable, motivador y con actitud. La interfaz debe sentirse como un taller urbano de código, con energía de pegatina, tag y libreta de misión, sin perder la calma necesaria para aprender desde cero.
@@ -28,6 +30,7 @@ No debe parecer una landing comercial, un SaaS serio, un dashboard frío, una ca
 - Progreso visible: el alumno debe ver dónde está, qué hizo y qué sigue.
 - Cero fricción inicial: entrar al curso no requiere cuenta ni configuración previa.
 - Actitud con claridad: títulos, estados y sellos pueden tener energía callejera; pasos, mentor y código deben ser legibles y directos.
+- Modo principiante real: misión, gestor, checklist, pista y mentor deben explicarse en palabras comunes antes de pedir acción.
 
 ## Accessibility & Inclusion
 
