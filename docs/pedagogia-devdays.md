@@ -16,12 +16,12 @@ En los datos (`sec()` en `week*.ts`), el orden de parámetros sigue siendo `anal
 
 ## Regla 1:1 sección ↔ ejercicio
 
-| Regla | Detalle |
-|-------|---------|
-| Lección (30 días) | Exactamente **3 secciones** y **3 ejercicios**, mismo orden: ejercicio N solo usa la sección N. |
-| `seccionRef` | Título **exacto** de esa sección (obligatorio en cada enunciado). |
-| `notas` | Obligatorio; debe citar la sección («Véase sección X»). |
-| Examen (días 7, 14, 21, 28, 35) | `seccionRef: 'Repaso semana N'`; `notas` citan los días de la semana. |
+| Regla                           | Detalle                                                                                         |
+| ------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Lección (30 días)               | Exactamente **3 secciones** y **3 ejercicios**, mismo orden: ejercicio N solo usa la sección N. |
+| `seccionRef`                    | Título **exacto** de esa sección (obligatorio en cada enunciado).                               |
+| `notas`                         | Obligatorio; debe citar la sección («Véase sección X»).                                         |
+| Examen (días 7, 14, 21, 28, 35) | `seccionRef: 'Repaso semana N'`; `notas` citan los días de la semana.                           |
 
 Antes de merge: `npm run test` debe pasar `lesson-coverage.test.ts` (auditoría automática en `lesson-audit.ts`).
 

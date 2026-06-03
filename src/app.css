@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @import './lib/styles/stitch-m3.css';
 
 /* Fuentes: cargar desde app.html (evita warning "@import must precede rules") */
@@ -11,395 +11,395 @@
  * Sin este puente @theme inline → var(--background), TODO seguía siendo gris zinc por defecto.
  */
 :root {
-  --background: #fcf8ff;
-  --foreground: #1b1b24;
-  --card: #ffffff;
-  --card-foreground: #1b1b24;
-  --popover: #fcf8ff;
-  --popover-foreground: #1b1b24;
-  --primary: #3525cd;
-  --primary-foreground: #ffffff;
-  --secondary: #58579b;
-  --secondary-foreground: #ffffff;
-  --muted: #f0ecf9;
-  --muted-foreground: #464555;
-  --accent: #f0ecf9;
-  --accent-foreground: #1b1b24;
-  --destructive: #ba1a1a;
-  --destructive-foreground: #ffffff;
-  --border: #c7c4d8;
-  --input: #c7c4d8;
-  --ring: #3525cd;
-  --radius: 0.75rem;
+	--background: #fcf8ff;
+	--foreground: #1b1b24;
+	--card: #ffffff;
+	--card-foreground: #1b1b24;
+	--popover: #fcf8ff;
+	--popover-foreground: #1b1b24;
+	--primary: #3525cd;
+	--primary-foreground: #ffffff;
+	--secondary: #58579b;
+	--secondary-foreground: #ffffff;
+	--muted: #f0ecf9;
+	--muted-foreground: #464555;
+	--accent: #f0ecf9;
+	--accent-foreground: #1b1b24;
+	--destructive: #ba1a1a;
+	--destructive-foreground: #ffffff;
+	--border: #c7c4d8;
+	--input: #c7c4d8;
+	--ring: #3525cd;
+	--radius: 0.75rem;
 
-  --inverse-surface: #302f39;
-  --inverse-on-surface: #f3effc;
-  --primary-container: #4f46e5;
-  --on-primary-container: #dad7ff;
-  --outline-variant: #c7c4d8;
+	--inverse-surface: #302f39;
+	--inverse-on-surface: #f3effc;
+	--primary-container: #4f46e5;
+	--on-primary-container: #dad7ff;
+	--outline-variant: #c7c4d8;
 
-  /* Material tokens — paleta clara para el portal /estudio en modo light. */
-  --surface-container: #ece6f0;
-  --surface-container-low: #f3edf7;
-  --surface-container-lowest: #ffffff;
-  --surface-container-high: #e2dce7;
-  --on-surface: #1d1b20;
-  --on-surface-variant: #49454f;
-  --outline: #79747e;
-  --tertiary: #b75d29;
-  --tertiary-container: #ffdcc6;
-  --secondary-container: #e8def8;
-  --on-secondary-container: #1d192b;
-  --on-primary: #ffffff;
-  --success: #059669;
+	/* Material tokens — paleta clara para el portal /estudio en modo light. */
+	--surface-container: #ece6f0;
+	--surface-container-low: #f3edf7;
+	--surface-container-lowest: #ffffff;
+	--surface-container-high: #e2dce7;
+	--on-surface: #1d1b20;
+	--on-surface-variant: #49454f;
+	--outline: #79747e;
+	--tertiary: #b75d29;
+	--tertiary-container: #ffdcc6;
+	--secondary-container: #e8def8;
+	--on-secondary-container: #1d192b;
+	--on-primary: #ffffff;
+	--success: #059669;
 
-  /* Legacy = tema shadcn (un solo origen; mismos valores que antes) */
-  --text-main: var(--foreground);
-  --text-secondary: var(--muted-foreground);
-  --bg-main: var(--background);
-  --bg-soft: var(--muted);
-  /* Referenciado en Hero, Pricing, Testimonials sin fallback */
-  --accent-hover: color-mix(in oklab, var(--primary) 82%, black);
+	/* Legacy = tema shadcn (un solo origen; mismos valores que antes) */
+	--text-main: var(--foreground);
+	--text-secondary: var(--muted-foreground);
+	--bg-main: var(--background);
+	--bg-soft: var(--muted);
+	/* Referenciado en Hero, Pricing, Testimonials sin fallback */
+	--accent-hover: color-mix(in oklab, var(--primary) 82%, black);
 
-  --ease-out-soft: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-soft-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --shadow-soft-lg: 0 22px 55px rgba(15, 23, 42, 0.14);
-  --shadow-soft-md: 0 14px 35px rgba(15, 23, 42, 0.12);
-  --ring-soft: 0 0 0 1px rgba(148, 163, 184, 0.18);
-  --assembly-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --assembly-duration: 1260ms;
-  --btn-shine-duration: 0.55s;
-  --btn-shine-opacity-duration: 0.3s;
+	--ease-out-soft: cubic-bezier(0.34, 1.56, 0.64, 1);
+	--ease-soft-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+	--shadow-soft-lg: 0 22px 55px rgba(15, 23, 42, 0.14);
+	--shadow-soft-md: 0 14px 35px rgba(15, 23, 42, 0.12);
+	--ring-soft: 0 0 0 1px rgba(148, 163, 184, 0.18);
+	--assembly-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
+	--assembly-duration: 1260ms;
+	--btn-shine-duration: 0.55s;
+	--btn-shine-opacity-duration: 0.3s;
 }
 
 .dark {
-  --background: #09090b;
-  --foreground: #e5e1e4;
-  --card: #18181b;
-  --card-foreground: #e5e1e4;
-  --popover: #201f22;
-  --popover-foreground: #e5e1e4;
-  --primary: #6366f1;
-  --primary-foreground: #ffffff;
-  --secondary: #b8c4ff;
-  --secondary-foreground: #1a2b6a;
-  --muted: #201f22;
-  --muted-foreground: #c7c4d7;
-  --accent: #2a2a2c;
-  --accent-foreground: #e5e1e4;
-  --destructive: #ffb4ab;
-  --destructive-foreground: #690005;
-  --border: #464554;
-  --input: #464554;
-  --ring: #6366f1;
+	--background: #09090b;
+	--foreground: #e5e1e4;
+	--card: #18181b;
+	--card-foreground: #e5e1e4;
+	--popover: #201f22;
+	--popover-foreground: #e5e1e4;
+	--primary: #6366f1;
+	--primary-foreground: #ffffff;
+	--secondary: #b8c4ff;
+	--secondary-foreground: #1a2b6a;
+	--muted: #201f22;
+	--muted-foreground: #c7c4d7;
+	--accent: #2a2a2c;
+	--accent-foreground: #e5e1e4;
+	--destructive: #ffb4ab;
+	--destructive-foreground: #690005;
+	--border: #464554;
+	--input: #464554;
+	--ring: #6366f1;
 
-  --inverse-surface: #e5e1e4;
-  --inverse-on-surface: #313032;
-  --primary-container: #8083ff;
-  --on-primary-container: #0d0096;
-  --outline-variant: #424754;
+	--inverse-surface: #e5e1e4;
+	--inverse-on-surface: #313032;
+	--primary-container: #8083ff;
+	--on-primary-container: #0d0096;
+	--outline-variant: #424754;
 
-  /* Material tokens — paleta oscura del diseño original. */
-  --surface-container: #201f1f;
-  --surface-container-low: #1c1b1b;
-  --surface-container-lowest: #0e0e0e;
-  --surface-container-high: #2a2a2a;
-  --on-surface: #e5e2e1;
-  --on-surface-variant: #c2c6d6;
-  --outline: #8c909f;
-  --tertiary: #ffb786;
-  --tertiary-container: #df7412;
-  --secondary-container: #474746;
-  --on-secondary-container: #b7b5b4;
-  --on-primary: #002e6a;
-  --success: #10b981;
+	/* Material tokens — paleta oscura del diseño original. */
+	--surface-container: #201f1f;
+	--surface-container-low: #1c1b1b;
+	--surface-container-lowest: #0e0e0e;
+	--surface-container-high: #2a2a2a;
+	--on-surface: #e5e2e1;
+	--on-surface-variant: #c2c6d6;
+	--outline: #8c909f;
+	--tertiary: #ffb786;
+	--tertiary-container: #df7412;
+	--secondary-container: #474746;
+	--on-secondary-container: #b7b5b4;
+	--on-primary: #002e6a;
+	--success: #10b981;
 
-  --text-main: var(--foreground);
-  --text-secondary: var(--muted-foreground);
-  --bg-main: var(--background);
-  --bg-soft: var(--muted);
-  --accent-hover: color-mix(in oklab, var(--primary) 88%, white);
+	--text-main: var(--foreground);
+	--text-secondary: var(--muted-foreground);
+	--bg-main: var(--background);
+	--bg-soft: var(--muted);
+	--accent-hover: color-mix(in oklab, var(--primary) 88%, white);
 
-  --shadow-soft-lg: 0 22px 55px rgba(0, 0, 0, 0.45);
-  --shadow-soft-md: 0 14px 35px rgba(0, 0, 0, 0.38);
-  --ring-soft: 0 0 0 1px rgba(99, 102, 241, 0.25);
+	--shadow-soft-lg: 0 22px 55px rgba(0, 0, 0, 0.45);
+	--shadow-soft-md: 0 14px 35px rgba(0, 0, 0, 0.38);
+	--ring-soft: 0 0 0 1px rgba(99, 102, 241, 0.25);
 }
 
 @theme inline {
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+	--font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+	--font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
 
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
 
-  /* Stitch / extras */
-  --color-primary-container: var(--primary-container);
-  --color-on-primary-container: var(--on-primary-container);
-  --color-inverse-surface: var(--inverse-surface);
-  --color-inverse-on-surface: var(--inverse-on-surface);
+	/* Stitch / extras */
+	--color-primary-container: var(--primary-container);
+	--color-on-primary-container: var(--on-primary-container);
+	--color-inverse-surface: var(--inverse-surface);
+	--color-inverse-on-surface: var(--inverse-on-surface);
 
-  /* Material tokens del portal /estudio (varían con light/dark via :root y .dark). */
-  --color-surface-container: var(--surface-container);
-  --color-surface-container-low: var(--surface-container-low);
-  --color-surface-container-lowest: var(--surface-container-lowest);
-  --color-surface-container-high: var(--surface-container-high);
-  --color-on-surface: var(--on-surface);
-  --color-on-surface-variant: var(--on-surface-variant);
-  --color-outline: var(--outline);
-  --color-outline-variant: var(--outline-variant);
-  --color-tertiary: var(--tertiary);
-  --color-tertiary-container: var(--tertiary-container);
-  --color-secondary-container: var(--secondary-container);
-  --color-on-secondary-container: var(--on-secondary-container);
-  --color-on-primary: var(--on-primary);
-  --color-success: var(--success);
+	/* Material tokens del portal /estudio (varían con light/dark via :root y .dark). */
+	--color-surface-container: var(--surface-container);
+	--color-surface-container-low: var(--surface-container-low);
+	--color-surface-container-lowest: var(--surface-container-lowest);
+	--color-surface-container-high: var(--surface-container-high);
+	--color-on-surface: var(--on-surface);
+	--color-on-surface-variant: var(--on-surface-variant);
+	--color-outline: var(--outline);
+	--color-outline-variant: var(--outline-variant);
+	--color-tertiary: var(--tertiary);
+	--color-tertiary-container: var(--tertiary-container);
+	--color-secondary-container: var(--secondary-container);
+	--color-on-secondary-container: var(--on-secondary-container);
+	--color-on-primary: var(--on-primary);
+	--color-success: var(--success);
 }
 
 @layer base {
-  *,
-  ::before,
-  ::after {
-    box-sizing: border-box;
-  }
+	*,
+	::before,
+	::after {
+		box-sizing: border-box;
+	}
 
-  html {
-    @apply bg-background text-foreground;
-    scroll-behavior: smooth;
-    overflow-x: clip;
-  }
-  body {
-    @apply bg-background text-foreground font-sans antialiased;
-    line-height: 1.6;
-    margin: 0;
-    min-height: 100%;
-    overflow-x: clip;
-  }
+	html {
+		@apply bg-background text-foreground;
+		scroll-behavior: smooth;
+		overflow-x: clip;
+	}
+	body {
+		@apply bg-background text-foreground font-sans antialiased;
+		line-height: 1.6;
+		margin: 0;
+		min-height: 100%;
+		overflow-x: clip;
+	}
 }
 
 ::selection {
-  background-color: color-mix(in oklab, var(--primary-container) 85%, transparent);
-  color: var(--on-primary-container);
+	background-color: color-mix(in oklab, var(--primary-container) 85%, transparent);
+	color: var(--on-primary-container);
 }
 
 @keyframes hero-orb-1 {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(28px, -24px, 0) scale(1.06);
-  }
+	0%,
+	100% {
+		transform: translate3d(0, 0, 0) scale(1);
+	}
+	50% {
+		transform: translate3d(28px, -24px, 0) scale(1.06);
+	}
 }
 @keyframes hero-orb-2 {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(-36px, 28px, 0) scale(1.12);
-  }
+	0%,
+	100% {
+		transform: translate3d(0, 0, 0) scale(1);
+	}
+	50% {
+		transform: translate3d(-36px, 28px, 0) scale(1.12);
+	}
 }
 @keyframes hero-orb-3 {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(18px, 36px, 0) scale(1.05);
-  }
+	0%,
+	100% {
+		transform: translate3d(0, 0, 0) scale(1);
+	}
+	50% {
+		transform: translate3d(18px, 36px, 0) scale(1.05);
+	}
 }
 
 .skip-link {
-  position: absolute;
-  top: -100%;
-  left: 1rem;
-  z-index: 9999;
-  padding: 0.75rem 1.5rem;
-  background: var(--primary);
-  color: var(--primary-foreground);
-  border-radius: 999px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: top 0.2s;
+	position: absolute;
+	top: -100%;
+	left: 1rem;
+	z-index: 9999;
+	padding: 0.75rem 1.5rem;
+	background: var(--primary);
+	color: var(--primary-foreground);
+	border-radius: 999px;
+	font-weight: 600;
+	text-decoration: none;
+	transition: top 0.2s;
 }
 
 .skip-link:focus {
-  top: 1rem;
+	top: 1rem;
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #3525cd, #4f46e5);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+	background: linear-gradient(135deg, #3525cd, #4f46e5);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
 }
 
 .dark .gradient-text {
-  background: linear-gradient(135deg, #818cf8, #c7d2fe);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+	background: linear-gradient(135deg, #818cf8, #c7d2fe);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
 }
 
 .assembly-item {
-  opacity: 0;
-  transform: translate3d(var(--assembly-x, 0), var(--assembly-distance, 64px), 0)
-    rotate(var(--assembly-rotate, 0deg)) scale(var(--assembly-scale-from, 0.76));
-  transform-origin: center;
-  transition:
-    opacity var(--assembly-duration) var(--assembly-ease),
-    transform var(--assembly-duration) var(--assembly-ease);
-  transition-delay: var(--assembly-delay, 0ms);
-  will-change: opacity, transform;
+	opacity: 0;
+	transform: translate3d(var(--assembly-x, 0), var(--assembly-distance, 64px), 0)
+		rotate(var(--assembly-rotate, 0deg)) scale(var(--assembly-scale-from, 0.76));
+	transform-origin: center;
+	transition:
+		opacity var(--assembly-duration) var(--assembly-ease),
+		transform var(--assembly-duration) var(--assembly-ease);
+	transition-delay: var(--assembly-delay, 0ms);
+	will-change: opacity, transform;
 }
 
 .assembly-item.is-visible {
-  opacity: 1;
-  transform: translate3d(0, 0, 0) scale(var(--assembly-scale-to, 1));
+	opacity: 1;
+	transform: translate3d(0, 0, 0) scale(var(--assembly-scale-to, 1));
 }
 
 .assembly-title {
-  --assembly-delay: 0ms;
+	--assembly-delay: 0ms;
 }
 
 .assembly-content {
-  --assembly-delay: 120ms;
+	--assembly-delay: 120ms;
 }
 
 /* Laboratorios visuales — animaciones suaves */
 @keyframes lab-value-pop {
-  0% {
-    transform: scale(1);
-  }
-  35% {
-    transform: scale(1.14);
-    color: var(--primary);
-  }
-  100% {
-    transform: scale(1);
-  }
+	0% {
+		transform: scale(1);
+	}
+	35% {
+		transform: scale(1.14);
+		color: var(--primary);
+	}
+	100% {
+		transform: scale(1);
+	}
 }
 
 @keyframes lab-result-flash {
-  0% {
-    background-color: color-mix(in oklab, var(--primary) 55%, transparent);
-    transform: scale(1.05);
-  }
-  100% {
-    background-color: color-mix(in oklab, var(--primary) 25%, transparent);
-    transform: scale(1);
-  }
+	0% {
+		background-color: color-mix(in oklab, var(--primary) 55%, transparent);
+		transform: scale(1.05);
+	}
+	100% {
+		background-color: color-mix(in oklab, var(--primary) 25%, transparent);
+		transform: scale(1);
+	}
 }
 
 @keyframes lab-spec-enter {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 @keyframes lab-preview-enter {
-  from {
-    opacity: 0;
-    transform: translateX(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+	from {
+		opacity: 0;
+		transform: translateX(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
 }
 
 .lab-value-pop {
-  animation: lab-value-pop 0.48s var(--ease-out-soft);
+	animation: lab-value-pop 0.48s var(--ease-out-soft);
 }
 
 .lab-result-flash {
-  animation: lab-result-flash 0.65s var(--ease-out-soft);
+	animation: lab-result-flash 0.65s var(--ease-out-soft);
 }
 
 .lab-spec-enter {
-  animation: lab-spec-enter 0.5s var(--ease-out-soft) both;
+	animation: lab-spec-enter 0.5s var(--ease-out-soft) both;
 }
 
 .lab-preview-enter {
-  animation: lab-preview-enter 0.55s var(--ease-out-soft) both;
+	animation: lab-preview-enter 0.55s var(--ease-out-soft) both;
 }
 
 .lab-editable-token {
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.15s ease;
+	transition:
+		background-color 0.2s ease,
+		border-color 0.2s ease,
+		transform 0.15s ease;
 }
 
 .lab-editable-token:active {
-  transform: scale(0.96);
+	transform: scale(0.96);
 }
 
 .lab-card-lift {
-  transition:
-    transform 0.4s var(--ease-out-soft),
-    border-color 0.35s ease,
-    box-shadow 0.35s ease,
-    background-color 0.35s ease;
+	transition:
+		transform 0.4s var(--ease-out-soft),
+		border-color 0.35s ease,
+		box-shadow 0.35s ease,
+		background-color 0.35s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .assembly-item {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
+	.assembly-item {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
 
-  .lab-value-pop,
-  .lab-result-flash,
-  .lab-spec-enter,
-  .lab-preview-enter {
-    animation: none;
-  }
+	.lab-value-pop,
+	.lab-result-flash,
+	.lab-spec-enter,
+	.lab-preview-enter {
+		animation: none;
+	}
 
-  .lab-card-lift {
-    transition: none;
-  }
+	.lab-card-lift {
+		transition: none;
+	}
 }
 
 html.in-iframe::-webkit-scrollbar,
 html.in-iframe body::-webkit-scrollbar,
 html.in-iframe *::-webkit-scrollbar {
-  width: 0 !important;
-  height: 0 !important;
-  display: none !important;
+	width: 0 !important;
+	height: 0 !important;
+	display: none !important;
 }
 
 html.in-iframe,
 html.in-iframe body,
 html.in-iframe * {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
 }

@@ -1,6 +1,9 @@
 .svelte-kit
 build
 .output
-.svelte-kit
+.vercel
+.netlify
 node_modules
 package-lock.json
+.agents
+skills-lock.json

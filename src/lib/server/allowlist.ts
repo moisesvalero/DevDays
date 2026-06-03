@@ -6,21 +6,21 @@ import { env } from '$env/dynamic/private';
  * - [] significa "todo bloqueado" (modo paranoia: nadie entra).
  */
 export function getAllowedEmails(): string[] {
-  const raw = env.ALLOWED_EMAILS ?? '';
-  return [
-    ...new Set(
-      raw
-        .split(',')
-        .map((s) => s.trim().toLowerCase())
-        .filter(Boolean)
-    )
-  ];
+	const raw = env.ALLOWED_EMAILS ?? '';
+	return [
+		...new Set(
+			raw
+				.split(',')
+				.map((s) => s.trim().toLowerCase())
+				.filter(Boolean)
+		)
+	];
 }
 
 /** ¿El email pasa la whitelist? Si la lista está vacía → false (no entra nadie). */
 export function isEmailAllowed(email: string | null | undefined): boolean {
-  if (!email) return false;
-  const allowed = getAllowedEmails();
-  if (allowed.length === 0) return false;
-  return allowed.includes(email.trim().toLowerCase());
+	if (!email) return false;
+	const allowed = getAllowedEmails();
+	if (allowed.length === 0) return false;
+	return allowed.includes(email.trim().toLowerCase());
 }

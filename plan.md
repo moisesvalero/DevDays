@@ -74,27 +74,27 @@ También en **Authentication → URL Configuration**: añadir `http://localhost:
 
 ```ts
 export type Ejercicio = {
-  numero: 1 | 2 | 3;
-  enunciado: string;
-  plantilla: string;
+	numero: 1 | 2 | 3;
+	enunciado: string;
+	plantilla: string;
 };
 
 export type Leccion = {
-  dia: number;
-  semana: 1 | 2 | 3 | 4 | 5;
-  titulo: string;
-  objetivo: string;
-  explicacion: string;
-  ejercicios: [Ejercicio, Ejercicio, Ejercicio];
+	dia: number;
+	semana: 1 | 2 | 3 | 4 | 5;
+	titulo: string;
+	objetivo: string;
+	explicacion: string;
+	ejercicios: [Ejercicio, Ejercicio, Ejercicio];
 };
 
 export type EstadoDia = 'pendiente' | 'completado';
 
 export type FilaProgreso = {
-  user_id: string;
-  dia: number;
-  estado: EstadoDia;
-  fecha: string;
+	user_id: string;
+	dia: number;
+	estado: EstadoDia;
+	fecha: string;
 };
 ```
 
@@ -104,12 +104,12 @@ export type FilaProgreso = {
 import type { SupabaseClient, User } from '@supabase/supabase-js';
 
 declare global {
-  namespace App {
-    interface Locals {
-      supabase: SupabaseClient;
-      user: User | null;
-    }
-  }
+	namespace App {
+		interface Locals {
+			supabase: SupabaseClient;
+			user: User | null;
+		}
+	}
 }
 export {};
 ```
@@ -134,34 +134,36 @@ Ejemplo de la forma exacta esperada (Día 1, Variables):
 import type { Leccion } from '$lib/types/lesson';
 
 export const lessons: Leccion[] = [
-  {
-    dia: 1,
-    semana: 1,
-    titulo: 'Variables',
-    objetivo: 'Entender let, const, texto y números.',
-    explicacion: `En JavaScript hay dos formas principales de declarar variables: let y const.
+	{
+		dia: 1,
+		semana: 1,
+		titulo: 'Variables',
+		objetivo: 'Entender let, const, texto y números.',
+		explicacion: `En JavaScript hay dos formas principales de declarar variables: let y const.
 let permite reasignar el valor más tarde. const fija el valor y no se puede cambiar.
 Los tipos básicos son string (texto entre comillas), number (números), boolean (true/false).
 Regla práctica: usa const por defecto y let solo cuando sepas que vas a reasignar.`,
-    ejercicios: [
-      {
-        numero: 1,
-        enunciado: 'Declara una constante llamada `nombre` con tu nombre y muéstrala con console.log.',
-        plantilla: `// Día 1 - Ejercicio 1\n// Declara una constante 'nombre' con tu nombre.\n\n`
-      },
-      {
-        numero: 2,
-        enunciado: 'Declara una variable `edad` con let, asígnale 25 y luego cámbiala a 26. Muestra ambos valores.',
-        plantilla: `// Día 1 - Ejercicio 2\n\n`
-      },
-      {
-        numero: 3,
-        enunciado: 'Crea una constante `pi = 3.14` e intenta reasignarla. Comenta qué pasa.',
-        plantilla: `// Día 1 - Ejercicio 3\n\n`
-      }
-    ]
-  },
-  // ... días 2 a 35
+		ejercicios: [
+			{
+				numero: 1,
+				enunciado:
+					'Declara una constante llamada `nombre` con tu nombre y muéstrala con console.log.',
+				plantilla: `// Día 1 - Ejercicio 1\n// Declara una constante 'nombre' con tu nombre.\n\n`
+			},
+			{
+				numero: 2,
+				enunciado:
+					'Declara una variable `edad` con let, asígnale 25 y luego cámbiala a 26. Muestra ambos valores.',
+				plantilla: `// Día 1 - Ejercicio 2\n\n`
+			},
+			{
+				numero: 3,
+				enunciado: 'Crea una constante `pi = 3.14` e intenta reasignarla. Comenta qué pasa.',
+				plantilla: `// Día 1 - Ejercicio 3\n\n`
+			}
+		]
+	}
+	// ... días 2 a 35
 ];
 ```
 
@@ -185,16 +187,16 @@ import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/publi
 import type { RequestEvent } from '@sveltejs/kit';
 
 export function createSupabaseServerClient(event: RequestEvent) {
-  return createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
-    cookies: {
-      getAll: () => event.cookies.getAll(),
-      setAll: (cookies) => {
-        cookies.forEach(({ name, value, options }) =>
-          event.cookies.set(name, value, { ...options, path: '/' })
-        );
-      }
-    }
-  });
+	return createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+		cookies: {
+			getAll: () => event.cookies.getAll(),
+			setAll: (cookies) => {
+				cookies.forEach(({ name, value, options }) =>
+					event.cookies.set(name, value, { ...options, path: '/' })
+				);
+			}
+		}
+	});
 }
 ```
 
@@ -212,10 +214,12 @@ import type { Handle } from '@sveltejs/kit';
 import { createSupabaseServerClient } from '$lib/server/supabase/server-client';
 
 const handleSupabase: Handle = async ({ event, resolve }) => {
-  event.locals.supabase = createSupabaseServerClient(event);
-  const { data: { user } } = await event.locals.supabase.auth.getUser();
-  event.locals.user = user;
-  return resolve(event);
+	event.locals.supabase = createSupabaseServerClient(event);
+	const {
+		data: { user }
+	} = await event.locals.supabase.auth.getUser();
+	event.locals.user = user;
+	return resolve(event);
 };
 
 // El `handle` original con CSP/lang se renombra a `handleSecurity`.
@@ -241,17 +245,17 @@ import { fail } from '@sveltejs/kit';
 import { PUBLIC_SITE_URL } from '$env/static/public';
 
 export const actions: Actions = {
-  magic: async ({ request, locals }) => {
-    const data = await request.formData();
-    const email = String(data.get('email') || '').trim();
-    if (!email) return fail(400, { error: 'Email requerido' });
-    const { error } = await locals.supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: `${PUBLIC_SITE_URL}/auth/callback` }
-    });
-    if (error) return fail(500, { error: error.message });
-    return { sent: true };
-  }
+	magic: async ({ request, locals }) => {
+		const data = await request.formData();
+		const email = String(data.get('email') || '').trim();
+		if (!email) return fail(400, { error: 'Email requerido' });
+		const { error } = await locals.supabase.auth.signInWithOtp({
+			email,
+			options: { emailRedirectTo: `${PUBLIC_SITE_URL}/auth/callback` }
+		});
+		if (error) return fail(500, { error: error.message });
+		return { sent: true };
+	}
 };
 ```
 
@@ -262,11 +266,11 @@ import { redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async ({ url, locals }) => {
-  const code = url.searchParams.get('code');
-  if (code) {
-    await locals.supabase.auth.exchangeCodeForSession(code);
-  }
-  throw redirect(303, '/estudio');
+	const code = url.searchParams.get('code');
+	if (code) {
+		await locals.supabase.auth.exchangeCodeForSession(code);
+	}
+	throw redirect(303, '/estudio');
 };
 ```
 
@@ -282,16 +286,16 @@ import type { LayoutServerLoad } from './$types';
 import { lessons } from '$lib/data/lessons';
 
 export const load: LayoutServerLoad = async ({ locals }) => {
-  if (!locals.user) throw redirect(303, '/login');
-  const { data: progreso } = await locals.supabase
-    .from('progreso')
-    .select('dia, estado, fecha')
-    .eq('user_id', locals.user.id);
-  return {
-    user: { id: locals.user.id, email: locals.user.email },
-    lessons,
-    progreso: progreso ?? []
-  };
+	if (!locals.user) throw redirect(303, '/login');
+	const { data: progreso } = await locals.supabase
+		.from('progreso')
+		.select('dia, estado, fecha')
+		.eq('user_id', locals.user.id);
+	return {
+		user: { id: locals.user.id, email: locals.user.email },
+		lessons,
+		progreso: progreso ?? []
+	};
 };
 ```
 
@@ -301,12 +305,12 @@ Layout fullscreen, **sin** la nav superior global del layout raíz. Aplica clase
 
 ```svelte
 <script lang="ts">
-  import type { Snippet } from 'svelte';
-  let { children }: { children: Snippet } = $props();
+	import type { Snippet } from 'svelte';
+	let { children }: { children: Snippet } = $props();
 </script>
 
 <div class="dark fixed inset-0 flex flex-col bg-background text-on-surface overflow-hidden">
-  {@render children()}
+	{@render children()}
 </div>
 ```
 
@@ -345,6 +349,7 @@ No tocar las variables shadcn (`--color-primary`, etc.). Solo añadir las Materi
 Props: `lessons: Leccion[]`, `progreso: FilaProgreso[]`, `currentDay: number`, `onSelect: (dia: number) => void`.
 
 Por cada lección:
+
 - Círculo verde (Material icon `check_circle` con color `#10B981`) si `progreso.find(p => p.dia === dia)?.estado === 'completado'`.
 - Círculo gris (`circle` outline) si pendiente.
 - Si `dia === currentDay`: borde izquierdo de 4px en `--color-primary` y texto en primary.
@@ -356,6 +361,7 @@ Header con título "DevDays 35" + porcentaje completado.
 Props: `lesson: Leccion`, `correctos: Set<number>`, `ejercicioActivo: number`, `onSelectEjercicio: (n: number) => void`.
 
 Muestra:
+
 - `<h1>` con `lesson.titulo`.
 - `<p>` con `lesson.explicacion` (preserva saltos de línea con `white-space: pre-line`).
 - Lista de 3 ejercicios. El activo lleva borde primary, los completados un check verde, los demás borde outline-variant.
@@ -367,66 +373,71 @@ Expone método `getValue()` vía `bind:this`.
 
 ```svelte
 <script lang="ts">
-  import { onMount, onDestroy } from 'svelte';
-  import { EditorState } from '@codemirror/state';
-  import { EditorView, keymap, lineNumbers } from '@codemirror/view';
-  import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
-  import { javascript } from '@codemirror/lang-javascript';
-  import { oneDark } from '@codemirror/theme-one-dark';
+	import { onMount, onDestroy } from 'svelte';
+	import { EditorState } from '@codemirror/state';
+	import { EditorView, keymap, lineNumbers } from '@codemirror/view';
+	import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
+	import { javascript } from '@codemirror/lang-javascript';
+	import { oneDark } from '@codemirror/theme-one-dark';
 
-  let { value = $bindable(''), onChange, filename = 'exercise.js' }:
-    { value: string; onChange?: (v: string) => void; filename?: string } = $props();
+	let {
+		value = $bindable(''),
+		onChange,
+		filename = 'exercise.js'
+	}: { value: string; onChange?: (v: string) => void; filename?: string } = $props();
 
-  let host: HTMLDivElement;
-  let view: EditorView | undefined;
+	let host: HTMLDivElement;
+	let view: EditorView | undefined;
 
-  export function getValue(): string {
-    return view ? view.state.doc.toString() : value;
-  }
+	export function getValue(): string {
+		return view ? view.state.doc.toString() : value;
+	}
 
-  onMount(() => {
-    view = new EditorView({
-      parent: host,
-      state: EditorState.create({
-        doc: value,
-        extensions: [
-          lineNumbers(),
-          history(),
-          keymap.of([...defaultKeymap, ...historyKeymap]),
-          javascript(),
-          oneDark,
-          EditorView.updateListener.of((u) => {
-            if (u.docChanged) {
-              const v = u.state.doc.toString();
-              value = v;
-              onChange?.(v);
-            }
-          })
-        ]
-      })
-    });
-  });
+	onMount(() => {
+		view = new EditorView({
+			parent: host,
+			state: EditorState.create({
+				doc: value,
+				extensions: [
+					lineNumbers(),
+					history(),
+					keymap.of([...defaultKeymap, ...historyKeymap]),
+					javascript(),
+					oneDark,
+					EditorView.updateListener.of((u) => {
+						if (u.docChanged) {
+							const v = u.state.doc.toString();
+							value = v;
+							onChange?.(v);
+						}
+					})
+				]
+			})
+		});
+	});
 
-  onDestroy(() => view?.destroy());
+	onDestroy(() => view?.destroy());
 
-  $effect(() => {
-    if (view && value !== view.state.doc.toString()) {
-      view.dispatch({
-        changes: { from: 0, to: view.state.doc.length, insert: value }
-      });
-    }
-  });
+	$effect(() => {
+		if (view && value !== view.state.doc.toString()) {
+			view.dispatch({
+				changes: { from: 0, to: view.state.doc.length, insert: value }
+			});
+		}
+	});
 </script>
 
 <div class="border border-outline-variant rounded-lg overflow-hidden bg-surface-container-lowest">
-  <div class="flex items-center justify-between bg-surface-container px-md py-sm border-b border-outline-variant">
-    <div class="flex items-center gap-sm">
-      <span class="material-symbols-outlined text-on-surface-variant text-sm">terminal</span>
-      <span class="font-mono text-xs text-on-surface-variant">{filename}</span>
-    </div>
-    <span class="font-mono text-xs text-on-surface-variant">JavaScript</span>
-  </div>
-  <div bind:this={host} class="min-h-[300px] text-sm"></div>
+	<div
+		class="flex items-center justify-between bg-surface-container px-md py-sm border-b border-outline-variant"
+	>
+		<div class="flex items-center gap-sm">
+			<span class="material-symbols-outlined text-on-surface-variant text-sm">terminal</span>
+			<span class="font-mono text-xs text-on-surface-variant">{filename}</span>
+		</div>
+		<span class="font-mono text-xs text-on-surface-variant">JavaScript</span>
+	</div>
+	<div bind:this={host} class="min-h-[300px] text-sm"></div>
 </div>
 ```
 
@@ -450,122 +461,137 @@ Ensambla las 3 columnas. Estado con runes:
 
 ```svelte
 <script lang="ts">
-  import { invalidateAll } from '$app/navigation';
-  import DayList from '$lib/components/study/DayList.svelte';
-  import LessonContent from '$lib/components/study/LessonContent.svelte';
-  import CodeEditor from '$lib/components/study/CodeEditor.svelte';
-  import AiTutor from '$lib/components/study/AiTutor.svelte';
-  import { Button } from '$lib/components/ui/button';
+	import { invalidateAll } from '$app/navigation';
+	import DayList from '$lib/components/study/DayList.svelte';
+	import LessonContent from '$lib/components/study/LessonContent.svelte';
+	import CodeEditor from '$lib/components/study/CodeEditor.svelte';
+	import AiTutor from '$lib/components/study/AiTutor.svelte';
+	import { Button } from '$lib/components/ui/button';
 
-  let { data } = $props();
+	let { data } = $props();
 
-  let currentDay = $state(1);
-  let ejercicioActivo = $state<1 | 2 | 3>(1);
-  let correctosPorDia = $state<Map<number, Set<number>>>(new Map());
-  let codigosPorEjercicio = $state<Map<string, string>>(new Map()); // clave: `${dia}-${ej}`
-  let feedback = $state<string | null>(null);
-  let correctoUltimo = $state<boolean | null>(null);
-  let loading = $state(false);
-  let editorRef: { getValue: () => string } | null = $state(null);
+	let currentDay = $state(1);
+	let ejercicioActivo = $state<1 | 2 | 3>(1);
+	let correctosPorDia = $state<Map<number, Set<number>>>(new Map());
+	let codigosPorEjercicio = $state<Map<string, string>>(new Map()); // clave: `${dia}-${ej}`
+	let feedback = $state<string | null>(null);
+	let correctoUltimo = $state<boolean | null>(null);
+	let loading = $state(false);
+	let editorRef: { getValue: () => string } | null = $state(null);
 
-  const lesson = $derived(data.lessons.find((l) => l.dia === currentDay)!);
-  const correctosDia = $derived(correctosPorDia.get(currentDay) ?? new Set<number>());
-  const ejercicio = $derived(lesson.ejercicios.find((e) => e.numero === ejercicioActivo)!);
-  const claveActual = $derived(`${currentDay}-${ejercicioActivo}`);
-  const codigoActual = $derived(codigosPorEjercicio.get(claveActual) ?? ejercicio.plantilla);
-  const canComplete = $derived(correctosDia.size === 3);
-  const dailyProgressPct = $derived(Math.round((correctosDia.size / 3) * 100));
+	const lesson = $derived(data.lessons.find((l) => l.dia === currentDay)!);
+	const correctosDia = $derived(correctosPorDia.get(currentDay) ?? new Set<number>());
+	const ejercicio = $derived(lesson.ejercicios.find((e) => e.numero === ejercicioActivo)!);
+	const claveActual = $derived(`${currentDay}-${ejercicioActivo}`);
+	const codigoActual = $derived(codigosPorEjercicio.get(claveActual) ?? ejercicio.plantilla);
+	const canComplete = $derived(correctosDia.size === 3);
+	const dailyProgressPct = $derived(Math.round((correctosDia.size / 3) * 100));
 
-  function onChangeCode(v: string) {
-    codigosPorEjercicio.set(claveActual, v);
-    codigosPorEjercicio = new Map(codigosPorEjercicio);
-  }
+	function onChangeCode(v: string) {
+		codigosPorEjercicio.set(claveActual, v);
+		codigosPorEjercicio = new Map(codigosPorEjercicio);
+	}
 
-  async function corregir() {
-    if (!editorRef) return;
-    loading = true;
-    feedback = null;
-    try {
-      const res = await fetch('/api/corregir', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          dia: currentDay,
-          ejercicio: ejercicioActivo,
-          enunciado: ejercicio.enunciado,
-          codigo: editorRef.getValue()
-        })
-      });
-      const json = await res.json();
-      feedback = json.feedback;
-      correctoUltimo = json.correcto;
-      if (json.correcto) {
-        const set = new Set(correctosDia);
-        set.add(ejercicioActivo);
-        correctosPorDia.set(currentDay, set);
-        correctosPorDia = new Map(correctosPorDia);
-      }
-    } finally {
-      loading = false;
-    }
-  }
+	async function corregir() {
+		if (!editorRef) return;
+		loading = true;
+		feedback = null;
+		try {
+			const res = await fetch('/api/corregir', {
+				method: 'POST',
+				headers: { 'content-type': 'application/json' },
+				body: JSON.stringify({
+					dia: currentDay,
+					ejercicio: ejercicioActivo,
+					enunciado: ejercicio.enunciado,
+					codigo: editorRef.getValue()
+				})
+			});
+			const json = await res.json();
+			feedback = json.feedback;
+			correctoUltimo = json.correcto;
+			if (json.correcto) {
+				const set = new Set(correctosDia);
+				set.add(ejercicioActivo);
+				correctosPorDia.set(currentDay, set);
+				correctosPorDia = new Map(correctosPorDia);
+			}
+		} finally {
+			loading = false;
+		}
+	}
 
-  async function marcarCompletado() {
-    const fd = new FormData();
-    fd.append('dia', String(currentDay));
-    await fetch('?/marcar', { method: 'POST', body: fd });
-    await invalidateAll();
-  }
+	async function marcarCompletado() {
+		const fd = new FormData();
+		fd.append('dia', String(currentDay));
+		await fetch('?/marcar', { method: 'POST', body: fd });
+		await invalidateAll();
+	}
 </script>
 
 <!-- Header superior (clon del TopNav del diseño) -->
-<header class="flex justify-between items-center w-full px-6 h-16 bg-surface-container border-b border-outline-variant z-50 shrink-0">
-  <span class="text-2xl font-bold text-primary">DevDays</span>
-  <span class="text-xs text-on-surface-variant">{data.user.email}</span>
+<header
+	class="flex justify-between items-center w-full px-6 h-16 bg-surface-container border-b border-outline-variant z-50 shrink-0"
+>
+	<span class="text-2xl font-bold text-primary">DevDays</span>
+	<span class="text-xs text-on-surface-variant">{data.user.email}</span>
 </header>
 
 <main class="flex flex-1 overflow-hidden">
-  <aside class="bg-surface-container-low border-r border-outline-variant flex flex-col overflow-hidden w-[260px] shrink-0">
-    <DayList
-      lessons={data.lessons}
-      progreso={data.progreso}
-      {currentDay}
-      onSelect={(d) => { currentDay = d; ejercicioActivo = 1; feedback = null; correctoUltimo = null; }}
-    />
-  </aside>
+	<aside
+		class="bg-surface-container-low border-r border-outline-variant flex flex-col overflow-hidden w-[260px] shrink-0"
+	>
+		<DayList
+			lessons={data.lessons}
+			progreso={data.progreso}
+			{currentDay}
+			onSelect={(d) => {
+				currentDay = d;
+				ejercicioActivo = 1;
+				feedback = null;
+				correctoUltimo = null;
+			}}
+		/>
+	</aside>
 
-  <section class="flex-1 flex flex-col bg-background overflow-y-auto">
-    <div class="p-10 max-w-[900px] mx-auto w-full space-y-6">
-      <LessonContent
-        {lesson}
-        correctos={correctosDia}
-        {ejercicioActivo}
-        onSelectEjercicio={(n) => { ejercicioActivo = n as 1|2|3; feedback = null; correctoUltimo = null; }}
-      />
-      <CodeEditor
-        bind:this={editorRef}
-        value={codigoActual}
-        onChange={onChangeCode}
-        filename={`dia${currentDay}_ej${ejercicioActivo}.js`}
-      />
-      <div class="flex justify-end">
-        <Button onclick={corregir} disabled={loading}>
-          {loading ? 'Corrigiendo...' : 'Corregir'}
-        </Button>
-      </div>
-    </div>
-  </section>
+	<section class="flex-1 flex flex-col bg-background overflow-y-auto">
+		<div class="p-10 max-w-[900px] mx-auto w-full space-y-6">
+			<LessonContent
+				{lesson}
+				correctos={correctosDia}
+				{ejercicioActivo}
+				onSelectEjercicio={(n) => {
+					ejercicioActivo = n as 1 | 2 | 3;
+					feedback = null;
+					correctoUltimo = null;
+				}}
+			/>
+			<CodeEditor
+				bind:this={editorRef}
+				value={codigoActual}
+				onChange={onChangeCode}
+				filename={`dia${currentDay}_ej${ejercicioActivo}.js`}
+			/>
+			<div class="flex justify-end">
+				<Button onclick={corregir} disabled={loading}>
+					{loading ? 'Corrigiendo...' : 'Corregir'}
+				</Button>
+			</div>
+		</div>
+	</section>
 
-  <aside class="w-[28%] min-w-[320px] bg-surface-container border-l border-outline-variant flex flex-col p-6 shrink-0">
-    <AiTutor
-      {feedback}
-      {loading}
-      {correctoUltimo}
-      {dailyProgressPct}
-      {canComplete}
-      onComplete={marcarCompletado}
-    />
-  </aside>
+	<aside
+		class="w-[28%] min-w-[320px] bg-surface-container border-l border-outline-variant flex flex-col p-6 shrink-0"
+	>
+		<AiTutor
+			{feedback}
+			{loading}
+			{correctoUltimo}
+			{dailyProgressPct}
+			{canComplete}
+			onComplete={marcarCompletado}
+		/>
+	</aside>
 </main>
 ```
 
@@ -584,13 +610,16 @@ const MODEL = 'gemini-2.5-flash';
 const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
 
 export const POST: RequestHandler = async ({ request, locals }) => {
-  if (!locals.user) throw error(401, 'No autorizado');
-  const body = await request.json();
-  const { dia, ejercicio, enunciado, codigo } = body as {
-    dia: number; ejercicio: number; enunciado: string; codigo: string;
-  };
+	if (!locals.user) throw error(401, 'No autorizado');
+	const body = await request.json();
+	const { dia, ejercicio, enunciado, codigo } = body as {
+		dia: number;
+		ejercicio: number;
+		enunciado: string;
+		codigo: string;
+	};
 
-  const prompt = `Eres un profesor estricto pero amable de JavaScript y SvelteKit.
+	const prompt = `Eres un profesor estricto pero amable de JavaScript y SvelteKit.
 Día ${dia}, Ejercicio ${ejercicio}.
 Enunciado: ${enunciado}
 
@@ -603,42 +632,45 @@ Tarea: decide si el código cumple el enunciado. Si tiene errores menores de est
 Responde con JSON estricto siguiendo el schema.
 Sé breve (máximo 4 líneas en feedback). Habla en español, segunda persona.`;
 
-  const res = await fetch(`${ENDPOINT}?key=${GEMINI_API_KEY}`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        responseMimeType: 'application/json',
-        responseSchema: {
-          type: 'object',
-          properties: {
-            correcto: { type: 'boolean' },
-            feedback: { type: 'string' },
-            sugerencia: { type: 'string' }
-          },
-          required: ['correcto', 'feedback']
-        }
-      }
-    })
-  });
+	const res = await fetch(`${ENDPOINT}?key=${GEMINI_API_KEY}`, {
+		method: 'POST',
+		headers: { 'content-type': 'application/json' },
+		body: JSON.stringify({
+			contents: [{ parts: [{ text: prompt }] }],
+			generationConfig: {
+				responseMimeType: 'application/json',
+				responseSchema: {
+					type: 'object',
+					properties: {
+						correcto: { type: 'boolean' },
+						feedback: { type: 'string' },
+						sugerencia: { type: 'string' }
+					},
+					required: ['correcto', 'feedback']
+				}
+			}
+		})
+	});
 
-  if (!res.ok) {
-    return json({ correcto: false, feedback: 'No pude conectar con la IA. Reintenta en unos segundos.' }, { status: 200 });
-  }
+	if (!res.ok) {
+		return json(
+			{ correcto: false, feedback: 'No pude conectar con la IA. Reintenta en unos segundos.' },
+			{ status: 200 }
+		);
+	}
 
-  const data = await res.json();
-  const text: string = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '{}';
-  try {
-    const parsed = JSON.parse(text);
-    return json({
-      correcto: Boolean(parsed.correcto),
-      feedback: String(parsed.feedback ?? ''),
-      sugerencia: parsed.sugerencia ?? null
-    });
-  } catch {
-    return json({ correcto: false, feedback: 'Respuesta de la IA no válida. Reintenta.' });
-  }
+	const data = await res.json();
+	const text: string = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '{}';
+	try {
+		const parsed = JSON.parse(text);
+		return json({
+			correcto: Boolean(parsed.correcto),
+			feedback: String(parsed.feedback ?? ''),
+			sugerencia: parsed.sugerencia ?? null
+		});
+	} catch {
+		return json({ correcto: false, feedback: 'Respuesta de la IA no válida. Reintenta.' });
+	}
 };
 ```
 
@@ -651,20 +683,20 @@ import { fail, error } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
 export const actions: Actions = {
-  marcar: async ({ request, locals }) => {
-    if (!locals.user) throw error(401, 'No autorizado');
-    const fd = await request.formData();
-    const dia = Number(fd.get('dia'));
-    if (!Number.isInteger(dia) || dia < 1 || dia > 35) return fail(400, { error: 'Día inválido' });
-    const { error: dbError } = await locals.supabase
-      .from('progreso')
-      .upsert(
-        { user_id: locals.user.id, dia, estado: 'completado', fecha: new Date().toISOString() },
-        { onConflict: 'user_id,dia' }
-      );
-    if (dbError) return fail(500, { error: dbError.message });
-    return { ok: true };
-  }
+	marcar: async ({ request, locals }) => {
+		if (!locals.user) throw error(401, 'No autorizado');
+		const fd = await request.formData();
+		const dia = Number(fd.get('dia'));
+		if (!Number.isInteger(dia) || dia < 1 || dia > 35) return fail(400, { error: 'Día inválido' });
+		const { error: dbError } = await locals.supabase
+			.from('progreso')
+			.upsert(
+				{ user_id: locals.user.id, dia, estado: 'completado', fecha: new Date().toISOString() },
+				{ onConflict: 'user_id,dia' }
+			);
+		if (dbError) return fail(500, { error: dbError.message });
+		return { ok: true };
+	}
 };
 ```
 
@@ -676,8 +708,11 @@ El layout raíz **no** carga Material Symbols. Añade en `src/routes/estudio/+la
 
 ```svelte
 <svelte:head>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+		rel="stylesheet"
+	/>
 </svelte:head>
 ```
 

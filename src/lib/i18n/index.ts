@@ -8,8 +8,8 @@ import { applyLocale, getLocale, t as translate } from './app-i18n.svelte.ts';
 const tick = writable(0);
 
 export function setLocale(lang: string): void {
-  applyLocale(lang);
-  tick.update((n) => n + 1);
+	applyLocale(lang);
+	tick.update((n) => n + 1);
 }
 
 /** Compatible con `$locale` en plantillas. */

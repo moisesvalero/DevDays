@@ -2,37 +2,37 @@ import { callOpenAI, type OpenAIMessage } from './openai';
 import { callGemini } from './gemini';
 
 export type CorreccionResult = {
-  correcto: boolean;
-  feedback: string;
-  pistas: string[];
-  snippetGuia: string;
-  provider: 'openai' | 'gemini' | 'none';
+	correcto: boolean;
+	feedback: string;
+	pistas: string[];
+	snippetGuia: string;
+	provider: 'openai' | 'gemini' | 'none';
 };
 
 export type CorreccionInput = {
-  dia: number;
-  ejercicio: number;
-  enunciado: string;
-  codigo: string;
-  queDebePasar?: string[];
-  criteriosLogica?: string[];
-  nivelAyuda?: 'normal' | 'extra';
+	dia: number;
+	ejercicio: number;
+	enunciado: string;
+	codigo: string;
+	queDebePasar?: string[];
+	criteriosLogica?: string[];
+	nivelAyuda?: 'normal' | 'extra';
 };
 
 export type ChatInput = {
-  dia: number;
-  ejercicio: number;
-  enunciado: string;
-  codigoActual?: string;
-  queDebePasar?: string[];
-  mensaje: string;
-  historial: Array<{ role: 'user' | 'model'; text: string }>;
+	dia: number;
+	ejercicio: number;
+	enunciado: string;
+	codigoActual?: string;
+	queDebePasar?: string[];
+	mensaje: string;
+	historial: Array<{ role: 'user' | 'model'; text: string }>;
 };
 
 export type ChatResult = {
-  respuesta: string;
-  provider: 'openai' | 'gemini' | 'none';
-  errorMsg?: string;
+	respuesta: string;
+	provider: 'openai' | 'gemini' | 'none';
+	errorMsg?: string;
 };
 
 const PEDAGOGIA = `Pedagogía DevDays (obligatoria):
@@ -43,7 +43,7 @@ const PEDAGOGIA = `Pedagogía DevDays (obligatoria):
 - Si el alumno pide cómo resolver el ejercicio: explica SOLO con conceptos de la sección citada en el enunciado (campo seccionRef / «Basado en la lección»). No introduzcas sintaxis de días futuros ni APIs no vistas ese día.`;
 
 function buildSystemCorreccion(nivelAyuda: 'normal' | 'extra') {
-  return `Eres un tutor de programación amable, paciente y motivador. Hablas en español, segunda persona (tú).
+	return `Eres un tutor de programación amable, paciente y motivador. Hablas en español, segunda persona (tú).
 
 ${PEDAGOGIA}
 
@@ -60,21 +60,21 @@ Formato JSON:
 - "feedback": 1-2 frases con analogía, alentadoras.
 - "pistas": 2-4 pistas sobre la LÓGICA o la historia del ejercicio (sin código). Si correcto=true, array vacío o una mejora opcional.
 - "snippetGuia": ${
-    nivelAyuda === 'extra'
-      ? 'Si correcto=false: pseudocódigo o frase narrativa (NO solución literal para pegar). Si correcto=true: vacío.'
-      : 'SIEMPRE vacío salvo nivelAyuda extra.'
-  }`;
+		nivelAyuda === 'extra'
+			? 'Si correcto=false: pseudocódigo o frase narrativa (NO solución literal para pegar). Si correcto=true: vacío.'
+			: 'SIEMPRE vacío salvo nivelAyuda extra.'
+	}`;
 }
 
 function buildUserCorreccion(input: CorreccionInput) {
-  const criterios = input.criteriosLogica?.length
-    ? `\nCriterios de lógica (lo esencial):\n${input.criteriosLogica.map((c) => `- ${c}`).join('\n')}`
-    : '';
-  const debe = input.queDebePasar?.length
-    ? `\nQué debe pasar:\n${input.queDebePasar.map((q) => `- ${q}`).join('\n')}`
-    : '';
+	const criterios = input.criteriosLogica?.length
+		? `\nCriterios de lógica (lo esencial):\n${input.criteriosLogica.map((c) => `- ${c}`).join('\n')}`
+		: '';
+	const debe = input.queDebePasar?.length
+		? `\nQué debe pasar:\n${input.queDebePasar.map((q) => `- ${q}`).join('\n')}`
+		: '';
 
-  return `Día ${input.dia} · Ejercicio ${input.ejercicio}.
+	return `Día ${input.dia} · Ejercicio ${input.ejercicio}.
 Enunciado: ${input.enunciado}${debe}${criterios}
 
 Código del alumno:
@@ -84,11 +84,11 @@ ${input.codigo}
 }
 
 function buildSystemChat(input: ChatInput) {
-  const debe = input.queDebePasar?.length
-    ? `\nQué debe lograr el ejercicio:\n${input.queDebePasar.map((q) => `- ${q}`).join('\n')}`
-    : '';
+	const debe = input.queDebePasar?.length
+		? `\nQué debe lograr el ejercicio:\n${input.queDebePasar.map((q) => `- ${q}`).join('\n')}`
+		: '';
 
-  return `Eres un tutor de programación amable y conciso. Hablas en español, segunda persona (tú).
+	return `Eres un tutor de programación amable y conciso. Hablas en español, segunda persona (tú).
 
 ${PEDAGOGIA}
 
@@ -104,163 +104,163 @@ ${input.codigoActual ? `\nCódigo actual del alumno:\n\`\`\`js\n${input.codigoAc
 }
 
 const CORRECCION_SCHEMA = {
-  type: 'object',
-  additionalProperties: false,
-  properties: {
-    correcto: { type: 'boolean' },
-    feedback: { type: 'string' },
-    pistas: { type: 'array', items: { type: 'string' } },
-    snippetGuia: { type: 'string' }
-  },
-  required: ['correcto', 'feedback', 'pistas', 'snippetGuia']
+	type: 'object',
+	additionalProperties: false,
+	properties: {
+		correcto: { type: 'boolean' },
+		feedback: { type: 'string' },
+		pistas: { type: 'array', items: { type: 'string' } },
+		snippetGuia: { type: 'string' }
+	},
+	required: ['correcto', 'feedback', 'pistas', 'snippetGuia']
 } as const;
 
 export async function correctCode(input: CorreccionInput): Promise<CorreccionResult> {
-  const nivelAyuda = input.nivelAyuda ?? 'normal';
-  const systemMsg = buildSystemCorreccion(nivelAyuda);
-  const userMsg = buildUserCorreccion(input);
+	const nivelAyuda = input.nivelAyuda ?? 'normal';
+	const systemMsg = buildSystemCorreccion(nivelAyuda);
+	const userMsg = buildUserCorreccion(input);
 
-  const openai = await callOpenAI({
-    messages: [
-      { role: 'system', content: systemMsg },
-      { role: 'user', content: userMsg }
-    ],
-    temperature: 0.4,
-    jsonSchema: {
-      name: 'correccion_ejercicio',
-      schema: CORRECCION_SCHEMA as unknown as Record<string, unknown>,
-      strict: true
-    }
-  });
+	const openai = await callOpenAI({
+		messages: [
+			{ role: 'system', content: systemMsg },
+			{ role: 'user', content: userMsg }
+		],
+		temperature: 0.4,
+		jsonSchema: {
+			name: 'correccion_ejercicio',
+			schema: CORRECCION_SCHEMA as unknown as Record<string, unknown>,
+			strict: true
+		}
+	});
 
-  if (openai.ok) {
-    const parsed = parseCorreccion(openai.text);
-    if (parsed) return { ...parsed, provider: 'openai' };
-  }
+	if (openai.ok) {
+		const parsed = parseCorreccion(openai.text);
+		if (parsed) return { ...parsed, provider: 'openai' };
+	}
 
-  const geminiPrompt = `${systemMsg}\n\n${userMsg}`;
-  const gemini = await callGemini({
-    contents: [{ role: 'user', parts: [{ text: geminiPrompt }] }],
-    generationConfig: {
-      temperature: 0.4,
-      responseMimeType: 'application/json',
-      responseSchema: {
-        type: 'object',
-        properties: {
-          correcto: { type: 'boolean' },
-          feedback: { type: 'string' },
-          pistas: { type: 'array', items: { type: 'string' } },
-          snippetGuia: { type: 'string' }
-        },
-        required: ['correcto', 'feedback', 'pistas']
-      }
-    }
-  });
+	const geminiPrompt = `${systemMsg}\n\n${userMsg}`;
+	const gemini = await callGemini({
+		contents: [{ role: 'user', parts: [{ text: geminiPrompt }] }],
+		generationConfig: {
+			temperature: 0.4,
+			responseMimeType: 'application/json',
+			responseSchema: {
+				type: 'object',
+				properties: {
+					correcto: { type: 'boolean' },
+					feedback: { type: 'string' },
+					pistas: { type: 'array', items: { type: 'string' } },
+					snippetGuia: { type: 'string' }
+				},
+				required: ['correcto', 'feedback', 'pistas']
+			}
+		}
+	});
 
-  if (gemini.ok) {
-    const data = gemini.data as {
-      candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
-    };
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
-    const parsed = parseCorreccion(text);
-    if (parsed) return { ...parsed, provider: 'gemini' };
-  }
+	if (gemini.ok) {
+		const data = gemini.data as {
+			candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
+		};
+		const text = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+		const parsed = parseCorreccion(text);
+		if (parsed) return { ...parsed, provider: 'gemini' };
+	}
 
-  const msg = buildAiErrorMessage(openai, gemini);
-  return {
-    correcto: false,
-    feedback: msg,
-    pistas: [],
-    snippetGuia: '',
-    provider: 'none'
-  };
+	const msg = buildAiErrorMessage(openai, gemini);
+	return {
+		correcto: false,
+		feedback: msg,
+		pistas: [],
+		snippetGuia: '',
+		provider: 'none'
+	};
 }
 
 function parseCorreccion(text: string): Omit<CorreccionResult, 'provider'> | null {
-  if (!text?.trim()) return null;
-  try {
-    const parsed = JSON.parse(text);
-    return {
-      correcto: Boolean(parsed.correcto),
-      feedback: String(parsed.feedback ?? '').trim() || 'Sin feedback.',
-      pistas: Array.isArray(parsed.pistas)
-        ? parsed.pistas.map((p: unknown) => String(p)).filter((p: string) => p.length > 0)
-        : [],
-      snippetGuia: String(parsed.snippetGuia ?? '').trim()
-    };
-  } catch {
-    return null;
-  }
+	if (!text?.trim()) return null;
+	try {
+		const parsed = JSON.parse(text);
+		return {
+			correcto: Boolean(parsed.correcto),
+			feedback: String(parsed.feedback ?? '').trim() || 'Sin feedback.',
+			pistas: Array.isArray(parsed.pistas)
+				? parsed.pistas.map((p: unknown) => String(p)).filter((p: string) => p.length > 0)
+				: [],
+			snippetGuia: String(parsed.snippetGuia ?? '').trim()
+		};
+	} catch {
+		return null;
+	}
 }
 
 export async function chatTutor(input: ChatInput): Promise<ChatResult> {
-  if (!input.mensaje?.trim()) {
-    return { respuesta: 'Escríbeme la duda y te ayudo.', provider: 'none' };
-  }
+	if (!input.mensaje?.trim()) {
+		return { respuesta: 'Escríbeme la duda y te ayudo.', provider: 'none' };
+	}
 
-  const systemMsg = buildSystemChat(input);
-  const historial = input.historial.slice(-12);
+	const systemMsg = buildSystemChat(input);
+	const historial = input.historial.slice(-12);
 
-  const openaiMessages: OpenAIMessage[] = [
-    { role: 'system', content: systemMsg },
-    ...historial.map<OpenAIMessage>((m) => ({
-      role: m.role === 'model' ? 'assistant' : 'user',
-      content: String(m.text ?? '')
-    })),
-    { role: 'user', content: input.mensaje }
-  ];
+	const openaiMessages: OpenAIMessage[] = [
+		{ role: 'system', content: systemMsg },
+		...historial.map<OpenAIMessage>((m) => ({
+			role: m.role === 'model' ? 'assistant' : 'user',
+			content: String(m.text ?? '')
+		})),
+		{ role: 'user', content: input.mensaje }
+	];
 
-  const openai = await callOpenAI({
-    messages: openaiMessages,
-    temperature: 0.6
-  });
+	const openai = await callOpenAI({
+		messages: openaiMessages,
+		temperature: 0.6
+	});
 
-  if (openai.ok && openai.text.trim()) {
-    return { respuesta: openai.text.trim(), provider: 'openai' };
-  }
+	if (openai.ok && openai.text.trim()) {
+		return { respuesta: openai.text.trim(), provider: 'openai' };
+	}
 
-  const geminiHistorial = historial.map((m) => ({
-    role: m.role,
-    parts: [{ text: String(m.text ?? '') }]
-  }));
+	const geminiHistorial = historial.map((m) => ({
+		role: m.role,
+		parts: [{ text: String(m.text ?? '') }]
+	}));
 
-  const gemini = await callGemini({
-    systemInstruction: { parts: [{ text: systemMsg }] },
-    contents: [...geminiHistorial, { role: 'user', parts: [{ text: input.mensaje }] }],
-    generationConfig: { temperature: 0.6 }
-  });
+	const gemini = await callGemini({
+		systemInstruction: { parts: [{ text: systemMsg }] },
+		contents: [...geminiHistorial, { role: 'user', parts: [{ text: input.mensaje }] }],
+		generationConfig: { temperature: 0.6 }
+	});
 
-  if (gemini.ok) {
-    const data = gemini.data as {
-      candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
-    };
-    const text = String(data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '').trim();
-    if (text) return { respuesta: text, provider: 'gemini' };
-  }
+	if (gemini.ok) {
+		const data = gemini.data as {
+			candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
+		};
+		const text = String(data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '').trim();
+		if (text) return { respuesta: text, provider: 'gemini' };
+	}
 
-  const msg = buildAiErrorMessage(openai, gemini);
-  return { respuesta: msg, provider: 'none', errorMsg: msg };
+	const msg = buildAiErrorMessage(openai, gemini);
+	return { respuesta: msg, provider: 'none', errorMsg: msg };
 }
 
 function buildAiErrorMessage(
-  openai: Awaited<ReturnType<typeof callOpenAI>>,
-  gemini: Awaited<ReturnType<typeof callGemini>>
+	openai: Awaited<ReturnType<typeof callOpenAI>>,
+	gemini: Awaited<ReturnType<typeof callGemini>>
 ): string {
-  const openaiFail = !openai.ok ? openai : null;
-  const geminiFail = !gemini.ok ? gemini : null;
+	const openaiFail = !openai.ok ? openai : null;
+	const geminiFail = !gemini.ok ? gemini : null;
 
-  if (openaiFail?.reason === 'network' && geminiFail?.reason === 'network') {
-    return 'No pude conectar con la IA. Reintenta en unos segundos.';
-  }
-  if (openaiFail?.status === 429 || geminiFail?.status === 429) {
-    return 'Demasiadas peticiones a la IA. Espera ~30 segundos y reintenta.';
-  }
-  const status = openaiFail?.status || geminiFail?.status || 0;
-  if (status >= 500) {
-    return `La IA está saturada (${status}). Reintenta en unos segundos.`;
-  }
-  if (status === 401 || status === 403) {
-    return 'Hay un problema con la API key de la IA. Avisa al admin.';
-  }
-  return 'La IA no respondió correctamente. Reintenta en unos segundos.';
+	if (openaiFail?.reason === 'network' && geminiFail?.reason === 'network') {
+		return 'No pude conectar con la IA. Reintenta en unos segundos.';
+	}
+	if (openaiFail?.status === 429 || geminiFail?.status === 429) {
+		return 'Demasiadas peticiones a la IA. Espera ~30 segundos y reintenta.';
+	}
+	const status = openaiFail?.status || geminiFail?.status || 0;
+	if (status >= 500) {
+		return `La IA está saturada (${status}). Reintenta en unos segundos.`;
+	}
+	if (status === 401 || status === 403) {
+		return 'Hay un problema con la API key de la IA. Avisa al admin.';
+	}
+	return 'La IA no respondió correctamente. Reintenta en unos segundos.';
 }

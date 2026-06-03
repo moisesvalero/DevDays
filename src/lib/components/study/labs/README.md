@@ -8,10 +8,10 @@ Cada bloque del laboratorio comparte **título** con `ejercicios[i].enunciado.se
 
 ## Tipos de lección
 
-| Tipo | Carpeta | Renderer |
-|------|---------|----------|
-| Día artesanal | `dayN/*.svelte` | `LAB_LOADERS['dia-N-…']` |
-| Examen repaso | `repaso-sN/` | `LAB_LOADERS['repaso-sN']` |
+| Tipo           | Carpeta            | Renderer                                            |
+| -------------- | ------------------ | --------------------------------------------------- |
+| Día artesanal  | `dayN/*.svelte`    | `LAB_LOADERS['dia-N-…']`                            |
+| Examen repaso  | `repaso-sN/`       | `LAB_LOADERS['repaso-sN']`                          |
 | Legacy premium | solo `lab-configs` | `DedicatedDayLesson` (ya no usado en días migrados) |
 
 Referencia de calidad: **día 2** (`day2/`) y **repaso-s1**.

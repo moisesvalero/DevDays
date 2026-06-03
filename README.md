@@ -34,11 +34,11 @@ Las tres columnas en acción: lista de días con soft-lock semanal a la izquierd
 
 Un portal interactivo de **3 columnas**:
 
-| Columna | Contenido |
-|---------|-----------|
-| **Izquierda** | Los 35 días en círculos (gris = pendiente, verde = completado). Soft-lock por semana si no apruebas el examen anterior. |
-| **Centro** | Explicación estructurada del día (intro, secciones, ejemplos, callouts, resumen) + ejercicios numerados + editor CodeMirror con tema oscuro. |
-| **Derecha** | Respuesta del tutor IA tras pulsar **Corregir**. Da pistas, snippets de código y solo desbloquea el botón "Marcar día completado" cuando el código está correcto. |
+| Columna       | Contenido                                                                                                                                                         |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Izquierda** | Los 35 días en círculos (gris = pendiente, verde = completado). Soft-lock por semana si no apruebas el examen anterior.                                           |
+| **Centro**    | Explicación estructurada del día (intro, secciones, ejemplos, callouts, resumen) + ejercicios numerados + editor CodeMirror con tema oscuro.                      |
+| **Derecha**   | Respuesta del tutor IA tras pulsar **Corregir**. Da pistas, snippets de código y solo desbloquea el botón "Marcar día completado" cuando el código está correcto. |
 
 ### El meta-loop divertido
 
@@ -83,18 +83,18 @@ Browser
 
 ## Stack completo
 
-| Capa | Tecnología |
-|------|------------|
-| Framework | SvelteKit 2 + Svelte 5 (runes) |
-| Lenguaje | TypeScript estricto |
-| Estilos | Tailwind CSS v4 + variables Material Design 3 |
-| UI | shadcn-svelte (button, card, dialog, input, label, textarea, sonner, spinner) |
-| Editor | CodeMirror 6 con tema One Dark y `@codemirror/lang-javascript` |
-| Auth + DB | Supabase (`@supabase/ssr` + Magic Link) |
-| IA | OpenAI (`gpt-5.4-mini`) + Gemini (`gemini-2.5-flash`) con failover |
-| Resaltado código | highlight.js para los bloques de las lecciones |
-| Despliegue | Vercel (`@sveltejs/adapter-vercel`) |
-| Calidad | ESLint, Prettier, svelte-check, Vitest |
+| Capa             | Tecnología                                                                    |
+| ---------------- | ----------------------------------------------------------------------------- |
+| Framework        | SvelteKit 2 + Svelte 5 (runes)                                                |
+| Lenguaje         | TypeScript estricto                                                           |
+| Estilos          | Tailwind CSS v4 + variables Material Design 3                                 |
+| UI               | shadcn-svelte (button, card, dialog, input, label, textarea, sonner, spinner) |
+| Editor           | CodeMirror 6 con tema One Dark y `@codemirror/lang-javascript`                |
+| Auth + DB        | Supabase (`@supabase/ssr` + Magic Link)                                       |
+| IA               | OpenAI (`gpt-5.4-mini`) + Gemini (`gemini-2.5-flash`) con failover            |
+| Resaltado código | highlight.js para los bloques de las lecciones                                |
+| Despliegue       | Vercel (`@sveltejs/adapter-vercel`)                                           |
+| Calidad          | ESLint, Prettier, svelte-check, Vitest                                        |
 
 ---
 

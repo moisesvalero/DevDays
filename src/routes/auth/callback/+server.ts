@@ -7,15 +7,15 @@ import type { RequestHandler } from './$types';
  * Si todo va bien, redirige al portal de estudio.
  */
 export const GET: RequestHandler = async ({ url, locals }) => {
-  const code = url.searchParams.get('code');
-  const next = url.searchParams.get('next') ?? '/estudio';
+	const code = url.searchParams.get('code');
+	const next = url.searchParams.get('next') ?? '/estudio';
 
-  if (code) {
-    const { error } = await locals.supabase.auth.exchangeCodeForSession(code);
-    if (!error) {
-      throw redirect(303, next);
-    }
-  }
+	if (code) {
+		const { error } = await locals.supabase.auth.exchangeCodeForSession(code);
+		if (!error) {
+			throw redirect(303, next);
+		}
+	}
 
-  throw redirect(303, '/login?error=callback');
+	throw redirect(303, '/login?error=callback');
 };

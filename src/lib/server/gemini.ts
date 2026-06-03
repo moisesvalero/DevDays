@@ -7,8 +7,8 @@ const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODE
 const RETRYABLE_STATUS = new Set([408, 429, 500, 502, 503, 504]);
 
 export type GeminiResult =
-  | { ok: true; data: unknown }
-  | { ok: false; status: number; reason: 'http' | 'network' | 'retries-exhausted' };
+	| { ok: true; data: unknown }
+	| { ok: false; status: number; reason: 'http' | 'network' | 'retries-exhausted' };
 
 /**
  * Llama a Gemini con retry + backoff exponencial.
@@ -21,54 +21,54 @@ export type GeminiResult =
  * sin que el usuario los vea.
  */
 export async function callGemini(
-  body: unknown,
-  opts: { maxAttempts?: number; signal?: AbortSignal } = {}
+	body: unknown,
+	opts: { maxAttempts?: number; signal?: AbortSignal } = {}
 ): Promise<GeminiResult> {
-  const apiKey = env.GEMINI_API_KEY;
-  if (!apiKey) {
-    return { ok: false, status: 0, reason: 'http' };
-  }
+	const apiKey = env.GEMINI_API_KEY;
+	if (!apiKey) {
+		return { ok: false, status: 0, reason: 'http' };
+	}
 
-  const maxAttempts = opts.maxAttempts ?? 4;
-  let lastStatus = 0;
+	const maxAttempts = opts.maxAttempts ?? 4;
+	let lastStatus = 0;
 
-  for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    if (attempt > 0) {
-      const base = 400 * 2 ** (attempt - 1);
-      const jitter = Math.floor(Math.random() * 250);
-      await sleep(base + jitter);
-    }
+	for (let attempt = 0; attempt < maxAttempts; attempt++) {
+		if (attempt > 0) {
+			const base = 400 * 2 ** (attempt - 1);
+			const jitter = Math.floor(Math.random() * 250);
+			await sleep(base + jitter);
+		}
 
-    try {
-      const res = await fetch(`${ENDPOINT}?key=${apiKey}`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(body),
-        signal: opts.signal
-      });
+		try {
+			const res = await fetch(`${ENDPOINT}?key=${apiKey}`, {
+				method: 'POST',
+				headers: { 'content-type': 'application/json' },
+				body: JSON.stringify(body),
+				signal: opts.signal
+			});
 
-      if (res.ok) {
-        return { ok: true, data: await res.json() };
-      }
+			if (res.ok) {
+				return { ok: true, data: await res.json() };
+			}
 
-      lastStatus = res.status;
-      if (!RETRYABLE_STATUS.has(res.status)) {
-        return { ok: false, status: res.status, reason: 'http' };
-      }
-      // Si entra aquí, status retryable y queda intentar otra vez.
-    } catch {
-      // Error de red: también reintentamos.
-      lastStatus = 0;
-    }
-  }
+			lastStatus = res.status;
+			if (!RETRYABLE_STATUS.has(res.status)) {
+				return { ok: false, status: res.status, reason: 'http' };
+			}
+			// Si entra aquí, status retryable y queda intentar otra vez.
+		} catch {
+			// Error de red: también reintentamos.
+			lastStatus = 0;
+		}
+	}
 
-  return {
-    ok: false,
-    status: lastStatus,
-    reason: lastStatus === 0 ? 'network' : 'retries-exhausted'
-  };
+	return {
+		ok: false,
+		status: lastStatus,
+		reason: lastStatus === 0 ? 'network' : 'retries-exhausted'
+	};
 }
 
 function sleep(ms: number) {
-  return new Promise((r) => setTimeout(r, ms));
+	return new Promise((r) => setTimeout(r, ms));
 }

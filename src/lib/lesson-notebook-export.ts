@@ -28,121 +28,114 @@ const PROMPT_REPASO = `INSTRUCCIONES PARA NOTEBOOKLM (Audio Overview — REPASO 
 - No dictar sintaxis al detalle; sí explicar qué hace cada idea y cuándo usarla.`;
 
 function isLeccionNormal(l: Leccion): l is LeccionNormal {
-  return l.tipo === 'leccion';
+	return l.tipo === 'leccion';
 }
 
 function formatSeccion(s: LeccionNormal['contenido']['secciones'][0]): string {
-  const parts = [
-    `### ${s.titulo}`,
-    '',
-    `**En código (JavaScript / web):** ${s.texto}`,
-    '',
-    `**Para qué sirve:** ${s.paraQueSirve}`,
-    '',
-    `**Analogía breve:** ${s.analogia}`
-  ];
-  if (s.ejemplo?.trim()) {
-    parts.push('', '```js', s.ejemplo.trim(), '```');
-  }
-  return parts.join('\n');
+	const parts = [
+		`### ${s.titulo}`,
+		'',
+		`**En código (JavaScript / web):** ${s.texto}`,
+		'',
+		`**Para qué sirve:** ${s.paraQueSirve}`,
+		'',
+		`**Analogía breve:** ${s.analogia}`
+	];
+	if (s.ejemplo?.trim()) {
+		parts.push('', '```js', s.ejemplo.trim(), '```');
+	}
+	return parts.join('\n');
 }
 
 function formatLeccionBody(l: LeccionNormal): string {
-  const lines = [
-    `## ${l.titulo}`,
-    '',
-    `**Objetivo:** ${l.objetivo}`,
-    '',
-    l.contenido.intro,
-    ''
-  ];
-  for (const s of l.contenido.secciones) {
-    lines.push(formatSeccion(s), '');
-  }
-  lines.push('### Resumen del día', '');
-  for (const r of l.contenido.resumen) {
-    lines.push(`- ${r}`);
-  }
-  return lines.join('\n');
+	const lines = [`## ${l.titulo}`, '', `**Objetivo:** ${l.objetivo}`, '', l.contenido.intro, ''];
+	for (const s of l.contenido.secciones) {
+		lines.push(formatSeccion(s), '');
+	}
+	lines.push('### Resumen del día', '');
+	for (const r of l.contenido.resumen) {
+		lines.push(`- ${r}`);
+	}
+	return lines.join('\n');
 }
 
 /** Markdown de un día de lección (sin ejercicios). */
 export function lessonToNotebookMarkdown(lesson: Leccion): string {
-  if (!isLeccionNormal(lesson)) {
-    return weekRecapMarkdown([lesson], lesson.semana);
-  }
+	if (!isLeccionNormal(lesson)) {
+		return weekRecapMarkdown([lesson], lesson.semana);
+	}
 
-  return [
-    `# DevDays — Día ${lesson.dia} · Semana ${lesson.semana}`,
-    '',
-    PROMPT_LECCION,
-    '',
-    '---',
-    '',
-    formatLeccionBody(lesson)
-  ].join('\n');
+	return [
+		`# DevDays — Día ${lesson.dia} · Semana ${lesson.semana}`,
+		'',
+		PROMPT_LECCION,
+		'',
+		'---',
+		'',
+		formatLeccionBody(lesson)
+	].join('\n');
 }
 
 /** Markdown con todos los días de lección de una semana (para día de repaso 7, 14…). */
 export function weekRecapMarkdown(allLessons: Leccion[], semana: number): string {
-  const diasLeccion = allLessons
-    .filter((l): l is LeccionNormal => l.semana === semana && l.tipo === 'leccion')
-    .sort((a, b) => a.dia - b.dia);
+	const diasLeccion = allLessons
+		.filter((l): l is LeccionNormal => l.semana === semana && l.tipo === 'leccion')
+		.sort((a, b) => a.dia - b.dia);
 
-  const bodies = diasLeccion.map((l) => formatLeccionBody(l));
+	const bodies = diasLeccion.map((l) => formatLeccionBody(l));
 
-  return [
-    `# DevDays — Repaso Semana ${semana}`,
-    '',
-    PROMPT_REPASO,
-    '',
-    `Días incluidos: ${diasLeccion.map((d) => d.dia).join(', ')}`,
-    '',
-    '---',
-    '',
-    bodies.join('\n\n---\n\n')
-  ].join('\n');
+	return [
+		`# DevDays — Repaso Semana ${semana}`,
+		'',
+		PROMPT_REPASO,
+		'',
+		`Días incluidos: ${diasLeccion.map((d) => d.dia).join(', ')}`,
+		'',
+		'---',
+		'',
+		bodies.join('\n\n---\n\n')
+	].join('\n');
 }
 
 export function notebookMarkdownForLesson(lesson: Leccion, allLessons: Leccion[]): string {
-  if (lesson.tipo === 'examen') {
-    return weekRecapMarkdown(allLessons, lesson.semana);
-  }
-  return lessonToNotebookMarkdown(lesson);
+	if (lesson.tipo === 'examen') {
+		return weekRecapMarkdown(allLessons, lesson.semana);
+	}
+	return lessonToNotebookMarkdown(lesson);
 }
 
 export function notebookDownloadFilename(lesson: Leccion): string {
-  if (lesson.tipo === 'examen') {
-    return `DevDays-repaso-semana-${lesson.semana}.md`;
-  }
-  return `DevDays-dia-${String(lesson.dia).padStart(2, '0')}.md`;
+	if (lesson.tipo === 'examen') {
+		return `DevDays-repaso-semana-${lesson.semana}.md`;
+	}
+	return `DevDays-dia-${String(lesson.dia).padStart(2, '0')}.md`;
 }
 
 export function downloadNotebookMarkdown(lesson: Leccion, allLessons: Leccion[]): void {
-  const md = notebookMarkdownForLesson(lesson, allLessons);
-  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = notebookDownloadFilename(lesson);
-  a.click();
-  URL.revokeObjectURL(url);
+	const md = notebookMarkdownForLesson(lesson, allLessons);
+	const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+	const url = URL.createObjectURL(blob);
+	const a = document.createElement('a');
+	a.href = url;
+	a.download = notebookDownloadFilename(lesson);
+	a.click();
+	URL.revokeObjectURL(url);
 }
 
 export async function copyNotebookEpisodeFocus(): Promise<boolean> {
-  try {
-    await navigator.clipboard.writeText(NOTEBOOKLM_EPISODE_FOCUS);
-    return true;
-  } catch {
-    return false;
-  }
+	try {
+		await navigator.clipboard.writeText(NOTEBOOKLM_EPISODE_FOCUS);
+		return true;
+	} catch {
+		return false;
+	}
 }
 
 /** Abre NotebookLM en pestaña nueva (respaldo programático). */
 export function openNotebookLM(): void {
-  const a = document.createElement('a');
-  a.href = NOTEBOOKLM_URL;
-  a.target = '_blank';
-  a.rel = 'noopener noreferrer';
-  a.click();
+	const a = document.createElement('a');
+	a.href = NOTEBOOKLM_URL;
+	a.target = '_blank';
+	a.rel = 'noopener noreferrer';
+	a.click();
 }
