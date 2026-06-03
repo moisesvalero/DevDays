@@ -23,6 +23,17 @@ describe('taskCourseDays', () => {
 		}
 	});
 
+	it('incluye misión, checklist y pistas locales en cada día', () => {
+		for (const day of taskCourseDays) {
+			expect(day.missionTitle).toContain(`Misión ${day.day}`);
+			expect(day.introSummary.length).toBeGreaterThan(20);
+			expect(day.checklist.length).toBeGreaterThanOrEqual(4);
+			expect(day.mentorHints.length).toBeGreaterThanOrEqual(3);
+			expect(day.completionCue).toContain(`día ${day.day}`);
+			expect(day.estimatedMinutes).toBeGreaterThan(0);
+		}
+	});
+
 	it('no usa estructura de examen en el curso principal', () => {
 		const serialized = JSON.stringify(taskCourseDays).toLowerCase();
 		expect(serialized).not.toContain('examen');

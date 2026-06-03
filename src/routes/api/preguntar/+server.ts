@@ -17,16 +17,20 @@ type Body = {
 
 /**
  * Chat libre con el tutor. SOLO para aclarar dudas.
+ * No exige login porque el curso principal es accesible sin cuenta.
  * Reglas blindadas en el systemInstruction (ver $lib/server/ai.ts):
- * no aprueba, no da solución literal, remite al botón "Corregir" para evaluar.
+ * no aprueba, no da solución literal y explica con lenguaje sencillo.
  */
-export const POST: RequestHandler = async ({ request, locals }) => {
-	if (!locals.user) throw error(401, 'No autorizado');
+export const POST: RequestHandler = async ({ request }) => {
 	if (!env.OPENAI_API_KEY && !env.GEMINI_API_KEY) {
 		throw error(500, 'No hay ninguna API de IA configurada (OPENAI_API_KEY o GEMINI_API_KEY)');
 	}
 
 	const body = (await request.json()) as Body;
+	if (!body.mensaje?.trim()) {
+		throw error(400, 'Escribe una pregunta para el tutor.');
+	}
+
 	const result = await chatTutor({
 		dia: body.dia,
 		ejercicio: body.ejercicio,

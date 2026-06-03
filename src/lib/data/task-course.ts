@@ -1,5 +1,16 @@
 import type { CourseBlock, TaskCourseDay, TaskItem } from '$lib/types/task-course';
 
+type RawTaskCourseDay = Omit<
+	TaskCourseDay,
+	| 'introSummary'
+	| 'missionTitle'
+	| 'checklist'
+	| 'mentorHints'
+	| 'completionCue'
+	| 'difficulty'
+	| 'estimatedMinutes'
+>;
+
 export const blockLabels: Record<CourseBlock, string> = {
 	javascript: 'Días 1-7 · JavaScript aplicado',
 	svelte: 'Días 8-14 · Interfaz con Svelte 5',
@@ -12,7 +23,7 @@ export const starterTasks: TaskItem[] = [
 	{ id: 3, title: 'Marcar una tarea como hecha', done: false, tag: 'producto' }
 ];
 
-export const taskCourseDays: TaskCourseDay[] = [
+const rawTaskCourseDays: RawTaskCourseDay[] = [
 	{
 		day: 1,
 		block: 'javascript',
@@ -483,6 +494,37 @@ export const taskCourseDays: TaskCourseDay[] = [
 		]
 	}
 ];
+
+function difficultyFor(day: number): TaskCourseDay['difficulty'] {
+	if (day <= 8) return 'suave';
+	if (day <= 17) return 'media';
+	return 'reto';
+}
+
+function estimatedMinutesFor(day: number): number {
+	if (day <= 7) return 18;
+	if (day <= 14) return 24;
+	return 30;
+}
+
+export const taskCourseDays: TaskCourseDay[] = rawTaskCourseDays.map((day) => ({
+	...day,
+	introSummary: `${day.concept} aplicado al gestor, sin saltos grandes y con una práctica visible.`,
+	missionTitle: `Misión ${day.day}: ${day.title}`,
+	checklist: [
+		`Entiende la idea: ${day.concept.replace(/\.$/, '')}.`,
+		...day.guidedSteps,
+		`Comprueba el resultado: ${day.expectedState}`
+	],
+	mentorHints: [
+		day.mentorPrompts[0],
+		day.mentorPrompts[1] ?? 'Vuelve al objetivo y busca qué dato cambia en esta misión.',
+		`Ejemplo parcial para orientarte: ${day.codeFocus}.`
+	],
+	completionCue: `Has practicado el día ${day.day}. El gestor de tareas ya tiene una pieza más.`,
+	difficulty: difficultyFor(day.day),
+	estimatedMinutes: estimatedMinutesFor(day.day)
+}));
 
 export function getTaskCourseDay(day: number): TaskCourseDay {
 	return taskCourseDays.find((courseDay) => courseDay.day === day) ?? taskCourseDays[0];
