@@ -22,6 +22,11 @@
 		codeByDay: Record<number, string>;
 	};
 
+	type BeginnerStep = {
+		label: string;
+		text: string;
+	};
+
 	let { data }: { data: { days: TaskCourseDay[]; userEmail: string | null } } = $props();
 
 	const storageKey = 'devdays-portfolio-course-state-v1';
@@ -58,9 +63,14 @@
 	const featuredProjects = $derived(
 		previewPortfolio.projects.filter((project) => project.featured)
 	);
+	const showSkills = $derived(currentDay >= 2);
+	const showBio = $derived(currentDay >= 3);
+	const showProjects = $derived(currentDay >= 4);
+	const showContact = $derived(currentDay >= 19);
 	const currentChecklistPercent = $derived(
 		Math.round((currentChecklist.length / current.checklist.length) * 100)
 	);
+	const beginnerSteps = $derived(getBeginnerSteps(current));
 	const nextStudentAction = $derived(getNextStudentAction());
 	const isDark = $derived(browser && mode.current === 'dark');
 
@@ -229,6 +239,9 @@
 
 	function getNextStudentAction(): string {
 		if (isCurrentComplete) return 'Puedes pasar al siguiente día o repetir este sin presión.';
+		if (currentDay === 1) return "Cambia 'Tu Nombre' por tu nombre.";
+		if (currentDay === 2) return 'Añade una palabra dentro de la lista skills.';
+		if (currentDay === 3) return 'Cambia un dato dentro de la ficha perfil.';
 		if (currentChecklist.length === 0) {
 			return 'Cambia el código del editor y mira el resultado.';
 		}
@@ -236,6 +249,70 @@
 			return 'Sigue el checklist de uno en uno. No tienes que entenderlo todo a la primera.';
 		}
 		return 'Ya hiciste los pasos. Marca el día como practicado cuando te suene lo que has hecho.';
+	}
+
+	function getBeginnerSteps(day: TaskCourseDay): BeginnerStep[] {
+		if (day.day === 1) {
+			return [
+				{ label: 'Idea', text: 'Una variable guarda un dato.' },
+				{ label: 'Toca', text: 'Cambia el texto entre comillas.' },
+				{ label: 'Mira', text: 'El portfolio cambia a la derecha.' }
+			];
+		}
+
+		if (day.day === 2) {
+			return [
+				{ label: 'Idea', text: 'Una lista guarda varios datos.' },
+				{ label: 'Toca', text: 'Añade otra skill entre comillas.' },
+				{ label: 'Mira', text: 'Aparece otro chip en el portfolio.' }
+			];
+		}
+
+		if (day.day === 3) {
+			return [
+				{ label: 'Idea', text: 'Un objeto agrupa datos de una misma cosa.' },
+				{ label: 'Toca', text: 'Cambia name, role o location.' },
+				{ label: 'Mira', text: 'La ficha del portfolio se actualiza.' }
+			];
+		}
+
+		if (day.day === 4) {
+			return [
+				{ label: 'Idea', text: 'Una función evita repetir código.' },
+				{ label: 'Toca', text: 'Cambia el título del proyecto.' },
+				{ label: 'Mira', text: 'Nace la sección proyectos.' }
+			];
+		}
+
+		if (day.day === 8) {
+			return [
+				{ label: 'Idea', text: 'Svelte pinta datos en HTML.' },
+				{ label: 'Toca', text: 'Mira las llaves { } del ejemplo.' },
+				{ label: 'Mira', text: 'El perfil ya parece una web.' }
+			];
+		}
+
+		if (day.day === 15) {
+			return [
+				{ label: 'Idea', text: 'Una ruta es una pantalla con URL.' },
+				{ label: 'Toca', text: 'Lee el nombre del archivo.' },
+				{ label: 'Mira', text: 'El portfolio se prepara para vivir solo.' }
+			];
+		}
+
+		if (day.day === 19) {
+			return [
+				{ label: 'Idea', text: 'Un formulario recoge mensajes.' },
+				{ label: 'Toca', text: 'Revisa nombre, email y mensaje.' },
+				{ label: 'Mira', text: 'Aparece contacto en el portfolio.' }
+			];
+		}
+
+		return [
+			{ label: 'Idea', text: day.concept.replace(/\.$/, '') },
+			{ label: 'Toca', text: day.guidedSteps[0] ?? 'Cambia una parte pequeña del código.' },
+			{ label: 'Mira', text: day.expectedState }
+		];
 	}
 
 	function toggleStep(index: number) {
@@ -641,6 +718,15 @@
 						</div>
 					</div>
 				</details>
+
+				<div class="mt-5 grid gap-3 md:grid-cols-3">
+					{#each beginnerSteps as step (step.label)}
+						<div class="rounded-md border-[3px] border-[#101018] bg-white p-3 text-[#101018]">
+							<p class="street-display text-2xl leading-none">{step.label}</p>
+							<p class="mt-2 text-sm font-black">{step.text}</p>
+						</div>
+					{/each}
+				</div>
 			</div>
 
 			<section class="street-panel p-5" aria-labelledby="portfolio-actions-title">
@@ -743,64 +829,82 @@
 								{previewPortfolio.name}
 							</h3>
 							<p class="mt-2 text-base font-semibold text-slate-700">{previewPortfolio.role}</p>
-							<p class="mt-4 max-w-md text-sm leading-6 text-slate-600">
-								{previewPortfolio.bio}
-							</p>
+							{#if showBio}
+								<p class="mt-4 max-w-md text-sm leading-6 text-slate-600">
+									{previewPortfolio.bio}
+								</p>
+							{/if}
 						</header>
 
-						<section class="py-5">
-							<p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Skills</p>
-							<div class="mt-3 flex flex-wrap gap-2">
-								{#each previewPortfolio.skills as skill (skill)}
-									<span
-										class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700"
-									>
-										{skill}
-									</span>
-								{/each}
-							</div>
-						</section>
+						{#if showSkills}
+							<section class="py-5">
+								<p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Skills</p>
+								<div class="mt-3 flex flex-wrap gap-2">
+									{#each previewPortfolio.skills as skill (skill)}
+										<span
+											class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700"
+										>
+											{skill}
+										</span>
+									{/each}
+								</div>
+							</section>
+						{/if}
 
-						<section class="border-t border-slate-200 pt-5">
-							<div class="flex items-center justify-between gap-3">
-								<p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
-									Proyectos
-								</p>
-								<p class="text-xs font-semibold text-slate-500">
-									{featuredProjects.length} destacados
-								</p>
-							</div>
-							<div class="mt-3 space-y-3">
-								{#each previewPortfolio.projects as project (project.id)}
-									<article class="rounded-md border border-slate-200 bg-slate-50 p-3">
-										<div class="flex items-start justify-between gap-3">
-											<div>
-												<p class="text-sm font-bold text-slate-950">{project.title}</p>
-												<p class="mt-1 text-xs leading-5 text-slate-600">{project.description}</p>
+						{#if showProjects}
+							<section class="border-t border-slate-200 pt-5">
+								<div class="flex items-center justify-between gap-3">
+									<p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
+										Proyectos
+									</p>
+									<p class="text-xs font-semibold text-slate-500">
+										{featuredProjects.length} destacados
+									</p>
+								</div>
+								<div class="mt-3 space-y-3">
+									{#each previewPortfolio.projects as project (project.id)}
+										<article class="rounded-md border border-slate-200 bg-slate-50 p-3">
+											<div class="flex items-start justify-between gap-3">
+												<div>
+													<p class="text-sm font-bold text-slate-950">{project.title}</p>
+													<p class="mt-1 text-xs leading-5 text-slate-600">
+														{project.description}
+													</p>
+												</div>
+												<span
+													class={`rounded-full px-2 py-1 text-xs font-bold ${
+														project.featured
+															? 'bg-slate-950 text-white'
+															: 'bg-white text-slate-500 ring-1 ring-slate-200'
+													}`}
+												>
+													{project.featured ? 'Destacado' : 'Normal'}
+												</span>
 											</div>
-											<span
-												class={`rounded-full px-2 py-1 text-xs font-bold ${
-													project.featured
-														? 'bg-slate-950 text-white'
-														: 'bg-white text-slate-500 ring-1 ring-slate-200'
-												}`}
-											>
-												{project.featured ? 'Destacado' : 'Normal'}
-											</span>
-										</div>
-										<p class="mt-3 text-xs font-bold uppercase tracking-wide text-slate-400">
-											{project.tag}
-										</p>
-									</article>
-								{/each}
-							</div>
-						</section>
+											<p class="mt-3 text-xs font-bold uppercase tracking-wide text-slate-400">
+												{project.tag}
+											</p>
+										</article>
+									{/each}
+								</div>
+							</section>
+						{/if}
 
-						<footer
-							class="mt-5 border-t border-slate-200 pt-4 text-xs font-semibold text-slate-500"
-						>
-							{previewPortfolio.email}
-						</footer>
+						{#if showContact}
+							<footer
+								class="mt-5 border-t border-slate-200 pt-4 text-xs font-semibold text-slate-500"
+							>
+								{previewPortfolio.email}
+							</footer>
+						{/if}
+
+						{#if !showContact}
+							<div class="mt-5 border-t border-slate-200 pt-4">
+								<p class="text-xs font-semibold text-slate-400">
+									Día {current.day}: versión en construcción
+								</p>
+							</div>
+						{/if}
 					</div>
 				</div>
 			</section>

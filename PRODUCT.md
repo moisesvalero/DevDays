@@ -18,6 +18,8 @@ La pantalla de estudio debe separar con claridad el aula y el producto: a la izq
 
 La actividad principal no puede ser un configurador de campos. El alumno debe tocar código y ver cómo ese código cambia el portfolio.
 
+El portfolio no debe aparecer completo desde el día 1. Cada día desbloquea una pieza visible: identidad, skills, proyectos, rutas, guardado y contacto.
+
 ## Brand Personality
 
 DevDays es un Street Lab educativo: claro, amable, motivador y con actitud. La interfaz debe sentirse como un taller urbano de código, con energía de pegatina, tag y libreta de misión, sin perder la calma necesaria para aprender desde cero.
@@ -31,6 +33,7 @@ No debe parecer una landing comercial, un SaaS serio, un dashboard frío, una ca
 - Una idea por día: cada pantalla debe reducir carga cognitiva y mostrar un objetivo principal.
 - Aprender construyendo: todo concepto se conecta con el portfolio personal del alumno.
 - Código primero: escribir o modificar código debe ser el gesto central de cada día.
+- Construcción progresiva: el resultado solo muestra lo que el alumno ya ha construido.
 - Feedback sin juicio: las pistas ayudan a avanzar, no evalúan a la persona.
 - Progreso visible: el alumno debe ver dónde está, qué hizo y qué sigue.
 - Cero fricción inicial: entrar al curso no requiere cuenta ni configuración previa.

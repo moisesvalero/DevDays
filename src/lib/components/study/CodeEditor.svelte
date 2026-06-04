@@ -77,8 +77,7 @@
 			<span class="material-symbols-outlined text-sm text-on-surface-variant">terminal</span>
 			<span class="font-mono text-xs text-on-surface-variant">{filename}</span>
 		</div>
-		<span class="font-mono text-xs text-on-surface-variant">Tab o Ctrl+Espacio · autocompletar</span
-		>
+		<span class="font-mono text-xs text-on-surface-variant">Cambia algo y mira el resultado</span>
 	</div>
 	<div bind:this={host} class="cm-host min-h-[320px] text-sm"></div>
 </div>

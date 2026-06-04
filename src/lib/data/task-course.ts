@@ -58,8 +58,7 @@ const rawTaskCourseDays: RawTaskCourseDay[] = [
 		miniChallenge: 'Cambia el titular por una frase que te represente mejor.',
 		expectedState: 'El portfolio web muestra un nombre y un titular personal.',
 		codeFocus: 'Identidad básica',
-		codeSample:
-			"let nombre = 'Tu Nombre';\nlet titular = 'Frontend junior en construcción';\n\nconsole.log(nombre, titular);",
+		codeSample: "let nombre = 'Tu Nombre';\nlet titular = 'Frontend junior en construcción';",
 		mentorPrompts: [
 			'Una variable es una etiqueta pegada a un valor. Hoy solo guarda quién eres.',
 			'No busques sonar perfecto: empieza con una frase simple y editable.'
@@ -80,8 +79,7 @@ const rawTaskCourseDays: RawTaskCourseDay[] = [
 		miniChallenge: 'Añade una skill que quieras aprender, aunque todavía no la domines.',
 		expectedState: 'El portfolio web mantiene una lista de skills.',
 		codeFocus: 'Lista de skills',
-		codeSample:
-			"let skills = ['HTML', 'CSS', 'JavaScript'];\n\nskills.push('Svelte');\nconsole.log(skills.length);",
+		codeSample: "let skills = ['HTML', 'CSS', 'JavaScript'];\n\nskills.push('Svelte');",
 		mentorPrompts: [
 			'Un array es una fila ordenada. Sirve muy bien para skills, proyectos o enlaces.',
 			'La primera posición es 0. Es raro al principio, pero se vuelve normal con práctica.'

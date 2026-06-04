@@ -29,6 +29,7 @@ DevDays usa un sistema **Street Lab educativo**: calle + neobrutal, stickers, ta
 - Editor de código: bloque principal de trabajo, con resultado visible al lado.
 - Checklist: ayuda secundaria y plegable, nunca la actividad principal.
 - Mockup de portfolio: pieza central a la derecha, enmarcada como navegador/teléfono separado de DevDays.
+- Mockup progresivo: no enseñar secciones futuras antes de que el curso las desbloquee.
 - Estilo del portfolio: neutral y profesional, con blancos/grises y tipografía sans normal para que no parezca parte del Street Lab.
 - Mentor: pistas visibles por capas y consulta IA plegada hasta que haga falta.
 - Ruta compacta: navegación como tablero de stickers numerados, plegada por defecto.
