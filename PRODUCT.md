@@ -14,6 +14,8 @@ DevDays es un taller guiado de 21 días para construir un primer portfolio web p
 
 La primera pantalla debe explicar la experiencia como si el alumno no supiera nada de código, pero sin saturar: un hero de entrada, una acción principal clara y el resto del contenido revelado poco a poco.
 
+La pantalla de estudio debe separar con claridad el aula y el producto: a la izquierda van explicación, pasos y acciones; a la derecha va el resultado vivo del portfolio en un mockup neutral. El portfolio no debe parecer parte visual de DevDays.
+
 ## Brand Personality
 
 DevDays es un Street Lab educativo: claro, amable, motivador y con actitud. La interfaz debe sentirse como un taller urbano de código, con energía de pegatina, tag y libreta de misión, sin perder la calma necesaria para aprender desde cero.

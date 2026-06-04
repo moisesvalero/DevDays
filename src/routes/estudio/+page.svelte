@@ -213,7 +213,7 @@
 	function getNextStudentAction(): string {
 		if (isCurrentComplete) return 'Puedes pasar al siguiente día o repetir este sin presión.';
 		if (currentChecklist.length === 0) {
-			return 'Empieza leyendo “Hoy vas a aprender esto” y luego mira el mockup de tu portfolio.';
+			return 'Lee la idea del día, toca los controles de abajo y mira el resultado a la derecha.';
 		}
 		if (currentChecklist.length < current.checklist.length) {
 			return 'Sigue el checklist de uno en uno. No tienes que entenderlo todo a la primera.';
@@ -486,7 +486,7 @@
 	</section>
 
 	<div
-		class="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[minmax(0,1fr)_380px] lg:px-8"
+		class="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(380px,0.8fr)] lg:px-8"
 	>
 		<section id="mision-actual" class="space-y-5">
 			<div class="street-panel p-5">
@@ -556,175 +556,102 @@
 				</details>
 			</div>
 
-			<div class="grid gap-5 xl:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
-				<section
-					aria-labelledby="portfolio-preview-title"
-					class="street-panel relative overflow-hidden p-5"
+			<section class="street-panel p-5" aria-labelledby="portfolio-actions-title">
+				<p class="street-tag px-2 py-0.5 text-xs">Lo que tocas</p>
+				<h2
+					id="portfolio-actions-title"
+					class="street-display mt-3 text-4xl leading-none text-[var(--street-ink)]"
+				>
+					Edita tu portfolio
+				</h2>
+				<p class="mt-2 text-sm font-bold text-[var(--street-ink)]">
+					Estos cambios aparecen en la vista de la derecha. Ahí ves la web que estás creando.
+				</p>
+				<div class="mt-4 grid gap-3 md:grid-cols-2">
+					<form
+						class="flex gap-2"
+						onsubmit={(event) => {
+							event.preventDefault();
+							addSkill();
+						}}
+					>
+						<label class="sr-only" for="skill-title">Nueva skill</label>
+						<input
+							id="skill-title"
+							bind:value={draftSkill}
+							class="min-h-11 min-w-0 flex-1 rounded-md border-[3px] border-[var(--street-shadow)] bg-[var(--street-paper)] px-3 text-sm font-bold text-[#101018] shadow-[4px_4px_0_var(--street-shadow)] outline-none transition focus:translate-x-1 focus:translate-y-1 focus:shadow-none focus:ring-3 focus:ring-[var(--street-lime)]"
+							placeholder="Añade una skill"
+							autocomplete="off"
+						/>
+						<Button type="submit">Añadir</Button>
+					</form>
+					<form
+						class="flex gap-2"
+						onsubmit={(event) => {
+							event.preventDefault();
+							addProject();
+						}}
+					>
+						<label class="sr-only" for="project-title">Nuevo proyecto</label>
+						<input
+							id="project-title"
+							bind:value={draftProjectTitle}
+							class="min-h-11 min-w-0 flex-1 rounded-md border-[3px] border-[var(--street-shadow)] bg-[var(--street-paper)] px-3 text-sm font-bold text-[#101018] shadow-[4px_4px_0_var(--street-shadow)] outline-none transition focus:translate-x-1 focus:translate-y-1 focus:shadow-none focus:ring-3 focus:ring-[var(--street-lime)]"
+							placeholder="Añade un proyecto"
+							autocomplete="off"
+						/>
+						<Button type="submit">Añadir</Button>
+					</form>
+				</div>
+			</section>
+
+			<section aria-labelledby="checklist-title" class="street-panel p-5">
+				<div class="flex items-start justify-between gap-4">
+					<div>
+						<p class="street-tag px-2 py-0.5 text-xs">Pasos guiados</p>
+						<h2
+							id="checklist-title"
+							class="street-display mt-3 text-4xl leading-none text-[var(--street-ink)]"
+						>
+							Marca lo que entiendas
+						</h2>
+					</div>
+					<span class="street-sticker px-3 py-1 text-sm">{currentChecklistPercent}%</span>
+				</div>
+				<div
+					class="mt-4 h-3 overflow-hidden rounded-full border-2 border-[var(--street-shadow)] bg-[var(--street-paper)]"
 				>
 					<div
-						class="absolute top-3 right-4 h-20 w-28 rotate-6 bg-[url('/street-stickers.webp')] bg-contain bg-no-repeat opacity-25"
+						class="h-full rounded-full bg-[var(--street-lime)]"
+						style={`width: ${currentChecklistPercent}%`}
 					></div>
-					<div class="mb-5 flex flex-wrap items-center justify-between gap-3">
-						<div>
-							<p class="street-tag px-2 py-0.5 text-xs">Mockup separado</p>
-							<h2
-								id="portfolio-preview-title"
-								class="street-display mt-3 text-4xl leading-none text-[var(--street-ink)]"
-							>
-								Tu portfolio
-							</h2>
-							<p class="text-sm font-bold text-[var(--street-ink)]">
-								Esto no es DevDays. Es la web personal que estás construyendo.
-							</p>
-							<p class="mt-1 text-sm font-bold text-[var(--street-ink)]">
-								{portfolio.skills.length} skills · {portfolio.projects.length} proyectos · {featuredProjects.length}
-								destacados
-							</p>
-						</div>
-						<Button variant="outline" onclick={resetPortfolio}>Reiniciar portfolio</Button>
-					</div>
+				</div>
 
-					<div
-						class="rounded-lg border-[3px] border-[var(--street-shadow)] bg-[#101018] p-3 shadow-[7px_7px_0_var(--street-shadow)]"
-						aria-label="Vista previa del portfolio que estás creando"
-					>
-						<div class="mb-3 flex items-center gap-2">
-							<span class="h-3 w-3 rounded-full bg-[var(--street-pink)]"></span>
-							<span class="h-3 w-3 rounded-full bg-[var(--street-lime)]"></span>
-							<span class="h-3 w-3 rounded-full bg-[#fff7df]"></span>
-							<span class="ml-2 rounded bg-[#fff7df] px-2 py-1 text-xs font-black text-[#101018]">
-								tu-portfolio.dev
+				<div class="mt-5 space-y-2">
+					{#each current.checklist as item, index (item)}
+						<label
+							class="flex cursor-pointer gap-3 rounded-md border-2 border-[var(--street-shadow)] bg-[var(--street-paper)] p-3 text-sm font-bold text-[#101018] shadow-[4px_4px_0_var(--street-shadow)] transition-transform hover:-translate-y-0.5"
+						>
+							<input
+								type="checkbox"
+								checked={currentChecklist.includes(index)}
+								onchange={() => toggleStep(index)}
+								class="mt-1 h-4 w-4 accent-[var(--street-pink)]"
+							/>
+							<span
+								class={currentChecklist.includes(index)
+									? 'text-[#101018]/55 line-through'
+									: 'text-[#101018]'}
+							>
+								{item}
 							</span>
-						</div>
-						<div class="rounded-md bg-[#fff7df] p-4 text-[#101018]">
-							<div class="border-b-[3px] border-[#101018] pb-4">
-								<p class="text-xs font-black uppercase tracking-wide">{portfolio.location}</p>
-								<h3 class="street-display mt-2 text-5xl leading-none text-[#101018]">
-									{portfolio.name}
-								</h3>
-								<p class="mt-1 text-lg font-black text-[var(--street-pink)]">{portfolio.role}</p>
-								<p class="mt-3 max-w-md text-sm font-bold">{portfolio.bio}</p>
-							</div>
-							<div class="mt-4 flex flex-wrap gap-2">
-								{#each portfolio.skills as skill (skill)}
-									<span
-										class="rounded-full border-2 border-[#101018] bg-[var(--street-lime)] px-3 py-1 text-xs font-black"
-									>
-										{skill}
-									</span>
-								{/each}
-							</div>
-							<div class="mt-4 grid gap-3 sm:grid-cols-2">
-								{#each portfolio.projects as project (project.id)}
-									<article class="rounded-md border-2 border-[#101018] bg-white p-3">
-										<div class="flex items-start justify-between gap-2">
-											<p class="text-sm font-black">{project.title}</p>
-											<button
-												type="button"
-												onclick={() => toggleFeaturedProject(project.id)}
-												class={`rounded border-2 border-[#101018] px-2 py-0.5 text-xs font-black ${
-													project.featured ? 'bg-[var(--street-pink)] text-white' : 'bg-[#fff7df]'
-												}`}
-												aria-label={`Cambiar destacado de ${project.title}`}
-											>
-												{project.featured ? '★' : '☆'}
-											</button>
-										</div>
-										<p class="mt-2 text-xs font-bold">{project.description}</p>
-										<p class="mt-3 text-xs font-black uppercase text-[#101018]/60">{project.tag}</p>
-									</article>
-								{/each}
-							</div>
-							<p class="mt-4 text-xs font-black uppercase">{portfolio.email}</p>
-						</div>
-					</div>
-
-					<div class="mt-5 grid gap-3 md:grid-cols-2">
-						<form
-							class="flex gap-2"
-							onsubmit={(event) => {
-								event.preventDefault();
-								addSkill();
-							}}
-						>
-							<label class="sr-only" for="skill-title">Nueva skill</label>
-							<input
-								id="skill-title"
-								bind:value={draftSkill}
-								class="min-h-11 min-w-0 flex-1 rounded-md border-[3px] border-[var(--street-shadow)] bg-[var(--street-paper)] px-3 text-sm font-bold text-[#101018] shadow-[4px_4px_0_var(--street-shadow)] outline-none transition focus:translate-x-1 focus:translate-y-1 focus:shadow-none focus:ring-3 focus:ring-[var(--street-lime)]"
-								placeholder="Añade una skill"
-								autocomplete="off"
-							/>
-							<Button type="submit">Añadir</Button>
-						</form>
-						<form
-							class="flex gap-2"
-							onsubmit={(event) => {
-								event.preventDefault();
-								addProject();
-							}}
-						>
-							<label class="sr-only" for="project-title">Nuevo proyecto</label>
-							<input
-								id="project-title"
-								bind:value={draftProjectTitle}
-								class="min-h-11 min-w-0 flex-1 rounded-md border-[3px] border-[var(--street-shadow)] bg-[var(--street-paper)] px-3 text-sm font-bold text-[#101018] shadow-[4px_4px_0_var(--street-shadow)] outline-none transition focus:translate-x-1 focus:translate-y-1 focus:shadow-none focus:ring-3 focus:ring-[var(--street-lime)]"
-								placeholder="Añade un proyecto"
-								autocomplete="off"
-							/>
-							<Button type="submit">Añadir</Button>
-						</form>
-					</div>
-				</section>
-
-				<section aria-labelledby="checklist-title" class="street-panel p-5">
-					<div class="flex items-start justify-between gap-4">
-						<div>
-							<p class="street-tag px-2 py-0.5 text-xs">Pasos guiados</p>
-							<h2
-								id="checklist-title"
-								class="street-display mt-3 text-4xl leading-none text-[var(--street-ink)]"
-							>
-								Marca lo que entiendas
-							</h2>
-						</div>
-						<span class="street-sticker px-3 py-1 text-sm">{currentChecklistPercent}%</span>
-					</div>
-					<div
-						class="mt-4 h-3 overflow-hidden rounded-full border-2 border-[var(--street-shadow)] bg-[var(--street-paper)]"
-					>
-						<div
-							class="h-full rounded-full bg-[var(--street-lime)]"
-							style={`width: ${currentChecklistPercent}%`}
-						></div>
-					</div>
-
-					<div class="mt-5 space-y-2">
-						{#each current.checklist as item, index (item)}
-							<label
-								class="flex cursor-pointer gap-3 rounded-md border-2 border-[var(--street-shadow)] bg-[var(--street-paper)] p-3 text-sm font-bold text-[#101018] shadow-[4px_4px_0_var(--street-shadow)] transition-transform hover:-translate-y-0.5"
-							>
-								<input
-									type="checkbox"
-									checked={currentChecklist.includes(index)}
-									onchange={() => toggleStep(index)}
-									class="mt-1 h-4 w-4 accent-[var(--street-pink)]"
-								/>
-								<span
-									class={currentChecklist.includes(index)
-										? 'text-[#101018]/55 line-through'
-										: 'text-[#101018]'}
-								>
-									{item}
-								</span>
-							</label>
-						{/each}
-					</div>
-					<p class="mt-4 text-sm font-bold text-[var(--street-ink)]">
-						Si un paso no te sale, no lo marques todavía. Pide una pista y vuelve a probar.
-					</p>
-				</section>
-			</div>
+						</label>
+					{/each}
+				</div>
+				<p class="mt-4 text-sm font-bold text-[var(--street-ink)]">
+					Si un paso no te sale, no lo marques todavía. Pide una pista y vuelve a probar.
+				</p>
+			</section>
 
 			<details class="street-panel p-5">
 				<summary class="cursor-pointer list-none">
@@ -755,6 +682,110 @@
 		</section>
 
 		<aside class="space-y-5 lg:sticky lg:top-24">
+			<section aria-labelledby="portfolio-preview-title" class="space-y-3">
+				<div class="flex flex-wrap items-center justify-between gap-3">
+					<div>
+						<p class="street-tag px-2 py-0.5 text-xs">Resultado</p>
+						<h2
+							id="portfolio-preview-title"
+							class="street-display mt-3 text-4xl leading-none text-[var(--street-ink)]"
+						>
+							Tu portfolio
+						</h2>
+					</div>
+					<Button variant="outline" onclick={resetPortfolio}>Reiniciar</Button>
+				</div>
+				<p class="text-sm font-bold text-[var(--street-ink)]">
+					Esta ventana es la web que estás construyendo. DevDays queda a la izquierda.
+				</p>
+
+				<div
+					class="overflow-hidden rounded-lg border border-slate-300 bg-slate-100 text-slate-950 shadow-2xl shadow-black/30"
+					aria-label="Vista previa neutral del portfolio que estás creando"
+				>
+					<div class="flex items-center gap-2 border-b border-slate-300 bg-slate-200 px-3 py-2">
+						<span class="h-2.5 w-2.5 rounded-full bg-red-400"></span>
+						<span class="h-2.5 w-2.5 rounded-full bg-yellow-400"></span>
+						<span class="h-2.5 w-2.5 rounded-full bg-green-400"></span>
+						<span
+							class="ml-2 truncate rounded bg-white px-2 py-1 text-xs font-semibold text-slate-600"
+						>
+							tu-portfolio.dev
+						</span>
+					</div>
+
+					<div class="bg-white p-5 font-sans">
+						<header class="border-b border-slate-200 pb-5">
+							<p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+								{portfolio.location}
+							</p>
+							<h3 class="mt-2 text-4xl font-black leading-none tracking-tight text-slate-950">
+								{portfolio.name}
+							</h3>
+							<p class="mt-2 text-base font-semibold text-slate-700">{portfolio.role}</p>
+							<p class="mt-4 max-w-md text-sm leading-6 text-slate-600">{portfolio.bio}</p>
+						</header>
+
+						<section class="py-5">
+							<p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Skills</p>
+							<div class="mt-3 flex flex-wrap gap-2">
+								{#each portfolio.skills as skill (skill)}
+									<span
+										class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700"
+									>
+										{skill}
+									</span>
+								{/each}
+							</div>
+						</section>
+
+						<section class="border-t border-slate-200 pt-5">
+							<div class="flex items-center justify-between gap-3">
+								<p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
+									Proyectos
+								</p>
+								<p class="text-xs font-semibold text-slate-500">
+									{featuredProjects.length} destacados
+								</p>
+							</div>
+							<div class="mt-3 space-y-3">
+								{#each portfolio.projects as project (project.id)}
+									<article class="rounded-md border border-slate-200 bg-slate-50 p-3">
+										<div class="flex items-start justify-between gap-3">
+											<div>
+												<p class="text-sm font-bold text-slate-950">{project.title}</p>
+												<p class="mt-1 text-xs leading-5 text-slate-600">{project.description}</p>
+											</div>
+											<button
+												type="button"
+												onclick={() => toggleFeaturedProject(project.id)}
+												class={`rounded-full px-2 py-1 text-xs font-bold ${
+													project.featured
+														? 'bg-slate-950 text-white'
+														: 'bg-white text-slate-500 ring-1 ring-slate-200'
+												}`}
+												aria-label={`Cambiar destacado de ${project.title}`}
+											>
+												{project.featured ? 'Destacado' : 'Normal'}
+											</button>
+										</div>
+										<p class="mt-3 text-xs font-bold uppercase tracking-wide text-slate-400">
+											{project.tag}
+										</p>
+									</article>
+								{/each}
+							</div>
+						</section>
+
+						<footer
+							class="mt-5 border-t border-slate-200 pt-4 text-xs font-semibold text-slate-500"
+						>
+							{portfolio.email}
+						</footer>
+					</div>
+				</div>
+			</section>
+
 			<section class="street-panel p-5">
 				<div class="flex items-start gap-3">
 					<span
