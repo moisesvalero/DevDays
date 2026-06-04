@@ -31,11 +31,13 @@ No debe parecer una landing comercial, un SaaS serio, un dashboard frío, una ca
 ## Design Principles
 
 - Una idea por día: cada pantalla debe reducir carga cognitiva y mostrar un objetivo principal.
+- Lección antes de práctica: cada día debe explicar qué es, para qué sirve y qué probar.
 - Aprender construyendo: todo concepto se conecta con el portfolio personal del alumno.
 - Código primero: escribir o modificar código debe ser el gesto central de cada día.
 - Construcción progresiva: el resultado solo muestra lo que el alumno ya ha construido.
 - Feedback sin juicio: las pistas ayudan a avanzar, no evalúan a la persona.
 - Progreso visible: el alumno debe ver dónde está, qué hizo y qué sigue.
+- Navegación obvia: pasar de día no puede depender de encontrar una lista escondida.
 - Cero fricción inicial: entrar al curso no requiere cuenta ni configuración previa.
 - Actitud con claridad: títulos, estados y sellos pueden tener energía callejera; pasos, mentor y código deben ser legibles y directos.
 - Modo principiante real: explicar con estructura, posición y títulos claros antes que con párrafos.

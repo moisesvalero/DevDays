@@ -208,10 +208,18 @@
 	}
 
 	function selectDay(day: number) {
-		currentDay = day;
+		currentDay = Math.min(Math.max(day, 1), data.days.length);
 		mentorAnswer = '';
 		mentorError = '';
 		mentorQuestion = '';
+	}
+
+	function goToPreviousDay() {
+		selectDay(currentDay - 1);
+	}
+
+	function goToNextDay() {
+		selectDay(currentDay + 1);
 	}
 
 	function blockProgress(block: CourseBlock): number {
@@ -683,10 +691,39 @@
 							{current.introSummary}
 						</p>
 					</div>
-					<span class="street-sticker px-3 py-1 text-sm">
-						{currentDay}/{data.days.length}
-					</span>
+					<div class="flex flex-wrap justify-end gap-2">
+						<Button variant="outline" onclick={goToPreviousDay} disabled={currentDay === 1}>
+							Día anterior
+						</Button>
+						<Button onclick={goToNextDay} disabled={currentDay === data.days.length}>
+							Día siguiente
+						</Button>
+						<span class="street-sticker px-3 py-1 text-sm">
+							{currentDay}/{data.days.length}
+						</span>
+					</div>
 				</div>
+
+				<section
+					class="mt-5 rounded-md border-[3px] border-[#101018] bg-white p-4 text-[#101018] shadow-[5px_5px_0_var(--street-shadow)]"
+					aria-labelledby="lesson-title"
+				>
+					<p class="street-display text-3xl leading-none" id="lesson-title">Lección</p>
+					<div class="mt-3 grid gap-3 md:grid-cols-3">
+						<div>
+							<p class="text-xs font-black uppercase tracking-wide text-[#101018]/60">Qué es</p>
+							<p class="mt-1 text-sm font-black">{current.concept}</p>
+						</div>
+						<div>
+							<p class="text-xs font-black uppercase tracking-wide text-[#101018]/60">Para qué</p>
+							<p class="mt-1 text-sm font-black">{current.productStory}</p>
+						</div>
+						<div>
+							<p class="text-xs font-black uppercase tracking-wide text-[#101018]/60">Prueba</p>
+							<p class="mt-1 text-sm font-black">{current.miniChallenge}</p>
+						</div>
+					</div>
+				</section>
 
 				<div class="street-paper mt-5 p-4">
 					<div class="flex items-start gap-3">

@@ -26,6 +26,7 @@ DevDays usa un sistema **Street Lab educativo**: calle + neobrutal, stickers, ta
 - Leyenda principiante: define misión, portfolio, checklist y pista solo bajo demanda.
 - Barra de bloques: JavaScript, Svelte, SvelteKit como tracks con progreso.
 - Panel misión: cartel neobrutal con día, dificultad, minutos, objetivo y estado esperado.
+- Lección diaria: bloque corto y visible antes del editor, con qué es, para qué y prueba.
 - Editor de código: bloque principal de trabajo, con resultado visible al lado.
 - Checklist: ayuda secundaria y plegable, nunca la actividad principal.
 - Mockup de portfolio: pieza central a la derecha, enmarcada como navegador/teléfono separado de DevDays.
@@ -39,6 +40,7 @@ DevDays usa un sistema **Street Lab educativo**: calle + neobrutal, stickers, ta
 
 - Desktop: hero respirado; después, clase/editor a la izquierda y resultado del portfolio sticky a la derecha.
 - Mobile: intro → misión → editor → mockup de portfolio → pistas → días del curso.
+- Navegación de días: anterior/siguiente visible junto al título del día.
 - Evitar contenedores `fixed` que bloqueen scroll global.
 - Evitar tarjetas dentro de tarjetas cuando no aportan una agrupación real.
 
