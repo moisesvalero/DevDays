@@ -14,7 +14,9 @@ DevDays es un taller guiado de 21 días para construir un primer portfolio web p
 
 La primera pantalla debe explicar la experiencia como si el alumno no supiera nada de código, pero sin saturar: un hero de entrada, una acción principal clara y el resto del contenido revelado poco a poco.
 
-La pantalla de estudio debe separar con claridad el aula y el producto: a la izquierda van explicación, pasos y acciones; a la derecha va el resultado vivo del portfolio en un mockup neutral. El portfolio no debe parecer parte visual de DevDays.
+La pantalla de estudio debe separar con claridad el aula y el producto: a la izquierda van explicación y editor de código; a la derecha va el resultado vivo del portfolio en un mockup neutral. El portfolio no debe parecer parte visual de DevDays.
+
+La actividad principal no puede ser un configurador de campos. El alumno debe tocar código y ver cómo ese código cambia el portfolio.
 
 ## Brand Personality
 
@@ -28,11 +30,12 @@ No debe parecer una landing comercial, un SaaS serio, un dashboard frío, una ca
 
 - Una idea por día: cada pantalla debe reducir carga cognitiva y mostrar un objetivo principal.
 - Aprender construyendo: todo concepto se conecta con el portfolio personal del alumno.
+- Código primero: escribir o modificar código debe ser el gesto central de cada día.
 - Feedback sin juicio: las pistas ayudan a avanzar, no evalúan a la persona.
 - Progreso visible: el alumno debe ver dónde está, qué hizo y qué sigue.
 - Cero fricción inicial: entrar al curso no requiere cuenta ni configuración previa.
 - Actitud con claridad: títulos, estados y sellos pueden tener energía callejera; pasos, mentor y código deben ser legibles y directos.
-- Modo principiante real: misión, portfolio, checklist, pista y mentor deben explicarse en palabras comunes antes de pedir acción.
+- Modo principiante real: explicar con estructura, posición y títulos claros antes que con párrafos.
 - Baja densidad: no enseñar todo a la vez. Primero entrada, luego acción actual, después detalles opcionales.
 - Acceso claro: el Magic Link de Supabase debe explicarse como email → enlace → vuelta al curso.
 
