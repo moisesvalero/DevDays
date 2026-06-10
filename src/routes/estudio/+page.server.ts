@@ -1,9 +1,13 @@
-import { taskCourseDays } from '$lib/data/task-course';
+import { helpdeskTickets } from '$lib/data/helpdesk-tickets';
+import { loadTicketProgress } from '$lib/server/helpdesk-progress';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = ({ locals }) => {
+export const load: PageServerLoad = async ({ locals }) => {
+	const progress = await loadTicketProgress(locals.supabase, locals.user?.id ?? null);
+
 	return {
-		days: taskCourseDays,
+		tickets: helpdeskTickets,
+		progress,
 		userEmail: locals.user?.email ?? null
 	};
 };

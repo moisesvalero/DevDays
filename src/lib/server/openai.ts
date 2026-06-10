@@ -14,7 +14,7 @@ export type OpenAIMessage = {
 	content: string;
 };
 
-export type OpenAIJsonSchema = {
+type OpenAIJsonSchema = {
 	name: string;
 	schema: Record<string, unknown>;
 	strict?: boolean;

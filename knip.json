@@ -1,0 +1,11 @@
+{
+	"entry": ["src/routes/**/*.ts", "src/routes/**/*.svelte", "tests/**/*.ts"],
+	"project": ["src/**/*.{ts,svelte}", "tests/**/*.ts", "*.config.ts"],
+	"ignore": [
+		"src/lib/data/lessons/**",
+		"src/lib/components/study/labs/**",
+		"src/lib/types/lesson.ts",
+		"src/lib/types/laboratorio.ts"
+	],
+	"ignoreDependencies": ["husky", "tailwindcss-animate"]
+}

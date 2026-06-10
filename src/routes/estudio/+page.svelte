@@ -2,77 +2,89 @@
 	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
 	import { mode, setMode, toggleMode } from 'mode-watcher';
-	import { SvelteSet } from 'svelte/reactivity';
 	import { Button } from '$lib/components/ui/button';
-	import CodeEditor from '$lib/components/study/CodeEditor.svelte';
-	import { blockLabels, starterPortfolio } from '$lib/data/task-course';
+	import { helpdeskTickets, moduleLabels } from '$lib/data/helpdesk-tickets';
+	import { createEmptySubmission } from '$lib/helpdesk/scoring';
 	import type {
-		CourseBlock,
-		PortfolioProfile,
-		PortfolioProject,
-		TaskCourseDay
-	} from '$lib/types/task-course';
+		EvaluationCheck,
+		HelpdeskTicket,
+		TicketDecision,
+		TicketEvaluation,
+		TicketProgress,
+		TicketSubmission
+	} from '$lib/types/helpdesk';
 
-	type StudyState = {
-		currentDay: number;
-		completedDays: number[];
-		checklistByDay: Record<number, number[]>;
-		hintByDay: Record<number, number>;
-		portfolio: PortfolioProfile;
-		codeByDay: Record<number, string>;
+	type PageData = {
+		tickets: HelpdeskTicket[];
+		progress: Record<string, TicketProgress>;
+		userEmail: string | null;
 	};
 
-	type BeginnerStep = {
-		label: string;
-		text: string;
+	type ApiEvaluation = TicketEvaluation & {
+		aiFeedback: string;
+		aiHints: string[];
+		provider: 'openai' | 'gemini' | 'none';
 	};
 
-	let { data }: { data: { days: TaskCourseDay[]; userEmail: string | null } } = $props();
+	type ChatMsg = { role: 'user' | 'model'; text: string };
 
-	const storageKey = 'devdays-portfolio-course-state-v1';
-	const blocks: CourseBlock[] = ['javascript', 'svelte', 'sveltekit'];
-	const blockNames: Record<CourseBlock, string> = {
-		javascript: 'JavaScript',
-		svelte: 'Svelte',
-		sveltekit: 'SvelteKit'
+	type StoredState = {
+		currentTicketId: string;
+		submissions: Record<string, TicketSubmission>;
+		progress: Record<string, TicketProgress>;
+		evaluations: Record<string, ApiEvaluation>;
 	};
 
-	let currentDay = $state(1);
-	const completedDays = new SvelteSet<number>();
-	let checklistByDay = $state<Record<number, number[]>>({});
-	let hintByDay = $state<Record<number, number>>({});
-	let portfolio = $state<PortfolioProfile>(clonePortfolio(starterPortfolio));
-	let codeByDay = $state<Record<number, string>>({});
+	const { data }: { data: PageData } = $props();
+
+	const tickets = initialTickets();
+	const storageKey = 'devdays-helpdesk-simulator-v1';
+
+	let currentTicketId = $state(tickets[0]?.ticketId ?? '');
 	let hydrated = $state(false);
+	let submissions = $state<Record<string, TicketSubmission>>(initialSubmissions());
+	let progressByTicket = $state<Record<string, TicketProgress>>(initialProgress());
+	let evaluations = $state<Record<string, ApiEvaluation>>({});
 	let toastMessage = $state('');
+	let correcting = $state(false);
+	let saving = $state(false);
 	let mentorQuestion = $state('');
 	let mentorAnswer = $state('');
 	let mentorError = $state('');
 	let mentorLoading = $state(false);
 	let toastTimer: ReturnType<typeof setTimeout> | null = null;
 
-	const current = $derived(data.days.find((day) => day.day === currentDay) ?? data.days[0]);
-	const currentChecklist = $derived(checklistByDay[currentDay] ?? []);
-	const currentHintLevel = $derived(hintByDay[currentDay] ?? 0);
-	const visibleHints = $derived(current.mentorHints.slice(0, currentHintLevel + 1));
-	const completedCount = $derived(completedDays.size);
-	const completionPercent = $derived(Math.round((completedCount / data.days.length) * 100));
-	const isCurrentComplete = $derived(completedDays.has(currentDay));
-	const currentCode = $derived(codeByDay[currentDay] ?? current.codeSample);
-	const previewPortfolio = $derived(applyCodeToPortfolio(portfolio, currentDay, currentCode));
-	const featuredProjects = $derived(
-		previewPortfolio.projects.filter((project) => project.featured)
+	const current = $derived(
+		tickets.find((ticket) => ticket.ticketId === currentTicketId) ?? tickets[0]
 	);
-	const showSkills = $derived(currentDay >= 2);
-	const showBio = $derived(currentDay >= 3);
-	const showProjects = $derived(currentDay >= 4);
-	const showContact = $derived(currentDay >= 19);
-	const currentChecklistPercent = $derived(
-		Math.round((currentChecklist.length / current.checklist.length) * 100)
+	const currentSubmission = $derived(
+		submissions[current.ticketId] ?? createEmptySubmission(current.ticketId)
 	);
-	const beginnerSteps = $derived(getBeginnerSteps(current));
-	const nextStudentAction = $derived(getNextStudentAction());
+	const currentProgress = $derived(progressByTicket[current.ticketId]);
+	const currentEvaluation = $derived(evaluations[current.ticketId]);
+	const selectedActions = $derived(
+		current.actions.filter((action) => currentSubmission.selectedActionIds.includes(action.id))
+	);
+	const completedCount = $derived(
+		Object.values(progressByTicket).filter((progress) => progress.status === 'resuelto').length
+	);
+	const inProgressCount = $derived(
+		Object.values(progressByTicket).filter((progress) => progress.status === 'en_progreso').length
+	);
+	const completionPercent = $derived(Math.round((completedCount / tickets.length) * 100));
 	const isDark = $derived(browser && mode.current === 'dark');
+
+	function initialTickets(): HelpdeskTicket[] {
+		return data.tickets.length > 0 ? data.tickets : helpdeskTickets;
+	}
+
+	function initialSubmissions(): Record<string, TicketSubmission> {
+		return buildInitialSubmissions(tickets, data.progress);
+	}
+
+	function initialProgress(): Record<string, TicketProgress> {
+		return { ...data.progress };
+	}
 
 	onMount(() => {
 		if (!browser || hydrated) return;
@@ -84,29 +96,21 @@
 		const saved = localStorage.getItem(storageKey);
 		if (saved) {
 			try {
-				const parsed = JSON.parse(saved) as Partial<StudyState>;
-				if (typeof parsed.currentDay === 'number') {
-					currentDay = Math.min(Math.max(parsed.currentDay, 1), data.days.length);
+				const parsed = JSON.parse(saved) as Partial<StoredState>;
+				if (typeof parsed.currentTicketId === 'string' && hasTicket(parsed.currentTicketId)) {
+					currentTicketId = parsed.currentTicketId;
 				}
-				if (Array.isArray(parsed.completedDays)) {
-					completedDays.clear();
-					for (const day of parsed.completedDays) {
-						if (Number.isInteger(day) && day >= 1 && day <= data.days.length) {
-							completedDays.add(day);
-						}
-					}
+				if (parsed.submissions && typeof parsed.submissions === 'object') {
+					submissions = {
+						...buildInitialSubmissions(tickets, data.progress),
+						...sanitizeSubmissions(parsed.submissions)
+					};
 				}
-				if (parsed.checklistByDay && typeof parsed.checklistByDay === 'object') {
-					checklistByDay = sanitizeProgressMap(parsed.checklistByDay as Record<string, unknown>);
+				if (parsed.progress && typeof parsed.progress === 'object') {
+					progressByTicket = { ...parsed.progress, ...data.progress };
 				}
-				if (parsed.hintByDay && typeof parsed.hintByDay === 'object') {
-					hintByDay = sanitizeHintMap(parsed.hintByDay as Record<string, unknown>);
-				}
-				if (isPortfolioProfile(parsed.portfolio)) {
-					portfolio = parsed.portfolio;
-				}
-				if (parsed.codeByDay && typeof parsed.codeByDay === 'object') {
-					codeByDay = sanitizeCodeMap(parsed.codeByDay as Record<string, unknown>);
+				if (parsed.evaluations && typeof parsed.evaluations === 'object') {
+					evaluations = parsed.evaluations as Record<string, ApiEvaluation>;
 				}
 			} catch {
 				localStorage.removeItem(storageKey);
@@ -119,84 +123,110 @@
 	$effect(() => {
 		if (!browser || !hydrated) return;
 
-		const state: StudyState = {
-			currentDay,
-			completedDays: [...completedDays],
-			checklistByDay,
-			hintByDay,
-			portfolio,
-			codeByDay
+		const state: StoredState = {
+			currentTicketId,
+			submissions,
+			progress: progressByTicket,
+			evaluations
 		};
-
 		localStorage.setItem(storageKey, JSON.stringify(state));
 	});
 
-	function sanitizeProgressMap(map: Record<string, unknown>): Record<number, number[]> {
-		const next: Record<number, number[]> = {};
-		for (const day of data.days) {
-			const raw = map[day.day];
-			if (!Array.isArray(raw)) continue;
-			next[day.day] = raw.filter(
-				(step) => Number.isInteger(step) && step >= 0 && step < day.checklist.length
-			);
+	function buildInitialSubmissions(
+		allTickets: HelpdeskTicket[],
+		progress: Record<string, TicketProgress>
+	): Record<string, TicketSubmission> {
+		return Object.fromEntries(
+			allTickets.map((ticket) => {
+				const saved = progress[ticket.ticketId];
+				return [
+					ticket.ticketId,
+					saved
+						? {
+								ticketId: saved.ticketId,
+								selectedActionIds: saved.selectedActionIds,
+								notes: saved.notes,
+								diagnosis: saved.diagnosis,
+								solution: saved.solution,
+								userReply: saved.userReply,
+								decision: saved.decision
+							}
+						: createEmptySubmission(ticket.ticketId)
+				];
+			})
+		);
+	}
+
+	function sanitizeSubmissions(
+		value: Record<string, TicketSubmission>
+	): Record<string, TicketSubmission> {
+		const next: Record<string, TicketSubmission> = {};
+		for (const ticket of tickets) {
+			const saved = value[ticket.ticketId];
+			if (!saved || typeof saved !== 'object') continue;
+			next[ticket.ticketId] = {
+				ticketId: ticket.ticketId,
+				selectedActionIds: Array.isArray(saved.selectedActionIds)
+					? saved.selectedActionIds.filter((id) =>
+							ticket.actions.some((action) => action.id === id)
+						)
+					: [],
+				notes: typeof saved.notes === 'string' ? saved.notes : '',
+				diagnosis: typeof saved.diagnosis === 'string' ? saved.diagnosis : '',
+				solution: typeof saved.solution === 'string' ? saved.solution : '',
+				userReply: typeof saved.userReply === 'string' ? saved.userReply : '',
+				decision: saved.decision === 'escalar' ? 'escalar' : 'cerrar'
+			};
 		}
 		return next;
 	}
 
-	function sanitizeHintMap(map: Record<string, unknown>): Record<number, number> {
-		const next: Record<number, number> = {};
-		for (const day of data.days) {
-			const raw = map[day.day];
-			if (typeof raw === 'number') {
-				next[day.day] = Math.min(Math.max(raw, 0), day.mentorHints.length - 1);
+	function hasTicket(ticketId: string): boolean {
+		return tickets.some((ticket) => ticket.ticketId === ticketId);
+	}
+
+	function selectTicket(ticketId: string) {
+		currentTicketId = ticketId;
+		mentorAnswer = '';
+		mentorError = '';
+		mentorQuestion = '';
+	}
+
+	function updateSubmission(patch: Partial<TicketSubmission>) {
+		submissions = {
+			...submissions,
+			[current.ticketId]: {
+				...currentSubmission,
+				...patch,
+				ticketId: current.ticketId
 			}
-		}
-		return next;
+		};
+		markInProgress();
 	}
 
-	function sanitizeCodeMap(map: Record<string, unknown>): Record<number, string> {
-		const next: Record<number, string> = {};
-		for (const day of data.days) {
-			const raw = map[day.day];
-			if (typeof raw === 'string') next[day.day] = raw;
-		}
-		return next;
-	}
-
-	function clonePortfolio(source: PortfolioProfile): PortfolioProfile {
-		return {
-			...source,
-			skills: [...source.skills],
-			projects: source.projects.map((project) => ({ ...project }))
+	function markInProgress() {
+		if (progressByTicket[current.ticketId]?.status === 'resuelto') return;
+		progressByTicket = {
+			...progressByTicket,
+			[current.ticketId]: {
+				...currentSubmission,
+				status: 'en_progreso',
+				score: progressByTicket[current.ticketId]?.score ?? 0,
+				feedback: progressByTicket[current.ticketId]?.feedback ?? '',
+				updatedAt: new Date().toISOString()
+			}
 		};
 	}
 
-	function isPortfolioProfile(value: unknown): value is PortfolioProfile {
-		if (!value || typeof value !== 'object') return false;
-		const candidate = value as Partial<PortfolioProfile>;
-		return (
-			typeof candidate.name === 'string' &&
-			typeof candidate.role === 'string' &&
-			typeof candidate.bio === 'string' &&
-			typeof candidate.location === 'string' &&
-			typeof candidate.email === 'string' &&
-			Array.isArray(candidate.skills) &&
-			candidate.skills.every((skill) => typeof skill === 'string') &&
-			Array.isArray(candidate.projects) &&
-			candidate.projects.every(isPortfolioProject)
-		);
+	function toggleAction(actionId: string) {
+		const selected = currentSubmission.selectedActionIds.includes(actionId)
+			? currentSubmission.selectedActionIds.filter((id) => id !== actionId)
+			: [...currentSubmission.selectedActionIds, actionId];
+		updateSubmission({ selectedActionIds: selected });
 	}
 
-	function isPortfolioProject(project: unknown): project is PortfolioProject {
-		if (!project || typeof project !== 'object') return false;
-		const candidate = project as Partial<PortfolioProject>;
-		return (
-			typeof candidate.id === 'number' &&
-			typeof candidate.title === 'string' &&
-			typeof candidate.description === 'string' &&
-			typeof candidate.tag === 'string' &&
-			typeof candidate.featured === 'boolean'
-		);
+	function updateDecision(decision: TicketDecision) {
+		updateSubmission({ decision });
 	}
 
 	function showToast(message: string) {
@@ -207,271 +237,79 @@
 		}, 3200);
 	}
 
-	function selectDay(day: number) {
-		currentDay = Math.min(Math.max(day, 1), data.days.length);
-		mentorAnswer = '';
-		mentorError = '';
-		mentorQuestion = '';
+	function ticketStatus(ticket: HelpdeskTicket): 'resuelto' | 'en progreso' | 'sin empezar' {
+		const progress = progressByTicket[ticket.ticketId];
+		if (progress?.status === 'resuelto') return 'resuelto';
+		if (progress?.status === 'en_progreso') return 'en progreso';
+		const submission = submissions[ticket.ticketId];
+		if (submission?.selectedActionIds.length || submission?.notes) return 'en progreso';
+		return 'sin empezar';
 	}
 
-	function goToPreviousDay() {
-		selectDay(currentDay - 1);
+	function statusClass(ticket: HelpdeskTicket): string {
+		const status = ticketStatus(ticket);
+		if (status === 'resuelto') return 'bg-emerald-100 text-emerald-950';
+		if (status === 'en progreso') return 'bg-amber-100 text-amber-950';
+		return 'bg-slate-100 text-slate-700';
 	}
 
-	function goToNextDay() {
-		selectDay(currentDay + 1);
+	function resetCurrentTicket() {
+		submissions = { ...submissions, [current.ticketId]: createEmptySubmission(current.ticketId) };
+		const nextProgress = { ...progressByTicket };
+		delete nextProgress[current.ticketId];
+		progressByTicket = nextProgress;
+		const nextEvaluations = { ...evaluations };
+		delete nextEvaluations[current.ticketId];
+		evaluations = nextEvaluations;
+		showToast('Ticket reiniciado.');
 	}
 
-	function blockProgress(block: CourseBlock): number {
-		const blockDays = data.days.filter((day) => day.block === block);
-		const completed = blockDays.filter((day) => completedDays.has(day.day)).length;
-		return Math.round((completed / blockDays.length) * 100);
-	}
+	async function correctTicket() {
+		if (correcting) return;
+		correcting = true;
 
-	function dayStatus(
-		day: TaskCourseDay
-	): 'practicado' | 'en curso' | 'necesito pista' | 'no empezado' {
-		if (completedDays.has(day.day)) return 'practicado';
-		if ((hintByDay[day.day] ?? 0) > 0) return 'necesito pista';
-		if ((checklistByDay[day.day] ?? []).length > 0 || day.day === currentDay) return 'en curso';
-		return 'no empezado';
-	}
+		try {
+			const response = await fetch('/api/corregir', {
+				method: 'POST',
+				headers: { 'content-type': 'application/json' },
+				body: JSON.stringify(currentSubmission)
+			});
 
-	function dayStatusLabel(day: TaskCourseDay): string {
-		const status = dayStatus(day);
-		if (status === 'practicado') return 'Practicado';
-		if (status === 'necesito pista') return 'Con pistas';
-		if (status === 'en curso') return 'En curso';
-		return 'Sin empezar';
-	}
+			if (!response.ok) throw new Error('correction-failed');
 
-	function getNextStudentAction(): string {
-		if (isCurrentComplete) return 'Puedes pasar al siguiente día o repetir este sin presión.';
-		if (currentDay === 1) return "Cambia 'Tu Nombre' por tu nombre.";
-		if (currentDay === 2) return 'Añade una palabra dentro de la lista skills.';
-		if (currentDay === 3) return 'Cambia un dato dentro de la ficha perfil.';
-		if (currentChecklist.length === 0) {
-			return 'Cambia el código del editor y mira el resultado.';
-		}
-		if (currentChecklist.length < current.checklist.length) {
-			return 'Sigue el checklist de uno en uno. No tienes que entenderlo todo a la primera.';
-		}
-		return 'Ya hiciste los pasos. Marca el día como practicado cuando te suene lo que has hecho.';
-	}
+			const result = (await response.json()) as ApiEvaluation;
+			evaluations = { ...evaluations, [current.ticketId]: result };
 
-	function getBeginnerSteps(day: TaskCourseDay): BeginnerStep[] {
-		if (day.day === 1) {
-			return [
-				{ label: 'Idea', text: 'Una variable guarda un dato.' },
-				{ label: 'Toca', text: 'Cambia el texto entre comillas.' },
-				{ label: 'Mira', text: 'El portfolio cambia a la derecha.' }
-			];
-		}
-
-		if (day.day === 2) {
-			return [
-				{ label: 'Idea', text: 'Una lista guarda varios datos.' },
-				{ label: 'Toca', text: 'Añade otra skill entre comillas.' },
-				{ label: 'Mira', text: 'Aparece otro chip en el portfolio.' }
-			];
-		}
-
-		if (day.day === 3) {
-			return [
-				{ label: 'Idea', text: 'Un objeto agrupa datos de una misma cosa.' },
-				{ label: 'Toca', text: 'Cambia name, role o location.' },
-				{ label: 'Mira', text: 'La ficha del portfolio se actualiza.' }
-			];
-		}
-
-		if (day.day === 4) {
-			return [
-				{ label: 'Idea', text: 'Una función evita repetir código.' },
-				{ label: 'Toca', text: 'Cambia el título del proyecto.' },
-				{ label: 'Mira', text: 'Nace la sección proyectos.' }
-			];
-		}
-
-		if (day.day === 8) {
-			return [
-				{ label: 'Idea', text: 'Svelte pinta datos en HTML.' },
-				{ label: 'Toca', text: 'Mira las llaves { } del ejemplo.' },
-				{ label: 'Mira', text: 'El perfil ya parece una web.' }
-			];
-		}
-
-		if (day.day === 15) {
-			return [
-				{ label: 'Idea', text: 'Una ruta es una pantalla con URL.' },
-				{ label: 'Toca', text: 'Lee el nombre del archivo.' },
-				{ label: 'Mira', text: 'El portfolio se prepara para vivir solo.' }
-			];
-		}
-
-		if (day.day === 19) {
-			return [
-				{ label: 'Idea', text: 'Un formulario recoge mensajes.' },
-				{ label: 'Toca', text: 'Revisa nombre, email y mensaje.' },
-				{ label: 'Mira', text: 'Aparece contacto en el portfolio.' }
-			];
-		}
-
-		return [
-			{ label: 'Idea', text: day.concept.replace(/\.$/, '') },
-			{ label: 'Toca', text: day.guidedSteps[0] ?? 'Cambia una parte pequeña del código.' },
-			{ label: 'Mira', text: day.expectedState }
-		];
-	}
-
-	function toggleStep(index: number) {
-		if (currentChecklist.includes(index)) {
-			checklistByDay = {
-				...checklistByDay,
-				[currentDay]: currentChecklist.filter((step) => step !== index)
+			const progress: TicketProgress = {
+				...currentSubmission,
+				status: result.passed ? 'resuelto' : 'en_progreso',
+				score: result.score,
+				feedback: result.aiFeedback || result.feedback,
+				updatedAt: new Date().toISOString()
 			};
-		} else {
-			checklistByDay = {
-				...checklistByDay,
-				[currentDay]: [...currentChecklist, index].sort((a, b) => a - b)
-			};
+
+			progressByTicket = { ...progressByTicket, [current.ticketId]: progress };
+			await persistProgress(progress);
+			showToast(result.passed ? current.closureCue : 'Revisa las pistas y vuelve a cerrar.');
+		} catch {
+			showToast('No pude corregir el ticket ahora.');
+		} finally {
+			correcting = false;
 		}
 	}
 
-	function updateCurrentCode(value: string) {
-		codeByDay = { ...codeByDay, [currentDay]: value };
-		if (!currentChecklist.includes(0)) {
-			checklistByDay = { ...checklistByDay, [currentDay]: [0] };
+	async function persistProgress(progress: TicketProgress) {
+		if (!data.userEmail || saving) return;
+		saving = true;
+		try {
+			await fetch('/api/progreso/tickets', {
+				method: 'POST',
+				headers: { 'content-type': 'application/json' },
+				body: JSON.stringify(progress)
+			});
+		} finally {
+			saving = false;
 		}
-	}
-
-	function resetCurrentCode() {
-		codeByDay = { ...codeByDay, [currentDay]: current.codeSample };
-		showToast('Código reiniciado.');
-	}
-
-	function resetPortfolio() {
-		portfolio = clonePortfolio(starterPortfolio);
-		codeByDay = {};
-		showToast('Portfolio reiniciado. Vuelta a la primera versión.');
-	}
-
-	function toggleCurrentDay() {
-		if (completedDays.has(currentDay)) {
-			completedDays.delete(currentDay);
-			showToast('Sello retirado. Puedes volver a practicar este día.');
-		} else {
-			completedDays.add(currentDay);
-			showToast(`${current.completionCue} Sello desbloqueado.`);
-		}
-	}
-
-	function completeAndGoNext() {
-		completedDays.add(currentDay);
-		if (currentDay < data.days.length) {
-			selectDay(currentDay + 1);
-			showToast(`Día ${currentDay - 1} guardado. Seguimos.`);
-		} else {
-			showToast('Curso completado.');
-		}
-	}
-
-	function applyCodeToPortfolio(
-		basePortfolio: PortfolioProfile,
-		day: number,
-		code: string
-	): PortfolioProfile {
-		const next = clonePortfolio(basePortfolio);
-
-		if (day === 1) {
-			next.name = extractAssignedString(code, ['nombre', 'name']) ?? next.name;
-			next.role = extractAssignedString(code, ['titular', 'role']) ?? next.role;
-		}
-
-		if (day === 2 || day === 10 || day === 11) {
-			next.skills = extractArray(code, 'skills') ?? next.skills;
-		}
-
-		if (day === 3 || day === 8 || day === 9 || day === 16 || day === 17) {
-			next.name = extractObjectString(code, ['perfil', 'profile'], 'name') ?? next.name;
-			next.role =
-				extractObjectString(code, ['perfil', 'profile'], 'role') ??
-				extractAssignedString(code, ['role']) ??
-				next.role;
-			next.location = extractObjectString(code, ['perfil', 'profile'], 'location') ?? next.location;
-			next.bio = extractObjectString(code, ['perfil', 'profile'], 'bio') ?? next.bio;
-			next.email = extractObjectString(code, ['perfil', 'profile'], 'email') ?? next.email;
-		}
-
-		if (day >= 4 && day <= 7) {
-			const projectTitles = extractProjectTitles(code);
-			if (projectTitles.length > 0) {
-				next.projects = projectTitles.map((title, index) => ({
-					id: index + 1,
-					title,
-					description:
-						index === 0 ? 'Proyecto creado desde tu código.' : 'Otra pieza del portfolio.',
-					tag: index === 0 ? blockNames.javascript : 'práctica',
-					featured: code.includes('featured: true') || code.includes('★')
-				}));
-			}
-		}
-
-		return next;
-	}
-
-	function extractAssignedString(code: string, names: string[]): string | null {
-		for (const name of names) {
-			const match = code.match(
-				new RegExp(`(?:let|const)\\s+${name}\\s*=\\s*['"\`]([^'"\`]+)['"\`]`)
-			);
-			if (match?.[1]) return match[1];
-		}
-		return null;
-	}
-
-	function extractObjectString(code: string, objectNames: string[], key: string): string | null {
-		for (const objectName of objectNames) {
-			const objectMatch = code.match(new RegExp(`${objectName}\\s*=\\s*\\{([\\s\\S]*?)\\}`));
-			const body = objectMatch?.[1];
-			if (!body) continue;
-			const valueMatch = body.match(new RegExp(`${key}\\s*:\\s*['"\`]([^'"\`]+)['"\`]`));
-			if (valueMatch?.[1]) return valueMatch[1];
-		}
-		return null;
-	}
-
-	function extractArray(code: string, name: string): string[] | null {
-		const assigned = code.match(new RegExp(`${name}\\s*=\\s*\\[([\\s\\S]*?)\\]`));
-		const items =
-			assigned?.[1]
-				.match(/['"`]([^'"`]+)['"`]/g)
-				?.map((item) => item.slice(1, -1))
-				.filter(Boolean) ?? [];
-		const pushed =
-			[...code.matchAll(new RegExp(`${name}\\.push\\(\\s*['"\`]([^'"\`]+)['"\`]\\s*\\)`, 'g'))]
-				.map((match) => match[1])
-				.filter(Boolean) ?? [];
-		const result = [...items, ...pushed];
-		return result.length > 0 ? result : null;
-	}
-
-	function extractProjectTitles(code: string): string[] {
-		const titles = [
-			...code.matchAll(/title\s*:\s*['"`]([^'"`]+)['"`]/g),
-			...code.matchAll(/crearProyecto\(\s*['"`]([^'"`]+)['"`]/g)
-		].map((match) => match[1]);
-		const standalone = extractAssignedString(code, ['title']);
-		return [...new Set(standalone ? [standalone, ...titles] : titles)];
-	}
-
-	function revealNextHint() {
-		const nextLevel = Math.min(currentHintLevel + 1, current.mentorHints.length - 1);
-		hintByDay = { ...hintByDay, [currentDay]: nextLevel };
-		showToast(
-			nextLevel === currentHintLevel
-				? 'Ya tienes todas las pistas de esta misión.'
-				: 'Nueva pista desbloqueada. Sube el volumen, pero paso a paso.'
-		);
 	}
 
 	async function askMentor() {
@@ -487,19 +325,15 @@
 				method: 'POST',
 				headers: { 'content-type': 'application/json' },
 				body: JSON.stringify({
-					dia: currentDay,
-					ejercicio: 1,
-					enunciado: current.objective,
-					codigoActual: current.codeSample,
-					queDebePasar: [current.expectedState],
+					ticketId: current.ticketId,
+					selectedActionIds: currentSubmission.selectedActionIds,
+					notes: currentSubmission.notes,
 					mensaje: message,
-					historial: []
+					historial: [] satisfies ChatMsg[]
 				})
 			});
 
-			if (!response.ok) {
-				throw new Error('mentor-unavailable');
-			}
+			if (!response.ok) throw new Error('mentor-unavailable');
 
 			const json = (await response.json()) as { respuesta?: string };
 			mentorAnswer =
@@ -507,553 +341,450 @@
 			mentorQuestion = '';
 		} catch {
 			mentorError =
-				'El mentor IA no está disponible ahora. Usa las pistas locales: el curso sigue funcionando.';
+				'El mentor IA no está disponible ahora. Usa los hallazgos y las pistas locales del ticket.';
 		} finally {
 			mentorLoading = false;
 		}
 	}
+
+	function checkTone(check: EvaluationCheck): string {
+		if (check.passed) {
+			return 'border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-900/70 dark:bg-emerald-950/32 dark:text-emerald-200';
+		}
+		return 'border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900/70 dark:bg-amber-950/32 dark:text-amber-200';
+	}
 </script>
 
 <svelte:head>
-	<title>DevDays Street Lab</title>
-	<meta name="theme-color" content="#08080a" />
+	<title>Service Desk Studio</title>
+	<meta name="theme-color" content="#0b1220" />
 </svelte:head>
 
-<header
-	class="sticky top-0 z-30 border-b-[3px] border-[var(--street-shadow)] bg-[var(--street-bg)]/95 px-4 py-3 text-[var(--street-ink)] backdrop-blur sm:px-6"
->
-	<div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4">
-		<div class="flex min-w-0 items-center gap-3">
-			<span
-				class="material-symbols-outlined street-sticker h-11 w-11 rotate-[-4deg] text-2xl"
-				style="font-variation-settings: 'FILL' 1;"
-				aria-hidden="true">task_alt</span
-			>
-			<div class="min-w-0">
-				<p
-					class="street-display text-2xl leading-none text-[var(--street-lime)] [-webkit-text-stroke:1px_var(--street-shadow)]"
-				>
-					DevDays
-				</p>
-				<p class="text-xs font-black uppercase tracking-wide text-[var(--street-ink)]">
-					Street Lab · 21 misiones
-				</p>
-			</div>
-		</div>
-
-		<div class="flex items-center gap-3">
-			<div class="hidden min-w-36 sm:block">
-				<div
-					class="h-3 overflow-hidden rounded-full border-2 border-[var(--street-shadow)] bg-[var(--street-paper)]"
-				>
-					<div
-						class="h-full rounded-full bg-[var(--street-lime)]"
-						style={`width: ${completionPercent}%`}
-					></div>
-				</div>
-				<p class="mt-1 text-right text-xs font-bold text-[var(--street-ink)]">
-					{completedCount}/{data.days.length} misiones practicadas
-				</p>
-			</div>
-			<button
-				type="button"
-				onclick={toggleMode}
-				aria-label={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
-				class="street-hard-shadow flex h-9 w-9 items-center justify-center rounded-md border-2 border-[var(--street-shadow)] bg-[var(--street-paper)] text-[#101018] transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-[var(--street-lime)]"
-			>
-				<span class="material-symbols-outlined text-xl" aria-hidden="true">
-					{isDark ? 'light_mode' : 'dark_mode'}
-				</span>
-			</button>
-		</div>
-	</div>
-</header>
-
-<main class="street-shell min-h-dvh">
-	<section
-		class="flex min-h-[calc(100dvh-76px)] items-center border-b-[3px] border-[var(--street-shadow)]"
+<main class="ops-shell">
+	<header
+		class="sticky top-0 z-30 border-b border-slate-200/80 bg-white/78 px-4 py-3 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/72 sm:px-6"
 	>
-		<div
-			class="mx-auto grid w-full max-w-7xl items-center gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:px-8"
-		>
-			<div class="relative min-h-[58vh] overflow-hidden py-6">
-				<div
-					class="pointer-events-none absolute -right-16 bottom-0 h-64 w-80 rotate-[-8deg] bg-[url('/street-stickers.webp')] bg-contain bg-no-repeat opacity-25 sm:h-80 sm:w-[28rem] sm:opacity-35"
-				></div>
-				<p class="street-tag px-3 py-1 text-xs">Empieza aquí · sin saber código</p>
-				<h1
-					class="street-display relative mt-5 max-w-4xl text-5xl leading-[0.9] text-[var(--street-lime)] [-webkit-text-stroke:2px_var(--street-shadow)] sm:text-7xl lg:text-8xl"
-				>
-					Crea tu primer portfolio web.
-				</h1>
-				<p class="relative mt-5 max-w-xl text-lg font-black text-[var(--street-ink)] sm:text-xl">
-					21 días. Tu CV online. Un paso cada vez.
-				</p>
-				<div class="relative mt-7 flex flex-wrap gap-3">
-					<Button href={data.userEmail ? '#mision-actual' : '/login'}>
-						{data.userEmail ? 'Seguir aprendiendo' : 'Entrar con Magic Link'}
-					</Button>
-					<Button variant="outline" href="#mision-actual">Probar sin agobio</Button>
-				</div>
-				<p class="relative mt-4 max-w-lg text-sm font-bold text-[var(--street-ink)]">
-					{data.userEmail
-						? `Sesión iniciada como ${data.userEmail}.`
-						: 'El Magic Link te manda un enlace al email. Sin contraseña, sin líos.'}
-				</p>
-			</div>
-
-			<div class="street-paper street-tape p-5 pt-7">
-				<p class="street-display text-3xl text-[#101018]">Primer minuto</p>
-				<ol class="mt-4 space-y-3 text-sm font-black text-[#101018]">
-					<li class="flex gap-3">
-						<span class="street-sticker h-7 w-7 shrink-0 text-xs">1</span>
-						<span>Entra con tu email para guardar el acceso.</span>
-					</li>
-					<li class="flex gap-3">
-						<span class="street-sticker street-sticker-pink h-7 w-7 shrink-0 text-xs">2</span>
-						<span>Edita el código del día.</span>
-					</li>
-					<li class="flex gap-3">
-						<span class="street-sticker h-7 w-7 shrink-0 text-xs">3</span>
-						<span>Mira el resultado a la derecha.</span>
-					</li>
-				</ol>
-				<details class="mt-5 rounded-md border-2 border-[#101018] bg-white p-3 text-[#101018]">
-					<summary class="cursor-pointer text-sm font-black">Qué significa cada zona</summary>
-					<div class="mt-3 grid gap-2 text-sm font-bold">
-						<p><strong>Misión:</strong> lo que practicas hoy.</p>
-						<p><strong>Código:</strong> lo que escribes.</p>
-						<p><strong>Resultado:</strong> tu portfolio vivo.</p>
-						<p><strong>Pista:</strong> ayuda sin examen.</p>
-					</div>
-				</details>
-			</div>
-		</div>
-	</section>
-
-	<section
-		class="border-b-[3px] border-[var(--street-shadow)] bg-[color-mix(in_oklab,var(--street-pink)_14%,transparent)]"
-	>
-		<div class="mx-auto flex max-w-7xl flex-wrap items-center gap-3 px-4 py-3 sm:px-6 lg:px-8">
-			<p class="street-display mr-2 text-2xl leading-none text-[var(--street-ink)]">Tracks</p>
-			{#each blocks as block (block)}
-				<button
-					type="button"
-					onclick={() => selectDay(data.days.find((day) => day.block === block)?.day ?? 1)}
-					class="flex min-w-0 flex-1 basis-56 items-center gap-3 rounded-md border-[3px] border-[var(--street-shadow)] bg-[var(--street-paper)] px-3 py-2 text-left text-[#101018] shadow-[4px_4px_0_var(--street-shadow)] transition-transform hover:-translate-y-0.5 focus-visible:outline-[3px] focus-visible:outline-[var(--street-lime)]"
-				>
-					<div
-						class="h-3 flex-1 overflow-hidden rounded-full border-2 border-[var(--street-shadow)] bg-white"
+		<div class="mx-auto flex max-w-[1500px] flex-wrap items-center justify-between gap-4">
+			<div class="flex min-w-0 items-center gap-3">
+				<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white">
+					<span class="material-symbols-outlined text-[21px]" aria-hidden="true"
+						>desktop_windows</span
 					>
+				</div>
+				<div class="min-w-0">
+					<p class="text-base font-semibold tracking-tight text-slate-950 dark:text-white">
+						Service Desk Studio
+					</p>
+					<p class="text-xs font-medium text-slate-500 dark:text-slate-400">
+						Simulación profesional de soporte nivel 1
+					</p>
+				</div>
+			</div>
+
+			<div class="flex items-center gap-3">
+				<div class="hidden min-w-48 sm:block">
+					<div class="h-1.5 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
 						<div
-							class="h-full rounded-full bg-[var(--street-lime)]"
-							style={`width: ${blockProgress(block)}%`}
+							class="h-full rounded-full bg-blue-600"
+							style={`width: ${completionPercent}%`}
 						></div>
 					</div>
-					<span class="truncate text-xs font-black">{blockLabels[block]}</span>
-					<span class="text-xs font-black">{blockProgress(block)}%</span>
+					<p class="mt-1 text-right text-xs font-medium text-slate-500 dark:text-slate-400">
+						{completedCount}/{tickets.length} tickets resueltos
+					</p>
+				</div>
+				<Button href={data.userEmail ? undefined : '/login'} variant="outline">
+					{data.userEmail ? data.userEmail : 'Entrar'}
+				</Button>
+				<button
+					type="button"
+					onclick={toggleMode}
+					aria-label={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+					class="ops-focus-ring flex h-9 w-9 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-700 shadow-sm transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+				>
+					<span class="material-symbols-outlined text-xl" aria-hidden="true">
+						{isDark ? 'light_mode' : 'dark_mode'}
+					</span>
 				</button>
-			{/each}
+			</div>
 		</div>
-	</section>
+	</header>
 
 	<div
-		class="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(380px,0.8fr)] lg:px-8"
+		class="mx-auto grid max-w-[1500px] gap-5 px-4 py-5 sm:px-6 lg:grid-cols-[320px_minmax(0,1fr)_380px] lg:px-8"
 	>
-		<section id="mision-actual" class="space-y-5">
-			<div class="street-panel p-5">
+		<aside class="space-y-4">
+			<section class="ops-panel overflow-hidden">
+				<div class="border-b border-slate-200 px-4 py-4 dark:border-slate-800">
+					<div class="flex items-center justify-between gap-3">
+						<div>
+							<p class="text-xs font-semibold text-slate-500 dark:text-slate-400">Incidencias</p>
+							<h1 class="mt-1 text-xl font-semibold tracking-tight text-slate-950 dark:text-white">
+								Cola
+							</h1>
+						</div>
+						<span
+							class="rounded-full border border-blue-200 bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700 dark:border-blue-900/70 dark:bg-blue-950/50 dark:text-blue-300"
+						>
+							{inProgressCount} abiertos
+						</span>
+					</div>
+				</div>
+				<div class="max-h-[calc(100dvh-170px)] space-y-1 overflow-y-auto p-2">
+					{#each tickets as ticket (ticket.ticketId)}
+						<button
+							type="button"
+							onclick={() => selectTicket(ticket.ticketId)}
+							class={`ops-focus-ring w-full rounded-xl border px-3 py-3 text-left transition-colors ${
+								ticket.ticketId === current.ticketId
+									? 'border-blue-300 bg-blue-50 text-blue-950 dark:border-blue-800 dark:bg-blue-950/42 dark:text-white'
+									: 'border-transparent text-slate-700 hover:border-slate-200 hover:bg-white/80 dark:text-slate-300 dark:hover:border-slate-800 dark:hover:bg-slate-900/70'
+							}`}
+						>
+							<div class="flex items-start justify-between gap-2">
+								<span
+									class="font-mono text-[11px] font-semibold text-slate-500 dark:text-slate-400"
+								>
+									{ticket.ticketId}
+								</span>
+								<span
+									class={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${statusClass(ticket)}`}
+								>
+									{ticketStatus(ticket)}
+								</span>
+							</div>
+							<p class="mt-2 text-sm font-semibold leading-tight">{ticket.title}</p>
+							<p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
+								{moduleLabels[ticket.module]}
+							</p>
+						</button>
+					{/each}
+				</div>
+			</section>
+		</aside>
+
+		<section class="space-y-5">
+			<section class="ops-panel p-5 sm:p-6">
 				<div class="flex flex-wrap items-start justify-between gap-4">
 					<div class="max-w-3xl">
 						<div class="flex flex-wrap items-center gap-2">
-							<span class="street-sticker px-3 py-1 text-xs">
-								Día {current.day}
+							<span
+								class="rounded-full border border-slate-200 bg-white px-2.5 py-1 font-mono text-xs font-semibold text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+							>
+								{current.ticketId}
 							</span>
 							<span
-								class="rounded-md border-2 border-[var(--street-shadow)] bg-[var(--street-paper)] px-3 py-1 text-xs font-black text-[#101018]"
+								class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300"
 							>
 								{current.estimatedMinutes} min
 							</span>
 							<span
-								class="rounded-md border-2 border-[var(--street-shadow)] bg-white px-3 py-1 text-xs font-black text-[#101018]"
+								class="rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700 dark:bg-amber-950/40 dark:text-amber-300"
 							>
 								{current.difficulty}
 							</span>
-							<span class="street-sticker street-sticker-pink px-3 py-1 text-xs">
-								{dayStatusLabel(current)}
+							<span
+								class="rounded-full bg-cyan-50 px-2.5 py-1 text-xs font-semibold text-cyan-700 dark:bg-cyan-950/40 dark:text-cyan-300"
+							>
+								{moduleLabels[current.module]}
 							</span>
 						</div>
 						<h2
-							class="street-display mt-4 text-4xl leading-none text-[var(--street-ink)] sm:text-5xl"
+							class="mt-4 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white sm:text-4xl"
 						>
-							{current.missionTitle}
+							{current.title}
 						</h2>
-						<p class="mt-3 max-w-2xl text-sm font-bold text-[var(--street-ink)] sm:text-base">
-							{current.introSummary}
-						</p>
 					</div>
-					<div class="flex flex-wrap justify-end gap-2">
-						<Button variant="outline" onclick={goToPreviousDay} disabled={currentDay === 1}>
-							Día anterior
-						</Button>
-						<Button onclick={goToNextDay} disabled={currentDay === data.days.length}>
-							Día siguiente
-						</Button>
-						<span class="street-sticker px-3 py-1 text-sm">
-							{currentDay}/{data.days.length}
-						</span>
-					</div>
+					<Button variant="outline" onclick={resetCurrentTicket}>Reiniciar</Button>
 				</div>
 
-				<section
-					class="mt-5 rounded-md border-[3px] border-[#101018] bg-white p-4 text-[#101018] shadow-[5px_5px_0_var(--street-shadow)]"
-					aria-labelledby="lesson-title"
-				>
-					<p class="street-display text-3xl leading-none" id="lesson-title">Lección</p>
-					<div class="mt-3 grid gap-3 md:grid-cols-3">
-						<div>
-							<p class="text-xs font-black uppercase tracking-wide text-[#101018]/60">Qué es</p>
-							<p class="mt-1 text-sm font-black">{current.concept}</p>
-						</div>
-						<div>
-							<p class="text-xs font-black uppercase tracking-wide text-[#101018]/60">Para qué</p>
-							<p class="mt-1 text-sm font-black">{current.productStory}</p>
-						</div>
-						<div>
-							<p class="text-xs font-black uppercase tracking-wide text-[#101018]/60">Prueba</p>
-							<p class="mt-1 text-sm font-black">{current.miniChallenge}</p>
-						</div>
-					</div>
-				</section>
-
-				<div class="street-paper mt-5 p-4">
-					<div class="flex items-start gap-3">
-						<span
-							class="material-symbols-outlined street-sticker street-sticker-pink h-9 w-9 shrink-0 text-lg"
-							aria-hidden="true">near_me</span
-						>
-						<div>
-							<p class="street-display text-2xl text-[#101018]">Ahora mismo haz esto</p>
-							<p class="mt-1 text-sm font-bold text-[#101018]">{nextStudentAction}</p>
-						</div>
-					</div>
-				</div>
-
-				<details
-					class="mt-4 rounded-md border-[3px] border-[var(--street-shadow)] bg-[var(--street-paper)] p-4 text-[#101018] shadow-[5px_5px_0_var(--street-shadow)]"
-				>
-					<summary class="cursor-pointer text-sm font-black">
-						Ver objetivo y resultado esperado
-					</summary>
-					<div class="mt-3 grid gap-3 md:grid-cols-2">
-						<div>
-							<p class="street-display text-xl text-[#101018]">Hoy vas a aprender</p>
-							<p class="mt-1 text-sm font-semibold text-[#101018]">{current.objective}</p>
-						</div>
-						<div>
-							<p class="street-display text-xl text-[#101018]">Al final verás</p>
-							<p class="mt-1 text-sm font-semibold text-[#101018]">{current.expectedState}</p>
-						</div>
-					</div>
-				</details>
-
-				<div class="mt-5 grid gap-3 md:grid-cols-3">
-					{#each beginnerSteps as step (step.label)}
-						<div class="rounded-md border-[3px] border-[#101018] bg-white p-3 text-[#101018]">
-							<p class="street-display text-2xl leading-none">{step.label}</p>
-							<p class="mt-2 text-sm font-black">{step.text}</p>
-						</div>
-					{/each}
-				</div>
-			</div>
-
-			<section class="street-panel p-5" aria-labelledby="portfolio-actions-title">
-				<div class="flex flex-wrap items-center justify-between gap-3">
-					<h2
-						id="portfolio-actions-title"
-						class="street-display text-5xl leading-none text-[var(--street-ink)]"
-					>
-						Código
-					</h2>
-					<Button variant="outline" onclick={resetCurrentCode}>Reiniciar código</Button>
-				</div>
-				<p class="mt-2 text-sm font-black text-[var(--street-ink)]">{current.codeFocus}</p>
-				<div class="mt-4">
-					<CodeEditor
-						value={currentCode}
-						onChange={updateCurrentCode}
-						filename={`dia-${current.day}.js`}
-					/>
-				</div>
-				<div class="mt-4 flex flex-wrap gap-3">
-					<Button onclick={completeAndGoNext}>
-						{currentDay < data.days.length ? 'Siguiente día' : 'Terminar curso'}
-					</Button>
-					<Button variant="ghost" onclick={revealNextHint}>Pista</Button>
-				</div>
-			</section>
-
-			<details class="street-panel p-5">
-				<summary class="cursor-pointer list-none">
-					<div class="flex flex-wrap items-center justify-between gap-3">
-						<div>
-							<h2
-								id="checklist-title"
-								class="street-display text-4xl leading-none text-[var(--street-ink)]"
-							>
-								Pasos
-							</h2>
-						</div>
-						<span class="street-sticker px-3 py-1 text-sm">{currentChecklistPercent}%</span>
-					</div>
-				</summary>
-				<div class="mt-5 space-y-2">
-					{#each current.checklist as item, index (item)}
-						<label
-							class="flex cursor-pointer gap-3 rounded-md border-2 border-[var(--street-shadow)] bg-[var(--street-paper)] p-3 text-sm font-bold text-[#101018] shadow-[4px_4px_0_var(--street-shadow)] transition-transform hover:-translate-y-0.5"
-						>
-							<input
-								type="checkbox"
-								checked={currentChecklist.includes(index)}
-								onchange={() => toggleStep(index)}
-								class="mt-1 h-4 w-4 accent-[var(--street-pink)]"
-							/>
-							<span
-								class={currentChecklist.includes(index)
-									? 'text-[#101018]/55 line-through'
-									: 'text-[#101018]'}
-							>
-								{item}
-							</span>
-						</label>
-					{/each}
-				</div>
-			</details>
-		</section>
-
-		<aside class="space-y-5 lg:sticky lg:top-24">
-			<section aria-labelledby="portfolio-preview-title" class="space-y-3">
-				<div class="flex flex-wrap items-center justify-between gap-3">
-					<h2
-						id="portfolio-preview-title"
-						class="street-display text-5xl leading-none text-[var(--street-ink)]"
-					>
-						Resultado
-					</h2>
-					<Button variant="outline" onclick={resetPortfolio}>Reset</Button>
-				</div>
-
-				<div
-					class="overflow-hidden rounded-lg border border-slate-300 bg-slate-100 text-slate-950 shadow-2xl shadow-black/30"
-					aria-label="Vista previa neutral del portfolio que estás creando"
-				>
-					<div class="flex items-center gap-2 border-b border-slate-300 bg-slate-200 px-3 py-2">
-						<span class="h-2.5 w-2.5 rounded-full bg-red-400"></span>
-						<span class="h-2.5 w-2.5 rounded-full bg-yellow-400"></span>
-						<span class="h-2.5 w-2.5 rounded-full bg-green-400"></span>
-						<span
-							class="ml-2 truncate rounded bg-white px-2 py-1 text-xs font-semibold text-slate-600"
-						>
-							tu-portfolio.dev
-						</span>
-					</div>
-
-					<div class="bg-white p-5 font-sans">
-						<header class="border-b border-slate-200 pb-5">
-							<p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
-								{previewPortfolio.location}
-							</p>
-							<h3 class="mt-2 text-4xl font-black leading-none tracking-tight text-slate-950">
-								{previewPortfolio.name}
-							</h3>
-							<p class="mt-2 text-base font-semibold text-slate-700">{previewPortfolio.role}</p>
-							{#if showBio}
-								<p class="mt-4 max-w-md text-sm leading-6 text-slate-600">
-									{previewPortfolio.bio}
-								</p>
-							{/if}
-						</header>
-
-						{#if showSkills}
-							<section class="py-5">
-								<p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Skills</p>
-								<div class="mt-3 flex flex-wrap gap-2">
-									{#each previewPortfolio.skills as skill (skill)}
-										<span
-											class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700"
-										>
-											{skill}
-										</span>
-									{/each}
-								</div>
-							</section>
-						{/if}
-
-						{#if showProjects}
-							<section class="border-t border-slate-200 pt-5">
-								<div class="flex items-center justify-between gap-3">
-									<p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
-										Proyectos
-									</p>
-									<p class="text-xs font-semibold text-slate-500">
-										{featuredProjects.length} destacados
-									</p>
-								</div>
-								<div class="mt-3 space-y-3">
-									{#each previewPortfolio.projects as project (project.id)}
-										<article class="rounded-md border border-slate-200 bg-slate-50 p-3">
-											<div class="flex items-start justify-between gap-3">
-												<div>
-													<p class="text-sm font-bold text-slate-950">{project.title}</p>
-													<p class="mt-1 text-xs leading-5 text-slate-600">
-														{project.description}
-													</p>
-												</div>
-												<span
-													class={`rounded-full px-2 py-1 text-xs font-bold ${
-														project.featured
-															? 'bg-slate-950 text-white'
-															: 'bg-white text-slate-500 ring-1 ring-slate-200'
-													}`}
-												>
-													{project.featured ? 'Destacado' : 'Normal'}
-												</span>
-											</div>
-											<p class="mt-3 text-xs font-bold uppercase tracking-wide text-slate-400">
-												{project.tag}
-											</p>
-										</article>
-									{/each}
-								</div>
-							</section>
-						{/if}
-
-						{#if showContact}
-							<footer
-								class="mt-5 border-t border-slate-200 pt-4 text-xs font-semibold text-slate-500"
-							>
-								{previewPortfolio.email}
-							</footer>
-						{/if}
-
-						{#if !showContact}
-							<div class="mt-5 border-t border-slate-200 pt-4">
-								<p class="text-xs font-semibold text-slate-400">
-									Día {current.day}: versión en construcción
-								</p>
-							</div>
-						{/if}
-					</div>
-				</div>
-			</section>
-
-			<section class="street-panel p-5">
-				<div class="flex items-start gap-3">
-					<span
-						class="material-symbols-outlined street-sticker h-10 w-10 text-xl"
-						style="font-variation-settings: 'FILL' 1;"
-						aria-hidden="true">psychology</span
-					>
-					<div>
-						<p class="street-display text-3xl leading-none text-[var(--street-ink)]">Pistas</p>
-					</div>
-				</div>
-
-				<div class="mt-4 space-y-3">
-					{#each visibleHints as hint, index (hint)}
-						<div class="street-paper p-3">
-							<p class="street-display text-xl text-[#101018]">Pista {index + 1}</p>
-							<p class="mt-1 text-sm font-semibold text-[#101018]">{hint}</p>
-						</div>
-					{/each}
-				</div>
-
-				<div class="mt-4 flex flex-wrap gap-2">
-					<Button variant="outline" onclick={revealNextHint}>Dame otra pista</Button>
-					<Button variant="ghost" onclick={toggleCurrentDay}>
-						{isCurrentComplete ? 'Quitar marca' : 'Ya lo he practicado'}
-					</Button>
-				</div>
-			</section>
-
-			<details class="street-panel p-5">
-				<summary class="cursor-pointer list-none">
-					<p class="street-display text-3xl leading-none text-[var(--street-ink)]">
-						Preguntar al mentor
+				<div class="ops-subpanel mt-5 p-4">
+					<p class="text-sm font-semibold text-slate-950 dark:text-white">Mensaje del usuario</p>
+					<p class="mt-2 text-base leading-7 text-slate-800 dark:text-slate-100">
+						{current.userMessage}
 					</p>
-				</summary>
-				<div class="mt-4">
-					<textarea
-						bind:value={mentorQuestion}
-						class="min-h-24 w-full resize-y rounded-md border-[3px] border-[var(--street-shadow)] bg-[var(--street-paper)] p-3 text-sm font-semibold text-[#101018] shadow-[4px_4px_0_var(--street-shadow)] outline-none transition focus:translate-x-1 focus:translate-y-1 focus:shadow-none focus:ring-3 focus:ring-[var(--street-lime)]"
-						placeholder="Ejemplo: no entiendo qué estoy viendo en este ejemplo"
-					></textarea>
-					<div class="mt-3 flex justify-end">
-						<Button onclick={askMentor} disabled={mentorLoading || !mentorQuestion.trim()}>
-							{mentorLoading ? 'Preguntando...' : 'Preguntar al mentor'}
-						</Button>
-					</div>
-					{#if mentorAnswer}
-						<div class="street-paper mt-4 p-3">
-							<p class="text-sm font-semibold text-[#101018]">{mentorAnswer}</p>
-						</div>
-					{/if}
-					{#if mentorError}
-						<div class="street-paper mt-4 p-3">
-							<p class="text-sm font-semibold text-[#101018]">{mentorError}</p>
-						</div>
-					{/if}
 				</div>
-			</details>
-		</aside>
-	</div>
 
-	<section
-		class="border-t-[3px] border-[var(--street-shadow)] bg-[color-mix(in_oklab,var(--street-lime)_12%,transparent)]"
-	>
-		<div class="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
-			<details>
-				<summary class="cursor-pointer list-none">
-					<div class="flex flex-wrap items-center justify-between gap-3">
-						<div>
-							<p class="street-display text-4xl leading-none text-[var(--street-ink)]">
-								Días del curso
-							</p>
-							<p class="text-sm font-bold text-[var(--street-ink)]">
-								Día actual: {current.day}. Abre esto solo si quieres cambiar.
-							</p>
-						</div>
-						<p class="street-sticker px-3 py-1 text-sm">{completionPercent}% practicado</p>
+				<div class="mt-4 grid gap-3 md:grid-cols-2">
+					<div class="ops-subpanel p-4">
+						<p class="text-sm font-semibold text-slate-950 dark:text-white">Entorno</p>
+						<ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
+							{#each current.environment as item (item)}
+								<li class="flex gap-2">
+									<span class="mt-2 h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+									<span>{item}</span>
+								</li>
+							{/each}
+						</ul>
 					</div>
-				</summary>
-				<div
-					class="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-7 lg:grid-cols-[repeat(21,minmax(0,1fr))]"
-				>
-					{#each data.days as day (day.day)}
+					<div class="ops-subpanel p-4">
+						<p class="text-sm font-semibold text-slate-950 dark:text-white">Síntomas</p>
+						<ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
+							{#each current.symptoms as item (item)}
+								<li class="flex gap-2">
+									<span class="mt-2 h-1.5 w-1.5 rounded-full bg-cyan-500"></span>
+									<span>{item}</span>
+								</li>
+							{/each}
+						</ul>
+					</div>
+				</div>
+			</section>
+
+			<section class="ops-panel p-5 sm:p-6">
+				<div class="flex flex-wrap items-center justify-between gap-3">
+					<div>
+						<p class="text-sm font-semibold text-slate-500 dark:text-slate-400">
+							Protocolo de trabajo
+						</p>
+						<h2 class="mt-1 text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">
+							Diagnóstico
+						</h2>
+					</div>
+					<span
+						class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300"
+					>
+						{selectedActions.length}/{current.actions.length} acciones
+					</span>
+				</div>
+
+				<div class="mt-4 grid gap-3 md:grid-cols-2">
+					{#each current.actions as action (action.id)}
 						<button
 							type="button"
-							onclick={() => selectDay(day.day)}
-							class={`min-h-12 rounded-md border-[3px] border-[var(--street-shadow)] px-2 text-sm font-black shadow-[4px_4px_0_var(--street-shadow)] transition-transform hover:-translate-y-0.5 ${
-								day.day === currentDay
-									? 'bg-[var(--street-pink)] text-white'
-									: completedDays.has(day.day)
-										? 'bg-[var(--street-lime)] text-[#101018]'
-										: 'bg-[var(--street-paper)] text-[#101018]'
+							onclick={() => toggleAction(action.id)}
+							class={`ops-focus-ring rounded-2xl border p-4 text-left transition-colors ${
+								currentSubmission.selectedActionIds.includes(action.id)
+									? 'border-blue-300 bg-blue-50 dark:border-blue-800 dark:bg-blue-950/38'
+									: 'border-slate-200 bg-white/72 hover:border-blue-200 hover:bg-blue-50/60 dark:border-slate-800 dark:bg-slate-900/54 dark:hover:border-blue-900 dark:hover:bg-blue-950/22'
 							}`}
-							aria-label={`Ir al día ${day.day}: ${day.title}`}
 						>
-							{day.day}
+							<div class="flex items-center justify-between gap-2">
+								<span class="text-xs font-semibold text-slate-500 dark:text-slate-400">
+									{action.type}
+								</span>
+								<span
+									class={`material-symbols-outlined text-lg ${
+										currentSubmission.selectedActionIds.includes(action.id)
+											? 'text-blue-600 dark:text-blue-300'
+											: 'text-slate-400'
+									}`}
+									aria-hidden="true"
+								>
+									{currentSubmission.selectedActionIds.includes(action.id)
+										? 'check_circle'
+										: 'radio_button_unchecked'}
+								</span>
+							</div>
+							<p class="mt-2 text-sm font-semibold text-slate-900 dark:text-slate-100">
+								{action.label}
+							</p>
 						</button>
 					{/each}
 				</div>
-			</details>
-		</div>
-	</section>
+
+				<div class="ops-subpanel mt-5 p-4">
+					<div class="flex items-center justify-between gap-3">
+						<p class="text-sm font-semibold text-slate-950 dark:text-white">Hallazgos</p>
+						<p class="text-xs text-slate-500 dark:text-slate-400">Resultados simulados</p>
+					</div>
+					{#if selectedActions.length > 0}
+						<div class="mt-3 space-y-2">
+							{#each selectedActions as action (action.id)}
+								<article
+									class="rounded-xl border border-slate-200 bg-slate-50/80 p-3 dark:border-slate-800 dark:bg-slate-950/36"
+								>
+									<p class="text-xs font-semibold text-slate-500 dark:text-slate-400">
+										{action.label}
+									</p>
+									<p class="mt-1 text-sm text-slate-700 dark:text-slate-200">{action.result}</p>
+								</article>
+							{/each}
+						</div>
+					{:else}
+						<p class="mt-3 text-sm text-slate-500 dark:text-slate-400">
+							Selecciona pruebas para ver resultados simulados.
+						</p>
+					{/if}
+				</div>
+			</section>
+		</section>
+
+		<aside class="space-y-5 lg:sticky lg:top-24 lg:self-start">
+			<section class="ops-panel p-5">
+				<div>
+					<p class="text-sm font-semibold text-slate-500 dark:text-slate-400">Resolución</p>
+					<h2 class="mt-1 text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">
+						Cierre
+					</h2>
+				</div>
+				<label class="mt-4 block">
+					<span class="text-xs font-semibold text-slate-500 dark:text-slate-400"
+						>Notas técnicas</span
+					>
+					<textarea
+						value={currentSubmission.notes}
+						oninput={(event) => updateSubmission({ notes: event.currentTarget.value })}
+						class="ops-input mt-1 min-h-20 w-full p-3 text-sm"
+					></textarea>
+				</label>
+				<label class="mt-3 block">
+					<span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Diagnóstico</span>
+					<textarea
+						value={currentSubmission.diagnosis}
+						oninput={(event) => updateSubmission({ diagnosis: event.currentTarget.value })}
+						class="ops-input mt-1 min-h-20 w-full p-3 text-sm"
+					></textarea>
+				</label>
+				<label class="mt-3 block">
+					<span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Solución</span>
+					<textarea
+						value={currentSubmission.solution}
+						oninput={(event) => updateSubmission({ solution: event.currentTarget.value })}
+						class="ops-input mt-1 min-h-20 w-full p-3 text-sm"
+					></textarea>
+				</label>
+
+				<div class="mt-3">
+					<p class="text-xs font-semibold text-slate-500 dark:text-slate-400">Decisión</p>
+					<div class="mt-2 grid grid-cols-2 gap-2 rounded-xl bg-slate-100 p-1 dark:bg-slate-900">
+						<button
+							type="button"
+							onclick={() => updateDecision('cerrar')}
+							class={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+								currentSubmission.decision === 'cerrar'
+									? 'bg-white text-blue-700 shadow-sm dark:bg-slate-800 dark:text-blue-300'
+									: 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+							}`}
+						>
+							Cerrar
+						</button>
+						<button
+							type="button"
+							onclick={() => updateDecision('escalar')}
+							class={`rounded-lg px-3 py-2 text-sm font-semibold transition-colors ${
+								currentSubmission.decision === 'escalar'
+									? 'bg-white text-teal-700 shadow-sm dark:bg-slate-800 dark:text-teal-300'
+									: 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+							}`}
+						>
+							Escalar
+						</button>
+					</div>
+				</div>
+
+				<label class="mt-3 block">
+					<span class="text-xs font-semibold text-slate-500 dark:text-slate-400">
+						Respuesta al usuario
+					</span>
+					<textarea
+						value={currentSubmission.userReply}
+						oninput={(event) => updateSubmission({ userReply: event.currentTarget.value })}
+						class="ops-input mt-1 min-h-24 w-full p-3 text-sm"
+					></textarea>
+				</label>
+
+				<Button class="mt-4 w-full" onclick={correctTicket} disabled={correcting}>
+					{correcting ? 'Corrigiendo...' : 'Corregir ticket'}
+				</Button>
+				{#if saving}
+					<p class="mt-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+						Guardando progreso...
+					</p>
+				{/if}
+			</section>
+
+			<section class="ops-panel p-5">
+				<div>
+					<p class="text-sm font-semibold text-slate-500 dark:text-slate-400">Calidad</p>
+					<h2 class="mt-1 text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">
+						Evaluación
+					</h2>
+				</div>
+				{#if currentEvaluation}
+					<div class="ops-subpanel mt-3 p-4">
+						<div class="flex items-end justify-between gap-3">
+							<p class="text-5xl font-semibold tracking-tight text-slate-950 dark:text-white">
+								{currentEvaluation.score}
+							</p>
+							<p class="text-sm font-semibold text-slate-500 dark:text-slate-400">
+								/ {currentEvaluation.maxScore}
+							</p>
+						</div>
+						<p class="mt-2 text-sm text-slate-700 dark:text-slate-200">
+							{currentEvaluation.aiFeedback || currentEvaluation.feedback}
+						</p>
+						{#if currentEvaluation.provider !== 'none'}
+							<p class="mt-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
+								Feedback IA: {currentEvaluation.provider}
+							</p>
+						{/if}
+					</div>
+					<div class="mt-3 space-y-2">
+						{#each currentEvaluation.checks as check (check.id)}
+							<article class={`rounded-xl border p-3 ${checkTone(check)}`}>
+								<div class="flex items-center justify-between gap-3">
+									<p class="text-sm font-semibold">{check.label}</p>
+									<p class="text-xs font-semibold">{check.points}/{check.maxPoints}</p>
+								</div>
+								<p class="mt-1 text-xs font-medium">{check.feedback}</p>
+							</article>
+						{/each}
+					</div>
+				{:else if currentProgress}
+					<div class="ops-subpanel mt-3 p-4">
+						<p class="text-5xl font-semibold tracking-tight text-slate-950 dark:text-white">
+							{currentProgress.score}
+						</p>
+						<p class="mt-2 text-sm text-slate-700 dark:text-slate-200">
+							{currentProgress.feedback || 'Progreso guardado.'}
+						</p>
+					</div>
+				{:else}
+					<p class="ops-subpanel mt-3 p-4 text-sm text-slate-500 dark:text-slate-400">
+						Cuando cierres el ticket verás puntuación, errores y pistas.
+					</p>
+				{/if}
+			</section>
+
+			<section class="ops-panel p-5">
+				<div>
+					<p class="text-sm font-semibold text-slate-500 dark:text-slate-400">
+						Apoyo durante el caso
+					</p>
+					<h2 class="mt-1 text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">
+						Mentor
+					</h2>
+				</div>
+				<textarea
+					value={mentorQuestion}
+					oninput={(event) => (mentorQuestion = event.currentTarget.value)}
+					placeholder="Pregunta una duda del diagnóstico..."
+					class="ops-input mt-3 min-h-20 w-full p-3 text-sm"
+				></textarea>
+				<Button class="mt-3 w-full" variant="outline" onclick={askMentor} disabled={mentorLoading}>
+					{mentorLoading ? 'Pensando...' : 'Pedir pista'}
+				</Button>
+				{#if mentorAnswer}
+					<p class="ops-subpanel mt-3 p-3 text-sm text-slate-700 dark:text-slate-200">
+						{mentorAnswer}
+					</p>
+				{/if}
+				{#if mentorError}
+					<p
+						class="mt-3 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm font-medium text-amber-900 dark:border-amber-900/70 dark:bg-amber-950/40 dark:text-amber-200"
+					>
+						{mentorError}
+					</p>
+				{/if}
+			</section>
+		</aside>
+	</div>
 </main>
 
 {#if toastMessage}
 	<div
-		class="street-hit fixed right-4 bottom-4 z-40 max-w-sm rounded-md border-[3px] border-[var(--street-shadow)] bg-[var(--street-pink)] px-4 py-3 text-sm font-black text-white shadow-[6px_6px_0_var(--street-shadow)]"
-		role="status"
+		class="fixed bottom-4 left-1/2 z-50 w-[min(92vw,460px)] -translate-x-1/2 rounded-xl border border-blue-200 bg-white px-4 py-3 text-center text-sm font-semibold text-slate-900 shadow-sm dark:border-blue-900 dark:bg-slate-900 dark:text-slate-100"
 	>
 		{toastMessage}
 	</div>
