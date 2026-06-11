@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-	<title>Error {page.status} | DevDays</title>
+	<title>Error {page.status} | Service Desk Studio</title>
 </svelte:head>
 
 <div class="error-page">

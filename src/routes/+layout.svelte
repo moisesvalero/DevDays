@@ -2,17 +2,16 @@
 	import '../app.css';
 	import { ModeWatcher } from 'mode-watcher';
 	import { Toaster } from '$lib/components/ui/sonner';
-	import ToastContainer from '$lib/components/ToastContainer.svelte';
 	import type { Snippet } from 'svelte';
 
 	let { children }: { children: Snippet } = $props();
 </script>
 
 <svelte:head>
-	<title>DevDays — Curso 21 días</title>
+	<title>Service Desk Studio — Técnico nivel 1</title>
 	<meta
 		name="description"
-		content="Curso guiado de 21 días para aprender JavaScript, Svelte y SvelteKit construyendo tu primer portfolio web."
+		content="Simulador práctico de tickets helpdesk para entrenar diagnóstico de técnico informático nivel 1."
 	/>
 </svelte:head>
 
@@ -23,4 +22,3 @@
 </main>
 
 <Toaster />
-<ToastContainer />

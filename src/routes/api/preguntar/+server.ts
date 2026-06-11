@@ -1,16 +1,15 @@
 import { json, error } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
-import { chatTutor } from '$lib/server/ai';
+import { getTicketById } from '$lib/data/helpdesk-tickets';
+import { chatHelpdeskTutor } from '$lib/server/ai';
 import type { RequestHandler } from './$types';
 
 type ChatMsg = { role: 'user' | 'model'; text: string };
 
 type Body = {
-	dia: number;
-	ejercicio: number;
-	enunciado: string;
-	codigoActual?: string;
-	queDebePasar?: string[];
+	ticketId: string;
+	selectedActionIds?: string[];
+	notes?: string;
 	mensaje: string;
 	historial: ChatMsg[];
 };
@@ -30,13 +29,13 @@ export const POST: RequestHandler = async ({ request }) => {
 	if (!body.mensaje?.trim()) {
 		throw error(400, 'Escribe una pregunta para el tutor.');
 	}
+	const ticket = getTicketById(body.ticketId);
+	if (!ticket) throw error(404, 'Ticket no encontrado.');
 
-	const result = await chatTutor({
-		dia: body.dia,
-		ejercicio: body.ejercicio,
-		enunciado: body.enunciado,
-		codigoActual: body.codigoActual ?? '',
-		queDebePasar: body.queDebePasar,
+	const result = await chatHelpdeskTutor({
+		ticket,
+		selectedActionIds: body.selectedActionIds ?? [],
+		notes: body.notes ?? '',
 		mensaje: body.mensaje,
 		historial: body.historial ?? []
 	});

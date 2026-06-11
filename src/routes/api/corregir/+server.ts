@@ -1,39 +1,41 @@
 import { json, error } from '@sveltejs/kit';
-import { env } from '$env/dynamic/private';
-import { correctCode } from '$lib/server/ai';
+import { getTicketById } from '$lib/data/helpdesk-tickets';
+import { evaluateTicket } from '$lib/helpdesk/scoring';
+import { reviewTicketResolution } from '$lib/server/ai';
+import type { TicketDecision } from '$lib/types/helpdesk';
 import type { RequestHandler } from './$types';
 
 type Body = {
-	dia: number;
-	ejercicio: number;
-	enunciado: string;
-	codigo: string;
-	queDebePasar?: string[];
-	criteriosLogica?: string[];
-	nivelAyuda?: 'normal' | 'extra';
+	ticketId: string;
+	selectedActionIds: string[];
+	notes: string;
+	diagnosis: string;
+	solution: string;
+	userReply: string;
+	decision: TicketDecision;
 };
 
-export const POST: RequestHandler = async ({ request, locals }) => {
-	if (!locals.user) throw error(401, 'No autorizado');
-	if (!env.OPENAI_API_KEY && !env.GEMINI_API_KEY) {
-		throw error(500, 'No hay ninguna API de IA configurada (OPENAI_API_KEY o GEMINI_API_KEY)');
-	}
-
+export const POST: RequestHandler = async ({ request }) => {
 	const body = (await request.json()) as Body;
-	const result = await correctCode({
-		dia: body.dia,
-		ejercicio: body.ejercicio,
-		enunciado: body.enunciado,
-		codigo: body.codigo,
-		queDebePasar: body.queDebePasar,
-		criteriosLogica: body.criteriosLogica,
-		nivelAyuda: body.nivelAyuda ?? 'normal'
-	});
+	const ticket = getTicketById(body.ticketId);
+	if (!ticket) throw error(404, 'Ticket no encontrado.');
+
+	const submission = {
+		ticketId: body.ticketId,
+		selectedActionIds: body.selectedActionIds ?? [],
+		notes: body.notes ?? '',
+		diagnosis: body.diagnosis ?? '',
+		solution: body.solution ?? '',
+		userReply: body.userReply ?? '',
+		decision: body.decision ?? 'cerrar'
+	};
+	const local = evaluateTicket(ticket, submission);
+	const ai = await reviewTicketResolution({ ticket, submission, localEvaluation: local });
 
 	return json({
-		correcto: result.correcto,
-		feedback: result.feedback,
-		pistas: result.pistas,
-		snippetGuia: result.snippetGuia
+		...local,
+		aiFeedback: ai.feedback,
+		aiHints: ai.hints,
+		provider: ai.provider
 	});
 };

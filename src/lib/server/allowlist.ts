@@ -5,7 +5,7 @@ import { env } from '$env/dynamic/private';
  * Lee `ALLOWED_EMAILS` de las env vars: si está vacía o no existe, devuelve [].
  * - [] significa "todo bloqueado" (modo paranoia: nadie entra).
  */
-export function getAllowedEmails(): string[] {
+function getAllowedEmails(): string[] {
 	const raw = env.ALLOWED_EMAILS ?? '';
 	return [
 		...new Set(

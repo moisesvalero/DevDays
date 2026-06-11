@@ -6,9 +6,7 @@
 
 	let { config }: { config: LabBlockConfig } = $props();
 
-	let values = $state<LabValues>(
-		Object.fromEntries(config.fields.map((f) => [f.key, f.default])) as LabValues
-	);
+	let values = $state<LabValues>(initialValues());
 
 	const results = $derived(
 		Object.fromEntries(config.derived.map((d) => [d.resultKey, d.compute(values)]))
@@ -21,6 +19,10 @@
 				.map((f) => [f.key, { min: f.min, max: f.max }])
 		)
 	);
+
+	function initialValues(): LabValues {
+		return Object.fromEntries(config.fields.map((f) => [f.key, f.default])) as LabValues;
+	}
 </script>
 
 <InteractiveLabLayout hint={config.hint}>
