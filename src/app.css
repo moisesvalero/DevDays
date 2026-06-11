@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './lib/styles/stitch-m3.css';
+@import '@xterm/xterm/css/xterm.css';
 
 /* Fuentes: cargar desde app.html (evita warning "@import must precede rules") */
 

@@ -419,10 +419,10 @@
 				</a>
 				<a
 					class="flex w-16 flex-col items-center gap-2 rounded-lg px-2 py-3 hover:bg-blue-50"
-					href="/estudio"
+					href="/terminal"
 				>
-					<span class="material-symbols-outlined text-[26px]">network_node</span>
-					<span>SIMS</span>
+					<span class="material-symbols-outlined text-[26px]">terminal</span>
+					<span>TERM</span>
 				</a>
 			</nav>
 			<button
