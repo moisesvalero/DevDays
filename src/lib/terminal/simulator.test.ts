@@ -17,7 +17,7 @@ describe('terminal simulator', () => {
 			session = applyTerminalResult(session, command, result);
 		}
 
-		expect(session.cwd).toBe('/home/moises/webs');
+		expect(session.cwd).toBe('/home/usuario/webs');
 		expect(session.score).toBe(100);
 		expect(isLessonComplete(lesson, session)).toBe(true);
 	});
@@ -41,7 +41,7 @@ describe('terminal simulator', () => {
 	});
 
 	it('simula validación completa sin ejecutar comandos reales', () => {
-		const lesson = terminalLessons.find((item) => item.lessonId === 'TERM-008');
+		const lesson = terminalLessons.find((item) => item.lessonId === 'TERM-011');
 		expect(lesson).toBeDefined();
 		if (!lesson) return;
 

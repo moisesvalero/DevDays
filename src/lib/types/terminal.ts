@@ -12,6 +12,11 @@ export type TerminalExercise = {
 	successMessage: string;
 };
 
+export type TerminalCommandNote = {
+	command: string;
+	description: string;
+};
+
 export type TerminalLesson = {
 	lessonId: string;
 	module: TerminalModule;
@@ -22,6 +27,7 @@ export type TerminalLesson = {
 	explanation: string;
 	dailyUse: string;
 	keyCommands: string[];
+	commandNotes: TerminalCommandNote[];
 	exercises: TerminalExercise[];
 	hints: string[];
 };

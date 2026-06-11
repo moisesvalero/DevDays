@@ -1,33 +1,12 @@
 <script lang="ts">
-	const learningTracks = [
-		{
-			label: 'Service Desk',
-			title: 'Simulador de incidencias IT',
-			description:
-				'Resuelve tickets de entorno Windows empresa: contraseña, VPN, red, correo, impresoras, permisos y seguridad.',
-			href: '/estudio',
-			icon: 'support_agent',
-			image: '/tickets/hd-005-vpn-routes.jpg',
-			stats: ['15 tickets', 'Diagnóstico guiado', 'Cierre o escalado']
-		},
-		{
-			label: 'Terminal',
-			title: 'Laboratorio de comandos diarios',
-			description:
-				'Practica WSL, Git, GitHub CLI y pnpm en una terminal simulada para coger soltura sin romper nada real.',
-			href: '/terminal',
-			icon: 'terminal',
-			image: '/tickets/hd-004-dns-failure.jpg',
-			stats: ['10 lecciones', 'Xterm.js', 'Práctica segura']
-		}
-	];
+	import { courseTracks } from '$lib/data/courses';
 </script>
 
 <svelte:head>
-	<title>DevDays — Simulador IT y Terminal</title>
+	<title>DevDays — Estudio de aprendizaje IT</title>
 	<meta
 		name="description"
-		content="Entrada a DevDays: simulador de incidencias IT nivel 1 y laboratorio de terminal para WSL, Git y pnpm."
+		content="Entrada a DevDays: simulador de incidencias IT, laboratorio de terminal y curso de JavaScript/SvelteKit."
 	/>
 </svelte:head>
 
@@ -77,11 +56,11 @@
 			<h1
 				class="mt-4 max-w-3xl text-[clamp(2.25rem,4.8vw,4.35rem)] leading-[1.02] font-black tracking-tight text-slate-950"
 			>
-				Practica soporte IT como si ya estuvieras en mesa de ayuda.
+				Practica soporte IT, terminal y código en un mismo estudio.
 			</h1>
 			<p class="mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-				DevDays ahora es un estudio de práctica: tickets reales de empresa Windows y una ruta de
-				terminal para dominar los comandos que más vas a usar en el día a día.
+				DevDays ahora es un catálogo modular: tickets reales de empresa Windows, terminal para tu
+				día a día y el curso original para construir tu portfolio con JavaScript y SvelteKit.
 			</p>
 			<div class="mt-8 flex flex-col gap-3 sm:flex-row">
 				<a
@@ -124,7 +103,7 @@
 				<div>
 					<p class="text-sm font-black uppercase tracking-[0.2em] text-slate-500">Rutas activas</p>
 					<h2 class="mt-2 text-3xl font-black tracking-tight text-slate-950">
-						Dos áreas para entrenar sin ruido.
+						Tres áreas para entrenar sin ruido.
 					</h2>
 				</div>
 				<p class="max-w-xl text-sm leading-6 text-slate-600">
@@ -133,12 +112,12 @@
 				</p>
 			</div>
 
-			<div class="mt-7 grid gap-5 lg:grid-cols-2">
-				{#each learningTracks as track (track.href)}
+			<div class="mt-7 grid gap-4 lg:grid-cols-3">
+				{#each courseTracks as track (track.href)}
 					<article class="overflow-hidden rounded-xl border border-slate-200 bg-[#f8fafc]">
-						<div class="grid min-h-full sm:grid-cols-[0.92fr_1.08fr]">
-							<img src={track.image} alt="" class="h-56 w-full object-cover sm:h-full" />
-							<div class="flex flex-col p-6">
+						<div class="flex min-h-full flex-col">
+							<img src={track.image} alt="" class="h-40 w-full object-cover" />
+							<div class="flex flex-1 flex-col p-5">
 								<div class="flex items-center gap-3">
 									<span
 										class="material-symbols-outlined rounded-lg bg-blue-50 p-2 text-[#0078d4]"
@@ -148,7 +127,7 @@
 										{track.label}
 									</p>
 								</div>
-								<h3 class="mt-5 text-2xl font-black tracking-tight">{track.title}</h3>
+								<h3 class="mt-4 text-xl font-black tracking-tight">{track.title}</h3>
 								<p class="mt-3 flex-1 text-sm leading-6 text-slate-600">{track.description}</p>
 								<div class="mt-5 flex flex-wrap gap-2">
 									{#each track.stats as stat (stat)}
@@ -161,7 +140,7 @@
 								</div>
 								<a
 									class="mt-6 inline-flex h-11 items-center justify-center rounded-lg bg-slate-950 px-5 text-sm font-bold text-white hover:bg-slate-800"
-									href="/login"
+									href={track.href}
 								>
 									Entrar a esta ruta
 								</a>

@@ -143,8 +143,8 @@
 		term = new Terminal({
 			cursorBlink: true,
 			fontFamily: '"Cascadia Code", "Fira Code", Consolas, monospace',
-			fontSize: 14,
-			lineHeight: 1.45,
+			fontSize: 13,
+			lineHeight: 1.35,
 			theme: {
 				background: '#0d1117',
 				foreground: '#dbe7ff',
@@ -268,7 +268,11 @@
 	}
 
 	function promptText(): string {
-		return `moises@Ubuntu-Dev:${currentSession.cwd.replace('/home/moises', '~')}$ `;
+		return `usuario@Ubuntu-Dev:${displayCwd(currentSession.cwd)}$ `;
+	}
+
+	function displayCwd(cwd: string): string {
+		return cwd.replace(/^\/home\/[^/]+/, '~');
 	}
 
 	function selectLesson(lessonId: string) {
@@ -324,7 +328,7 @@
 			if (!saved || typeof saved !== 'object') continue;
 			next[lesson.lessonId] = {
 				lessonId: lesson.lessonId,
-				cwd: typeof saved.cwd === 'string' ? saved.cwd : '/home/moises',
+				cwd: typeof saved.cwd === 'string' ? saved.cwd : '/home/usuario',
 				history: Array.isArray(saved.history) ? saved.history.filter(isTerminalEntry) : [],
 				completedExerciseIds: Array.isArray(saved.completedExerciseIds)
 					? saved.completedExerciseIds.filter((id) =>
@@ -403,18 +407,18 @@
 
 		<div class="flex min-w-0 flex-1 flex-col">
 			<header
-				class="flex h-16 shrink-0 items-center justify-between border-b border-[#e5e7eb] bg-white px-5 2xl:px-7"
+				class="flex h-14 shrink-0 items-center justify-between border-b border-[#e5e7eb] bg-white px-4 2xl:px-5"
 			>
-				<div class="flex items-center gap-6">
-					<h1 class="text-lg font-bold text-black 2xl:text-xl">Terminal Studio</h1>
-					<span class="text-2xl text-slate-300">/</span>
-					<p class="text-base font-medium text-slate-700 2xl:text-lg">WSL, Git y pnpm</p>
+				<div class="flex items-center gap-4">
+					<h1 class="text-base font-bold text-black">Terminal Studio</h1>
+					<span class="text-lg text-slate-300">/</span>
+					<p class="text-sm font-medium text-slate-700">WSL, Git y pnpm</p>
 				</div>
-				<div class="flex items-center gap-6">
-					<div class="w-52">
-						<div class="h-2 rounded-full bg-slate-100">
+				<div class="flex items-center gap-4">
+					<div class="w-44">
+						<div class="h-1.5 rounded-full bg-slate-100">
 							<div
-								class="h-2 rounded-full bg-[#0078d4]"
+								class="h-1.5 rounded-full bg-[#0078d4]"
 								style={`width: ${completedPercent}%`}
 							></div>
 						</div>
@@ -423,7 +427,7 @@
 						</p>
 					</div>
 					<a
-						class="rounded-md border border-[#d1d5db] bg-white px-4 py-2 text-sm font-bold text-slate-900 hover:bg-slate-50"
+						class="rounded-md border border-[#d1d5db] bg-white px-3 py-1.5 text-xs font-bold text-slate-900 hover:bg-slate-50"
 						href="/estudio"
 					>
 						Volver a tickets
@@ -433,40 +437,44 @@
 
 			<div class="flex min-h-0 flex-1">
 				<section
-					class="flex w-[clamp(17rem,26vw,22rem)] shrink-0 flex-col border-r border-[#e5e7eb] bg-white"
+					class="flex w-[clamp(14.5rem,20vw,18rem)] shrink-0 flex-col border-r border-[#e5e7eb] bg-white"
 				>
-					<header class="border-b border-[#e5e7eb] px-5 py-5 2xl:px-7">
-						<p class="text-xs font-bold uppercase tracking-widest text-slate-500">Ruta práctica</p>
-						<h2 class="mt-2 text-xl font-bold 2xl:text-2xl">Comandos que usarás cada día</h2>
+					<header class="border-b border-[#e5e7eb] px-4 py-4">
+						<p class="text-[11px] font-bold uppercase tracking-widest text-slate-500">
+							Ruta práctica
+						</p>
+						<h2 class="mt-1.5 text-base font-bold">Comandos diarios</h2>
 					</header>
 					<div class="min-h-0 flex-1 overflow-y-auto">
 						{#each lessons as lesson, index (lesson.lessonId)}
 							<button
 								type="button"
 								onclick={() => selectLesson(lesson.lessonId)}
-								class={`w-full border-b border-[#e5e7eb] px-6 py-5 text-left transition-colors ${
+								class={`w-full border-b border-[#e5e7eb] px-4 py-3 text-left transition-colors ${
 									lesson.lessonId === currentLesson.lessonId
-										? 'border-l-4 border-l-[#0078d4] bg-[#eef6ff]'
-										: 'border-l-4 border-l-transparent bg-white hover:bg-[#f8f9ff]'
+										? 'border-l-2 border-l-[#0078d4] bg-[#eef6ff]'
+										: 'border-l-2 border-l-transparent bg-white hover:bg-[#f8f9ff]'
 								}`}
 							>
-								<div class="flex items-start justify-between gap-4">
-									<div>
-										<p class="text-sm font-bold text-[#0078d4]">
+								<div class="flex items-start justify-between gap-3">
+									<div class="min-w-0">
+										<p class="text-xs font-bold text-[#0078d4]">
 											#{String(index + 1).padStart(2, '0')}
 										</p>
-										<p class="mt-2 text-base font-semibold text-[#111827]">{lesson.title}</p>
-										<p class="mt-1 text-sm text-slate-600">
+										<p class="mt-1 text-sm leading-5 font-semibold text-[#111827]">
+											{lesson.title}
+										</p>
+										<p class="mt-0.5 text-xs text-slate-600">
 											{terminalModuleLabels[lesson.module]} • {lesson.estimatedMinutes} min
 										</p>
 									</div>
 									<span
-										class="rounded-md bg-slate-100 px-2 py-1 text-[11px] font-bold text-slate-600"
+										class="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-bold text-slate-600"
 									>
 										{lesson.difficulty.toUpperCase()}
 									</span>
 								</div>
-								<p class="mt-4 text-xs font-bold uppercase text-slate-500">
+								<p class="mt-2 text-[11px] font-bold uppercase text-slate-500">
 									{lessonStatus(lesson)}
 								</p>
 							</button>
@@ -475,51 +483,51 @@
 				</section>
 
 				<section class="flex min-w-0 flex-1 flex-col bg-white">
-					<div class="min-h-0 flex-1 overflow-y-auto px-10 py-8">
-						<div class="mx-auto max-w-5xl">
-							<div class="flex items-start justify-between gap-6">
+					<div class="min-h-0 flex-1 overflow-y-auto px-6 py-5 2xl:px-8">
+						<div class="mx-auto max-w-4xl">
+							<div class="flex items-start justify-between gap-4">
 								<div>
-									<p class="text-sm font-bold uppercase tracking-widest text-[#0078d4]">
+									<p class="text-xs font-bold uppercase tracking-widest text-[#0078d4]">
 										{terminalModuleLabels[currentLesson.module]}
 									</p>
-									<h2 class="mt-2 text-3xl font-bold tracking-tight text-black">
+									<h2 class="mt-1.5 text-2xl font-bold tracking-tight text-black">
 										{currentLesson.title}
 									</h2>
-									<p class="mt-3 max-w-3xl text-lg leading-8 text-slate-700">
+									<p class="mt-2 max-w-3xl text-sm leading-6 text-slate-700">
 										{currentLesson.objective}
 									</p>
 								</div>
 								<button
 									type="button"
 									onclick={resetLesson}
-									class="rounded-md border border-[#d1d5db] bg-white px-5 py-2 font-semibold text-slate-900 hover:bg-slate-50"
+									class="rounded-md border border-[#d1d5db] bg-white px-3 py-1.5 text-xs font-semibold text-slate-900 hover:bg-slate-50"
 								>
 									Reiniciar
 								</button>
 							</div>
 
-							<div class="mt-8 grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-								<article class="rounded-lg border border-[#e5e7eb] bg-[#f8f9ff] p-6">
-									<p class="text-sm font-bold uppercase tracking-widest text-slate-600">
+							<div class="mt-5 grid gap-3 lg:grid-cols-[1.12fr_0.88fr]">
+								<article class="rounded-lg border border-[#e5e7eb] bg-[#f8f9ff] p-4">
+									<p class="text-xs font-bold uppercase tracking-widest text-slate-600">
 										Explicación
 									</p>
-									<p class="mt-4 text-base leading-7 text-slate-700">{currentLesson.explanation}</p>
+									<p class="mt-2 text-sm leading-6 text-slate-700">{currentLesson.explanation}</p>
 								</article>
-								<article class="rounded-lg border border-blue-200 bg-blue-50 p-6">
-									<p class="text-sm font-bold uppercase tracking-widest text-[#005faa]">
+								<article class="rounded-lg border border-blue-200 bg-blue-50 p-4">
+									<p class="text-xs font-bold uppercase tracking-widest text-[#005faa]">
 										Para tu día a día
 									</p>
-									<p class="mt-4 text-base leading-7 text-[#004c6b]">{currentLesson.dailyUse}</p>
+									<p class="mt-2 text-sm leading-6 text-[#004c6b]">{currentLesson.dailyUse}</p>
 								</article>
 							</div>
 
-							<section class="mt-8">
-								<div class="mb-4 flex items-center justify-between">
+							<section class="mt-5">
+								<div class="mb-3 flex items-center justify-between">
 									<div>
-										<p class="text-sm font-bold uppercase tracking-widest text-slate-700">
+										<p class="text-xs font-bold uppercase tracking-widest text-slate-700">
 											Terminal Ubuntu-Dev
 										</p>
-										<p class="mt-1 text-sm text-slate-500">
+										<p class="mt-0.5 text-xs text-slate-500">
 											Escribe comandos. La salida es simulada y segura.
 										</p>
 									</div>
@@ -538,7 +546,7 @@
 										<span class="h-3 w-3 rounded-full bg-[#27c93f]"></span>
 										<p class="ml-3 font-mono text-xs text-slate-400">Ubuntu-Dev · ~/webs</p>
 									</div>
-									<div bind:this={desktopTerminalHost} class="h-[420px] p-3"></div>
+									<div bind:this={desktopTerminalHost} class="h-[360px] p-2.5"></div>
 								</div>
 							</section>
 						</div>
@@ -546,57 +554,73 @@
 				</section>
 
 				<aside
-					class="w-[390px] shrink-0 overflow-y-auto border-l border-[#e5e7eb] bg-[#f3f4f6] p-8"
+					class="w-[300px] shrink-0 overflow-y-auto border-l border-[#e5e7eb] bg-[#f3f4f6] p-4"
 				>
-					<section class="rounded-lg border border-[#e5e7eb] bg-white p-6">
-						<p class="text-sm font-bold uppercase tracking-widest text-slate-700">
+					<section class="rounded-lg border border-[#e5e7eb] bg-white p-4">
+						<p class="text-xs font-bold uppercase tracking-widest text-slate-700">
 							Práctica activa
 						</p>
-						<h3 class="mt-3 text-xl font-bold">{activeExercise.title}</h3>
-						<p class="mt-3 text-sm leading-6 text-slate-700">{activeExercise.prompt}</p>
-						<div class="mt-5 space-y-2">
+						<h3 class="mt-2 text-base font-bold">{activeExercise.title}</h3>
+						<p class="mt-2 text-xs leading-5 text-slate-700">{activeExercise.prompt}</p>
+						<div class="mt-3 space-y-1.5">
 							{#each activeExercise.expectedCommands as command (command)}
-								<div class="rounded-md bg-[#111827] px-3 py-2 font-mono text-sm text-[#dbe7ff]">
+								<div class="rounded bg-[#111827] px-2.5 py-1.5 font-mono text-xs text-[#dbe7ff]">
 									{command}
 								</div>
 							{/each}
 						</div>
 					</section>
 
-					<section class="mt-6 rounded-lg border border-[#e5e7eb] bg-white p-6">
-						<p class="text-sm font-bold uppercase tracking-widest text-slate-700">Progreso</p>
-						<p class="mt-4 text-4xl font-bold text-[#0078d4]">{currentSession.score}%</p>
-						<div class="mt-4 h-2 rounded-full bg-slate-100">
+					<section class="mt-4 rounded-lg border border-[#e5e7eb] bg-white p-4">
+						<div class="flex items-center justify-between">
+							<p class="text-xs font-bold uppercase tracking-widest text-slate-700">Progreso</p>
+							<p class="text-lg font-bold text-[#0078d4]">{currentSession.score}%</p>
+						</div>
+						<div class="mt-3 h-1.5 rounded-full bg-slate-100">
 							<div
-								class="h-2 rounded-full bg-[#0078d4]"
+								class="h-1.5 rounded-full bg-[#0078d4]"
 								style={`width: ${currentSession.score}%`}
 							></div>
 						</div>
-						<p class="mt-4 text-sm text-slate-600">
+						<p class="mt-2 text-xs text-slate-600">
 							{currentSession.completedExerciseIds.length}/{currentLesson.exercises.length}
 							prácticas completadas
 						</p>
 					</section>
 
-					<section class="mt-6 rounded-lg border border-blue-200 bg-blue-50 p-6">
-						<p class="font-bold text-[#0078d4]">
-							<span class="material-symbols-outlined mr-2 align-[-5px]">tips_and_updates</span>
+					<section class="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
+						<p class="text-sm font-bold text-[#0078d4]">
+							<span class="material-symbols-outlined mr-1 align-[-4px] text-[18px]"
+								>tips_and_updates</span
+							>
 							Pistas rápidas
 						</p>
-						<ul class="mt-4 space-y-3 text-sm leading-6 text-[#004c6b]">
+						<ul class="mt-3 space-y-2 text-xs leading-5 text-[#004c6b]">
 							{#each currentLesson.hints as hint (hint)}
 								<li>• {hint}</li>
 							{/each}
 						</ul>
 					</section>
 
-					<section class="mt-6 rounded-lg border border-[#e5e7eb] bg-white p-6">
-						<p class="text-sm font-bold uppercase tracking-widest text-slate-700">Chuleta</p>
-						<div class="mt-4 flex flex-wrap gap-2">
+					<section class="mt-4 rounded-lg border border-[#e5e7eb] bg-white p-4">
+						<p class="text-xs font-bold uppercase tracking-widest text-slate-700">Chuleta</p>
+						<div class="mt-3 flex flex-wrap gap-1.5">
 							{#each currentLesson.keyCommands as command (command)}
-								<code class="rounded-md bg-slate-100 px-2 py-1 text-xs font-bold text-slate-700">
+								<code class="rounded bg-slate-100 px-1.5 py-1 text-[11px] font-bold text-slate-700">
 									{command}
 								</code>
+							{/each}
+						</div>
+					</section>
+
+					<section class="mt-4 rounded-lg border border-[#e5e7eb] bg-white p-4">
+						<p class="text-xs font-bold uppercase tracking-widest text-slate-700">Qué significa</p>
+						<div class="mt-3 space-y-2">
+							{#each currentLesson.commandNotes as note (note.command)}
+								<div class="rounded border border-slate-200 bg-slate-50 p-2.5">
+									<code class="text-[11px] font-bold text-[#005faa]">{note.command}</code>
+									<p class="mt-1.5 text-xs leading-5 text-slate-600">{note.description}</p>
+								</div>
 							{/each}
 						</div>
 					</section>
@@ -607,24 +631,24 @@
 
 	<div class="min-h-dvh lg:hidden">
 		<header
-			class="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-[#c0c7d4] bg-white px-6"
+			class="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-[#c0c7d4] bg-white px-4"
 		>
 			<div class="flex items-center gap-2">
 				<div class="flex h-8 w-8 items-center justify-center rounded bg-[#0078d4] text-white">
 					<span class="material-symbols-outlined text-lg">terminal</span>
 				</div>
-				<p class="text-lg font-bold text-[#005faa]">Terminal Studio</p>
+				<p class="text-base font-bold text-[#005faa]">Terminal Studio</p>
 			</div>
 			<a class="text-sm font-bold text-[#005faa]" href="/estudio">Tickets</a>
 		</header>
 
-		<section class="px-6 py-4">
+		<section class="px-4 py-3">
 			<div class="flex gap-2 overflow-x-auto pb-1">
 				{#each lessons as lesson, index (lesson.lessonId)}
 					<button
 						type="button"
 						onclick={() => selectLesson(lesson.lessonId)}
-						class={`shrink-0 rounded-full border px-5 py-2 text-sm font-bold ${
+						class={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-bold ${
 							lesson.lessonId === currentLesson.lessonId
 								? 'border-[#005faa] bg-[#005faa] text-white'
 								: 'border-[#c0c7d4] bg-[#ebeef6] text-slate-600'
@@ -637,30 +661,44 @@
 			<p class="mt-5 text-sm font-bold uppercase tracking-widest text-[#005faa]">
 				{terminalModuleLabels[currentLesson.module]}
 			</p>
-			<h1 class="mt-2 text-3xl font-extrabold leading-tight text-[#181c22]">
+			<h1 class="mt-2 text-2xl font-extrabold leading-tight text-[#181c22]">
 				{currentLesson.title}
 			</h1>
-			<p class="mt-3 text-base leading-7 text-slate-700">{currentLesson.objective}</p>
+			<p class="mt-2 text-sm leading-6 text-slate-700">{currentLesson.objective}</p>
 		</section>
 
-		<section class="border-y border-[#c0c7d4] bg-[#f1f3fc] px-6 py-8">
-			<article class="rounded-xl border border-[#c0c7d4] bg-[#f8f9ff] p-5">
-				<p class="text-sm font-bold uppercase tracking-widest text-slate-700">Explicación</p>
-				<p class="mt-4 text-base leading-7 text-slate-700">{currentLesson.explanation}</p>
+		<section class="border-y border-[#c0c7d4] bg-[#f1f3fc] px-4 py-5">
+			<article class="rounded-lg border border-[#c0c7d4] bg-[#f8f9ff] p-4">
+				<p class="text-xs font-bold uppercase tracking-widest text-slate-700">Explicación</p>
+				<p class="mt-2 text-sm leading-6 text-slate-700">{currentLesson.explanation}</p>
 			</article>
 
-			<div class="mt-6 overflow-hidden rounded-xl border border-[#111827] bg-[#0d1117]">
+			<div class="mt-4 overflow-hidden rounded-lg border border-[#111827] bg-[#0d1117]">
 				<div class="flex h-9 items-center gap-2 border-b border-white/10 bg-[#111827] px-4">
 					<span class="h-3 w-3 rounded-full bg-[#ff5f56]"></span>
 					<span class="h-3 w-3 rounded-full bg-[#ffbd2e]"></span>
 					<span class="h-3 w-3 rounded-full bg-[#27c93f]"></span>
 				</div>
-				<div bind:this={mobileTerminalHost} class="h-[360px] p-3"></div>
+				<div bind:this={mobileTerminalHost} class="h-[320px] p-2.5"></div>
 			</div>
 
-			<article class="mt-6 rounded-xl border border-blue-200 bg-blue-100 p-5 text-[#005faa]">
-				<p class="font-bold">Práctica: {activeExercise.title}</p>
-				<p class="mt-2 text-sm leading-6 text-[#004c6b]">{activeExercise.prompt}</p>
+			<article class="mt-4 rounded-lg border border-blue-200 bg-blue-100 p-4 text-[#005faa]">
+				<p class="text-sm font-bold">Práctica: {activeExercise.title}</p>
+				<p class="mt-2 text-xs leading-5 text-[#004c6b]">{activeExercise.prompt}</p>
+			</article>
+
+			<article class="mt-4 rounded-lg border border-[#c0c7d4] bg-white p-4">
+				<p class="text-xs font-bold uppercase tracking-widest text-slate-700">Qué significa</p>
+				<div class="mt-3 space-y-2">
+					{#each currentLesson.commandNotes as note (note.command)}
+						<div>
+							<code class="rounded bg-slate-100 px-2 py-1 text-xs font-bold text-[#005faa]">
+								{note.command}
+							</code>
+							<p class="mt-1.5 text-xs leading-5 text-slate-600">{note.description}</p>
+						</div>
+					{/each}
+				</div>
 			</article>
 		</section>
 	</div>

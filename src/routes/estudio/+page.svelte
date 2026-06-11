@@ -415,31 +415,31 @@
 
 		<div class="flex min-w-0 flex-1 flex-col">
 			<header
-				class="flex h-16 shrink-0 items-center justify-between border-b border-[#e5e7eb] bg-white px-5 2xl:px-7"
+				class="flex h-14 shrink-0 items-center justify-between border-b border-[#e5e7eb] bg-white px-4 2xl:px-5"
 			>
-				<div class="flex items-center gap-6">
-					<h1 class="text-lg font-bold text-black 2xl:text-xl">Service Desk Studio</h1>
-					<span class="text-2xl text-slate-300">/</span>
-					<p class="text-base font-medium text-slate-700 2xl:text-lg">Gestión de Incidentes</p>
+				<div class="flex items-center gap-4">
+					<h1 class="text-base font-bold text-black">Service Desk Studio</h1>
+					<span class="text-lg text-slate-300">/</span>
+					<p class="text-sm font-medium text-slate-700">Gestión de incidentes</p>
 				</div>
-				<div class="flex items-center gap-8">
+				<div class="flex items-center gap-4">
 					<div
-						class="flex items-center gap-2 rounded-lg bg-slate-50 px-4 py-2 font-mono text-sm text-slate-700"
+						class="flex items-center gap-2 rounded-md bg-slate-50 px-3 py-1.5 font-mono text-xs text-slate-700"
 					>
-						<span class="material-symbols-outlined text-[20px]">timer</span>
+						<span class="material-symbols-outlined text-[18px]">timer</span>
 						<span>04:15:22</span>
 					</div>
-					<span class="material-symbols-outlined text-slate-700">notifications</span>
+					<span class="material-symbols-outlined text-[20px] text-slate-700">notifications</span>
 					<div class="h-8 w-px bg-[#e5e7eb]"></div>
-					<div class="flex items-center gap-3">
+					<div class="flex items-center gap-2">
 						<div class="text-right">
-							<p class="text-sm font-bold">Simulation Lead</p>
-							<p class="text-xs font-bold tracking-widest text-slate-600">TIER 2 SPECIALIST</p>
+							<p class="text-xs font-bold">Simulation Lead</p>
+							<p class="text-[10px] font-bold tracking-widest text-slate-600">TIER 2</p>
 						</div>
 						<img
 							src="/stitch/it-specialist.png"
 							alt="Simulation Lead"
-							class="h-9 w-9 rounded-full border border-[#e5e7eb] object-cover"
+							class="h-8 w-8 rounded-full border border-[#e5e7eb] object-cover"
 						/>
 					</div>
 				</div>
@@ -447,24 +447,24 @@
 
 			<div class="flex min-h-0 flex-1">
 				<section
-					class="flex w-[clamp(16rem,24vw,22rem)] shrink-0 flex-col border-r border-[#e5e7eb] bg-white"
+					class="flex w-[clamp(14.5rem,20vw,18rem)] shrink-0 flex-col border-r border-[#e5e7eb] bg-white"
 				>
-					<header class="border-b border-[#e5e7eb] px-5 py-5 2xl:px-8">
-						<label class="flex h-12 items-center gap-3 rounded-lg bg-[#f3f4f6] px-4 text-slate-500">
-							<span class="material-symbols-outlined">search</span>
+					<header class="border-b border-[#e5e7eb] px-4 py-4">
+						<label class="flex h-9 items-center gap-2 rounded-md bg-[#f3f4f6] px-3 text-slate-500">
+							<span class="material-symbols-outlined text-[18px]">search</span>
 							<input
-								class="w-full border-0 bg-transparent p-0 text-base text-slate-700 placeholder:text-slate-500 focus:ring-0"
+								class="w-full border-0 bg-transparent p-0 text-sm text-slate-700 placeholder:text-slate-500 focus:ring-0"
 								placeholder="Filtrar cola..."
 							/>
 						</label>
-						<div class="mt-4 flex gap-2 text-sm font-semibold">
-							<button class="rounded-md bg-[#0078d4] px-4 py-2 text-white" type="button"
+						<div class="mt-3 flex gap-1.5 text-xs font-semibold">
+							<button class="rounded bg-[#0078d4] px-3 py-1.5 text-white" type="button"
 								>Abiertos</button
 							>
-							<button class="rounded-md px-4 py-2 text-slate-700 hover:bg-blue-50" type="button"
+							<button class="rounded px-3 py-1.5 text-slate-700 hover:bg-blue-50" type="button"
 								>Míos</button
 							>
-							<button class="rounded-md px-4 py-2 text-slate-700 hover:bg-blue-50" type="button"
+							<button class="rounded px-3 py-1.5 text-slate-700 hover:bg-blue-50" type="button"
 								>SLA</button
 							>
 						</div>
@@ -474,17 +474,19 @@
 							<button
 								type="button"
 								onclick={() => selectTicket(ticket.ticketId)}
-								class={`w-full border-b border-[#e5e7eb] px-5 py-5 text-left transition-colors 2xl:px-6 ${
+								class={`w-full border-b border-[#e5e7eb] px-4 py-3 text-left transition-colors ${
 									ticket.ticketId === current.ticketId
-										? 'border-l-4 border-l-[#0078d4] bg-[#eef6ff]'
-										: 'border-l-4 border-l-transparent bg-white hover:bg-[#f8f9ff]'
+										? 'border-l-2 border-l-[#0078d4] bg-[#eef6ff]'
+										: 'border-l-2 border-l-transparent bg-white hover:bg-[#f8f9ff]'
 								}`}
 							>
 								<div class="flex items-start justify-between gap-3">
-									<div>
-										<p class="text-sm font-bold text-[#0078d4]">{ticketDisplayId(ticket)}</p>
-										<p class="mt-3 text-base font-semibold text-[#111827]">{ticket.title}</p>
-										<p class="mt-1 text-sm text-slate-600">
+									<div class="min-w-0">
+										<p class="text-xs font-bold text-[#0078d4]">{ticketDisplayId(ticket)}</p>
+										<p class="mt-1 text-sm leading-5 font-semibold text-[#111827]">
+											{ticket.title}
+										</p>
+										<p class="mt-0.5 text-xs text-slate-600">
 											{moduleLabels[ticket.module]} • {index === 0
 												? 'Juan Pérez'
 												: index === 1
@@ -493,12 +495,12 @@
 										</p>
 									</div>
 									<span
-										class={`rounded-md px-2 py-1 text-[11px] font-bold ${priorityClass(ticket)}`}
+										class={`rounded px-1.5 py-0.5 text-[10px] font-bold ${priorityClass(ticket)}`}
 									>
 										{priorityLabel(ticket)}
 									</span>
 								</div>
-								<div class="mt-5 flex items-center justify-between text-xs font-semibold">
+								<div class="mt-2.5 flex items-center justify-between text-[11px] font-semibold">
 									<span
 										class={ticketStatus(ticket) === 'en progreso'
 											? 'text-[#0078d4]'
@@ -518,22 +520,22 @@
 				</section>
 
 				<section class="flex min-w-0 flex-1 flex-col bg-white">
-					<div class="min-h-0 flex-1 overflow-y-auto px-5 py-6 2xl:px-8 2xl:py-8">
+					<div class="min-h-0 flex-1 overflow-y-auto px-5 py-5 2xl:px-6">
 						<div class="mx-auto max-w-[min(100%,48rem)]">
-							<div class="flex items-start justify-between gap-6">
+							<div class="flex items-start justify-between gap-4">
 								<div>
 									<div class="flex items-center gap-3">
-										<h2 class="text-2xl font-bold tracking-tight text-black">{current.title}</h2>
-										<span class="text-lg text-slate-400">{ticketDisplayId(current)}</span>
+										<h2 class="text-xl font-bold tracking-tight text-black">{current.title}</h2>
+										<span class="text-base text-slate-400">{ticketDisplayId(current)}</span>
 									</div>
-									<div class="mt-3 flex items-center gap-5 text-sm">
-										<span class="material-symbols-outlined text-[20px] text-slate-700"
+									<div class="mt-2 flex items-center gap-3 text-xs">
+										<span class="material-symbols-outlined text-[18px] text-slate-700"
 											>signal_cellular_alt</span
 										>
 										<span class="text-slate-600"
 											>Dificultad: <strong class="text-black">{current.difficulty}</strong></span
 										>
-										<span class="material-symbols-outlined text-[20px] text-slate-700"
+										<span class="material-symbols-outlined text-[18px] text-slate-700"
 											>schedule</span
 										>
 										<span class="text-slate-600">Tiempo invertido:</span>
@@ -544,21 +546,21 @@
 									<button
 										type="button"
 										onclick={resetCurrentTicket}
-										class="h-10 rounded-md border border-[#d1d5db] bg-white px-5 font-semibold text-slate-900 hover:bg-slate-50"
+										class="h-8 rounded-md border border-[#d1d5db] bg-white px-3 text-xs font-semibold text-slate-900 hover:bg-slate-50"
 									>
 										Pausar
 									</button>
 									<button
 										type="button"
 										onclick={() => updateDecision('escalar')}
-										class="h-10 rounded-md bg-[#0078d4] px-6 font-semibold text-white hover:bg-[#006cbe]"
+										class="h-8 rounded-md bg-[#0078d4] px-4 text-xs font-semibold text-white hover:bg-[#006cbe]"
 									>
 										Escalar
 									</button>
 								</div>
 							</div>
 
-							<section class="mt-10 2xl:mt-14">
+							<section class="mt-6">
 								<div class="flex items-start gap-5">
 									<img
 										src="/stitch/office-worker.png"
@@ -571,7 +573,7 @@
 											<p class="text-sm text-slate-600">Operaciones • Vía Portal Web • 09:30 AM</p>
 										</div>
 										<div
-											class="mt-3 rounded-lg border border-[#e5e7eb] bg-white p-5 text-lg leading-8 text-slate-700"
+											class="mt-2 rounded-lg border border-[#e5e7eb] bg-white p-4 text-sm leading-6 text-slate-700"
 										>
 											"{current.userMessage}"
 										</div>
@@ -579,9 +581,9 @@
 								</div>
 							</section>
 
-							<div class="mt-10 grid grid-cols-2 gap-5">
+							<div class="mt-6 grid grid-cols-2 gap-3">
 								<div
-									class="flex items-center gap-4 rounded-lg border border-[#e5e7eb] bg-white p-4"
+									class="flex items-center gap-3 rounded-lg border border-[#e5e7eb] bg-white p-3"
 								>
 									<span class="material-symbols-outlined rounded-md bg-blue-50 p-2 text-[#0078d4]"
 										>desktop_windows</span
@@ -608,8 +610,8 @@
 								</div>
 							</div>
 
-							<section class="mt-10">
-								<p class="mb-4 text-sm font-bold uppercase tracking-widest text-slate-700">
+							<section class="mt-6">
+								<p class="mb-3 text-xs font-bold uppercase tracking-widest text-slate-700">
 									Evidencia técnica
 								</p>
 								<div class="overflow-hidden rounded-lg border border-[#d1d5db] bg-white">
@@ -628,12 +630,12 @@
 								</div>
 							</section>
 
-							<section class="mt-10">
-								<div class="mb-4 flex items-center justify-between">
-									<p class="text-sm font-bold uppercase tracking-widest text-slate-700">
+							<section class="mt-6">
+								<div class="mb-3 flex items-center justify-between">
+									<p class="text-xs font-bold uppercase tracking-widest text-slate-700">
 										Acciones de diagnóstico
 									</p>
-									<p class="text-sm font-semibold text-slate-500">
+									<p class="text-xs font-semibold text-slate-500">
 										{selectedActions.length}/{current.actions.length}
 									</p>
 								</div>
@@ -642,22 +644,24 @@
 										<button
 											type="button"
 											onclick={() => toggleAction(action.id)}
-											class={`flex h-14 items-center justify-center gap-3 rounded-lg border px-4 font-semibold transition-colors ${
+											class={`flex h-11 items-center justify-center gap-2 rounded-md border px-3 text-xs font-semibold transition-colors ${
 												currentSubmission.selectedActionIds.includes(action.id)
 													? 'border-[#0078d4] bg-blue-50 text-[#0078d4]'
 													: 'border-[#d1d5db] bg-white text-slate-900 hover:border-[#0078d4]'
 											}`}
 										>
-											<span class="material-symbols-outlined">{actionIcon(action.type)}</span>
+											<span class="material-symbols-outlined text-[18px]"
+												>{actionIcon(action.type)}</span
+											>
 											<span>{shortActionLabel(action.label)}</span>
 										</button>
 									{/each}
 								</div>
 							</section>
 
-							<section class="mt-10 overflow-hidden rounded-lg bg-[#111827] text-slate-200">
-								<div class="border-l-4 border-[#0078d4] p-6 font-mono text-sm leading-7">
-									<p class="mb-5 font-bold uppercase tracking-[0.18em] text-[#2fbcfe]">
+							<section class="mt-6 overflow-hidden rounded-lg bg-[#111827] text-slate-200">
+								<div class="border-l-4 border-[#0078d4] p-4 font-mono text-xs leading-6">
+									<p class="mb-3 font-bold uppercase tracking-[0.18em] text-[#2fbcfe]">
 										<span class="material-symbols-outlined mr-2 text-[18px] align-[-4px]"
 											>terminal</span
 										>
@@ -681,35 +685,35 @@
 				</section>
 
 				<aside
-					class="w-[clamp(18rem,26vw,24rem)] shrink-0 overflow-y-auto border-l border-[#e5e7eb] bg-[#f3f4f6] p-5 2xl:p-7"
+					class="w-[320px] shrink-0 overflow-y-auto border-l border-[#e5e7eb] bg-[#f3f4f6] p-4"
 				>
 					<label class="block">
-						<span class="text-sm font-bold uppercase tracking-widest text-slate-700"
+						<span class="text-xs font-bold uppercase tracking-widest text-slate-700"
 							>Notas técnicas internas</span
 						>
 						<textarea
 							value={currentSubmission.notes}
 							oninput={(event) => updateSubmission({ notes: event.currentTarget.value })}
 							placeholder="Análisis del problema..."
-							class="mt-3 h-[120px] w-full resize-none rounded-lg border border-[#d1d5db] bg-white p-4 text-slate-700 placeholder:text-slate-500 focus:border-[#0078d4] focus:ring-[#0078d4]"
+							class="mt-2 h-24 w-full resize-none rounded-md border border-[#d1d5db] bg-white p-3 text-sm text-slate-700 placeholder:text-slate-500 focus:border-[#0078d4] focus:ring-[#0078d4]"
 						></textarea>
 					</label>
-					<label class="mt-8 block">
-						<span class="text-sm font-bold uppercase tracking-widest text-slate-700"
+					<label class="mt-4 block">
+						<span class="text-xs font-bold uppercase tracking-widest text-slate-700"
 							>Respuesta al usuario</span
 						>
 						<textarea
 							value={currentSubmission.userReply}
 							oninput={(event) => updateSubmission({ userReply: event.currentTarget.value })}
 							placeholder="Instrucciones para el cliente..."
-							class="mt-3 h-[120px] w-full resize-none rounded-lg border border-[#d1d5db] bg-white p-4 text-slate-700 placeholder:text-slate-500 focus:border-[#0078d4] focus:ring-[#0078d4]"
+							class="mt-2 h-24 w-full resize-none rounded-md border border-[#d1d5db] bg-white p-3 text-sm text-slate-700 placeholder:text-slate-500 focus:border-[#0078d4] focus:ring-[#0078d4]"
 						></textarea>
 					</label>
-					<div class="mt-7 grid grid-cols-2 gap-2 rounded-lg bg-white p-1">
+					<div class="mt-4 grid grid-cols-2 gap-1 rounded-md bg-white p-1">
 						<button
 							type="button"
 							onclick={() => updateDecision('cerrar')}
-							class={`rounded-md px-3 py-2 text-sm font-bold ${
+							class={`rounded px-3 py-1.5 text-xs font-bold ${
 								currentSubmission.decision === 'cerrar'
 									? 'bg-blue-50 text-[#0078d4]'
 									: 'text-slate-600'
@@ -720,7 +724,7 @@
 						<button
 							type="button"
 							onclick={() => updateDecision('escalar')}
-							class={`rounded-md px-3 py-2 text-sm font-bold ${
+							class={`rounded px-3 py-1.5 text-xs font-bold ${
 								currentSubmission.decision === 'escalar'
 									? 'bg-blue-50 text-[#0078d4]'
 									: 'text-slate-600'
@@ -733,44 +737,44 @@
 						type="button"
 						onclick={correctTicket}
 						disabled={correcting}
-						class="mt-7 flex h-16 w-full items-center justify-center gap-3 rounded-lg bg-[#0078d4] text-lg font-bold text-white shadow-[0_4px_8px_rgba(0,120,212,0.25)] hover:bg-[#006cbe] disabled:opacity-60"
+						class="mt-4 flex h-11 w-full items-center justify-center gap-2 rounded-md bg-[#0078d4] text-sm font-bold text-white shadow-[0_4px_8px_rgba(0,120,212,0.18)] hover:bg-[#006cbe] disabled:opacity-60"
 					>
-						<span class="material-symbols-outlined">check_circle</span>
+						<span class="material-symbols-outlined text-[18px]">check_circle</span>
 						{correcting ? 'Corrigiendo...' : 'Corregir Ticket'}
 					</button>
 
 					<section
-						class="mt-8 rounded-lg border border-[#e5e7eb] bg-white p-6 shadow-[0_2px_6px_rgba(15,23,42,0.06)]"
+						class="mt-4 rounded-lg border border-[#e5e7eb] bg-white p-4 shadow-[0_2px_6px_rgba(15,23,42,0.06)]"
 					>
-						<p class="text-sm font-bold uppercase tracking-widest text-slate-700">
+						<p class="text-xs font-bold uppercase tracking-widest text-slate-700">
 							Métricas en tiempo real
 						</p>
-						<div class="mt-6 space-y-5 text-slate-700">
+						<div class="mt-3 space-y-3 text-sm text-slate-700">
 							<div class="flex items-center justify-between">
 								<span>Precisión</span>
-								<span class="text-xl tracking-wide text-[#0078d4]"
+								<span class="text-base tracking-wide text-[#0078d4]"
 									>★★★★<span class="text-slate-300">★</span></span
 								>
 							</div>
 							<div class="flex items-center justify-between">
 								<span>Diagnóstico</span>
-								<span class="text-xl tracking-wide text-[#0078d4]"
+								<span class="text-base tracking-wide text-[#0078d4]"
 									>★★★<span class="text-slate-300">★★</span></span
 								>
 							</div>
 						</div>
 					</section>
 
-					<section class="mt-8 rounded-lg border border-blue-200 bg-blue-50 p-6">
-						<div class="flex gap-4">
+					<section class="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
+						<div class="flex gap-3">
 							<span
-								class="material-symbols-outlined h-10 w-10 rounded-full bg-[#0078d4] p-2 text-white"
+								class="material-symbols-outlined h-8 w-8 rounded-full bg-[#0078d4] p-1.5 text-[20px] text-white"
 							>
 								auto_awesome
 							</span>
 							<div>
-								<p class="font-bold text-[#0078d4]">Recomendación IA</p>
-								<p class="mt-2 text-sm italic leading-6 text-slate-700">
+								<p class="text-sm font-bold text-[#0078d4]">Recomendación IA</p>
+								<p class="mt-2 text-xs leading-5 text-slate-700">
 									"{mentorAnswer ||
 										current.mentorHints[0] ||
 										'Revisa las evidencias antes de cerrar el ticket.'}"
@@ -779,13 +783,13 @@
 									value={mentorQuestion}
 									oninput={(event) => (mentorQuestion = event.currentTarget.value)}
 									placeholder="Pregunta al mentor..."
-									class="mt-4 h-20 w-full resize-none rounded-md border border-blue-200 bg-white p-3 text-sm focus:border-[#0078d4] focus:ring-[#0078d4]"
+									class="mt-3 h-16 w-full resize-none rounded-md border border-blue-200 bg-white p-2.5 text-xs focus:border-[#0078d4] focus:ring-[#0078d4]"
 								></textarea>
 								<button
 									type="button"
 									onclick={askMentor}
 									disabled={mentorLoading}
-									class="mt-3 rounded-md border border-blue-200 bg-white px-4 py-2 text-sm font-bold text-[#0078d4] disabled:opacity-60"
+									class="mt-2 rounded-md border border-blue-200 bg-white px-3 py-1.5 text-xs font-bold text-[#0078d4] disabled:opacity-60"
 								>
 									{mentorLoading ? 'Pensando...' : 'Pedir pista'}
 								</button>
@@ -797,20 +801,20 @@
 					</section>
 
 					{#if currentEvaluation}
-						<section class="mt-8 rounded-lg border border-[#e5e7eb] bg-white p-6">
-							<p class="text-sm font-bold uppercase tracking-widest text-slate-700">Evaluación</p>
-							<p class="mt-3 text-4xl font-bold">
-								{currentEvaluation.score}<span class="text-base text-slate-500"
+						<section class="mt-4 rounded-lg border border-[#e5e7eb] bg-white p-4">
+							<p class="text-xs font-bold uppercase tracking-widest text-slate-700">Evaluación</p>
+							<p class="mt-2 text-2xl font-bold">
+								{currentEvaluation.score}<span class="text-sm text-slate-500"
 									>/{currentEvaluation.maxScore}</span
 								>
 							</p>
-							<p class="mt-3 text-sm leading-6 text-slate-700">
+							<p class="mt-2 text-xs leading-5 text-slate-700">
 								{currentEvaluation.aiFeedback || currentEvaluation.feedback}
 							</p>
-							<div class="mt-4 space-y-2">
+							<div class="mt-3 space-y-1.5">
 								{#each currentEvaluation.checks as check (check.id)}
-									<article class={`rounded-md border p-3 ${checkTone(check)}`}>
-										<div class="flex items-center justify-between text-sm font-bold">
+									<article class={`rounded-md border p-2.5 ${checkTone(check)}`}>
+										<div class="flex items-center justify-between text-xs font-bold">
 											<span>{check.label}</span>
 											<span>{check.points}/{check.maxPoints}</span>
 										</div>
@@ -826,30 +830,30 @@
 
 	<div class="stitch-mobile-shell min-h-dvh pb-64 lg:hidden">
 		<header
-			class="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-[#c0c7d4] bg-white px-6"
+			class="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-[#c0c7d4] bg-white px-4"
 		>
 			<div class="flex items-center gap-2">
 				<div class="h-8 w-8 rounded bg-[#0078d4]"></div>
-				<p class="text-lg font-bold text-[#005faa]">Service Desk Studio</p>
+				<p class="text-base font-bold text-[#005faa]">Service Desk Studio</p>
 			</div>
-			<div class="flex items-center gap-4 text-slate-800">
-				<span class="material-symbols-outlined">timer</span>
-				<span class="material-symbols-outlined">notifications</span>
+			<div class="flex items-center gap-3 text-slate-800">
+				<span class="material-symbols-outlined text-[20px]">timer</span>
+				<span class="material-symbols-outlined text-[20px]">notifications</span>
 				<img
 					src="/stitch/it-specialist.png"
 					alt="Usuario"
-					class="h-10 w-10 rounded-full object-cover"
+					class="h-8 w-8 rounded-full object-cover"
 				/>
 			</div>
 		</header>
 
-		<section class="px-6 py-4">
+		<section class="px-4 py-3">
 			<div class="flex gap-2 overflow-x-auto pb-1">
 				{#each tickets.slice(0, 5) as ticket (ticket.ticketId)}
 					<button
 						type="button"
 						onclick={() => selectTicket(ticket.ticketId)}
-						class={`shrink-0 rounded-full border px-5 py-2 text-sm font-bold ${
+						class={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-bold ${
 							ticket.ticketId === current.ticketId
 								? 'border-[#005faa] bg-[#005faa] text-white'
 								: 'border-[#c0c7d4] bg-[#ebeef6] text-slate-600'
@@ -865,8 +869,8 @@
 				</span>
 				<span class="text-sm text-slate-500">Creado hace 12m</span>
 			</div>
-			<h1 class="mt-4 text-2xl font-extrabold leading-tight text-[#181c22]">{current.title}</h1>
-			<div class="mt-4 flex items-center gap-3">
+			<h1 class="mt-3 text-xl font-extrabold leading-tight text-[#181c22]">{current.title}</h1>
+			<div class="mt-3 flex items-center gap-3">
 				<img
 					src="/stitch/office-worker.png"
 					alt="Contacto"
@@ -879,9 +883,9 @@
 			</div>
 		</section>
 
-		<section class="border-y border-[#c0c7d4] bg-[#f1f3fc] px-6 py-8">
+		<section class="border-y border-[#c0c7d4] bg-[#f1f3fc] px-4 py-5">
 			<article
-				class="rounded-xl border border-[#c0c7d4] bg-[#f8f9ff] p-5 shadow-[0_2px_6px_rgba(15,23,42,0.06)]"
+				class="rounded-lg border border-[#c0c7d4] bg-[#f8f9ff] p-4 shadow-[0_2px_6px_rgba(15,23,42,0.06)]"
 			>
 				<div class="flex items-center justify-between">
 					<div class="flex items-center gap-3">
@@ -890,8 +894,8 @@
 					</div>
 					<span class="material-symbols-outlined">expand_less</span>
 				</div>
-				<p class="mt-5 text-base leading-7 text-slate-700">"{current.userMessage}"</p>
-				<div class="mt-5 overflow-hidden rounded-lg border border-[#c0c7d4] bg-white">
+				<p class="mt-3 text-sm leading-6 text-slate-700">"{current.userMessage}"</p>
+				<div class="mt-4 overflow-hidden rounded-lg border border-[#c0c7d4] bg-white">
 					<img src={current.image.src} alt={current.image.alt} class="w-full object-cover" />
 					<div class="flex items-center gap-2 bg-[#ebeef6] px-3 py-2 text-xs text-slate-600">
 						<span class="material-symbols-outlined text-sm">image</span>
@@ -900,15 +904,15 @@
 				</div>
 			</article>
 
-			<p class="mt-8 text-sm font-bold uppercase tracking-widest text-slate-700">
+			<p class="mt-5 text-xs font-bold uppercase tracking-widest text-slate-700">
 				Acciones de diagnóstico
 			</p>
-			<div class="mt-4 grid grid-cols-3 gap-4">
+			<div class="mt-3 grid grid-cols-3 gap-3">
 				{#each current.actions.slice(0, 3) as action (action.id)}
 					<button
 						type="button"
 						onclick={() => toggleAction(action.id)}
-						class={`stitch-tablet-action flex aspect-square flex-col items-center justify-center gap-4 rounded-xl border bg-[#f8f9ff] p-3 text-center text-xs font-bold ${
+						class={`stitch-tablet-action flex aspect-square flex-col items-center justify-center gap-2 rounded-lg border bg-[#f8f9ff] p-2 text-center text-[11px] font-bold ${
 							currentSubmission.selectedActionIds.includes(action.id)
 								? 'border-[#005faa] text-[#005faa]'
 								: 'border-[#c0c7d4] text-[#181c22]'
@@ -922,8 +926,8 @@
 				{/each}
 			</div>
 
-			<div class="mt-8 rounded-xl border border-blue-200 bg-blue-100 p-5 text-[#005faa]">
-				<p class="font-bold">
+			<div class="mt-5 rounded-lg border border-blue-200 bg-blue-100 p-4 text-[#005faa]">
+				<p class="text-sm font-bold">
 					<span class="material-symbols-outlined mr-2 align-[-5px]">tips_and_updates</span>
 					Sugerencia Pro:
 					<span class="font-medium text-[#004c6b]">
@@ -934,7 +938,7 @@
 		</section>
 
 		<section
-			class="stitch-resolution-panel fixed right-0 bottom-0 left-0 z-40 border-t border-[#c0c7d4] bg-[#f8f9ff] px-6 py-4"
+			class="stitch-resolution-panel fixed right-0 bottom-0 left-0 z-40 border-t border-[#c0c7d4] bg-[#f8f9ff] px-4 py-3"
 		>
 			<label class="block">
 				<span class="text-xs font-bold uppercase tracking-wide text-slate-700"
@@ -944,7 +948,7 @@
 					value={currentSubmission.solution}
 					oninput={(event) => updateSubmission({ solution: event.currentTarget.value })}
 					placeholder="Describe la solución aplicada..."
-					class="mt-2 h-24 w-full resize-none rounded-xl border border-[#c0c7d4] bg-[#f1f3fc] p-3 text-sm focus:border-[#005faa] focus:ring-[#005faa]"
+					class="mt-2 h-20 w-full resize-none rounded-lg border border-[#c0c7d4] bg-[#f1f3fc] p-3 text-sm focus:border-[#005faa] focus:ring-[#005faa]"
 				></textarea>
 			</label>
 			<div class="mt-4 flex gap-3">
@@ -952,12 +956,12 @@
 					type="button"
 					onclick={correctTicket}
 					disabled={correcting}
-					class="h-14 flex-1 rounded-xl bg-[#005faa] text-lg font-bold text-white shadow-[0_4px_8px_rgba(0,95,170,0.24)]"
+					class="h-11 flex-1 rounded-lg bg-[#005faa] text-sm font-bold text-white shadow-[0_4px_8px_rgba(0,95,170,0.2)]"
 				>
 					{correcting ? 'Corrigiendo...' : 'Corregir Ticket'}
 				</button>
 				<button
-					class="h-14 w-14 rounded-xl border border-[#c0c7d4] bg-[#e0e2ea]"
+					class="h-11 w-11 rounded-lg border border-[#c0c7d4] bg-[#e0e2ea]"
 					type="button"
 					aria-label="Adjuntar"
 				>

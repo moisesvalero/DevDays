@@ -5,9 +5,9 @@ import type {
 	TerminalSession
 } from '$lib/types/terminal';
 
-const START_CWD = '/home/moises';
-const WEBS_CWD = '/home/moises/webs';
-const PROJECTS = ['DevDays', 'mi-app', 'mi-next', 'repositorio', 'mi-nueva-web'];
+const START_CWD = '/home/usuario';
+const WEBS_CWD = '/home/usuario/webs';
+const PROJECTS = ['DevDays', 'mi-proyecto', 'mi-app', 'mi-next', 'repositorio', 'mi-nueva-web'];
 const DANGEROUS_COMMANDS = /^(rm|sudo|chmod|chown|mv|cp|curl|wget|ssh|scp|docker)\b/;
 const BLOCKED_TOOLS = /^(npm|npx|yarn|bun)\b/;
 
@@ -52,7 +52,7 @@ export function runTerminalCommand(
 	if (/^[a-zA-Z]:\\/.test(command) || command.includes('D:\\')) {
 		return {
 			...base,
-			output: ['Estás en WSL: usa ~/webs o /mnt/d/webs, no rutas tipo D:\\webs.'],
+			output: ['Estás en WSL: usa ~/webs para proyectos activos, no rutas tipo D:\\webs.'],
 			ok: false
 		};
 	}
@@ -119,6 +119,7 @@ function executeAllowedCommand(cwd: string, command: string) {
 	if (command === 'pnpm check') return ok(cwd, ['svelte-check found 0 errors and 0 warnings.']);
 	if (command === 'pnpm test') return ok(cwd, ['Test Files 4 passed. Tests 10 passed.']);
 	if (command === 'pnpm build') return ok(cwd, ['✓ built successfully.']);
+	if (command === 'pnpm format') return ok(cwd, ['Archivos formateados con Prettier.']);
 	if (command === 'git status')
 		return ok(cwd, ['On branch main', 'Changes not staged for commit.']);
 	if (command === 'git diff')
@@ -143,8 +144,8 @@ function executeAllowedCommand(cwd: string, command: string) {
 	if (command === 'git pull') return ok(cwd, ['Already up to date.']);
 	if (command === 'git remote -v') {
 		return ok(cwd, [
-			'origin  https://github.com/moisesvalero/DevDays.git (fetch)',
-			'origin  https://github.com/moisesvalero/DevDays.git (push)'
+			'origin  https://github.com/usuario/mi-proyecto.git (fetch)',
+			'origin  https://github.com/usuario/mi-proyecto.git (push)'
 		]);
 	}
 	if (command === 'git fetch') return ok(cwd, ['origin actualizado.']);
@@ -152,12 +153,13 @@ function executeAllowedCommand(cwd: string, command: string) {
 	if (command.startsWith('git stash push -m '))
 		return ok(cwd, ['Saved working directory and index state.']);
 	if (command === 'git stash pop') return ok(cwd, ['Cambios recuperados del stash.']);
-	if (command === 'gh auth status') return ok(cwd, ['Logged in to github.com as moisesvalero.']);
+	if (command === 'gh auth status') return ok(cwd, ['Logged in to github.com as usuario.']);
 	if (command.startsWith('gh repo clone ')) {
 		return ok(WEBS_CWD, ['Cloning into repository...', 'remote: Enumerating objects: done.']);
 	}
 	if (command === 'node -v') return ok(cwd, ['v24.16.0']);
 	if (command === 'pnpm -v') return ok(cwd, ['10.24.0']);
+	if (command === 'code .') return ok(cwd, ['VS Code abierto en la carpeta actual.']);
 	if (command.startsWith('mkdir ')) return ok(cwd, [`Carpeta '${command.slice(6)}' creada.`]);
 	if (command.startsWith('touch ')) return ok(cwd, [`Archivo '${command.slice(6)}' creado.`]);
 	if (command === 'cat package.json')
@@ -173,8 +175,8 @@ function executeAllowedCommand(cwd: string, command: string) {
 }
 
 function changeDirectory(cwd: string, target: string) {
-	if (target === '~' || target === '/home/moises') return ok(START_CWD, []);
-	if (target === '~/webs' || target === '/mnt/d/webs') return ok(WEBS_CWD, []);
+	if (target === '~' || target === '/home/usuario') return ok(START_CWD, []);
+	if (target === '~/webs') return ok(WEBS_CWD, []);
 	if (target.startsWith('~/webs/')) return ok(`${WEBS_CWD}/${target.split('/').pop()}`, []);
 	if (PROJECTS.includes(target)) return ok(`${WEBS_CWD}/${target}`, []);
 	if (target === '..') return ok(cwd.split('/').slice(0, -1).join('/') || '/', []);
@@ -206,7 +208,7 @@ function ok(cwd: string, output: string[]) {
 }
 
 function displayPath(cwd: string): string {
-	return cwd.replace('/home/moises', '~');
+	return cwd.replace(/^\/home\/[^/]+/, '~');
 }
 
 function normalizeCommand(command: string): string {
