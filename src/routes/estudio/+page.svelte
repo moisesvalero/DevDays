@@ -636,8 +636,8 @@
 								<div class="overflow-hidden rounded-lg border border-[#d1d5db] bg-white">
 									<div class="relative">
 										<img
-											src="/stitch/vpn-error.png"
-											alt="Captura técnica de incidencia Windows"
+											src={current.image.src}
+											alt={current.image.alt}
 											class="max-h-[300px] w-full object-cover"
 										/>
 										<span
@@ -913,10 +913,10 @@
 				</div>
 				<p class="mt-5 text-base leading-7 text-slate-700">"{current.userMessage}"</p>
 				<div class="mt-5 overflow-hidden rounded-lg border border-[#c0c7d4] bg-white">
-					<img src="/stitch/vpn-error.png" alt="Captura técnica" class="w-full object-cover" />
+					<img src={current.image.src} alt={current.image.alt} class="w-full object-cover" />
 					<div class="flex items-center gap-2 bg-[#ebeef6] px-3 py-2 text-xs text-slate-600">
 						<span class="material-symbols-outlined text-sm">image</span>
-						captura_pantalla_error_800.png
+						{current.image.caption}
 					</div>
 				</div>
 			</article>

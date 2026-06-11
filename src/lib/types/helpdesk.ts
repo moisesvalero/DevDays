@@ -31,6 +31,12 @@ type EscalationRule = {
 	reason: string;
 };
 
+type TicketImage = {
+	src: string;
+	alt: string;
+	caption: string;
+};
+
 export type HelpdeskTicket = {
 	ticketId: string;
 	module: HelpdeskModule;
@@ -38,6 +44,7 @@ export type HelpdeskTicket = {
 	estimatedMinutes: number;
 	title: string;
 	userMessage: string;
+	image: TicketImage;
 	environment: string[];
 	symptoms: string[];
 	actions: DiagnosticAction[];

@@ -10,7 +10,85 @@ export const moduleLabels: Record<HelpdeskModule, string> = {
 	seguridad: 'Seguridad'
 };
 
-export const helpdeskTickets: HelpdeskTicket[] = [
+const ticketImages: Record<string, HelpdeskTicket['image']> = {
+	'HD-001': {
+		src: '/tickets/hd-001-password-expired.jpg',
+		alt: 'Pantalla corporativa de Windows solicitando cambio de contraseña',
+		caption: 'captura_cambio_contrasena.jpg'
+	},
+	'HD-002': {
+		src: '/tickets/hd-002-account-locked.jpg',
+		alt: 'Panel de identidad con cuenta bloqueada por intentos fallidos',
+		caption: 'captura_cuenta_bloqueada.jpg'
+	},
+	'HD-003': {
+		src: '/tickets/hd-003-wifi-no-internet.jpg',
+		alt: 'Estado de Wi-Fi conectado sin acceso a Internet',
+		caption: 'captura_wifi_sin_internet.jpg'
+	},
+	'HD-004': {
+		src: '/tickets/hd-004-dns-failure.jpg',
+		alt: 'Consola con error de resolución DNS en Windows',
+		caption: 'captura_error_dns.jpg'
+	},
+	'HD-005': {
+		src: '/tickets/hd-005-vpn-routes.jpg',
+		alt: 'Cliente VPN conectado sin rutas corporativas disponibles',
+		caption: 'captura_vpn_rutas.jpg'
+	},
+	'HD-006': {
+		src: '/tickets/hd-006-printer-paused.jpg',
+		alt: 'Cola de impresión de Windows con impresora en pausa',
+		caption: 'captura_impresora_pausada.jpg'
+	},
+	'HD-007': {
+		src: '/tickets/hd-007-outlook-outbox.jpg',
+		alt: 'Outlook mostrando correos pendientes en la bandeja de salida',
+		caption: 'captura_outlook_salida.jpg'
+	},
+	'HD-008': {
+		src: '/tickets/hd-008-teams-microphone.jpg',
+		alt: 'Configuración de Teams con micrófono incorrecto seleccionado',
+		caption: 'captura_teams_microfono.jpg'
+	},
+	'HD-009': {
+		src: '/tickets/hd-009-slow-disk.jpg',
+		alt: 'Monitor de rendimiento con disco saturado y poco espacio',
+		caption: 'captura_equipo_lento.jpg'
+	},
+	'HD-010': {
+		src: '/tickets/hd-010-windows-update.jpg',
+		alt: 'Windows Update indicando reinicio pendiente fuera de horario',
+		caption: 'captura_update_pendiente.jpg'
+	},
+	'HD-011': {
+		src: '/tickets/hd-011-shared-folder.jpg',
+		alt: 'Carpeta compartida con acceso denegado por permisos',
+		caption: 'captura_carpeta_permisos.jpg'
+	},
+	'HD-012': {
+		src: '/tickets/hd-012-usb-keyboard.jpg',
+		alt: 'Administrador de dispositivos mostrando teclado USB sin responder',
+		caption: 'captura_teclado_usb.jpg'
+	},
+	'HD-013': {
+		src: '/tickets/hd-013-phishing-email.jpg',
+		alt: 'Correo sospechoso con enlace externo y aviso de phishing',
+		caption: 'captura_correo_phishing.jpg'
+	},
+	'HD-014': {
+		src: '/tickets/hd-014-defender-alert.jpg',
+		alt: 'Alerta de Microsoft Defender por posible malware descargado',
+		caption: 'captura_defender_malware.jpg'
+	},
+	'HD-015': {
+		src: '/tickets/hd-015-printer-credentials.jpg',
+		alt: 'Impresora compartida solicitando credenciales antiguas de Windows',
+		caption: 'captura_impresora_credenciales.jpg'
+	}
+};
+
+const ticketDefinitions: Omit<HelpdeskTicket, 'image'>[] = [
 	{
 		ticketId: 'HD-001',
 		module: 'identidad',
@@ -882,6 +960,15 @@ export const helpdeskTickets: HelpdeskTicket[] = [
 		closureCue: 'Impresión autenticada con sesión actual.'
 	}
 ];
+
+export const helpdeskTickets: HelpdeskTicket[] = ticketDefinitions.map((ticket) => ({
+	...ticket,
+	image: ticketImages[ticket.ticketId] ?? {
+		src: '/tickets/hd-003-wifi-no-internet.jpg',
+		alt: 'Captura técnica de incidencia Windows',
+		caption: 'captura_incidencia_windows.jpg'
+	}
+}));
 
 export function getTicketById(ticketId: string): HelpdeskTicket | undefined {
 	return helpdeskTickets.find((ticket) => ticket.ticketId === ticketId);
