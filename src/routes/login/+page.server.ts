@@ -1,4 +1,5 @@
 import { fail, redirect } from '@sveltejs/kit';
+import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public';
 import { isEmailAllowed } from '$lib/server/allowlist';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -25,6 +26,16 @@ export const actions: Actions = {
 			});
 		}
 
+		if (
+			PUBLIC_SUPABASE_URL.includes('placeholder') ||
+			PUBLIC_SUPABASE_ANON_KEY.includes('placeholder')
+		) {
+			return fail(500, {
+				error:
+					'Supabase no está configurado en este entorno. Revisa PUBLIC_SUPABASE_URL y PUBLIC_SUPABASE_ANON_KEY.'
+			});
+		}
+
 		// url.origin viene del request → en local es http://localhost:5173 y en Vercel
 		// es https://tu-app.vercel.app. Sin necesidad de PUBLIC_SITE_URL.
 		const { error } = await locals.supabase.auth.signInWithOtp({
@@ -33,7 +44,12 @@ export const actions: Actions = {
 		});
 
 		if (error) {
-			return fail(500, { error: error.message });
+			console.error('Supabase magic link error:', error.message);
+
+			return fail(500, {
+				error:
+					'No se pudo enviar el enlace de acceso. Revisa Supabase Auth, SMTP y las URLs de redirección.'
+			});
 		}
 
 		return { sent: true, email };
