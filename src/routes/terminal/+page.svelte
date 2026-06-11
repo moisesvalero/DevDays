@@ -371,10 +371,10 @@
 	/>
 </svelte:head>
 
-<main class="min-h-dvh bg-[#f8f9ff] text-[#111827] xl:h-dvh xl:overflow-hidden">
-	<div class="hidden h-full xl:flex">
+<main class="min-h-dvh bg-[#f8f9ff] text-[#111827] lg:h-dvh lg:overflow-hidden">
+	<div class="hidden h-full lg:flex">
 		<aside
-			class="z-40 flex w-20 shrink-0 flex-col items-center gap-8 border-r border-[#e5e7eb] bg-white py-6"
+			class="z-40 flex w-16 shrink-0 flex-col items-center gap-6 border-r border-[#e5e7eb] bg-white py-5"
 		>
 			<a
 				class="flex h-10 w-10 items-center justify-center rounded-md bg-[#0078d4] text-white shadow-sm"
@@ -383,39 +383,32 @@
 			>
 				<span class="material-symbols-outlined text-[22px]" aria-hidden="true">terminal</span>
 			</a>
-			<nav class="flex flex-1 flex-col items-center gap-2 text-[11px] font-bold text-slate-700">
+			<nav class="flex flex-1 flex-col items-center gap-2 text-[10px] font-bold text-slate-700">
 				<a
-					class="flex w-16 flex-col items-center gap-2 rounded-lg px-2 py-3 hover:bg-blue-50"
+					class="flex w-14 flex-col items-center gap-2 rounded-lg px-2 py-3 hover:bg-blue-50"
 					href="/estudio"
 				>
 					<span class="material-symbols-outlined text-[26px]">confirmation_number</span>
 					<span>TICKETS</span>
 				</a>
 				<a
-					class="flex w-16 flex-col items-center gap-2 rounded-lg bg-[#0078d4]/10 px-2 py-3 text-[#0078d4]"
+					class="flex w-14 flex-col items-center gap-2 rounded-lg bg-[#0078d4]/10 px-2 py-3 text-[#0078d4]"
 					href="/terminal"
 				>
 					<span class="material-symbols-outlined text-[26px]">terminal</span>
 					<span>TERM</span>
-				</a>
-				<a
-					class="flex w-16 flex-col items-center gap-2 rounded-lg px-2 py-3 hover:bg-blue-50"
-					href="/terminal"
-				>
-					<span class="material-symbols-outlined text-[26px]">menu_book</span>
-					<span>GUÍA</span>
 				</a>
 			</nav>
 		</aside>
 
 		<div class="flex min-w-0 flex-1 flex-col">
 			<header
-				class="flex h-[70px] shrink-0 items-center justify-between border-b border-[#e5e7eb] bg-white px-8"
+				class="flex h-16 shrink-0 items-center justify-between border-b border-[#e5e7eb] bg-white px-5 2xl:px-7"
 			>
 				<div class="flex items-center gap-6">
-					<h1 class="text-xl font-bold text-black">Terminal Studio</h1>
+					<h1 class="text-lg font-bold text-black 2xl:text-xl">Terminal Studio</h1>
 					<span class="text-2xl text-slate-300">/</span>
-					<p class="text-lg font-medium text-slate-700">WSL, Git y pnpm</p>
+					<p class="text-base font-medium text-slate-700 2xl:text-lg">WSL, Git y pnpm</p>
 				</div>
 				<div class="flex items-center gap-6">
 					<div class="w-52">
@@ -439,10 +432,12 @@
 			</header>
 
 			<div class="flex min-h-0 flex-1">
-				<section class="flex w-[360px] shrink-0 flex-col border-r border-[#e5e7eb] bg-white">
-					<header class="border-b border-[#e5e7eb] px-7 py-5">
+				<section
+					class="flex w-[clamp(17rem,26vw,22rem)] shrink-0 flex-col border-r border-[#e5e7eb] bg-white"
+				>
+					<header class="border-b border-[#e5e7eb] px-5 py-5 2xl:px-7">
 						<p class="text-xs font-bold uppercase tracking-widest text-slate-500">Ruta práctica</p>
-						<h2 class="mt-2 text-2xl font-bold">Comandos que usarás cada día</h2>
+						<h2 class="mt-2 text-xl font-bold 2xl:text-2xl">Comandos que usarás cada día</h2>
 					</header>
 					<div class="min-h-0 flex-1 overflow-y-auto">
 						{#each lessons as lesson, index (lesson.lessonId)}
@@ -610,7 +605,7 @@
 		</div>
 	</div>
 
-	<div class="min-h-dvh xl:hidden">
+	<div class="min-h-dvh lg:hidden">
 		<header
 			class="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-[#c0c7d4] bg-white px-6"
 		>

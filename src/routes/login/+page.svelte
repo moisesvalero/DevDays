@@ -3,13 +3,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
-	import {
-		Card,
-		CardContent,
-		CardDescription,
-		CardHeader,
-		CardTitle
-	} from '$lib/components/ui/card';
+	import { Card, CardContent, CardDescription, CardHeader } from '$lib/components/ui/card';
 
 	let { form } = $props();
 	let loading = $state(false);
@@ -28,9 +22,7 @@
 				<span class="material-symbols-outlined text-[22px]" aria-hidden="true">desktop_windows</span
 				>
 			</div>
-			<CardTitle class="text-2xl font-semibold tracking-tight text-white">
-				Service Desk Studio
-			</CardTitle>
+			<h1 class="text-2xl font-semibold tracking-tight text-white">Service Desk Studio</h1>
 			<CardDescription class="text-slate-400">
 				Accede con enlace seguro para guardar tu progreso de entrenamiento.
 			</CardDescription>

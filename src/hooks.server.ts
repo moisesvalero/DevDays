@@ -101,7 +101,6 @@ const handleSecurity: Handle = async ({ event, resolve }) => {
 				'geolocation=()',
 				'payment=()',
 				'usb=()',
-				'bluetooth=()',
 				'magnetometer=()',
 				'gyroscope=()',
 				'accelerometer=()',

@@ -385,63 +385,42 @@
 	<meta name="theme-color" content="#f8f9ff" />
 </svelte:head>
 
-<main class="min-h-dvh bg-[#f8f9ff] text-[#111827] min-[1281px]:h-dvh min-[1281px]:overflow-hidden">
-	<div class="hidden h-full min-[1281px]:flex">
+<main class="min-h-dvh bg-[#f8f9ff] text-[#111827] lg:h-dvh lg:overflow-hidden">
+	<div class="hidden h-full lg:flex">
 		<aside
-			class="z-40 flex w-20 shrink-0 flex-col items-center gap-8 border-r border-[#e5e7eb] bg-white py-6"
+			class="z-40 flex w-16 shrink-0 flex-col items-center gap-6 border-r border-[#e5e7eb] bg-white py-5"
 		>
 			<div
 				class="flex h-10 w-10 items-center justify-center rounded-md bg-[#0078d4] text-white shadow-sm"
 			>
 				<span class="material-symbols-outlined text-[22px]" aria-hidden="true">support_agent</span>
 			</div>
-			<nav class="flex flex-1 flex-col items-center gap-2 text-[11px] font-bold text-slate-700">
+			<nav class="flex flex-1 flex-col items-center gap-2 text-[10px] font-bold text-slate-700">
 				<a
-					class="flex w-16 flex-col items-center gap-2 rounded-lg px-2 py-3 hover:bg-blue-50"
-					href="/estudio"
-				>
-					<span class="material-symbols-outlined text-[26px]">dashboard</span>
-					<span>INICIO</span>
-				</a>
-				<a
-					class="flex w-16 flex-col items-center gap-2 rounded-lg bg-[#0078d4]/10 px-2 py-3 text-[#0078d4]"
+					class="flex w-14 flex-col items-center gap-2 rounded-lg bg-[#0078d4]/10 px-2 py-3 text-[#0078d4]"
 					href="/estudio"
 				>
 					<span class="material-symbols-outlined text-[26px]">confirmation_number</span>
 					<span>TICKETS</span>
 				</a>
 				<a
-					class="flex w-16 flex-col items-center gap-2 rounded-lg px-2 py-3 hover:bg-blue-50"
-					href="/estudio"
-				>
-					<span class="material-symbols-outlined text-[26px]">menu_book</span>
-					<span>BASE</span>
-				</a>
-				<a
-					class="flex w-16 flex-col items-center gap-2 rounded-lg px-2 py-3 hover:bg-blue-50"
+					class="flex w-14 flex-col items-center gap-2 rounded-lg px-2 py-3 hover:bg-blue-50"
 					href="/terminal"
 				>
 					<span class="material-symbols-outlined text-[26px]">terminal</span>
 					<span>TERM</span>
 				</a>
 			</nav>
-			<button
-				class="rounded-lg p-2 text-slate-700 hover:bg-blue-50"
-				type="button"
-				aria-label="Ajustes"
-			>
-				<span class="material-symbols-outlined text-[28px]">settings</span>
-			</button>
 		</aside>
 
 		<div class="flex min-w-0 flex-1 flex-col">
 			<header
-				class="flex h-[70px] shrink-0 items-center justify-between border-b border-[#e5e7eb] bg-white px-6 2xl:px-8"
+				class="flex h-16 shrink-0 items-center justify-between border-b border-[#e5e7eb] bg-white px-5 2xl:px-7"
 			>
 				<div class="flex items-center gap-6">
-					<h1 class="text-xl font-bold text-black">Service Desk Studio</h1>
+					<h1 class="text-lg font-bold text-black 2xl:text-xl">Service Desk Studio</h1>
 					<span class="text-2xl text-slate-300">/</span>
-					<p class="text-lg font-medium text-slate-700">Gestión de Incidentes</p>
+					<p class="text-base font-medium text-slate-700 2xl:text-lg">Gestión de Incidentes</p>
 				</div>
 				<div class="flex items-center gap-8">
 					<div
@@ -468,7 +447,7 @@
 
 			<div class="flex min-h-0 flex-1">
 				<section
-					class="flex w-[320px] shrink-0 flex-col border-r border-[#e5e7eb] bg-white 2xl:w-[400px]"
+					class="flex w-[clamp(16rem,24vw,22rem)] shrink-0 flex-col border-r border-[#e5e7eb] bg-white"
 				>
 					<header class="border-b border-[#e5e7eb] px-5 py-5 2xl:px-8">
 						<label class="flex h-12 items-center gap-3 rounded-lg bg-[#f3f4f6] px-4 text-slate-500">
@@ -539,8 +518,8 @@
 				</section>
 
 				<section class="flex min-w-0 flex-1 flex-col bg-white">
-					<div class="min-h-0 flex-1 overflow-y-auto px-6 py-8 2xl:px-10">
-						<div class="mx-auto max-w-3xl">
+					<div class="min-h-0 flex-1 overflow-y-auto px-5 py-6 2xl:px-8 2xl:py-8">
+						<div class="mx-auto max-w-[min(100%,48rem)]">
 							<div class="flex items-start justify-between gap-6">
 								<div>
 									<div class="flex items-center gap-3">
@@ -579,7 +558,7 @@
 								</div>
 							</div>
 
-							<section class="mt-16">
+							<section class="mt-10 2xl:mt-14">
 								<div class="flex items-start gap-5">
 									<img
 										src="/stitch/office-worker.png"
@@ -702,7 +681,7 @@
 				</section>
 
 				<aside
-					class="w-[360px] shrink-0 overflow-y-auto border-l border-[#e5e7eb] bg-[#f3f4f6] p-6 2xl:w-[480px] 2xl:p-8"
+					class="w-[clamp(18rem,26vw,24rem)] shrink-0 overflow-y-auto border-l border-[#e5e7eb] bg-[#f3f4f6] p-5 2xl:p-7"
 				>
 					<label class="block">
 						<span class="text-sm font-bold uppercase tracking-widest text-slate-700"
@@ -845,7 +824,7 @@
 		</div>
 	</div>
 
-	<div class="stitch-mobile-shell min-h-dvh pb-64 min-[1281px]:hidden">
+	<div class="stitch-mobile-shell min-h-dvh pb-64 lg:hidden">
 		<header
 			class="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-[#c0c7d4] bg-white px-6"
 		>
