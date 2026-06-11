@@ -1,6 +1,7 @@
 import { dev } from '$app/environment';
+import { env as publicEnv } from '$env/dynamic/public';
 import { fail, redirect } from '@sveltejs/kit';
-import { PUBLIC_SITE_URL, PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public';
+import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public';
 import { isEmailAllowed } from '$lib/server/allowlist';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -37,7 +38,7 @@ export const actions: Actions = {
 			});
 		}
 
-		const configuredSiteUrl = PUBLIC_SITE_URL.trim();
+		const configuredSiteUrl = (publicEnv.PUBLIC_SITE_URL ?? '').trim();
 		const shouldUseRequestOrigin =
 			!configuredSiteUrl ||
 			(!dev &&
