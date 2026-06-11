@@ -13,23 +13,23 @@
 	<title>Acceso — Service Desk Studio</title>
 </svelte:head>
 
-<div class="dark ops-shell flex min-h-screen items-center justify-center px-4 text-foreground">
-	<Card class="w-full max-w-md border-slate-800 bg-slate-950/88">
+<div class="ops-shell flex min-h-screen items-center justify-center px-4 text-[#111827]">
+	<Card class="w-full max-w-md border-slate-200 bg-white shadow-[0_24px_70px_rgba(15,23,42,0.12)]">
 		<CardHeader>
 			<div
-				class="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-blue-600 text-white"
+				class="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-[#0078d4] text-white"
 			>
 				<span class="material-symbols-outlined text-[22px]" aria-hidden="true">desktop_windows</span
 				>
 			</div>
-			<h1 class="text-2xl font-semibold tracking-tight text-white">Service Desk Studio</h1>
-			<CardDescription class="text-slate-400">
+			<h1 class="text-2xl font-semibold tracking-tight text-slate-950">Service Desk Studio</h1>
+			<CardDescription class="text-slate-600">
 				Accede con enlace seguro para guardar tu progreso de entrenamiento.
 			</CardDescription>
 		</CardHeader>
 		<CardContent>
 			{#if form?.sent}
-				<div class="rounded-xl border border-blue-900/70 bg-blue-950/35 p-4 text-sm text-blue-100">
+				<div class="rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm text-blue-900">
 					Te hemos enviado un enlace a <strong>{form.email}</strong>. Revisa tu bandeja de entrada y
 					haz click para entrar.
 				</div>
@@ -46,9 +46,7 @@
 					}}
 					class="space-y-4"
 				>
-					<div
-						class="rounded-xl border border-slate-800 bg-slate-900/76 p-3 text-sm text-slate-300"
-					>
+					<div class="rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
 						Escribe tu email corporativo y abre el enlace de acceso.
 					</div>
 					<div class="space-y-2">
@@ -64,7 +62,9 @@
 					</div>
 
 					{#if form?.error}
-						<p class="rounded-xl border border-red-900/70 bg-red-950/35 p-3 text-sm text-red-100">
+						<p
+							class="rounded-xl border border-red-200 bg-red-50 p-3 text-sm font-semibold text-red-800"
+						>
 							{form.error}
 						</p>
 					{/if}
