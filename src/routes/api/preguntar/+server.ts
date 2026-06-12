@@ -7,7 +7,7 @@ import type { RequestHandler } from './$types';
 type ChatMsg = { role: 'user' | 'model'; text: string };
 
 type Body = {
-	ticketId: string;
+	ticketId?: string;
 	selectedActionIds?: string[];
 	notes?: string;
 	mensaje: string;
@@ -29,11 +29,10 @@ export const POST: RequestHandler = async ({ request }) => {
 	if (!body.mensaje?.trim()) {
 		throw error(400, 'Escribe una pregunta para el tutor.');
 	}
-	const ticket = getTicketById(body.ticketId);
-	if (!ticket) throw error(404, 'Ticket no encontrado.');
+	const ticket = body.ticketId ? getTicketById(body.ticketId) : null;
 
 	const result = await chatHelpdeskTutor({
-		ticket,
+		ticket: ticket ?? null,
 		selectedActionIds: body.selectedActionIds ?? [],
 		notes: body.notes ?? '',
 		mensaje: body.mensaje,

@@ -7,6 +7,7 @@
 	type PageData = {
 		lessons: Leccion[];
 		userEmail: string | null;
+		userMetadata: { full_name?: string; avatar_url?: string } | null;
 	};
 
 	type StoredCodeCourseState = {
@@ -15,7 +16,7 @@
 		notesByDay: Record<number, string>;
 	};
 
-	const { data }: { data: PageData } = $props();
+	let { data }: { data: PageData } = $props();
 	const storageKey = 'devdays-code-course-v1';
 	const lessons = $derived(data.lessons);
 
@@ -33,6 +34,50 @@
 			lessons: lessons.filter((lesson) => lesson.semana === week)
 		}))
 	);
+	let openProfileModal = $state(false);
+	let editFullName = $state('');
+	let editAvatarUrl = $state('');
+	let profileSaving = $state(false);
+	let profileError = $state('');
+
+	function openProfile() {
+		editFullName = data.userMetadata?.full_name ?? '';
+		editAvatarUrl = data.userMetadata?.avatar_url ?? '/stitch/it-specialist.png';
+		profileError = '';
+		openProfileModal = true;
+	}
+
+	async function saveProfile() {
+		if (!editFullName.trim()) {
+			profileError = 'El nombre es obligatorio.';
+			return;
+		}
+		profileSaving = true;
+		profileError = '';
+		try {
+			const res = await fetch('/api/perfil', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					full_name: editFullName,
+					avatar_url: editAvatarUrl
+				})
+			});
+			if (!res.ok) {
+				const errData = await res.json();
+				throw new Error(errData.message || 'Error al guardar.');
+			}
+			data.userMetadata = {
+				full_name: editFullName,
+				avatar_url: editAvatarUrl
+			};
+			openProfileModal = false;
+		} catch (err: any) {
+			profileError = err.message || 'No se pudo guardar el perfil.';
+		} finally {
+			profileSaving = false;
+		}
+	}
 
 	onMount(() => {
 		if (!browser || hydrated) return;
@@ -120,13 +165,15 @@
 			class="z-40 flex w-16 shrink-0 flex-col items-center gap-6 border-r border-[#e5e7eb] bg-white py-5"
 		>
 			<a
-				class="flex h-10 w-10 items-center justify-center rounded-md bg-[#0078d4] text-white shadow-sm"
-				href="/codigo"
-				aria-label="DevDays Código"
+				class="flex h-10 w-10 items-center justify-center rounded-md bg-[#0078d4] text-white shadow-sm hover:bg-[#006cbe] transition-colors cursor-pointer"
+				href="/"
+				aria-label="Volver al Catálogo"
 			>
 				<span class="material-symbols-outlined text-[22px]" aria-hidden="true">code_blocks</span>
 			</a>
-			<nav class="flex flex-1 flex-col items-center gap-2 text-[10px] font-bold text-slate-700">
+			<nav
+				class="flex flex-1 flex-col items-center gap-2 text-[10px] font-bold text-slate-700 w-full px-1"
+			>
 				<a
 					class="flex w-14 flex-col items-center gap-2 rounded-lg px-2 py-3 hover:bg-blue-50"
 					href="/estudio"
@@ -147,6 +194,14 @@
 				>
 					<span class="material-symbols-outlined text-[26px]">code_blocks</span>
 					<span>CODE</span>
+				</a>
+				<div class="my-2 h-px w-10 bg-slate-200"></div>
+				<a
+					class="flex w-14 flex-col items-center gap-2 rounded-lg px-2 py-3 hover:bg-slate-100 text-slate-500 hover:text-slate-900"
+					href="/"
+				>
+					<span class="material-symbols-outlined text-[26px]">home</span>
+					<span>INICIO</span>
 				</a>
 			</nav>
 		</aside>
@@ -173,11 +228,31 @@
 						</p>
 					</div>
 					<a
-						class="rounded-md border border-[#d1d5db] bg-white px-3 py-1.5 text-xs font-bold text-slate-900 hover:bg-slate-50"
+						class="rounded-md border border-[#d1d5db] bg-white px-3 py-1.5 text-xs font-bold text-slate-900 hover:bg-slate-50 shadow-sm"
 						href="/"
 					>
 						Catálogo
 					</a>
+					<div class="h-8 w-px bg-[#e5e7eb]"></div>
+					<button
+						type="button"
+						onclick={openProfile}
+						class="flex items-center gap-2 hover:opacity-80 transition-opacity text-left cursor-pointer border-0 bg-transparent p-0"
+					>
+						<div class="text-right">
+							<p class="text-xs font-bold text-black">
+								{data.userMetadata?.full_name || 'Simulation Apprentice'}
+							</p>
+							<p class="text-[10px] font-bold tracking-widest text-[#0078d4]">
+								{data.userMetadata?.full_name ? 'TIER 2' : 'CONF. PERFIL'}
+							</p>
+						</div>
+						<img
+							src={data.userMetadata?.avatar_url || '/stitch/it-specialist.png'}
+							alt={data.userMetadata?.full_name || 'Simulation Apprentice'}
+							class="h-8 w-8 rounded-full border border-[#e5e7eb] object-cover bg-slate-50"
+						/>
+					</button>
 				</div>
 			</header>
 
@@ -433,3 +508,123 @@
 		</section>
 	</div>
 </main>
+
+{#if openProfileModal}
+	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+		<div
+			class="w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-150 text-slate-950"
+		>
+			<div class="flex items-start justify-between">
+				<div>
+					<h2 class="text-lg font-bold text-slate-900">Configurar tu Perfil</h2>
+					<p class="text-xs text-slate-500 mt-1">Personaliza tu nombre e imagen de estudiante</p>
+				</div>
+				<button
+					type="button"
+					onclick={() => (openProfileModal = false)}
+					class="rounded-md p-1 text-slate-500 hover:bg-slate-100 hover:text-slate-900 cursor-pointer"
+				>
+					<span class="material-symbols-outlined text-[20px]">close</span>
+				</button>
+			</div>
+
+			<div class="mt-5 space-y-4">
+				<div>
+					<label
+						for="profile-name"
+						class="block text-xs font-bold uppercase tracking-wider text-slate-700"
+						>Nombre Real</label
+					>
+					<input
+						id="profile-name"
+						type="text"
+						bind:value={editFullName}
+						placeholder="Escribe tu nombre y apellido..."
+						class="mt-2 w-full rounded-md border border-slate-300 bg-white p-2.5 text-sm text-slate-950 focus:border-[#0078d4] focus:ring-[#0078d4]"
+					/>
+				</div>
+
+				<div>
+					<p class="block text-xs font-bold uppercase tracking-wider text-slate-700">
+						Seleccionar Personaje/Avatar
+					</p>
+					<div class="mt-3 grid grid-cols-2 gap-3">
+						<button
+							type="button"
+							onclick={() => (editAvatarUrl = '/stitch/it-specialist.png')}
+							class={`relative overflow-hidden rounded-lg border-2 p-2 transition-all cursor-pointer ${
+								editAvatarUrl === '/stitch/it-specialist.png'
+									? 'border-[#0078d4] bg-blue-50/50'
+									: 'border-slate-200 bg-white hover:border-slate-300'
+							}`}
+						>
+							<div class="flex flex-col items-center gap-2">
+								<img
+									src="/stitch/it-specialist.png"
+									alt="Especialista IT"
+									class="h-16 w-16 rounded-full object-cover border border-slate-100"
+								/>
+								<span class="text-xs font-bold text-slate-900">Especialista IT</span>
+							</div>
+							{#if editAvatarUrl === '/stitch/it-specialist.png'}
+								<span
+									class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#0078d4] text-white"
+								>
+									<span class="material-symbols-outlined text-[10px]">check</span>
+								</span>
+							{/if}
+						</button>
+
+						<button
+							type="button"
+							onclick={() => (editAvatarUrl = '/stitch/office-worker.png')}
+							class={`relative overflow-hidden rounded-lg border-2 p-2 transition-all cursor-pointer ${
+								editAvatarUrl === '/stitch/office-worker.png'
+									? 'border-[#0078d4] bg-blue-50/50'
+									: 'border-slate-200 bg-white hover:border-slate-300'
+							}`}
+						>
+							<div class="flex flex-col items-center gap-2">
+								<img
+									src="/stitch/office-worker.png"
+									alt="Oficinista"
+									class="h-16 w-16 rounded-full object-cover border border-slate-100"
+								/>
+								<span class="text-xs font-bold text-slate-900">Oficinista</span>
+							</div>
+							{#if editAvatarUrl === '/stitch/office-worker.png'}
+								<span
+									class="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#0078d4] text-white"
+								>
+									<span class="material-symbols-outlined text-[10px]">check</span>
+								</span>
+							{/if}
+						</button>
+					</div>
+				</div>
+
+				{#if profileError}
+					<p class="text-xs font-semibold text-red-600">{profileError}</p>
+				{/if}
+
+				<div class="mt-6 flex justify-end gap-3 border-t border-slate-100 pt-4">
+					<button
+						type="button"
+						onclick={() => (openProfileModal = false)}
+						class="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer"
+					>
+						Cancelar
+					</button>
+					<button
+						type="button"
+						onclick={saveProfile}
+						disabled={profileSaving}
+						class="rounded-md bg-[#0078d4] px-4 py-2 text-sm font-semibold text-white hover:bg-[#006cbe] disabled:opacity-60 cursor-pointer flex items-center gap-1.5"
+					>
+						{profileSaving ? 'Guardando...' : 'Guardar Perfil'}
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+{/if}

@@ -8,6 +8,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	return {
 		lessons: terminalLessons,
 		progress,
-		userEmail: locals.user?.email ?? null
+		userEmail: locals.user?.email ?? null,
+		userMetadata: locals.user?.user_metadata ?? null
 	};
 };

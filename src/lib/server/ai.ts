@@ -21,7 +21,7 @@ export type TicketReviewResult = {
 };
 
 export type HelpdeskChatInput = {
-	ticket: HelpdeskTicket;
+	ticket: HelpdeskTicket | null;
 	mensaje: string;
 	selectedActionIds: string[];
 	notes: string;
@@ -126,17 +126,21 @@ ${input.localEvaluation.hints.map((hint) => `- ${hint}`).join('\n') || '- Ningun
 export async function chatHelpdeskTutor(input: HelpdeskChatInput): Promise<ChatResult> {
 	if (!input.mensaje?.trim()) {
 		return {
-			respuesta: 'Escribe la duda del ticket y te ayudo a ordenar el diagnóstico.',
+			respuesta: input.ticket
+				? 'Escribe la duda del ticket y te ayudo a ordenar el diagnóstico.'
+				: 'Escribe tu duda sobre soporte IT, comandos o código y te ayudo a resolverla.',
 			provider: 'none'
 		};
 	}
 
-	const selectedActions = input.ticket.actions
-		.filter((action) => input.selectedActionIds.includes(action.id))
-		.map((action) => `- ${action.label}: ${action.result}`)
-		.join('\n');
+	let systemMsg = '';
+	if (input.ticket) {
+		const selectedActions = input.ticket.actions
+			.filter((action) => input.selectedActionIds.includes(action.id))
+			.map((action) => `- ${action.label}: ${action.result}`)
+			.join('\n');
 
-	const systemMsg = `Eres un mentor de helpdesk nivel 1 en una empresa Windows.
+		systemMsg = `Eres un mentor de helpdesk nivel 1 en una empresa Windows.
 
 Reglas:
 - Ayuda a pensar, no cierres el ticket por el alumno.
@@ -151,6 +155,17 @@ Síntomas: ${input.ticket.symptoms.join(', ')}
 Acciones ya realizadas:
 ${selectedActions || '- Ninguna'}
 Notas del alumno: ${input.notes || 'Sin notas.'}`;
+	} else {
+		systemMsg = `Eres un mentor y tutor de aprendizaje técnico en DevDays (soporte IT, terminal de comandos de Windows/WSL y desarrollo web con JavaScript/SvelteKit).
+
+Reglas:
+- Responde de forma muy concisa, clara y directa.
+- Ayuda a razonar los problemas, sin dar soluciones masticadas o código completo directamente.
+- No reveles contraseñas ni sugieras malas prácticas de seguridad.
+- Responde siempre en español.
+- Sé claro, motivador y directo.
+- Máximo 8 líneas de respuesta.`;
+	}
 
 	const historial = input.historial.slice(-10);
 	const openaiMessages: OpenAIMessage[] = [

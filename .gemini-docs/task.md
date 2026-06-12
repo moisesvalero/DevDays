@@ -1,0 +1,22 @@
+- [x] API de Perfil de Usuario
+  - [x] Crear `src/routes/api/perfil/+server.ts`
+- [x] Carga del Servidor para Perfil
+  - [x] Modificar `src/routes/estudio/+page.server.ts` para retornar `userMetadata`
+  - [x] Modificar `src/routes/terminal/+page.server.ts` para retornar `userMetadata`
+  - [x] Modificar `src/routes/codigo/+page.server.ts` para retornar `userMetadata`
+- [x] Integración de Perfil y Unificación en Vistas
+  - [x] Modificar `src/routes/estudio/+page.svelte` (perfil en header, modal de edición, barra lateral unificada y logo a raíz)
+  - [x] Modificar `src/routes/terminal/+page.svelte` (perfil en header, modal de edición, barra lateral unificada y logo a raíz)
+  - [x] Modificar `src/routes/codigo/+page.svelte` (perfil en header, modal de edición, barra lateral unificada)
+- [x] Visualización de Incidencias en Estudio
+  - [x] Modificar `src/routes/estudio/+page.svelte` para añadir logos oficiales de SO (Windows/Apple) y chips visuales de dificultad
+- [x] Chat Conversacional con IA en Botón Flotante
+  - [x] Modificar `src/routes/api/preguntar/+server.ts` para hacer `ticketId` opcional
+  - [x] Modificar `src/lib/server/ai.ts` para soportar `ticket` nulo en el tutor
+  - [x] Modificar `src/lib/components/help/FloatingSupport.svelte` para rediseñar el chat interactivo
+- [x] Copia de Documentos en Proyecto
+  - [x] Guardar copia de planes y logs en el propio workspace para que el usuario pueda verlos
+- [x] Validación Final
+  - [x] Ejecutar `pnpm check`
+  - [x] Ejecutar `pnpm lint`
+  - [x] Ejecutar `pnpm test`
