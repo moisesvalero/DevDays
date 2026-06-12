@@ -134,11 +134,11 @@
 			<h1
 				class="mt-4 max-w-3xl text-[clamp(2.25rem,4.8vw,4.35rem)] leading-[1.02] font-black tracking-tight text-slate-950"
 			>
-				Practica soporte IT, terminal y código en un mismo estudio.
+				Tu taller de práctica real: soporte IT, comandos y código.
 			</h1>
 			<p class="mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-				DevDays ahora es un catálogo modular: tickets reales de empresa Windows, terminal para tu
-				día a día y el curso original para construir tu portfolio con JavaScript y SvelteKit.
+				Sin teoría aburrida ni exámenes teóricos. Resuelve incidencias reales en entornos Windows,
+				domina la terminal de comandos y construye tu portfolio web paso a paso.
 			</p>
 			<div class="mt-8 flex flex-col gap-3 sm:flex-row">
 				{#if data.userEmail}
