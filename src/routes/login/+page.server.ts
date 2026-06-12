@@ -6,7 +6,7 @@ import { isEmailAllowed } from '$lib/server/allowlist';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	if (locals.user) throw redirect(303, '/estudio');
+	if (locals.user) throw redirect(303, '/');
 	return {};
 };
 
