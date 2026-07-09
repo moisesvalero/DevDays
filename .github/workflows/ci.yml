@@ -16,7 +16,7 @@ jobs:
       PUBLIC_SUPABASE_ANON_KEY: sb_publishable_placeholder_for_ci_build_only
     steps:
       - uses: actions/checkout@v5
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           version: 10.24.0
           run_install: false
