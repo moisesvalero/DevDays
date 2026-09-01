@@ -31,7 +31,7 @@
 	},
 	"devDependencies": {
 		"@lucide/svelte": "^1.27.0",
-		"@playwright/test": "^1.62.0",
+		"@playwright/test": "^1.62.1",
 		"@sveltejs/adapter-vercel": "^6.3.4",
 		"@sveltejs/kit": "^2.70.3",
 		"@sveltejs/vite-plugin-svelte": "^7.3.0",
